@@ -38,7 +38,7 @@ if($_SESSION['id']){
 </div>
 <div class="col-md-4">
 	<div class="well">
-		<img src="assets/img/icons/bug_edit.png" alt="bugreport"/> Welcome Alpha Testers!<br/>Thanks for trying out CypeReboot! Please report any bugs and quirks to greenelf!
+		<span class="glyphicon glyphicon-mail"></span> Welcome Alpha Testers!<br/>Thanks for trying out CypeReboot! Please report any bugs and quirks to greenelf!
 	</div>
 </div>
 </div>

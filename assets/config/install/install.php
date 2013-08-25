@@ -70,7 +70,7 @@ if(file_exists('install.lock')){
 						<div class="form-group">
 								<label for="inputPrefix" class="col-lg-4 control-label">Database Prefix</label>
 							<div class="col-lg-5">
-								<input type="text" class="form-control" id="inputPrefix" placeholder="Database Prefix" name="DBprefix" value="cype_">
+								<input type="text" class="form-control" id="inputPrefix" placeholder="Database Prefix" name="DBprefix" value="cype_" disabled>
 							</div>
 						</div>						
 						<hr/>
@@ -139,22 +139,12 @@ CREATE TABLE `".$prefix."properties` (
   `client` text,
   `version` int(11) NOT NULL DEFAULT '0',
   `forumurl` text,
-  `siteurl` text,
   `vote` text,
-  `vcheck` text,
-  `vbanner` text,
   `exprate` text,
   `mesorate` text,
   `droprate` text,
-  `mbanner` text,
-  `mblink` text,
-  `message` text,
-  `scroller` text,
-  `styledir` text,
   `flood` tinyint(4) NOT NULL DEFAULT '1',
   `floodint` int(11) DEFAULT NULL,
-  `cypedir` text,
-  `email` text,
   `pcap` text,
   `maxaccounts` tinyint(4) NOT NULL DEFAULT '3',
   `gmlevel` int(11) NOT NULL DEFAULT '1',
@@ -324,8 +314,6 @@ PRIMARY KEY ( `id` )
 ALTER TABLE `accounts` MODIFY COLUMN `nick` TEXT NULL DEFAULT NULL;
 
 ALTER TABLE `accounts` MODIFY COLUMN `sitelogged` TEXT NULL DEFAULT NULL;
-
-ALTER TABLE `".$prefix."properties` ADD COLUMN `gmlevel` INTEGER NOT NULL DEFAULT 1 AFTER `maxaccounts`;
 ");
 echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 		break;
@@ -398,7 +386,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 					}
 				}			
 				if($stop == "false"){
-					$mysqli->query("UPDATE cype_properties SET name='$sservername', client='$sclient', version='$sversion', forumurl='$sforumurl', vote='$svote', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', flood='1', floodint='20', theme='Flatly', nav='0', pcap='100'");
+					$mysqli->query("UPDATE cype_properties SET name='$sservername', client='$sclient', version='$sversion', forumurl='$sforumurl', vote='$svote', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', flood='1', floodint='20', pcap='100', theme='Flatly', nav='0'");
 					echo "Working...";
 					echo "<meta http-equiv=\"refresh\" content=\"1; url=?install=done\" />";
 				}
