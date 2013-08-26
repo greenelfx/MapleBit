@@ -20,7 +20,7 @@ if(isset($_GET['install'])){
 }else{
 	$install = "";
 }
-if(file_exists('install.lock')){
+if(file_exists('installdone.txt')){
 	echo "<h4>An error has occurred</h4>
 			<hr />
 			CypeCMS has already been installed.";
@@ -70,7 +70,7 @@ if(file_exists('install.lock')){
 						<div class="form-group">
 								<label for="inputPrefix" class="col-lg-4 control-label">Database Prefix</label>
 							<div class="col-lg-5">
-								<input type="text" class="form-control" id="inputPrefix" placeholder="Database Prefix" name="DBprefix" value="cype_" disabled>
+								<input type="text" class="form-control" id="inputPrefix" placeholder="Database Prefix" name="DBprefix" value="cype_">
 							</div>
 						</div>						
 						<hr/>
@@ -86,7 +86,8 @@ if(file_exists('install.lock')){
 		$db = $_POST["DB"];
 		$dbuser = $_POST["DBuser"];
 		$dbpass = $_POST["DBpass"];
-		$dbprefix = $_POST["DBprefix"];
+		//$dbprefix = $_POST["DBprefix"];
+		$dbprefix = "cype_";
 		$mysqli = new mysqli("$host", "$dbuser", "$dbpass", "$db");
 if ($mysqli->connect_errno) {
     printf("<div class=\"alert alert-danger\">Connect failed: %s\n", $mysqli->connect_error);
@@ -134,10 +135,9 @@ echo '
 			include '../database.php';
 mysqli_multi_query($mysqli, "DROP TABLE IF EXISTS `".$prefix."properties`;
 CREATE TABLE `".$prefix."properties` (
-  `name` text,
-  `title` text,
-  `client` text,
   `version` int(11) NOT NULL DEFAULT '0',
+  `name` text,
+  `client` text,
   `forumurl` text,
   `vote` text,
   `exprate` text,
@@ -314,6 +314,8 @@ PRIMARY KEY ( `id` )
 ALTER TABLE `accounts` MODIFY COLUMN `nick` TEXT NULL DEFAULT NULL;
 
 ALTER TABLE `accounts` MODIFY COLUMN `sitelogged` TEXT NULL DEFAULT NULL;
+
+ALTER TABLE `".$prefix."properties` ADD COLUMN `gmlevel` INTEGER NOT NULL DEFAULT 1 AFTER `maxaccounts`;
 ");
 echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 		break;
@@ -386,7 +388,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 					}
 				}			
 				if($stop == "false"){
-					$mysqli->query("UPDATE cype_properties SET name='$sservername', client='$sclient', version='$sversion', forumurl='$sforumurl', vote='$svote', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', flood='1', floodint='20', pcap='100', theme='Flatly', nav='0'");
+					$mysqli->query("INSERT cype_properties SET version='$sversion', name='$sservername', client='$sclient', forumurl='$sforumurl', vote='$svote', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', flood='1', floodint='20', pcap='100', maxaccounts='3', gmlevel='$sgmlevel', theme='Flatly', nav='0'");
 					echo "Working...";
 					echo "<meta http-equiv=\"refresh\" content=\"1; url=?install=done\" />";
 				}
