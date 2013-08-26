@@ -8,7 +8,7 @@
 <link href="assets/css/<?php echo $theme; ?>.min.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 body {
-  min-height: 2000px;
+  min-height: 200px;
   padding-top: 90px;
 }
 </style>
