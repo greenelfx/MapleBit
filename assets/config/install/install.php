@@ -21,9 +21,7 @@ if(isset($_GET['install'])){
 	$install = "";
 }
 if(file_exists('installdone.txt')){
-	echo "<h4>An error has occurred</h4>
-			<hr />
-			CypeCMS has already been installed.";
+	echo "<div class=\"alert alert-danger\">Oops! Looks like Cype has already been installed!</div>";
 }else{
 	switch($install){
 		case NULL:
