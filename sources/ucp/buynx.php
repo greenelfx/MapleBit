@@ -1,22 +1,4 @@
 <?php
-/**
-    Copyright (C) 2009  Josh L.
-        		Murad --
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-**/
-
 if(!isset($_POST['buyNX']))
 {
 	echo '
@@ -32,13 +14,16 @@ if(!isset($_POST['buyNX']))
 			<legend>Select a Package</legend>
 	';
 	$fetchPack = $mysqli->query("SELECT * FROM `cype_buynx`");
+	if($fetchPack->num_rows == 0){
+	echo "<div class=\"alert alert-danger\">Oops! Looks like there's no NX packages available right now!</div>";
+	}
 	while($getPack = $fetchPack->fetch_assoc())
 	{
 		echo '<label class="radio"><input type="radio" name="selPack" value="'.$getPack['meso'].'">'.number_format($getPack['nx']).' NX for '.number_format($getPack['meso']).' Mesos</input></label>';
 	}
 	echo '
 		<br/><input type="submit" name="buyNX" value="Buy NX &raquo" class="btn btn-primary"/>
-		</form>
+		</form><br/>
 	';
 }
 else
