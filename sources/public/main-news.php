@@ -45,7 +45,7 @@ echo "
 }
 
 		if($i == 0) {
-			echo "Oops! No news to display right now!";
+			echo "No news to display right now!";
 		}
 
 echo "</div>";
