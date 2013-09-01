@@ -1,21 +1,4 @@
 <?php 
-/*
-    Copyright (C) 2009  Murad <Murawd>
-						Josh L. <Josho192837>
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
 if(isset($_SESSION['id'])){
     echo "<meta http-equiv=refresh content=\"0; url=?cype=ucp\">";
 }
@@ -52,6 +35,7 @@ if (@$_POST["register"] != "1") {
 		<input type="submit" class="btn btn-primary" name="submit" alt="Register" value="Register &raquo;"/> 
 		<input type="hidden" name="register" value="1" />
 	</form>
+	<br/>
 <?php
 } else {
 	if (!isset($_POST["musername"]) OR
@@ -70,7 +54,7 @@ if (@$_POST["register"] != "1") {
 	$confirm_password = preg_replace("/[^A-Za-z0-9 ]/", '', $getconfirm_password); # Escape and Strip
 	$email = $mysqli->real_escape_string($_POST["memail"]);
 	$birth = "1990-01-01";
-	$ip = $mysqli->real_escape_string($_SERVER['REMOTE_ADDR']);
+	$ip = getRealIpAddr();
 	
 	$continue = false;
 	

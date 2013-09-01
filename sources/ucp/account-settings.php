@@ -1,22 +1,4 @@
 <?php 
-/*
-    Copyright (C) 2009  Murad <Murawd>
-						Josh L. <Josho192837>
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 if($_SESSION['id']){
 	echo "
 		<legend>
@@ -26,7 +8,7 @@ if($_SESSION['id']){
 		$query = $mysqli->query("SELECT * FROM `accounts` WHERE `id`='".$_SESSION['id']."'") or die(mysql_error());
 		$row = $query->fetch_assoc();
 		echo "
-		<div class=\"well\">If you want to keep your password, leave the field blank!</div>
+		<div class=\"alert alert-warning\">If you want to keep your current password, leave the password fields blank! <a class=\"close\" data-dismiss=\"alert\" href=\"#\" aria-hidden=\"true\">&times;</a></div>
 		<form method=\"post\" action='' role=\"form\">
 			<b><abbr title=\"You can't change this!\">Username</abbr></b>
 				".$row['name']."
@@ -50,8 +32,8 @@ if($_SESSION['id']){
 			<label for=\"Birthday\">Birthday</label>
 			<input type=\"text\" class=\"form-control\" id=\"Birthday\" placeholder=\"1990-01-01\" name=\"birth\" value=\"".$row['birthday']."\" />
 		</div>
-			<input type=\"submit\" name=\"modify\" class=\"btn btn-primary btn-lg\" value=\"Modify &raquo;\" />
-		</form>";
+			<input type=\"submit\" name=\"modify\" class=\"btn btn-primary\" value=\"Modify &raquo;\" />
+		</form><br/>";
 
 	}else{
 		$u = $mysqli->query("SELECT * FROM `accounts` WHERE `id`='".$_SESSION['id']."'") or die(mysql_error());

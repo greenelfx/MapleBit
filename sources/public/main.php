@@ -27,8 +27,8 @@ if(isset($_GET['page'])){
 			echo "<div class=\"row\">";
 			include ("sources/public/main-news.php");
 			include ("sources/public/main-events.php");
-			echo "</div><br/><br/>";
-			echo "<div class=\"row\">";
+			echo "</div>";
+			echo "<div class=\"row\" style=\"margin-top:30px;\">";
 			include ("sources/public/main-rank.php");
 			include ("sources/public/main-gm.php");
 			echo "</div><br/>";

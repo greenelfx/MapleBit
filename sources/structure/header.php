@@ -6,13 +6,7 @@
 <title><?php echo $sitetitle.$pb; ?></title>
 <link rel="icon" href="favicon.ico" type="image/x-icon" />
 <link href="assets/css/<?php echo $theme; ?>.min.css" rel="stylesheet" type="text/css" />
-<style type="text/css">
-body {
-  min-height: 200px;
-  padding-top: 90px;
-}
-</style>
-<link href="sources/structure/addon.css" rel="stylesheet" type="text/css" />
+<link href="assets/css/addon.css" rel="stylesheet" type="text/css" />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <script type="text/javascript" src="assets/js/bootstrap.js"></script>
 <script>
@@ -46,6 +40,9 @@ function roll(img_name, img_src){
               <li><a href="?cype=main&amp;page=download">Download</a></li>
 			  <li><a href="?cype=main&amp;page=ranking">Rankings</a></li>
 			  <li><a href="?cype=main&amp;page=vote">Vote</a></li>
+			  <li><a href="?cype=main&amp;page=chat">Chat</a></li>
+			  <li><a href="?cype=main&amp;page=donate">Donate</a></li>
+			  <li><a href="#">Forums</a></li>			  
             </ul>
 		<?php	
 			if(isset($_SESSION['id'])){
@@ -64,7 +61,7 @@ function roll(img_name, img_src){
 				</li>
 			</ul>
 		<?php } ?>
-	</div><!-- /.navbar-collapse -->
+	</div>
 </nav>
 
 <div class="container">
