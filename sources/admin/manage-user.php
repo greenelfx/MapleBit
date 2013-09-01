@@ -18,12 +18,5 @@
 */
 
 // Must rewrite
-echo "
-	<fieldset>
-		<legend>
-			Error
-		</legend>
-		This is currently not working. Please wait.
-	</fieldset>
-";
+echo "Under Construction";
 ?>

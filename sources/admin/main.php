@@ -38,14 +38,14 @@ if($_SESSION['id']){
 </div>
 <div class="col-md-4">
 	<div class="well">
-		<span class="glyphicon glyphicon-mail"></span> Welcome Alpha Testers!<br/>Thanks for trying out CypeReboot! Please report any bugs and quirks to greenelf!
+		Welcome Alpha Testers!<br/>Thanks for trying out CypeReboot! Please report any bugs and quirks to greenelf!
 	</div>
 </div>
 </div>
 <div class="row">
   <div class="col-md-3">
 	<div class="well">
-		<li><a href="?cype=admin&page=mannews&amp;action=add"><b>Add News</b></a></li>
+		<li><a href="?cype=admin&page=mannews&amp;action=add"><b>Add News &raquo;</b></a></li>
 		<li><a href="?cype=admin&page=mannews&amp;action=edit">Edit News</a></li>
 		<li><a href="?cype=admin&page=mannews&amp;action=del">Delete News</a></li>
 	</div>
@@ -60,13 +60,12 @@ if($_SESSION['id']){
   <div class="col-md-3">
   	<div class="well">
 	<a href="?cype=admin&amp;page=muteuser">Mute User</a><br/>
-	Someone spamming the comments section? Mute them!
+	<a href="?cype=admin&amp;page=unmuteuser">Unmute User</a><br/>
 	</div>
   </div>
   <div class="col-md-3">
   	<div class="well">
-	<a href="?cype=admin&amp;page=unmuteuser">Unmute User</a><br/>
-	Allow a user to comment again.
+	<a href="?cype=admin&amp;page=voteconfig">Edit Vote Configuration</a>
 	</div>
   </div>
 </div>
@@ -96,8 +95,8 @@ if($_SESSION['id']){
   </div>
 </div>
 <?php
-			}elseif($admin == "dbedit"){
-				include('sources/admin/dbedit.php');
+			}elseif($admin == "voteconfig"){
+				include('sources/admin/voteconfig.php');
 			}elseif($admin == "gmlog"){
 				include('sources/admin/gmlog.php');
 			}elseif($admin == "logs"){
