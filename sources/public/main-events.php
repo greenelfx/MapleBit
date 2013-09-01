@@ -43,7 +43,7 @@ echo "
 		$i++;
 }
 		if($i == 0) {
-			echo "Oops! No events to display right now!";
+			echo "No events to display right now!";
 		}
 echo "</div>";
 ?>

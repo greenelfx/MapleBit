@@ -1,22 +1,4 @@
 <?php 
-/*
-    Copyright (C) 2009  Murad <Murawd>
-						Josh L. <Josho192837>
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 if(isset($_SESSION['id'])){
 	if(@$_GET['fix'] == "unstuck"){
 		echo "
@@ -27,7 +9,7 @@ if(isset($_SESSION['id'])){
 		Fill out this form below, and your character will be warped to Henesys, and you should be able to log back in!<br /><br />
 			<form method=\"post\" action=''>
 				<b>Select character:</b><br/>
-			<select name=\"char\">";
+			<select name=\"char\" class=\"form-control\">";
 			$s = $mysqli->query("SELECT * FROM `characters` WHERE `accountid`='".$_SESSION['id']."' ORDER BY `id` ASC") or die(mysql_error());
 			while($c = $s->fetch_assoc()){
 				echo "
@@ -36,26 +18,18 @@ if(isset($_SESSION['id'])){
 			echo "
 			</select><br/>
 			<b>Spawn point:</b><br/>
-			<select name=\"map\">
+			<select name=\"map\" class=\"form-control\">
 				<option value=\"100000000\">Henesys</option>
 			</select><br/>
-			<b>Fix:</b><br/>
-			<select name=\"dec\">
-				<option value=\"0\">No</option>
-				<option value=\"1\">Yes</option>
-			</select><br/>
 			<input type=\"submit\" name=\"unstuck\" value=\"Unstuck &raquo;\" class=\"btn btn-info\"/>
-			</form>";
+			</form><br/>";
 		}else{
 			$char = $mysqli->real_escape_string($_POST['char']);
 			$henesys = $mysqli->real_escape_string($_POST['map']);
 			$dec = $mysqli->real_escape_string($_POST['dec']);
-			if($dec == "0"){
-				echo "<div class=\"alert alert-error\"><b>Fix failed.</b> You selected \"No\"</div>.";
-			}else{
-				$m = $mysqli->query("UPDATE `characters` SET `map`='".$henesys."' WHERE `id`='".$char."'") or die(mysql_error());
-				echo "<div class=\"alert alert-success\"><b>Fix succesful.</b> Your character will now spawn at Henesys.</div>";
-			}
+			$m = $mysqli->query("UPDATE `characters` SET `map`='".$henesys."' WHERE `id`='".$char."'") or die(mysql_error());
+			echo "<div class=\"alert alert-success\"><b>Fix succesful.</b> Your character will now spawn at Henesys.</div>";
+			
 		}
 	}elseif(@$_GET['fix'] == "dc"){
 		echo "
