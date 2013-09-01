@@ -1,22 +1,4 @@
 <?php 
-/*
-    Copyright (C) 2009  Murad <Murawd>
-						Josh L. <Josho192837>
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-error_reporting(0);
 if(basename($_SERVER["PHP_SELF"]) == "afuncs.php"){
 	die("403 - Access Forbidden");
 }
@@ -54,7 +36,8 @@ if(isset($_SESSION['id'])){
 	fclose($fp);
 }
 
-/* Functions - Do not touch unless you know what you're doing */
+/* Functions for Cype */
+
 function getOnline(){
 	global $mysqli;
 	$logouttime = 300;
@@ -403,16 +386,6 @@ function sanitize_space( $sCode ) {
 	return $sCode;							
 }
 
-function isIE() {
- $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
-  if(strpos($user_agent, 'MSIE') !== false) {
-	return true;
-  } else {
-	return false;
-  }
-}
-$IE = isIE();
-
 function unSolved($type){
 	global $mysqli;
 	if($type == "ticket"){
@@ -440,6 +413,7 @@ function unSolved($type){
 		return "There ".$pmquant." <a href=\"?cype=admin&page=mailreport&s=10\"><u><b> ".$countpm." reported PM".$pmplural."</b></u></a>.";
 	}
 }
+
 //This function is for the "BuyNX" page in the UCP
 function buyNX($char, $info, $pack){
 	global $mysqli;
@@ -463,7 +437,7 @@ function buyNX($char, $info, $pack){
 	}
 	//If the value comes as a real number, it goes here
 	elseif($char && $info == ""){
-		$character = mysql_real_escape_string($_GET['c']);
+		$character = $mysqli->real_escape_string($_GET['c']);
 		$checkid = $mysqli->query("SELECT * FROM `characters` WHERE `accountid`='".$_SESSION['id']."' AND `id`='".$character."'") or die();
 		$c = $checkid->fetch_assoc();
 			//Check to see if the Character ID is the same as the id of your account's character ID
@@ -475,7 +449,7 @@ function buyNX($char, $info, $pack){
 		}
 	}
 	elseif($char == "info"){
-		$character = mysql_real_escape_string($_GET['c']);
+		$character = $mysqli->real_escape_string($_GET['c']);
 		$mesos = $mysqli->query("SELECT * FROM `characters` WHERE `id`='".$character."'") or die();
 		$rmesos = $mesos->fetch_assoc();
 		$getnx = $mysqli->query("SELECT * FROM `accounts` WHERE `id`='".$rmesos['accountid']."'") or die();
@@ -502,7 +476,7 @@ function buyNX($char, $info, $pack){
 		$rm = $m->fetch_assoc();
 		$nx = $mysqli->query("SELECT * FROM `accounts` WHERE `id`='".$rm['accountid']."'") or die();
 		$rx = $nx->fetch_assoc();
-		$package = mysql_real_escape_string($_POST['nx']);
+		$package = $mysqli->real_escape_string($_POST['nx']);
 		
 		//If the the user is logged in, It will execute this.
 		if($rx['loggedin'] > 0){
@@ -563,14 +537,11 @@ function getNav() {
 			echo $nav;
 		}
 }
+
 function countOnline() {
 	global $mysqli;
 	$conline = $mysqli->query("SELECT * FROM accounts where loggedin = 2");
-	$gpcap = $mysqli->query("SELECT pcap FROM cype_properties");
-	$pcap = $gpcap->fetch_assoc();
-	$onlineplayers = $conline->num_rows;
-	$barwidth = ($onlineplayers/$pcap['pcap'])*100;
-	return intval($barwidth);
+	return intval($conline);
 }
 function bbcodeParser($bbcode){
 /*
