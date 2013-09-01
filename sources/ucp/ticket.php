@@ -75,7 +75,7 @@ if(isset($_SESSION['pname'])){
 			<legend>Ticket Creation</legend>
 				<form method=\"post\" action=\"\">
 				<b>Type of Ticket</b><br/>
-					<select name=\"type\" class=\"form-control\">
+					<select name=\"type\">
 						<option value=\"Game\">Game Help</option>
 						<option value=\"Website\">WebSite Help</option>
 						<option value=\"Abuse\">Account Help</option>
@@ -85,7 +85,7 @@ if(isset($_SESSION['pname'])){
 							//You can add more here if you like. However, make sure everything has a value.
 							//More options will come along as we progress.
 							echo "
-									<select name=\"support\" class=\"form-control\">
+									<select name=\"support\">
 										<option selected=\"selected\">&middot; Ticket Subgroup &middot;</option>
 									<optgroup label=\"Game\">Game Help</optgroup
 										<option value=\"Bug\" >Bug Report</option>
@@ -102,14 +102,10 @@ if(isset($_SESSION['pname'])){
 										<option value=\"Appeal\" >Ban Appeal</option>
 								</select><br/>
 						
-			<div class=\"form-group\">
-				<label for=\"Title\">Title</label>
-				<input type=\"text\" class=\"form-control\" id=\"Title\" placeholder=\"Title\" maxlength=\"30\" name=\"title\" />
-			</div>
-			<div class=\"form-group\">
-				<label for=\"Details\">Details</label>
-				<textarea class=\"form-control\" id=\"Details\" name=\"details\"></textarea>
-			</div>
+				<b>Title :</b><br/>
+				<input type=\"text\" name=\"title\" maxlength=\"20\" required><br/>
+				<b>Details / Information :</b><br/>
+				<textarea name=\"details\" rows=\"7\" style=\"height:200px;width:100%;\"></textarea><br/>
 				<input type=\"submit\" name=\"ticket\" value=\"Send Ticket &raquo;\" class=\"btn btn-primary\"/>
 				</form>";
 				if(isset($_POST['ticket'])){

@@ -27,7 +27,7 @@ if(isset($_SESSION['id'])){
 		Fill out this form below, and your character will be warped to Henesys, and you should be able to log back in!<br /><br />
 			<form method=\"post\" action=''>
 				<b>Select character:</b><br/>
-			<select name=\"char\" class=\"form-control\">";
+			<select name=\"char\">";
 			$s = $mysqli->query("SELECT * FROM `characters` WHERE `accountid`='".$_SESSION['id']."' ORDER BY `id` ASC") or die(mysql_error());
 			while($c = $s->fetch_assoc()){
 				echo "
@@ -36,11 +36,11 @@ if(isset($_SESSION['id'])){
 			echo "
 			</select><br/>
 			<b>Spawn point:</b><br/>
-			<select name=\"map\" class=\"form-control\">
+			<select name=\"map\">
 				<option value=\"100000000\">Henesys</option>
 			</select><br/>
 			<b>Fix:</b><br/>
-			<select name=\"dec\" class=\"form-control\">
+			<select name=\"dec\">
 				<option value=\"0\">No</option>
 				<option value=\"1\">Yes</option>
 			</select><br/>
@@ -51,7 +51,7 @@ if(isset($_SESSION['id'])){
 			$henesys = $mysqli->real_escape_string($_POST['map']);
 			$dec = $mysqli->real_escape_string($_POST['dec']);
 			if($dec == "0"){
-				echo "<div class=\"alert alert-danger\"><b>Fix failed.</b> You selected \"No\"</div>.";
+				echo "<div class=\"alert alert-error\"><b>Fix failed.</b> You selected \"No\"</div>.";
 			}else{
 				$m = $mysqli->query("UPDATE `characters` SET `map`='".$henesys."' WHERE `id`='".$char."'") or die(mysql_error());
 				echo "<div class=\"alert alert-success\"><b>Fix succesful.</b> Your character will now spawn at Henesys.</div>";

@@ -17,5 +17,7 @@ $worldport = "8484";
 
 /* Don`t touch. */
 $mysqli = new MySQLi($host['hostname'],$host['user'],$host['password'],$host['database']);
-
+if ($mysqli->connect_error) {
+    die('Connection Error: ' . $mysqli->connect_error);
+}
 ?>
