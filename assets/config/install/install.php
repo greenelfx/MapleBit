@@ -21,7 +21,7 @@ if(isset($_GET['install'])){
 	$install = "";
 }
 if(file_exists('installdone.txt')){
-	echo "<div class=\"alert alert-danger\">Oops! Looks like Cype has already been installed!</div>";
+	echo "<div class=\"alert alert-info\">Oops! Looks like Cype has already been installed! If you'd like, you can delete everything in the install folder, except for installdone.txt</div>";
 }else{
 	switch($install){
 		case NULL:
@@ -84,8 +84,7 @@ if(file_exists('installdone.txt')){
 		$db = $_POST["DB"];
 		$dbuser = $_POST["DBuser"];
 		$dbpass = $_POST["DBpass"];
-		//$dbprefix = $_POST["DBprefix"];
-		$dbprefix = "cype_";
+		$dbprefix = $_POST["DBprefix"];
 		$mysqli = new mysqli("$host", "$dbuser", "$dbpass", "$db");
 if ($mysqli->connect_errno) {
     printf("<div class=\"alert alert-danger\">Connect failed: %s\n", $mysqli->connect_error);
@@ -133,21 +132,37 @@ echo '
 			include '../database.php';
 mysqli_multi_query($mysqli, "DROP TABLE IF EXISTS `".$prefix."properties`;
 CREATE TABLE `".$prefix."properties` (
-  `version` int(11) NOT NULL DEFAULT '0',
   `name` text,
+  `title` text,
   `client` text,
+  `version` int(11) NOT NULL DEFAULT '0',
   `forumurl` text,
+  `siteurl` text,
   `vote` text,
+  `vcheck` text,
+  `vbanner` text,
   `exprate` text,
   `mesorate` text,
   `droprate` text,
+  `mbanner` text,
+  `mblink` text,
+  `message` text,
+  `scroller` text,
+  `styledir` text,
   `flood` tinyint(4) NOT NULL DEFAULT '1',
   `floodint` int(11) DEFAULT NULL,
+  `cypedir` text,
+  `email` text,
   `pcap` text,
   `maxaccounts` tinyint(4) NOT NULL DEFAULT '3',
   `gmlevel` int(11) NOT NULL DEFAULT '1',
   `theme` text NOT NULL,
   `nav` text NOT NULL,
+  `gnx` INT(11) UNSIGNED NOT NULL DEFAULT 10,
+  `gvp` INT(11) UNSIGNED NOT NULL DEFAULT 1,
+  `colnx` TEXT NOT NULL AFTER `gvp`,
+  `colvp` TEXT NOT NULL AFTER `colnx`,
+  `vtime` INT(11) UNSIGNED NOT NULL DEFAULT 21600,
   PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -386,7 +401,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 					}
 				}			
 				if($stop == "false"){
-					$mysqli->query("INSERT cype_properties SET version='$sversion', name='$sservername', client='$sclient', forumurl='$sforumurl', vote='$svote', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', flood='1', floodint='20', pcap='100', maxaccounts='3', gmlevel='$sgmlevel', theme='Flatly', nav='0'");
+					$mysqli->query("UPDATE cype_properties SET name='$sservername', client='$sclient', version='$sversion', forumurl='$sforumurl', vote='$svote', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', flood='1', floodint='20', theme='cerulean', nav='0', pcap='100'");
 					echo "Working...";
 					echo "<meta http-equiv=\"refresh\" content=\"1; url=?install=done\" />";
 				}

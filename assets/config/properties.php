@@ -55,6 +55,13 @@ if(basename($_SERVER["PHP_SELF"]) == "properties.php"){
 	$MaxAcc = $prop['maxaccounts'];
 	/* Get Theme */
 	$theme = $prop['theme'];
+	/*Get Vote Config*/
+	$vlink = $prop['vlink'];
+	$gnx = $prop['gnx'];
+	$gvp = $prop['gvp'];
+	$colnx = $prop['colnx'];
+	$colvp = $prop['colvp'];
+	$vtime = $prop['vtime'];
 	
 	$censored = array("fuck","dick","fail","suck","cock","bitch","ass","cunt","vagina","penis","cunt");
 	

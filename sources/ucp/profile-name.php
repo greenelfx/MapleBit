@@ -30,22 +30,24 @@ if($_SESSION['id']){
 		<b>3.</b> Afterwards you can go to the community menu and change your profile informations.<br /><br />
 
 		<form method=\"post\" action=''>
-			<input type=\"text\" name=\"name\" placeholder=\"Profile Name\" required><br/><input type=\"submit\" name=\"create\" class=\"btn\" value=\"Submit\" />
-		</form>";
+			<input type=\"text\" name=\"name\" placeholder=\"Profile Name\" class=\"form-control\" required><br/>
+			<input type=\"submit\" name=\"create\" class=\"btn btn-primary\" value=\"Submit &raquo;\" />
+		</form>
+		<br/>";
 
 		if($_POST['create']){
 			$name = $mysqli->real_escape_string($_POST['name']);
 			$pcheck = $mysqli->query("SELECT * FROM `cype_profile` WHERE `name`='".$name."'") or die();
 			if($countpcheck = $pcheck->num_rows >= 1){
-				echo "<div class=\"alert alert-error\">The profile name entered is already in use. Please select another one.</div>";
+				echo "<div class=\"alert alert-danger\">The profile name entered is already in use. Please select another one.</div>";
 			}elseif($name == ""){
-				echo "<div class=\"alert\">Please enter a profile name.</div>";
+				echo "<div class=\"alert alert-warning\">Please enter a profile name.</div>";
 			}elseif(strlen($name) > 16){
-				echo "<div class=\"alert\">The profile name must be between 4 and 16 characters.</div>";
+				echo "<div class=\"alert alert-warning\">The profile name must be between 4 and 16 characters.</div>";
 			}elseif(strlen($name) < 4){
-				echo "<div class=\"alert\">The profile name must be between 4 and 16 characters.</div>";
+				echo "<div class=\"alert alert-warning\">The profile name must be between 4 and 16 characters.</div>";
 			}elseif(ereg('[^A-Za-z0-9]', $name)) {
-				echo "<div class=\"alert alert-error\">Special characters are not allowed.</div>";
+				echo "<div class=\"alert alert-danger\">Special characters are not allowed.</div>";
 			}else{
 				$i = $mysqli->query("INSERT INTO `cype_profile` (`accountid`,`name`) VALUES ('".$_SESSION['id']."','".$name."')") or die();
 				echo "<div class=\"alert alert-success\">The profile name has been created! You can now go to the community page and edit your public profile.</div>";
@@ -53,7 +55,7 @@ if($_SESSION['id']){
 			}
 		};
 	}else{
-		echo "<div class=\"alert alert-error\"><h4>Oops!</h4>Looks like you already have a profile name!</div>";
+		echo "<div class=\"alert alert-danger\"><h4>Oops!</h4>Looks like you already have a profile name!</div>";
 	}
 }
 ?>
