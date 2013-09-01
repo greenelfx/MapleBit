@@ -25,8 +25,6 @@ if(isset($_GET['script'])){
 if($getcype == "misc"){
 	if($script == ""){
 		header("Location: ?cype=main");
-	}elseif($script == "stats"){
-		include('sources/misc/stats.php');
 	}elseif($script == "login"){
 		include('sources/misc/login.php');
 	}elseif($script == "logout"){

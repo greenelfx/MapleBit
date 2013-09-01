@@ -1,3 +1,7 @@
+body {
+  min-height: 200px;
+  padding-top: 90px;
+}
 .well {
 	padding:10px;
 }

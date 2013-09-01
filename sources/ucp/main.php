@@ -1,22 +1,4 @@
 <?php 
-/*
-    Copyright (C) 2009  Murad <Murawd>
-						Josh L. <Josho192837>
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 if(isset($_GET['page'])){
 	$ucp = $_GET['page'];
 }else{
@@ -33,7 +15,7 @@ $('#myTab a').click(function (e) {
 })
 </script>
 <legend>
-<b>Welcome Back, ".getInfo('accname', 'cype_session', 'accid')."</b>
+Welcome Back, ".getInfo('accname', 'cype_session', 'accid')."</b>
 </legend>
 <ul id=\"myTab\" class=\"nav nav-tabs\">
 	<li class=\"active\"><a href=\"#account\" data-toggle=\"tab\">Account</a></li>
@@ -87,6 +69,6 @@ echo "
 			header("Location: ?cype=ucp");
 		}
 	}else{
-		include('sources/public/login.php');
+			header("Location: ?cype=main");
 	}
 ?>
