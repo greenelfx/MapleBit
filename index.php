@@ -3,7 +3,7 @@
 session_start();
 
 # Disable Notices
-error_reporting(0);
+
 
 # Is Cype installed?
 if(!file_exists('assets/config/install/installdone.txt')){

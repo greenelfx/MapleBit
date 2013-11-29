@@ -17,12 +17,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$name = sql_sanitize($_GET['name']);
+if(isset($_GET['name'])){$name = sql_sanitize($_GET['name']);}
 $check = $mysqli->query("SELECT * FROM `accounts` WHERE `id`='".getInfo('accid', $name, 'profilename')."'") or die();
 $real = $check->num_rows;;
-if($real > 0){
-	$name = $_GET['name'];
-} else {
+if($real < 1){
 	if($_SESSION){
 		$name = $_SESSION['name'];
 	} else{
@@ -42,7 +40,7 @@ if(@$_GET['name']){
 		}else{
 			$status = "<img src='assets/img/online.png' alt='Offline' />";
 		}
-		$gp = $mysqli->query("SELECT * FROM `cype_profile` WHERE `name`='".$name."'") or die();
+		$gp = $mysqli->query("SELECT * FROM `".$prefix."profile` WHERE `name`='".$name."'") or die();
 		$p = $gp->fetch_assoc();
 		$mc = $p['mainchar'];
 		$gmc = $mysqli->query("SELECT * FROM `characters` WHERE `id`='".$mc."'") or die();
@@ -78,9 +76,8 @@ if(@$_GET['name']){
 }elseif(@$_GET['action']=="search"){
 	if($_POST['search']){
 		$name = $mysqli->real_escape_string($_POST['name']);
-		$gs = $mysqli->query("SELECT * FROM `cype_profile` WHERE `name` LIKE '%".$name."%' ORDER BY `name` ASC") or die();
+		$gs = $mysqli->query("SELECT * FROM `".$prefix."profile` WHERE `name` LIKE '%".$name."%' ORDER BY `name` ASC") or die();
 		echo "
-	<fieldset>
 		<legend>
 			<b>Search result:</b>
 		</legend>";
@@ -88,28 +85,40 @@ if(@$_GET['name']){
 			echo "
 			<a href=\"?cype=main&amp;page=members&amp;name=".$s['name']."\">".$s['name']."</a><br />";
 		}
-		echo "
-	</fieldset>";
 	}
 }else{
 	echo "
-	<fieldset>
 		<legend>
 			<b>Members List</b>
 		</legend>";
 	echo "
 		Here's the full list of the members of the <b>".$servername."</b> community. 
 		You can select one to visit their profile or you can search for an user.<hr />
-		<center>
-			<form method=\"post\" action=\"?cype=main&amp;page=members&amp;action=search\">
-				<input type=\"text\" name=\"name\" placeholder=\"Profile Name\" required/> 
-				<input type=\"submit\" name=\"search\" value=\"Search\" class=\"btn btn-primary\" style=\"margin-top:-10px;\"/>
+		<div class=\"row\">
+		<div class=\"col-md-6 col-md-offset-6\">
+			<form method=\"post\" action=\"?cype=main&amp;page=members&amp;action=search\" role=\"form\">
+			<div style=\"float:right;margin-bottom:0px;\">
+				<div class=\"input-group\">
+					<input type=\"text\" name=\"name\" placeholder=\"Profile Name\" required id=\"profileName\" class=\"form-control\"/> 				
+						<span class=\"input-group-btn\">
+							<input class=\"btn btn-primary\" name=\"search\" type=\"submit\"/>
+						</span>
+				</div>
+			</div>
 			</form>
-		</center>
+		</div>
+	</div><hr/>
 	";
-	$gp = $mysqli->query("SELECT * FROM `cype_profile` WHERE `name` != 'NULL' ORDER BY `name` ASC") or die();
+	$gp = $mysqli->query("SELECT * FROM `".$prefix."profile` WHERE `name` != 'NULL' ORDER BY `name` ASC") or die();
 	echo "
-		<table border=\"0\">";
+		<table class=\"table table-bordered\">
+	<thead>
+		<tr>
+			<th style=\"width:50px\">Status</th>
+			<th>Name</th>
+		</tr>
+	</thead>
+	<tbody>";
 	while($p = $gp->fetch_assoc()){
 		echo "
 			<tr>
@@ -120,8 +129,8 @@ if(@$_GET['name']){
 			</tr>";
 	}
 	echo "
-		</table>
-	</fieldset>
+	</tbody>
+</table>
 	";
 }
 ?>

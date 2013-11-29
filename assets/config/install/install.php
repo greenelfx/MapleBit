@@ -160,11 +160,13 @@ CREATE TABLE `".$prefix."properties` (
   `nav` text NOT NULL,
   `gnx` INT(11) UNSIGNED NOT NULL DEFAULT 10,
   `gvp` INT(11) UNSIGNED NOT NULL DEFAULT 1,
-  `colnx` TEXT NOT NULL AFTER `gvp`,
-  `colvp` TEXT NOT NULL AFTER `colnx`,
+  `colnx` TEXT NOT NULL,
+  `colvp` TEXT NOT NULL,
   `vtime` INT(11) UNSIGNED NOT NULL DEFAULT 21600,
+  `vlink` TEXT NOT NULL,
   PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO `".$prefix."properties` (version) VALUES (83);
 
 DROP TABLE IF EXISTS `".$prefix."pages`;
 CREATE TABLE `".$prefix."pages` (
@@ -328,7 +330,7 @@ ALTER TABLE `accounts` MODIFY COLUMN `nick` TEXT NULL DEFAULT NULL;
 
 ALTER TABLE `accounts` MODIFY COLUMN `sitelogged` TEXT NULL DEFAULT NULL;
 
-ALTER TABLE `".$prefix."properties` ADD COLUMN `gmlevel` INTEGER NOT NULL DEFAULT 1 AFTER `maxaccounts`;
+ALTER TABLE `".$prefix."properties` ADD COLUMN `gmlevel` INTEGER NOT NULL DEFAULT 1;
 ");
 echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 		break;
@@ -401,7 +403,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 					}
 				}			
 				if($stop == "false"){
-					$mysqli->query("UPDATE cype_properties SET name='$sservername', client='$sclient', version='$sversion', forumurl='$sforumurl', vote='$svote', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', flood='1', floodint='20', theme='cerulean', nav='0', pcap='100'");
+					$mysqli->query("UPDATE ".$prefix."properties SET name='$sservername', client='$sclient', version='$sversion', forumurl='$sforumurl', vote='$svote', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', flood='1', floodint='20', theme='cerulean', nav='0', pcap='100'");
 					echo "Working...";
 					echo "<meta http-equiv=\"refresh\" content=\"1; url=?install=done\" />";
 				}
