@@ -38,7 +38,7 @@ echo "
 	<a href=\"?cype=main&amp;page=guildlist\">Guild List</a><br/><br/>
 </div></div>
 ";
-if($_SESSION['pname'] == NULL){
+if(!isset($_SESSION['pname'])){
 echo "
 <div class=\"alert alert-danger\">
   <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>

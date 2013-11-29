@@ -3,7 +3,7 @@ if(basename($_SERVER["PHP_SELF"]) == "properties.php"){
 	die("403 - Access Forbidden");
 }
 /* Site Controls */
-$properties = $mysqli->query("SELECT * FROM cype_properties");
+$properties = $mysqli->query("SELECT * FROM ".$prefix."properties");
 $prop = $properties->fetch_assoc();
 $ipaddress = isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
 

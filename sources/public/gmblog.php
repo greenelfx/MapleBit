@@ -18,21 +18,21 @@
 */
 if(@$_GET['id']){
 	$id = sql_sanitize($_GET['id']);
-	$gb = $mysqli->query("SELECT * FROM `cype_gmblog` WHERE `id`='".$id."'") or die(mysql_error());
+	$gb = $mysqli->query("SELECT * FROM `".$prefix."gmblog` WHERE `id`='".$id."'") or die(mysql_error());
 	$b = $gb->fetch_assoc();
 	echo "
 		<legend>".$b['title']." | Posted by <a href=\"?cype=main&amp;page=members&amp;name=".$b['author']."\">".$b['author']."</a> on ".$b['date']."</legend>";
 	echo nl2br(stripslashes($b['content']))."<br /><br />";
-	$gc = $mysqli->query("SELECT * FROM `cype_bcomments` WHERE `bid`='".$id."' ORDER BY `id` ASC") or die(mysql_error());
+	$gc = $mysqli->query("SELECT * FROM `".$prefix."bcomments` WHERE `bid`='".$id."' ORDER BY `id` ASC") or die(mysql_error());
 	$cc = $gc->num_rows;
-	$flood = $mysqli->query("SELECT * FROM `cype_bcomments` WHERE `bid`='".sql_sanitize($id)."' && `author`='".sql_sanitize($_SESSION['pname'])."' ORDER BY `dateadded` DESC LIMIT 1") or die(mysql_error());
+	$flood = $mysqli->query("SELECT * FROM `".$prefix."bcomments` WHERE `bid`='".sql_sanitize($id)."' && `author`='".sql_sanitize($_SESSION['pname'])."' ORDER BY `dateadded` DESC LIMIT 1") or die(mysql_error());
 	$fetchg = $flood->fetch_assoc();
 	$seconds = 60*$cypefloodint;
 
 	echo "
 		<b>".$b['views']."</b> Views and <b>".$cc."</b> Responses<hr/>";
 
-	$av = $mysqli->query("UPDATE `cype_gmblog` SET `views` = views + 1 WHERE `id`='".$id."'") or die(mysql_error());
+	$av = $mysqli->query("UPDATE `".$prefix."gmblog` SET `views` = views + 1 WHERE `id`='".$id."'") or die(mysql_error());
 	if(isset($_SESSION['admin']) || isset($_SESSION['gm'])){
 		if($b['locked'] == "1"){
 			$buttontext = "Unlock";
@@ -81,7 +81,7 @@ if(@$_GET['id']){
 				<br/><div class=\"alert alert-danger\">You cannot leave the comment field blank!</div>";
 		}else{
 			$timestamp = time();
-			$i = $mysqli->query("INSERT INTO `cype_bcomments` (`bid`,`author`,`feedback`,`date`,`comment`,`dateadded`) VALUES ('".$id."','".$_SESSION['pname']."','".$feedback."','".$date."','".$comment."','".$timestamp."')") or die(mysql_error());
+			$i = $mysqli->query("INSERT INTO `".$prefix."bcomments` (`bid`,`author`,`feedback`,`date`,`comment`,`dateadded`) VALUES ('".$id."','".$_SESSION['pname']."','".$feedback."','".$date."','".$comment."','".$timestamp."')") or die(mysql_error());
 			echo "
 				<meta http-equiv='refresh' content=\"0; url=?cype=main&amp;page=gmblog&amp;id=".$id."\">";
 		}
@@ -117,15 +117,15 @@ if(@$_GET['id']){
 		}
 	}
 }else{
-	$gb = $mysqli->query("SELECT * FROM `cype_gmblog` ORDER BY `id` DESC") or die(mysql_error());
+	$gb = $mysqli->query("SELECT * FROM `".$prefix."gmblog` ORDER BY `id` DESC") or die(mysql_error());
 	$rows = $gb->num_rows;
 	if ($rows < 1) {
-		echo "Oops! No blogs to display right now!";
+		echo "<div class=\"alert alert-danger\">Oops! No blogs to display right now!</div>";
 	}
-	
+	else {
 	echo "<legend>".$servername." GM Blogs</legend>";
 	while($b = $gb->fetch_assoc()){
-		$gc = $mysqli->query("SELECT * FROM `cype_bcomments` WHERE `bid`='".$b['id']."' ORDER BY `id` ASC") or die(mysql_error());
+		$gc = $mysqli->query("SELECT * FROM `".$prefix."bcomments` WHERE `bid`='".$b['id']."' ORDER BY `id` ASC") or die(mysql_error());
 		$cc = $gc->num_rows;
 		echo "
 			[".$b['date']."]
@@ -143,6 +143,7 @@ if(@$_GET['id']){
 			</span>";
 		}
 	}
+}
 }
 	echo "
 		<tr>

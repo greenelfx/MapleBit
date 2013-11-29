@@ -9,7 +9,7 @@ $host['password'] = ''; // Database Password [Leave blank if unsure]
 $host['database'] = 'mapleblade'; // Database Name
 
 //Database Prefix
-$prefix = "cype_";
+$prefix = "cypebeta_";
 // What is your server`s log in port - Don`t change if you aren`t sure.
 $loginport = "7575";
 // What is your server`s world port - Don`t change if you aren`t sure.
@@ -17,7 +17,5 @@ $worldport = "8484";
 
 /* Don`t touch. */
 $mysqli = new MySQLi($host['hostname'],$host['user'],$host['password'],$host['database']);
-if ($mysqli->connect_error) {
-    die('Connection Error: ' . $mysqli->connect_error);
-}
+
 ?>

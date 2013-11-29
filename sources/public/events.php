@@ -19,7 +19,7 @@
 
 if(@$_GET['id']){
 	$id = $mysqli->real_escape_string($_GET['id']);
-	$ge = $mysqli->query("SELECT * FROM `cype_events` WHERE `id`='".sql_sanitize($id)."'") or die(mysql_error());
+	$ge = $mysqli->query("SELECT * FROM `".$prefix."events` WHERE `id`='".sql_sanitize($id)."'") or die(mysql_error());
 	$e = $ge->fetch_assoc();
 	echo "
 		<legend>".stripslashes($e['title'])." | Posted by <a href=\"?cype=main&amp;page=members&amp;name=".$e['author']."\">".$e['author']."</a> on ".$e['date']."</legend>
@@ -36,11 +36,11 @@ if(@$_GET['id']){
 	echo " ".$status."";
 	echo nl2br(stripslashes($e['content']))."
 	<br /><br />";
-	$gc = $mysqli->query("SELECT * FROM `cype_ecomments` WHERE `eid`='".sql_sanitize($id)."' ORDER BY `id` ASC") or die(mysql_error());
+	$gc = $mysqli->query("SELECT * FROM `".$prefix."ecomments` WHERE `eid`='".sql_sanitize($id)."' ORDER BY `id` ASC") or die(mysql_error());
 	$cc = $gc->num_rows;
 	echo "<b>".$e['views']."</b> Views and <b>".$cc."</b> Reponses";
 	echo "<hr />";
-	$av = $mysqli->query("UPDATE `cype_events` SET `views` = views + 1 WHERE `id`='".sql_sanitize($id)."'") or die();
+	$av = $mysqli->query("UPDATE `".$prefix."events` SET `views` = views + 1 WHERE `id`='".sql_sanitize($id)."'") or die();
 	if(isset($_SESSION['admin'])){
 		if($e['locked'] == "1"){
 			$buttontext = "Unlock";
@@ -53,7 +53,7 @@ if(@$_GET['id']){
 			<a href=\"?cype=admin&amp;page=manevent&amp;action=".$buttonlink."\" class=\"btn btn-default\">".$buttontext."</a>
 			<hr />";
 	}
-	$flood = $mysqli->query("SELECT * FROM `cype_ecomments` WHERE `eid`='".sql_sanitize($id)."' && `author`='".sql_sanitize($_SESSION['pname'])."' ORDER BY `dateadded` DESC LIMIT 1") or die();
+	$flood = $mysqli->query("SELECT * FROM `".$prefix."ecomments` WHERE `eid`='".sql_sanitize($id)."' && `author`='".sql_sanitize($_SESSION['pname'])."' ORDER BY `dateadded` DESC LIMIT 1") or die();
 	$fetchg = $flood->fetch_assoc();
 	$seconds = 60*$cypefloodint;
 
@@ -92,7 +92,7 @@ if(@$_GET['id']){
 			echo "<br/><div class=\"alert alert-danger\">You cannot leave the comment field blank!</div>";
 		}else{
 			$timestamp = time();
-			$i = $mysqli->query("INSERT INTO `cype_ecomments` (`eid`,`author`,`feedback`,`date`,`comment`,`dateadded`) VALUES ('".sql_sanitize($id)."','".sql_sanitize($author)."','".sql_sanitize($feedback)."','".sql_sanitize($date)."','".sql_sanitize($comment)."','".sql_sanitize($timestamp)."')") or die();
+			$i = $mysqli->query("INSERT INTO `".$prefix."ecomments` (`eid`,`author`,`feedback`,`date`,`comment`,`dateadded`) VALUES ('".sql_sanitize($id)."','".sql_sanitize($author)."','".sql_sanitize($feedback)."','".sql_sanitize($date)."','".sql_sanitize($comment)."','".sql_sanitize($timestamp)."')") or die();
 			echo "<meta http-equiv=refresh content=\"0; url=?cype=main&amp;page=events&amp;id=".$id."\" />";
 		}
 	}
@@ -122,15 +122,15 @@ if(@$_GET['id']){
 		}
 	}
 }else{
-	$ge = $mysqli->query("SELECT * FROM `cype_events` ORDER BY `id` DESC") or die();
+	$ge = $mysqli->query("SELECT * FROM `".$prefix."events` ORDER BY `id` DESC") or die();
 	$rows = $ge->num_rows;
 	if ($rows < 1) {
-		echo "Oops! No news to display right now!
-		";
+		echo "<div class=\"alert alert-danger\">Oops! No events to display right now!</div>";
 	}
+	else {
 	echo "<legend>".$servername." Events</legend>";
 	while($e = $ge->fetch_assoc()){
-		$gc = $mysqli->query("SELECT * FROM `cype_ecomments` WHERE `eid`='".sql_sanitize($e['id'])."' ORDER BY `id` ASC") or die();
+		$gc = $mysqli->query("SELECT * FROM `".$prefix."ecomments` WHERE `eid`='".sql_sanitize($e['id'])."' ORDER BY `id` ASC") or die();
 		$cc = $gc->num_rows;
 		echo "<img src=\"assets/img/news/".$e['type'].".gif\" alt='' />";
 		echo "[".$e['date']."]  
@@ -147,5 +147,6 @@ if(@$_GET['id']){
 			</span>";
 		}
 	}
+}
 }
 ?>

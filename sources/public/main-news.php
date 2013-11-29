@@ -21,9 +21,9 @@ echo "
 <div class=\"col-md-6\">
 <a href='?cype=main&amp;page=news'><h4>News &raquo;</h4></a><hr/>";
 	$i = 0;
-	$gn = $mysqli->query("SELECT * FROM `cype_news` ORDER BY `id` DESC LIMIT 4") or die(mysql_error());
+	$gn = $mysqli->query("SELECT * FROM ".$prefix."news ORDER BY id DESC LIMIT 4") or die();
 	while($n = $gn->fetch_assoc()){
-		$gc =$mysqli->query("SELECT * FROM `cype_ncomments` WHERE `nid`='".$n['id']."' ORDER BY `id` ASC") or die(mysql_error());
+		$gc =$mysqli->query("SELECT * FROM ".$prefix."ncomments WHERE nid='".$n['id']."' ORDER BY id ASC") or die();
 		$cc = $gc->num_rows;
 		$title = $n['title'];
 		$maxlength = 33;

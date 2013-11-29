@@ -40,12 +40,12 @@ error_reporting(0);
 					if(isset($_GET['showmail']) && !empty($_GET['showmail'])) {
 						$error = "<legend>System Error</legend> Invalid Message ID Or You Do Not Have Valid Permission.";
 						$mid = $mysqli->real_escape_string($_GET['showmail']) or die();
-						$mailquery = $mysqli->query("SELECT * FROM `cype_mail` WHERE `mailid`='".$mid."'") or die();
+						$mailquery = $mysqli->query("SELECT * FROM `".$prefix."mail` WHERE `mailid`='".$mid."'") or die();
 						$mailarray = $mailquery->fetch_assoc();
 						if($mailarray['from'] == $_SESSION['pname']){
-							$mailuser = $mysqli->query("SELECT * FROM `cype_mail` WHERE `from` = {$_SESSION['pname']}");
+							$mailuser = $mysqli->query("SELECT * FROM `".$prefix."mail` WHERE `from` = {$_SESSION['pname']}");
 						} else {
-							$mailuser = $mysqli->query("SELECT * FROM `cype_mail` WHERE `to` = {$_SESSION['pname']}");
+							$mailuser = $mysqli->query("SELECT * FROM `".$prefix."mail` WHERE `to` = {$_SESSION['pname']}");
 						}
 						if($mailquery->num_rows > 0) {
 							$mailaction = "Sent To: ";
@@ -58,7 +58,7 @@ error_reporting(0);
 							}
 							if($mailarray['to'] == $_SESSION['pname'] || $mailarray['from'] == $_SESSION['pname']) {
 								if($mailarray['status'] == 3) {
-									$mysqli->query("UPDATE `cype_mail` SET status = '2' WHERE `mailid`='".$mailarray['mailid']."'") or die();
+									$mysqli->query("UPDATE `".$prefix."mail` SET status = '2' WHERE `mailid`='".$mailarray['mailid']."'") or die();
 							}
 							echo "
 								<form method=\"post\" action=\"?cype=ucp&amp;page=mail\">
@@ -110,9 +110,9 @@ error_reporting(0);
 						}
 						$totalMails = 10;	# Mails Per Page
 						if($status == 1 || $status == 5){
-							$mailCount = $mysqli->query("SELECT COUNT(*) FROM `cype_mail` WHERE `from`='".$_SESSION['pname']."' AND `status`='".$status."'") or die();
+							$mailCount = $mysqli->query("SELECT COUNT(*) FROM `".$prefix."mail` WHERE `from`='".$_SESSION['pname']."' AND `status`='".$status."'") or die();
 						} else {
-							$mailCount = $mysqli->query("SELECT COUNT(*) FROM `cype_mail` WHERE `to`='".$_SESSION['pname']."' AND `status`='".$status."'") or die();
+							$mailCount = $mysqli->query("SELECT COUNT(*) FROM `".$prefix."mail` WHERE `to`='".$_SESSION['pname']."' AND `status`='".$status."'") or die();
 						}
 						$getrows = $mailCount->fetch_assoc();
 						$totalpages = ceil($getrows[0] / $totalMails);
@@ -143,9 +143,9 @@ error_reporting(0);
 							$next = $page+1;
 						}
 						if($status == 1 || $status == 5){
-							$query = $mysqli->query("SELECT * FROM `cype_mail` WHERE `from`='".$_SESSION['pname']."' AND `status`='".$status."' ORDER BY `mailid` DESC LIMIT ".$offset.", ".$totalMails."") or die();
+							$query = $mysqli->query("SELECT * FROM `".$prefix."mail` WHERE `from`='".$_SESSION['pname']."' AND `status`='".$status."' ORDER BY `mailid` DESC LIMIT ".$offset.", ".$totalMails."") or die();
 						} else{
-							$query = $mysqli->query("SELECT * FROM `cype_mail` WHERE `to`='".$_SESSION['pname']."' AND `status`='".$status."' ORDER BY `mailid` DESC LIMIT ".$offset.", ".$totalMails."") or die();
+							$query = $mysqli->query("SELECT * FROM `".$prefix."mail` WHERE `to`='".$_SESSION['pname']."' AND `status`='".$status."' ORDER BY `mailid` DESC LIMIT ".$offset.", ".$totalMails."") or die();
 						}
 						echo "<table class=\"table table-bordered table-striped table-hover\">
 								<thead>
@@ -209,7 +209,7 @@ error_reporting(0);
 						if(isset($_POST['modify'])) {
 							$name =  $mysqli->real_escape_string($_SESSION['pname']);
 							$postid = $mysqli->real_escape_string(intval($_POST['action']));
-							$getmail = $mysqli->query("SELECT * FROM `cype_mail` WHERE `mailid`='".$postid."'");
+							$getmail = $mysqli->query("SELECT * FROM `".$prefix."mail` WHERE `mailid`='".$postid."'");
 							$retrieve = $getmail->fetch_assoc();
 							$postmethod = $retrieve['status'];
 							switch ($postmethod) {
@@ -220,7 +220,7 @@ error_reporting(0);
 									$show = "to";
 								break;
 							}
-							$found = $mysqli->query("SELECT * FROM `cype_mail` WHERE `".$show."`='".$name."'") or die();
+							$found = $mysqli->query("SELECT * FROM `".$prefix."mail` WHERE `".$show."`='".$name."'") or die();
 							$ffound = $found->fetch_assoc();
 							$message = "An Error Occured - Due To Lack Of Permission Or System Error.";
 							$cfound = $found->num_rows;
@@ -229,12 +229,12 @@ error_reporting(0);
 									$succ = "Please Select A Post ID You Wish To Modify.";
 								} else {
 									if($_POST['modify'] == "Delete") {
-										$execute = $mysqli->query("DELETE FROM `cype_mail` WHERE `mailid` = '".$postid."'") or die();
+										$execute = $mysqli->query("DELETE FROM `".$prefix."mail` WHERE `mailid` = '".$postid."'") or die();
 										$message = "<div class=\"alert alert-success\">Message deleted.</div>";
 									} else if($_POST['modify'] == "Reply") {
 										$message = "<META http-equiv=\"refresh\" content=\"0;URL=?cype=ucp&page=mail&uc=".$ffound['from']."\">";
 									} else if($_POST['modify'] == "Save") {
-										$execute = $mysqli->query("UPDATE `cype_mail` SET `status` = '4' WHERE `mailid` = '".$postid."'") or die();
+										$execute = $mysqli->query("UPDATE `".$prefix."mail` SET `status` = '4' WHERE `mailid` = '".$postid."'") or die();
 										$message = "<div class=\"alert alert-success\">Selected Message Has Been Saved!</div>";
 									}
 								}
@@ -251,7 +251,7 @@ error_reporting(0);
 							$date = date("m/d/y");
 							$fulltime = "".$time." &middot; ".$date."";
 							$font = "red";
-							$found = $mysqli->query("SELECT * FROM `cype_profile` WHERE `name`='".$recipent."'") or die();
+							$found = $mysqli->query("SELECT * FROM `".$prefix."profile` WHERE `name`='".$recipent."'") or die();
 							$grab = $found->fetch_assoc();
 							if($_SESSION['pname'] == NULL) {
 								$reply = "Please Set A Profile Name Before Sending Mails.";
@@ -273,11 +273,11 @@ error_reporting(0);
 								if($_POST['send'] == "Draft") {
 									$status = 5;
 								}
-								$query = $mysqli->query("INSERT INTO `cype_mail` (`to`,`from`,`status`,`title`,`content`,`ipaddress`,`timestamp`,`dateadded`) 
+								$query = $mysqli->query("INSERT INTO `".$prefix."mail` (`to`,`from`,`status`,`title`,`content`,`ipaddress`,`timestamp`,`dateadded`) 
 									VALUES ('".$recipent."','".$_SESSION['pname']."','".$status."','".$title."','".$message."','".$ipaddress."','".$timestamp."','".$fulltime."')") or die();
 								if($status == 3){
 									$status = 1;
-									$query = $mysqli->query("INSERT INTO `cype_mail` (`to`,`from`,`status`,`title`,`content`,`ipaddress`,`timestamp`,`dateadded`)
+									$query = $mysqli->query("INSERT INTO `".$prefix."mail` (`to`,`from`,`status`,`title`,`content`,`ipaddress`,`timestamp`,`dateadded`)
 										VALUES ('".$recipent."','".$_SESSION['pname']."','".$status."','".$title."','".$message."','".$ipaddress."','".$timestamp."','".$fulltime."')") or die();
 								}
 								$reply = "Message Successfully Sent To <b>'".$recipent."'</b>!";
