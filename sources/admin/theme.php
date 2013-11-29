@@ -47,6 +47,7 @@ if($_SESSION['admin'] == 1)
 					 <label class="radio"><input type="radio" name="theme" value="slate" />Slate</label>
 					 <label class="radio"><input type="radio" name="theme" value="spacelab" />Spacelab</label>
 					 <label class="radio"><input type="radio" name="theme" value="United" />United</label>
+					 <label class="radio"><input type="radio" name="theme" value="Yeti" />Yeti</label>
 					 <hr/>
 					 <label class="radio"><input type="radio" name="nav" value="0" />Normal Navigation Bar</label>
 					 <label class="radio"><input type="radio" name="nav" value="1" />Inverse Navigation Bar</label>
@@ -60,7 +61,7 @@ if($_SESSION['admin'] == 1)
 				$themeselect = $_POST['theme'];
 				$nav = $_POST['nav'];
 				if(isset($themeselect) && isset($nav)){
-					$query2 = $mysqli->query("UPDATE cype_properties SET theme = '$themeselect', nav = '$nav'");
+					$query2 = $mysqli->query("UPDATE ".$prefix."properties SET theme = '$themeselect', nav = '$nav'");
 					echo "<div class=\"alert alert-success\">" . ucfirst($themeselect) . " applied.<br /><a href=\"?cype=admin&page=theme\">Back to Themes</a></div>";
 				}
 				else {

@@ -6,7 +6,7 @@ if(basename($_SERVER["PHP_SELF"]) == "afuncs.php"){
 include_once('database.php');
 /* Logged in time Handler - Do not touch unless you know what you're doing */
 if(isset($_SESSION['id'])){
-	global $mysqli;
+	global $mysqli, $prefix;
 	$logouttime = 300;
 	$timenow = time();
 	$loggedtime = $timenow - $logouttime;
@@ -17,29 +17,22 @@ if(isset($_SESSION['id'])){
 
 # If logged in, fetch IP
 if(isset($_SESSION['id'])){
-	global $mysqli;
+	global $mysqli, $prefix;
 	$IP = $_SERVER['REMOTE_ADDR'];
 	$sesid = $_SESSION['id'];
 	$getn = $mysqli->query("SELECT * FROM accounts WHERE id=$sesid");
 	$getn2 = $getn->fetch_assoc();
 	$getname = $getn2['name'];
 	$mysqli->query("UPDATE accounts SET ip='$IP' WHERE name='$getname'") or die();
-	$logfile= 'sources/admin/log.php';
 	$q = $mysqli->query("SELECT * FROM accounts WHERE ip='$IP'");
 	$get = $q->fetch_assoc();
 	$id = $get['name'];
-	$phpself = $_SERVER['PHP_SELF'];
-	$gcype = $_GET['cype'];
-	$log = "".date("F j, g:i:s A")." - <a href='?cype=members&amp;name=$id'>".$IP."</a>&nbsp;&nbsp;Visited Page : <a href='/$cypedir?cype=$gcype'>$cypedir?cype=$gcype</a><br />";
-	$fp = fopen($logfile, "a");
-	fwrite($fp, $log);
-	fclose($fp);
 }
 
 /* Functions for Cype */
 
 function getOnline(){
-	global $mysqli;
+	global $mysqli, $prefix;
 	$logouttime = 300;
 	$timenow = time();
 	$loggedtime = $timenow - $logouttime;
@@ -48,7 +41,7 @@ function getOnline(){
 	return $b;
 }
 function onlineCheck($string){
-	global $mysqli;
+	global $mysqli, $prefix;
 	$logouttime = 300;
 	$timenow = time();
 	$loggedtime = $timenow - $logouttime;
@@ -62,12 +55,12 @@ function onlineCheck($string){
 	return $check;
 }
 function isProfile( $type, $string ){
-	global $mysqli;
+	global $mysqli, $prefix;
 	if ($type == 'charname') {
 		$a = $mysqli->query("SELECT * FROM `characters` WHERE `name`='".$string."'") or die();
 		$b = $a->fetch_assoc();
 		$c = $b['accountid'];
-		$d = $mysqli->query("SELECT * FROM `cype_profile` WHERE `accountid`='".$c."'") or die();
+		$d = $mysqli->query("SELECT * FROM `".$prefix."profile` WHERE `accountid`='".$c."'") or die();
 		$e = $d->num_rows;
 		if ($e > 0) {
 			return 1;
@@ -79,7 +72,7 @@ function isProfile( $type, $string ){
 		$a = $mysqli->query("SELECT * FROM `characters` WHERE `id`='".$string."'") or die();
 		$b = $a->fetch_assoc();
 		$c = $b['accountid'];
-		$d = $mysqli->query("SELECT * FROM `cype_profile` WHERE `accountid`='".$c."'") or die();
+		$d = $mysqli->query("SELECT * FROM `".$prefix."profile` WHERE `accountid`='".$c."'") or die();
 		$e = $d->num_rows;
 		if ($e > 0) {
 			return 1;
@@ -91,7 +84,7 @@ function isProfile( $type, $string ){
 		$a = $mysqli->query("SELECT * FROM `accounts` WHERE `name`='".$string."'") or die();
 		$b = $a->fetch_assoc();
 		$c = $b['id'];
-		$d = $mysqli->query("SELECT * FROM `cype_profile` WHERE `accountid`='".$c."'") or die();
+		$d = $mysqli->query("SELECT * FROM `".$prefix."profile` WHERE `accountid`='".$c."'") or die();
 		$e = $d->num_rows;
 		if ($e > 0) {
 			return 1;
@@ -100,7 +93,7 @@ function isProfile( $type, $string ){
 		}
 	}
 	else if ($type == 'accid') {
-		$a = $mysqli->query("SELECT * FROM `cype_profile` WHERE `accountid`='".$string."'") or die();
+		$a = $mysqli->query("SELECT * FROM `".$prefix."profile` WHERE `accountid`='".$string."'") or die();
 		$b = $a->num_rows;
 		if ($a > 0) {
 			return 1;
@@ -114,7 +107,7 @@ function isProfile( $type, $string ){
 	}
 }
 function getInfo( $type, $string, $how ){
-	global $mysqli;
+	global $mysqli, $prefix;
 	if ($type == 'charname') {
 		if ($how == 'charid') {
 			$a = $mysqli->query("SELECT * FROM `characters` WHERE `id`='".$string."'") or die();
@@ -132,7 +125,7 @@ function getInfo( $type, $string, $how ){
 			return $b['name'];
 		}
 		else if ($how == 'profilename') {
-			$a = $mysqli->query("SELECT * FROM `cype_profile` WHERE `name`='".$string."'") or die();
+			$a = $mysqli->query("SELECT * FROM `".$prefix."profile` WHERE `name`='".$string."'") or die();
 			$b = $a->fetch_assoc();
 			$c = $b['accountid'];
 			$d = $mysqli->query("SELECT * FROM `characters` WHERE `accountid`='".$c."'") or die();
@@ -162,7 +155,7 @@ function getInfo( $type, $string, $how ){
 			return $e['name'];
 		}
 		else if ($how == 'accid') {
-			if ($string = 'cype_session') {
+			if ($string = '".$prefix."session') {
 				$a = $mysqli->query("SELECT * FROM `accounts` WHERE `id`='".$_SESSION['id']."'") or die();
 				$b = $a->fetch_assoc();
 				return $b['name'];
@@ -173,7 +166,7 @@ function getInfo( $type, $string, $how ){
 			}
 		}
 		else if ($how == 'profilename') {
-			$a = $mysqli->query("SELECT * FROM `cype_profile` WHERE `name`='".$string."'") or die();
+			$a = $mysqli->query("SELECT * FROM `".$prefix."profile` WHERE `name`='".$string."'") or die();
 			$b = $a->fetch_assoc();
 			$c = $b['accountid'];
 			$d = $mysqli->query("SELECT * FROM `accounts` WHERE `id`='".$c."'") or die();
@@ -210,7 +203,7 @@ function getInfo( $type, $string, $how ){
 			return $b['id'];
 		}
 		else if ($how == 'profilename') {
-			$a = $mysqli->query("SELECT * FROM `cype_profile` WHERE `name`='".$string."'") or die();
+			$a = $mysqli->query("SELECT * FROM `".$prefix."profile` WHERE `name`='".$string."'") or die();
 			$b = $a->fetch_assoc();
 			$c = $b['accountid'];
 			$d = $mysqli->query("SELECT * FROM `characters` WHERE `accountid`='".$c."'") or die();
@@ -239,7 +232,7 @@ function getInfo( $type, $string, $how ){
 			return $b['id'];
 		}
 		else if ($how == 'profilename') {
-			$a = $mysqli->query("SELECT * FROM `cype_profile` WHERE `name`='".$string."'") or die();
+			$a = $mysqli->query("SELECT * FROM `".$prefix."profile` WHERE `name`='".$string."'") or die();
 			$b = $a->fetch_assoc();
 			return $b['accountid'];
 		}
@@ -258,7 +251,7 @@ function getInfo( $type, $string, $how ){
 			$a = $mysqli->query("SELECT * FROM `characters` WHERE `id`='".$string."'") or die();
 			$b = $a->fetch_assoc();
 			$c = $b['accountid'];
-			$d = $mysqli->query("SELECT * FROM `cype_profile` WHERE `accountid`='".$c."'") or die();
+			$d = $mysqli->query("SELECT * FROM `".$prefix."profile` WHERE `accountid`='".$c."'") or die();
 			$e = $d->fetch_assoc();
 			return $e['name'];
 		}
@@ -266,7 +259,7 @@ function getInfo( $type, $string, $how ){
 			$a = $mysqli->query("SELECT * FROM `characters` WHERE `name`='".$string."'") or die();
 			$b = $a->fetch_assoc();
 			$c = $b['accountid'];
-			$d = $mysqli->query("SELECT * FROM `cype_profile` WHERE `accountid`='".$c."'") or die();
+			$d = $mysqli->query("SELECT * FROM `".$prefix."profile` WHERE `accountid`='".$c."'") or die();
 			$e = $d->fetch_assoc();
 			return $e['name'];
 		}
@@ -274,12 +267,12 @@ function getInfo( $type, $string, $how ){
 			$a = $mysqli->query("SELECT * FROM `accounts` WHERE `name`='".$string."'") or die();
 			$b = $a->fetch_assoc();
 			$c = $b['id'];
-			$d = $mysqli->query("SELECT * FROM `cype_profile` WHERE `accountid`='".$c."'") or die();
+			$d = $mysqli->query("SELECT * FROM `".$prefix."profile` WHERE `accountid`='".$c."'") or die();
 			$e = $d->fetch_assoc();
 			return $e['name'];
 		}
 		else if ($how == 'accname') {
-			$a = $mysqli->query("SELECT * FROM `cype_profile` WHERE `accountid`='".$string."'") or die();
+			$a = $mysqli->query("SELECT * FROM `".$prefix."profile` WHERE `accountid`='".$string."'") or die();
 			$b = $a->fetch_assoc();
 			return $b['name'];
 		}
@@ -287,7 +280,7 @@ function getInfo( $type, $string, $how ){
 			$a = $mysqli->query("SELECT * FROM `characters` WHERE `rank`='".$string."'") or die();
 			$b = $a->fetch_assoc();
 			$c = $b['accountid'];
-			$d = $mysqli->query("SELECT * FROM `cype_profile` WHERE `accountid`='".$c."'") or die();
+			$d = $mysqli->query("SELECT * FROM `".$prefix."profile` WHERE `accountid`='".$c."'") or die();
 			$e = $d->fetch_assoc();
 			return $e['name'];
 		}
@@ -374,22 +367,22 @@ function shortTitle($title){
 }
 
 function sql_sanitize( $sCode ) {
-	global $mysqli;
+	global $mysqli, $prefix;
 	$escapedCode = $mysqli->real_escape_string( $sCode );
 	$sCode = preg_replace("/[^a-zA-Z0-9]+/", "", $escapedCode);	
 	return $sCode;							
 }
 function sanitize_space( $sCode ) {
-	global $mysqli;
+	global $mysqli, $prefix;
 	$escapedCode = $mysqli->real_escape_string( $sCode );
 	$sCode = preg_replace("/^[\w\-\s]+$/", "", $escapedCode);	
 	return $sCode;							
 }
 
 function unSolved($type){
-	global $mysqli;
+	global $mysqli, $prefix;
 	if($type == "ticket"){
-		$GrabTickets = $mysqli->query("SELECT * FROM `cype_tickets` WHERE `status` = 'Open'");
+		$GrabTickets = $mysqli->query("SELECT * FROM `".$prefix."tickets` WHERE `status` = 'Open'");
 		$counttick = $GrabTickets->num_rows;
 		if($counttick == 1){
 			$tickquant = "is";
@@ -401,7 +394,7 @@ function unSolved($type){
 		return "There ".$tickquant." <a href=\"?cype=admin&amp;page=ticket\"><u><b>".$counttick." unsolved ticket".$tickplural."</b></u></a>.";
 	}
 	elseif($type == "mail"){
-		$GrabReportedpm = $mysqli->query("SELECT * FROM `cype_mail` WHERE `status` = '10'");
+		$GrabReportedpm = $mysqli->query("SELECT * FROM `".$prefix."mail` WHERE `status` = '10'");
 		$countpm = $GrabReportedpm->num_rows;
 		if($countpm == 1){
 			$pmquant = "is";
@@ -416,7 +409,7 @@ function unSolved($type){
 
 //This function is for the "BuyNX" page in the UCP
 function buyNX($char, $info, $pack){
-	global $mysqli;
+	global $mysqli, $prefix;
 	//If the character is not yet selected to pay for NX
 	if($char == "" && $info == ""){
 		$getchars = $mysqli->query("SELECT * FROM `characters` WHERE `accountid`='".$_SESSION['id']."'") or die();
@@ -514,18 +507,18 @@ function buyNX($char, $info, $pack){
 }
 
 function mailStats($s) {
-	global $mysqli;
+	global $mysqli, $prefix;
 	if($s == 1) {
 		$show = "from";
 	} else {
 		$show = "to";
 	}
-	$mailCount = $mysqli->query("SELECT * FROM `cype_mail` WHERE `".$show."`='".$_SESSION['pname']."' AND `status`='".$s."'");
+	$mailCount = $mysqli->query("SELECT * FROM `".$prefix."mail` WHERE `".$show."`='".$_SESSION['pname']."' AND `status`='".$s."'");
 	echo $mailCount->num_rows;
 }
 function getNav() {
-	global $mysqli;
-	$query = $mysqli->query("SELECT nav FROM `cype_properties`");
+	global $mysqli, $prefix;
+	$query = $mysqli->query("SELECT nav FROM ".$prefix."properties");
 	$navtype = $query->fetch_assoc();
 	$nav = "";
 		if ($navtype['nav'] == "0"){
@@ -539,7 +532,7 @@ function getNav() {
 }
 
 function countOnline() {
-	global $mysqli;
+	global $mysqli, $prefix;
 	$conline = $mysqli->query("SELECT * FROM accounts where loggedin = 2");
 	return intval($conline);
 }

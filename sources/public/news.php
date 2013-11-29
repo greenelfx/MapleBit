@@ -20,7 +20,7 @@
 
 if(isset($_GET['id'])){
 	$id = $mysqli->real_escape_string($_GET['id']);
-	$gn = $mysqli->query("SELECT * FROM `cype_news` WHERE `id`='".$id."'") or die();
+	$gn = $mysqli->query("SELECT * FROM `".$prefix."news` WHERE `id`='".$id."'") or die();
 	$n = $gn->fetch_assoc();
 	echo "
 		<legend>".stripslashes($n['title'])." | Posted by <a href=\"?cype=main&amp;page=members&amp;name=".$n['author']."\">".$n['author']."</a> on ".$n['date']."</legend>
@@ -28,11 +28,11 @@ if(isset($_GET['id'])){
 	echo nl2br(stripslashes($n['content']))."
 	<br /><br />
 	";
-	$gc = $mysqli->query("SELECT * FROM `cype_ncomments` WHERE `nid`='".$id."' ORDER BY `id` ASC") or die();
+	$gc = $mysqli->query("SELECT * FROM `".$prefix."ncomments` WHERE `nid`='".$id."' ORDER BY `id` ASC") or die();
 	$cc = $gc->num_rows;
 	echo "
 	<b>".$n['views']."</b> Views and <b>".$cc."</b> Responses<hr />";
-	$av = $mysqli->query("UPDATE `cype_news` SET `views` = views + 1 WHERE `id`='".$id."'") or die();
+	$av = $mysqli->query("UPDATE `".$prefix."news` SET `views` = views + 1 WHERE `id`='".$id."'") or die();
 	if(isset($_SESSION['admin'])){
 		if($n['locked'] == "1"){
 			$buttontext = "Unlock";
@@ -45,7 +45,7 @@ if(isset($_GET['id'])){
 			<a href=\"?cype=admin&amp;page=mannews&amp;action=".$buttonlink."\" class=\"btn btn-default\">".$buttontext."</a>
 			<hr />";
 	}
-	$flood = $mysqli->query("SELECT * FROM `cype_ncomments` WHERE `nid`='".$id."' && `author`='".$_SESSION['pname']."' ORDER BY `dateadded` DESC LIMIT 1") or die();
+	$flood = $mysqli->query("SELECT * FROM `".$prefix."ncomments` WHERE `nid`='".$id."' && `author`='".$_SESSION['pname']."' ORDER BY `dateadded` DESC LIMIT 1") or die();
 	$fetchg = $flood->fetch_assoc();
 	$seconds = 60*$cypefloodint;
 	if(isset($_SESSION['id'])){
@@ -84,7 +84,7 @@ if(isset($_GET['id'])){
 			echo "<br/><div class=\"alert alert-danger\">You cannot leave the comment field blank!</div>";
 		}else{
 			$timestamp = time();
-			$i = $mysqli->query("INSERT INTO `cype_ncomments` (`nid`,`author`,`feedback`,`date`,`comment`,`dateadded`) VALUES ('".$id."','".$_SESSION['pname']."','".$feedback."','".$date."','".$comment."','".$timestamp."')") or die();
+			$i = $mysqli->query("INSERT INTO `".$prefix."ncomments` (`nid`,`author`,`feedback`,`date`,`comment`,`dateadded`) VALUES ('".$id."','".$_SESSION['pname']."','".$feedback."','".$date."','".$comment."','".$timestamp."')") or die();
 			echo "<meta http-equiv=refresh content=\"0; url=?cype=main&amp;page=news&amp;id=".$id."\" />";
 		}
 	}
@@ -112,16 +112,17 @@ if(isset($_GET['id'])){
 		}
 	}
 }else{
-	$gn = $mysqli->query("SELECT * FROM `cype_news` ORDER BY `id` DESC") or die();
+	$gn = $mysqli->query("SELECT * FROM `".$prefix."news` ORDER BY `id` DESC") or die();
 
 	$rows = $gn->num_rows;
 
 	if ($rows < 1) {
-		echo "Oops! There isn't any news to display right now!";
+		echo "<div class=\"alert alert-danger\">Oops! There isn't any news to display right now!</div>";
 	}
+	else{
 	echo "<legend>".$servername." News</legend>";
 	while($n = $gn->fetch_assoc()){
-		$gc = $mysqli->query("SELECT * FROM `cype_ncomments` WHERE `nid`='".$n['id']."' ORDER BY `id` ASC") or die();
+		$gc = $mysqli->query("SELECT * FROM `".$prefix."ncomments` WHERE `nid`='".$n['id']."' ORDER BY `id` ASC") or die();
 		$cc = $gc->num_rows;
 		echo "
 			<img src=\"assets/img/news/".$n['type'].".gif\" alt='".$n['type']."' />
@@ -139,5 +140,6 @@ if(isset($_GET['id'])){
 		}
 		echo "<br/>";
 	}
+}
 }
 ?>

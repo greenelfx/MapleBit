@@ -21,7 +21,7 @@ echo "
 <div class=\"col-md-6\">
 <a href='?cype=main&amp;page=gmblog'><h4>GM Blog &raquo;</h4></a><hr/>";
 	$i = 0;
-	$gn = $mysqli->query("SELECT * FROM `cype_gmblog` ORDER BY `id` DESC LIMIT 4") or die(mysql_error());
+	$gn = $mysqli->query("SELECT * FROM `".$prefix."gmblog` ORDER BY `id` DESC LIMIT 4") or die(mysql_error());
 	while($n = $gn->fetch_assoc()){
 		$title = $n['title'];
 		$maxlength = 33;

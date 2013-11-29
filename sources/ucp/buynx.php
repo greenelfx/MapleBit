@@ -13,7 +13,7 @@ if(!isset($_POST['buyNX']))
 	echo '
 			<legend>Select a Package</legend>
 	';
-	$fetchPack = $mysqli->query("SELECT * FROM `cype_buynx`");
+	$fetchPack = $mysqli->query("SELECT * FROM `".$prefix."buynx`");
 	if($fetchPack->num_rows == 0){
 	echo "<div class=\"alert alert-danger\">Oops! Looks like there's no NX packages available right now!</div>";
 	}
@@ -34,7 +34,7 @@ else
 	$hasMeso = $mysqli->query("SELECT * FROM `characters` WHERE `id` = '".$selChar."'") or die();
 	$getMeso = $hasMeso->fetch_assoc();
 	
-	$fetchNX = $mysqli->query("SELECT * FROM `cype_buynx` WHERE `meso` = '".$selPack."'") or die();
+	$fetchNX = $mysqli->query("SELECT * FROM `".$prefix."buynx` WHERE `meso` = '".$selPack."'") or die();
 	$selNX = $fetchNX->fetch_assoc();
 	
 	if($selChar == NULL)
