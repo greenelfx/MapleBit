@@ -1,11 +1,6 @@
-body {
-  min-height: 200px;
-  padding-top: 90px;
-}
-.well {
-	padding:10px;
-}
+.well {background: #fff;}
+.well2 {background-color: #f5f5f5;}
 .commentbubble{
 	float: right;
 }
-.text-center {margin:0px;}
+.text-center,.text-left {margin:0px;}

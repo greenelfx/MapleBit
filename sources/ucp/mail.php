@@ -1,27 +1,36 @@
 <?php 
 if(basename($_SERVER["PHP_SELF"]) != "mail.php" && $_SESSION['id'] && $_SESSION['pname'] != NULL) {
 ignore_user_abort(true);	# Prevent User Abort
-error_reporting(0);
 ?>
-	<legend>Mailbox</legend>
+	<h2 class="text-left">Mailbox</h2><hr/>
 		<ul class="breadcrumb">
 			<li><a href="?cype=ucp&amp;page=mail&amp;s=3">Unread: <?php mailStats(3)?></a><span class="divider">/</span></li>
 			<li><a href="?cype=ucp&amp;page=mail&amp;s=2">Read: <?php mailStats(2)?></a><span class="divider">/</span></li>
 			<li><a href="?cype=ucp&amp;page=mail&amp;s=1">Sent: <?php mailStats(1)?></a><span class="divider">/</span></li>
 			<li><a href="?cype=ucp&amp;page=mail&amp;s=5">Drafts: <?php mailStats(5)?></a><span class="divider">/</span></li>				
 		</ul>
-			<legend>Send Mail</legend>
+		<h3 class="text-left">Send Mail</h3><hr/>
 				<form method="post" action="?cype=ucp&amp;page=mail&amp;send">
-				<input type="text" value="<?php if($_GET['uc']){ echo $_GET['uc']; }?>"name="recipent" placeholder="Recipient" required/><br/>
-				<input type="text" name="title" placeholder="PM Title" required/>
-				<textarea name="content" style="width:100%;height:150px;" placeholder="Your Message" required></textarea><br/>
+				<div class="form-group">
+					<label for="inputRecipient">Recipient</label>
+					<input type="text" value="<?php if(isset($_GET['uc'])){ echo $_GET['uc']; }?>"name="recipent" placeholder="Recipient" class="form-control" id="inputRecipient" required/>
+				</div>
+				<div class="form-group">
+					<label for="inputTitle">Title</label>
+					<input type="text" name="title" placeholder="PM Title" class="form-control" id="inputTitle" required/>
+				</div>
+				<div class="form-group">
+					<label for="inputMessage">Message</label>
+					<textarea name="content" style="height:150px;" placeholder="Your Message" class="form-control" id="inputMessage" required></textarea><br/>
+				</div>
 				<input type="submit" name="send" value="Send" class="btn btn-success"/>
 				<input type="submit" name="send" value="Draft" class="btn btn-info"/>				
-				<input type="reset" id="reset" value="Reset" class="btn btn-inverse"/>
+				<input type="reset" id="reset" value="Clear" class="btn btn-inverse"/>
 				</form>
 				<hr/>
 				<?php
-					$tid = intval($_GET['s']);
+					$seconds = 60*$cypefloodint;
+					$tid = intval(isset($_GET['s']));
 					$title = "";
 					if(isset($_GET['showmail'])) {
 						$title = "Viewing Mail";
@@ -82,8 +91,8 @@ error_reporting(0);
 					?>
 					<form method="post" action="?cype=ucp&amp;page=mail">
 					<?php
-						$status = $mysqli->real_escape_string(intval($_GET['s']));
-						$page = $mysqli->real_escape_string(intval($_GET['p']));
+						$status = $mysqli->real_escape_string(intval(isset($_GET['s'])));
+						$page = $mysqli->real_escape_string(intval(isset($_GET['p'])));
 						
 						/*
 						Mailing Status'
@@ -96,13 +105,13 @@ error_reporting(0);
 						*/
 
 						if($status > 5 || $status < 0 || !isset($_GET['s'])) {
-							if($_GET['s'] == 0){
+							if(isset($_GET['s']) == 0){
 								$status = 0;
-							} elseif($_GET['s'] == 1){
+							} elseif(isset($_GET['s']) == 1){
 								$status = 1;
-							} elseif($_GET['s'] == 2){
+							} elseif(isset($_GET['s']) == 2){
 								$status = 2;
-							} elseif($_GET['s'] == 5){
+							} elseif(isset($_GET['s']) == 5){
 								$status = 5;
 							} else{
 								$status = 3;
@@ -114,8 +123,8 @@ error_reporting(0);
 						} else {
 							$mailCount = $mysqli->query("SELECT COUNT(*) FROM `".$prefix."mail` WHERE `to`='".$_SESSION['pname']."' AND `status`='".$status."'") or die();
 						}
-						$getrows = $mailCount->fetch_assoc();
-						$totalpages = ceil($getrows[0] / $totalMails);
+						$getrows = $mailCount->num_rows;
+						$totalpages = ceil($getrows / $totalMails);
 						
 						if($totalpages < $page) {
 							$page = $totalpages;
@@ -257,7 +266,6 @@ error_reporting(0);
 								$reply = "Please Set A Profile Name Before Sending Mails.";
 							} else if($recipent == $_SESSION['pname']) {
 								$reply = "Sending Mails To Yourself Is Just Sad.";
-							$seconds = 60*$cypefloodint;
 							} else if($cypeflood > 0 && (time() - $seconds) < $grab['dateadded']) {
 								$reply = "You May Only Send A Mail Every 5 Minutes.";
 							} else if(strlen($message) < 10 || strlen($message) > 400) {

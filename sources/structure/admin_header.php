@@ -6,6 +6,7 @@
 <title><?php echo $sitetitle.$pb; ?></title>
 <link rel="icon" href="favicon.ico" type="image/x-icon" />
 <link href="assets/css/<?php echo $theme; ?>.min.css" rel="stylesheet" type="text/css" />
+<link href="assets/css/addon.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 body {
   min-height: 200px;
@@ -14,20 +15,20 @@ body {
 </style>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <script type="text/javascript" src="assets/js/bootstrap.js"></script>
+<script type="text/javascript" src="assets/js/login.js"></script>
 </head>
 
 <body>
-<?php getNav();?>
+<nav class="<?php echo getNav(); ?> navbar-fixed-top" role="navigation">
 	<div class="navbar-header">
-		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-			<span class="sr-only">Toggle navigation</span>
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		</button>
 		<a class="navbar-brand" href="#"><?php echo $servername; ?></a>
 	</div>	
-	<div class="collapse navbar-collapse navbar-ex1-collapse">
+	<div class="navbar-collapse collapse">
 		<ul class="nav navbar-nav">
               <li><a href="?cype=main">Home</a></li>
 			<?php
@@ -39,6 +40,9 @@ body {
               <li><a href="?cype=main&amp;page=download">Download</a></li>
 			  <li><a href="?cype=main&amp;page=ranking">Rankings</a></li>
 			  <li><a href="?cype=main&amp;page=vote">Vote</a></li>
+			  <li><a href="?cype=main&amp;page=chat">Chat</a></li>
+			  <li><a href="?cype=main&amp;page=donate">Donate</a></li>
+			  <li><a href="#">Forums</a></li>			  
             </ul>
 		<?php	
 			if(isset($_SESSION['id'])){
@@ -57,8 +61,8 @@ body {
 				</li>
 			</ul>
 		<?php } ?>
-	</div><!-- /.navbar-collapse -->
+	</div>
 </nav>
-
+<body>
 <div class="container">
   <div class="row">

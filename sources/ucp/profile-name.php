@@ -2,7 +2,7 @@
 if($_SESSION['id']){
 	if(isset($_SESSION['id'])){
 		echo "
-		<legend>Set a Profile Name</legend>
+		<h2 class=\"text-left\">Set Profile Name</h2><hr/>
 		Once you've created a profile, other people can view your biography, character, and so on. Note that none of your private information will be shown.<br />
 		Please pick a name <i>other</i> than your LoginID!<br/><br/>
 		
@@ -17,7 +17,7 @@ if($_SESSION['id']){
 		</form>
 		<br/>";
 
-		if($_POST['create']){
+		if(isset($_POST['create'])){
 			$name = $mysqli->real_escape_string($_POST['name']);
 			$pcheck = $mysqli->query("SELECT * FROM `".$prefix."profile` WHERE `name`='".$name."'") or die();
 			if($countpcheck = $pcheck->num_rows >= 1){
@@ -28,7 +28,7 @@ if($_SESSION['id']){
 				echo "<div class=\"alert alert-warning\">The profile name must be between 4 and 16 characters.</div>";
 			}elseif(strlen($name) < 4){
 				echo "<div class=\"alert alert-warning\">The profile name must be between 4 and 16 characters.</div>";
-			}elseif(ereg('[^A-Za-z0-9]', $name)) {
+			}elseif(ctype_alnum($name) == false) {
 				echo "<div class=\"alert alert-danger\">Special characters are not allowed.</div>";
 			}else{
 				$i = $mysqli->query("INSERT INTO `".$prefix."profile` (`accountid`,`name`) VALUES ('".$_SESSION['id']."','".$name."')") or die();

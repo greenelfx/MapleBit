@@ -1,9 +1,9 @@
-<?php 
-if(isset($_SESSION['pname'])){
-	if(!$_GET['ticket']){
-	//If you are logged in, you will be sent to the main ticket page.
+<?php
+if(isset($_SESSION['pname']) && $_SESSION['pname'] != ""){
+	if(!isset($_GET['ticket'])){
+	$pname = $_SESSION['pname'];
 	echo "
-		<legend>Your Tickets</legend>
+		<h2 class=\"text-left\">Your Tickets</h2><hr/>
 		<table class=\"table table-striped table-hover table-bordered\">
 		<thead>
 			<tr>
@@ -13,7 +13,7 @@ if(isset($_SESSION['pname'])){
 				<th>Status</th>
 			</tr>
 		</thead>";
-			$gettickets = $mysqli->query("SELECT * FROM `cype_tickets` WHERE `name` = '{$_SESSION['pname']}' AND `status` = 'Open' ORDER BY `ticketid` DESC")or die(mysql_error());
+			$gettickets = $mysqli->query("SELECT * FROM ".$prefix."tickets WHERE name = '".$pname."' ORDER BY ticketid DESC");
 			$getnumer = $gettickets->num_rows;
 			$NumberTicket = 0;
 			while($tickets = $gettickets->fetch_assoc()){
@@ -30,44 +30,37 @@ if(isset($_SESSION['pname'])){
 						<td>
 							" . $tickets['date'] . "
 						</td>
-						<th>
-							" . $tickets['status'] . "
-						</th>
+						<th>";
+							if($tickets['status'] == 1){echo "Open";} elseif($tickets['status'] == 0) {echo "Closed"; } else {echo "Unknown";}
+						echo "</th>
 					</tr>
 				";
 			}
 		echo "
 		</table>";
-		//Check to see if the user has more than five tickets open.
-		@mysql_data_seek($gettickets, 0);
-		$opentick = $gettickets->fetch_assoc();
-		if($getnumber >= 5 && $opentick['status'] == "Open"){
-			echo "<br /><a href=\"?cype=ucp&amp;page=ticket&amp;ticket=closed\" class=\"btn btn-primary\">View Closed Tickets</a>";
-		} else{
-		echo "
-			<center>
-				<br /><br /><a href=\"?cype=ucp&amp;page=ticket&amp;ticket=closed\" class=\"btn btn-primary\">View Closed Tickets</a>  <a href=\"?cype=ucp&amp;page=ticket&amp;ticket=create\" class=\"btn btn-info\">Create Ticket &raquo;</a>
-			</center>
-			";
-		}
+			echo "<hr/><a href=\"?cype=ucp&amp;page=ticket&amp;ticket=create\" class=\"btn btn-primary\">Create Ticket</a>&nbsp;<a href=\"?cype=ucp&amp;page=ticket&amp;ticket=closed\" class=\"btn btn-info\">View Closed Tickets</a>";
+		
 	}
-	if($_GET['ticket'] == "create"){
+	if(@$_GET['ticket'] == "create"){
 	//Create a new ticket. Only limits 5 tickets per user.
 		echo " 
-			<legend>Ticket Creation</legend>
-				<form method=\"post\" action=\"\">
-				<b>Type of Ticket</b><br/>
-					<select name=\"type\">
+			<h2 class=\"text-left\">Create Ticket</h2><hr/>
+				<form method=\"post\" role=\"form\">
+				<div class=\"form-group\">
+					<label for=\"ticketCategory\">Ticket Category</label>
+					<select name=\"type\" id=\"ticketCategory\" class=\"form-control\">
 						<option value=\"Game\">Game Help</option>
 						<option value=\"Website\">WebSite Help</option>
 						<option value=\"Abuse\">Account Help</option>
 						<option value=\"Account\">Banning Appeal</option>
-					</select><br/>
-				Select Ticket Type :<br/>";
+					</select>
+				</div>
+				<div class=\"form-group\">
+					<label for=\"typeTicket\">Select Type</label>";
 							//You can add more here if you like. However, make sure everything has a value.
 							//More options will come along as we progress.
 							echo "
-									<select name=\"support\">
+									<select name=\"support\" id=\"typeTicket\" class=\"form-control\">
 										<option selected=\"selected\">&middot; Ticket Subgroup &middot;</option>
 									<optgroup label=\"Game\">Game Help</optgroup
 										<option value=\"Bug\" >Bug Report</option>
@@ -82,73 +75,71 @@ if(isset($_SESSION['pname'])){
 										<option value=\"Abuse\" >User Abuse</option>
 									<optgroup label=\"Banning\">Banning Help
 										<option value=\"Appeal\" >Ban Appeal</option>
-								</select><br/>
-						
-				<b>Title :</b><br/>
-				<input type=\"text\" name=\"title\" maxlength=\"20\" required><br/>
-				<b>Details / Information :</b><br/>
-				<textarea name=\"details\" rows=\"7\" style=\"height:200px;width:100%;\"></textarea><br/>
-				<input type=\"submit\" name=\"ticket\" value=\"Send Ticket &raquo;\" class=\"btn btn-primary\"/>
+								</select>
+				</div>
+				<div class=\"form-group\">
+					<label for=\"ticketTitle\">Title</label>
+						<input type=\"text\" name=\"title\" maxlength=\"30\" class=\"form-control\" id=\"ticketTitle\" required><br/>
+				</div>
+				<div class=\"form-group\">
+					<label for=\"ticketDetails\">Details and Information</label>
+					<textarea name=\"details\" style=\"height:200px;\" class=\"form-control\" id=\"ticketDetails\" required></textarea><br/>
+					<input type=\"submit\" name=\"ticket\" value=\"Send Ticket &raquo;\" class=\"btn btn-primary\"/>
+				</div>
 				</form>";
 				if(isset($_POST['ticket'])){
-					$type = $_POST['type'];
-					$support = $_POST['support'];
-					$title = sql_sanitize($_POST['title']);
-					$details = $mysqli->real_escape_string($_POST['details']);
-					$nowtickets = $mysqli->query("SELECT * FROM `cype_tickets` WHERE `name` = '{$_SESSION['pname']}' AND `status` = 'Open'");
-					$checktickets = $nowtickets->num_rows;
+					$type = mysql_escape($_POST['type']);
+					$support = mysql_escape($_POST['support']);
+					$title = sanitize_space($_POST['title']);
+					$details = mysql_escape($_POST['details']);
 					
 					if($type == ""){
-						echo "<div class=\"alert alert-error\">Please select the type of ticket you inquiry about.</div>";
+						echo "<div class=\"alert alert-danger\">Please select the type of ticket you inquiry about.</div>";
 					}
 					elseif($support == ""){
-						echo "<div class=\"alert alert-error\">Please select the type of statement for this ticket.</div>";
+						echo "<div class=\"alert alert-danger\">Please select the type of statement for this ticket.</div>";
 					}
 					elseif($title == "" || strlen($title) < "5"){
-						echo "<div class=\"alert alert-error\">You did not enter a title name or the title name is too short.</div>";
+						echo "<div class=\"alert alert-danger\">You did not enter a title name or the title name is too short.</div>";
 					}
 					elseif(strlen($details) < 25 || $details == ""){
-						echo "<div class=\"alert\">Please supply more information about the problem you are having. Make sure to include details.</div>";
-					}
-					elseif($checktickets > 5){
-						echo "<div class=\"alert\">We're very sorry, however, you are only allowed 5 tickets on your account.</div>";
+						echo "<div class=\"alert alert-danger\">Please supply more information about the problem you are having. Make sure to include details.</div>";
 					}
 					else{
-						$newticket = $mysqli->query("INSERT INTO `cype_tickets` (title, type, support_type, details, date, ip, name, status) 
-							VALUES "."('".$title."', '".$type."', '".$support."', '".$details."', '".date('F d - g:i A')."', '".$_SERVER['REMOTE_ADDR']."', '".$_SESSION['pname']."', 'Open')");
+						$newticket = $mysqli->query("INSERT INTO ".$prefix."tickets (title, type, support_type, details, date, ip, name, status) 
+							VALUES ('".$title."', '".$type."', '".$support."', '".$details."', '".date('F d - g:i A')."', '".$_SERVER['REMOTE_ADDR']."', '".$_SESSION['pname']."', 1)");
 							
 						if($newticket){
 							echo "<meta http-equiv=\"refresh\" content=\"0; url=?cype=ucp&amp;page=ticket\"/>";
 						}
 						else{
-							echo "<div class=\"alert alert-error\">The ticket you have created was not able to be completed due to an error. Please contact the admin.</div>";
+							echo "<div class=\"alert alert-danger\">The ticket you have created was not able to be completed due to an error. Please contact the admin.</div>";
 						}
 					}
 				}
 	}
-	elseif($_GET['ticket'] == "Yes"){
-		$GrabTicket = $mysqli->query("SELECT * FROM `cype_tickets` LEFT JOIN `cype_tcomments` ON cype_tickets.ticketid = cype_tcomments.ticketid WHERE cype_tickets.ticketid = '".mysql_real_escape_string($_GET['a'])."'");
+	elseif(@$_GET['ticket'] == "Yes"){
+		$GrabTicket = $mysqli->query("SELECT * FROM ".$prefix."tickets LEFT JOIN ".$prefix."tcomments ON ".$prefix."tickets.ticketid = ".$prefix."tcomments.ticketid WHERE ".$prefix."tickets.ticketid = '".$mysqli->real_escape_string($_GET['a'])."'");
 		$viewTicket = $GrabTicket->fetch_assoc();
-		$getResponce = $mysqli->query("SELECT * FROM `cype_tcomments` WHERE `ticketid` = '".sql_sanitize($_GET['a'])."'");
-		$countTicket = $getResponce->num_rows;
+		$getResponse = $mysqli->query("SELECT * FROM ".$prefix."tcomments WHERE ticketid = '".sql_sanitize($_GET['a'])."'");
+		$countTicket = $getResponse->num_rows;
 	//View the ticket
 		if($_SESSION['pname'] != $viewTicket['name']){
 			echo "
-				<div class=\"alert alert-error\">You are not allowed to view this ticket. Your actions have been logged.</div>
+				<div class=\"alert alert-danger\">You are not allowed to view this ticket. Your actions have been logged.</div>
 				<meta http-equiv=\"refresh\" content=\"1; url=?cype=main\"/>
 			";
 			exit();
 		}
 		echo "
-			<legend>Viewing Ticket</legend>
+			<h2 class=\"text-left\">Viewing Ticket</h2>
+			<hr/>
 				<b>Created By:</b> $viewTicket[name]<br/>
 				<b>Date:</b> $viewTicket[date]<br/>
 				<hr/>
 				<b>Ticket Details:</b><br/> 
-				$viewTicket[details]<br/><br/>
-				<b>Responses:</b><br/>
-				";
-				while($c = $getResponce->fetch_assoc()){
+				$viewTicket[details]<br/><br/>";
+				while($c = $getResponse->fetch_assoc()){
 					echo "<pre>";
 					echo $c['user'] . " posted on " . $c['date_com'] . "<br/><br/> " . stripslashes($c['content']) . "<p></p></pre><hr/>";
 				}
@@ -160,14 +151,14 @@ if(isset($_SESSION['pname'])){
 				}
 				else {
 				echo "
-					
-					Make a comment to this ticket:<br/>
 					<form method=\"post\" action\"\">
-						<textarea name=\"comment\" style=\"height:150px; width:97%;\"/></textarea>
-						<center>
-							<input type=\"submit\" name=\"subcomment\" value=\"Submit Response\" class=\"btn btn-primary\"/>
-						</form>
-					</center>
+					 <div class=\"form-group\">
+						<label for=\"respondTicket\">Response:</label>
+						<textarea name=\"comment\" style=\"height:150px;\" class=\"form-control\" id=\"respondTicket\"/></textarea>
+						<hr/>
+						<input type=\"submit\" name=\"subcomment\" value=\"Submit Response\" class=\"btn btn-primary\"/>
+					</div>
+					</form>
 				";
 				}
 				if(isset($_POST['subcomment'])){
@@ -194,11 +185,14 @@ if(isset($_SESSION['pname'])){
 			</fieldset>
 		";
 	}
-	elseif($_GET['ticket'] == "closed"){
-	echo "
-		<legend>My Closed Tickets</legend>
-			";
-			$getclosedTickets = $mysqli->query("SELECT * FROM `cype_tickets` WHERE `name` = '{$_SESSION['pname']}' AND `status` = 'Closed'");
+	elseif(isset($_GET['ticket']) == "closed"){
+	echo "<h2 class=\"text-left\">Closed Tickets</h2><hr/>";
+		$getclosedtickets = $mysqli->query("SELECT * FROM ".$prefix."tickets WHERE name = '".$_SESSION['pname']."' AND status = 0");
+		$countclosedtickets = $getclosedtickets->num_rows;
+		if($countclosedtickets == 0) {
+			echo "<div class=\"alert alert-danger\">Oops! You don't have any closed tickets!";
+		}
+		else {
 			echo "
 		<table class=\"table table-bordered table-hover table-striped\">
 			<thead>
@@ -240,8 +234,8 @@ if(isset($_SESSION['pname'])){
 			}
 			echo "
 		</table>
-		<br /><a href=\"?cype=ucp&amp;page=ticket\" class=\"btn btn-primary\">&laquo; Go Back</a>
-		";
+		<br /><a href=\"?cype=ucp&amp;page=ticket\" class=\"btn btn-primary\">&laquo; Go Back</a>";
+		}
 	}
 } else {
 	header('Location:?cype=ucp');

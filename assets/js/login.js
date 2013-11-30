@@ -14,14 +14,14 @@ $(function() {
             data: form_data, 
             success: function(response) {
                  if(response == 'success') {
-                   $("#loginform").slideUp('fast', function() {
-                     $("#message").html('<script>location.reload();</script><div class=\"alert alert-success\">Success!</div>');
+                   $("#loginform").slideUp('slow', function() {
+                     $("#message").html('<script>location.reload();</script><div class=\"alert alert-success\">Logged in. Reloading...</div>');
                    });
                  } else { 
                     $('#message').hide().html("<br/><div class=\"alert alert-danger\">Wrong username or password</div>").fadeIn('fast');
                  }
+				 console.log(response);
             }
-
          }); 
         return false;      
     });  

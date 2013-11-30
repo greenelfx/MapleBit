@@ -1,12 +1,12 @@
 <?php 
 if(isset($_SESSION['id'])){
 	if(@$_GET['fix'] == "unstuck"){
-		echo "
-			<legend>Unstuck</legend>";
+		echo "<h2 class=\"text-left\">Move Character</h2><hr/>";
 		if(!isset($_POST['unstuck'])){
 			echo "
 		Is your character stuck at a bugged map, and everytime you login you get kicked back to your desktop?<br />
-		Fill out this form below, and your character will be warped to Henesys, and you should be able to log back in!<br /><br />
+		Fill out this form below, and your character will be warped to Henesys, and you should be able to log back in!
+		<hr/>
 			<form method=\"post\" action=''>
 				<b>Select character:</b><br/>
 			<select name=\"char\" class=\"form-control\">";
@@ -32,13 +32,11 @@ if(isset($_SESSION['id'])){
 			
 		}
 	}elseif(@$_GET['fix'] == "dc"){
-		echo "
-				<legend>
-					<b>Disconnect Your Account</b>
-				</legend>";
+		echo "<h2 class=\"text-left\">Disconnect your Account</h2><hr/>";
 			if(!isset($_POST['dc'])){
 				echo "
-				Are you trying to log in to the game, but can't because it says your account is already logged in? This happens when you don't log off safely on server restarts, and can be fixed easily. All you have to do, is pressing the button below!<br /><br />
+				Are you trying to log in to the game, but can't because it says your account is already logged in? This happens when you don't log off safely on server restarts, and can be fixed easily. All you have to do, is pressing the button below!
+				<hr/>
 				<form method=\"post\" action=''>
 						<input type=\"submit\" name=\"dc\" value=\"Disconnect Account &raquo;\" class=\"btn btn-info\"/>
 				</form>";
@@ -55,9 +53,9 @@ if(isset($_SESSION['id'])){
 			}
 	}else{
 		echo "
-			<legend>Account Debugging</legend>
-			<a href=\"?cype=ucp&amp;page=charfix&amp;fix=unstuck\">Move Character</a><br />
-			<a href=\"?cype=ucp&amp;page=charfix&amp;fix=dc\">ID Logged in Error</a><br />
+			<h2 class=\"text-left\">Character Fixes</h2><hr/>
+			<a href=\"?cype=ucp&amp;page=charfix&amp;fix=unstuck\">Move Character &raquo;</a><br />
+			<a href=\"?cype=ucp&amp;page=charfix&amp;fix=dc\">Unstuck Account &raquo;</a><br />
 		";
 	}
 }else{

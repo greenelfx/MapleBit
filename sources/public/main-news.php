@@ -48,5 +48,5 @@ echo "
 			echo "No news to display right now!";
 		}
 
-echo "</div>";
+echo "<hr/></div>";
 ?>

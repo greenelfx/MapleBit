@@ -1,56 +1,49 @@
 <?php
-if(!isset($_POST['buyNX']))
-{
-	echo '
-		<form name="buynx" method="post" action="">
-			<legend>Select A Character</legend>
-	';
+if(!isset($_POST['buyNX'])) {
+	echo "<form name=\"buynx\" method=\"post\">
+	<h2 class=\"text-left\">Buy NX</h2><hr/>
+	<h4>Select a Character</h4>";
 	$fetchChar = $mysqli->query("SELECT * FROM `characters` WHERE `accountid` = '".$_SESSION['id']."'") or die();
-	while($getChar = $fetchChar->fetch_assoc())
-	{
+	$countChar = $fetchChar->num_rows;
+	if($countChar == 0) {
+		echo "<div class=\"alert alert-danger\">Oops! You don't have any characters!</div>";
+	}
+	else {
+	while($getChar = $fetchChar->fetch_assoc())	{
 		echo '<label class="radio"><input type="radio" name="selChar" value="'.$getChar['id'].'">'.$getChar['name'].'</input></label>';
 	}
-	echo '
-			<legend>Select a Package</legend>
-	';
+	echo "<h4>Select a Package</h4>";
 	$fetchPack = $mysqli->query("SELECT * FROM `".$prefix."buynx`");
-	if($fetchPack->num_rows == 0){
-	echo "<div class=\"alert alert-danger\">Oops! Looks like there's no NX packages available right now!</div>";
+		if($fetchPack->num_rows == 0){
+			echo "<div class=\"alert alert-danger\">Oops! Looks like there's no NX packages available right now!</div>";
+		} 
+		else{
+			while($getPack = $fetchPack->fetch_assoc()) {
+				echo '<label class="radio"><input type="radio" name="selPack" value="'.$getPack['meso'].'">'.number_format($getPack['nx']).' NX for '.number_format($getPack['meso']).' Mesos</input></label>';
+			}
+			echo "
+			<br/><input type=\"submit\" name=\"buyNX\" value=\"Buy NX &raquo\" class=\"btn btn-primary\"/>
+			</form><br/>";
+		}
 	}
-	while($getPack = $fetchPack->fetch_assoc())
-	{
-		echo '<label class="radio"><input type="radio" name="selPack" value="'.$getPack['meso'].'">'.number_format($getPack['nx']).' NX for '.number_format($getPack['meso']).' Mesos</input></label>';
-	}
-	echo '
-		<br/><input type="submit" name="buyNX" value="Buy NX &raquo" class="btn btn-primary"/>
-		</form><br/>
-	';
 }
-else
-{
+else {
 	$selChar = isset($_POST['selChar']) ? $_POST['selChar'] : '';
 	$selPack = isset($_POST['selPack']) ? $_POST['selPack'] : '';
-	
 	$hasMeso = $mysqli->query("SELECT * FROM `characters` WHERE `id` = '".$selChar."'") or die();
 	$getMeso = $hasMeso->fetch_assoc();
-	
 	$fetchNX = $mysqli->query("SELECT * FROM `".$prefix."buynx` WHERE `meso` = '".$selPack."'") or die();
 	$selNX = $fetchNX->fetch_assoc();
-	
-	if($selChar == NULL)
-	{
+	if($selChar == NULL) {
 		echo 'You need to select a character to pay for the NX.<br />[<a href="javascript:history.go(-1);">Go Back</a>]';
 	}
-	elseif($selPack == NULL)
-	{
+	elseif($selPack == NULL) {
 		echo 'You need to select a package that you want to buy.<br />[<a href="javascript:history.go(-1);">Go Back</a>]';
 	}
-	elseif($getMeso['meso'] < $selPack)
-	{
+	elseif($getMeso['meso'] < $selPack) {
 		echo 'The character you chose does not have enough mesos to buy this package.<br />[<a href="javascript:history.go(-1);">Go Back</a>]';
 	}
-	else
-	{
+	else {
 		$fetchCharId = $mysqli->query("SELECT * FROM `characters` WHERE `id` = '".$selChar."'") or die();
 		$getCharId = $fetchCharId->fetch_assoc();
 		$mysqli->query("UPDATE `characters` SET `meso` = meso - ".$selPack." WHERE `id` = ".$selChar."") or die();
