@@ -1,0 +1,12 @@
+READY:
+account settings
+buy nx
+char fix
+main
+profile-edit
+set profile name
+index
+tickets
+
+NOT READY:
+mail

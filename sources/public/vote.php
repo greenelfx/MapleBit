@@ -1,28 +1,10 @@
-<?php 
-/*
-    Copyright (C) 2009  Murad <Murawd>
-						Josh L. <Josho192837>
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-?>
-<legend>Vote for <?php echo $servername; ?></legend>
+<h2 class="text-left">Vote</h2><hr/>
 <?php
     $earnedpoints = false;
 	$insertnew = false; 
     $time = $mysqli->real_escape_string(time());  
-    $getaccount = $mysqli->real_escape_string($_POST['name']);  
+	$redirect = "";
+    $getaccount = $mysqli->real_escape_string(@$_POST['name']);  
 	$account = preg_replace("/[^A-Za-z0-9 ]/", '', $getaccount);
 	if ($account == '' && isset($_POST['submit'])) {$funct_error = 'You need to put in a username!';} 
 	
@@ -53,19 +35,16 @@
             $funct_error = 'Unknown Error'; 
         } 
     } 
-     
-    mysql_close($conn); 
-
     if($redirect == true) { 
         echo $funct_msg; 
     } 
      
     else { ?> 
 <div class="alert alert-info">You can vote 1 time every <?php echo round($vtime/3600) . " hours for " . $gvp . " votepoints and " . round($gnx/1000) . "k NX. Make sure to be logged off while voting!</div>"?>
-<form action="<?php $settings['action']; ?>" method="post">  
+<form method="post">  
 	<?php  
-		if($funct_msg != '') {echo '<div class="alert alert-danger">'.$funct_msg.'</div>';}  
-		if($funct_error != '') {echo '<div class="alert alert-danger">'.$funct_error.'</div>';}  
+		if(isset($funct_msg)) {echo '<div class="alert alert-danger">'.$funct_msg.'</div>';}  
+		if(isset($funct_error)) {echo '<div class="alert alert-danger">'.$funct_error.'</div>';}  
 	?>
 	<input type="text" name="name" maxlength="15" class="form-control" placeholder="Username" required autocomplete="off" style="width:50%;"/><br/>
 	<input type="submit" name="submit" value="Submit &raquo;" class="btn btn-primary"/>

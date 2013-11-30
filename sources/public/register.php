@@ -3,7 +3,7 @@ if(isset($_SESSION['id'])){
     echo "<meta http-equiv=refresh content=\"0; url=?cype=ucp\">";
 }
 else{
-echo "<legend>Registration</legend>";
+echo "<h2 class=\"text-left\">Registration</h2><hr/>";
 if (@$_POST["register"] != "1") {
 ?>
 	<form action="?cype=main&page=register" method="POST" role="form">
@@ -48,11 +48,9 @@ if (@$_POST["register"] != "1") {
 	
 	$getusername = $mysqli->real_escape_string($_POST["musername"]); # Get Username
 	$username = preg_replace("/[^A-Za-z0-9 ]/", '', $getusername); # Escape and Strip
-	$getpassword = $mysqli->real_escape_string($_POST["mpass"]); # Get Password
-	$password = preg_replace("/[^A-Za-z0-9 ]/", '', $getpassword); # Escape and Strip
-	$getconfirm_password = $mysqli->real_escape_string($_POST["mpwcheck"]); # Get Confirm Password
-	$confirm_password = preg_replace("/[^A-Za-z0-9 ]/", '', $getconfirm_password); # Escape and Strip
-	$email = $mysqli->real_escape_string($_POST["memail"]);
+	$password = $mysqli->real_escape_string($_POST["mpass"]); # Get Password
+	$confirm_password = $mysqli->real_escape_string($_POST["mpwcheck"]); # Get Confirm Password
+	$email = mysql_escape($_POST["memail"]);
 	$birth = "1990-01-01";
 	$ip = getRealIpAddr();
 	
