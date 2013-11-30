@@ -59,13 +59,13 @@ if($_SESSION['admin'] == 1)
 			else
 			{	
 				$themeselect = $_POST['theme'];
-				$nav = $_POST['nav'];
+				$nav = @$_POST['nav'];
 				if(isset($themeselect) && isset($nav)){
 					$query2 = $mysqli->query("UPDATE ".$prefix."properties SET theme = '$themeselect', nav = '$nav'");
 					echo "<div class=\"alert alert-success\">" . ucfirst($themeselect) . " applied.<br /><a href=\"?cype=admin&page=theme\">Back to Themes</a></div>";
 				}
 				else {
-					echo "<div class=\"alert alert-error\">Please select your theme and navigation bar type!<br /><a href=\"?cype=admin&page=theme&do=apply\">Back to Themes</a></div>";
+					echo "<div class=\"alert alert-danger\">Please select your theme and navigation bar type!<br /><a href=\"?cype=admin&page=theme&do=apply\">Back to Themes</a></div>";
 				}
 			}
 			

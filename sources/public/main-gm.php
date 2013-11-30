@@ -41,5 +41,5 @@ echo "
 			echo "Oops! No blogs to display right now!";
 		}
 
-echo "</div>";
+echo "<hr/></div>";
 ?>

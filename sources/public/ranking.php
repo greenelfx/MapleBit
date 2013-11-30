@@ -1,61 +1,63 @@
-﻿<?php 
-/*
-    Copyright (C) 2009  Murad <Murawd>
-						Josh L. <Josho192837>
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-// Original Author: Darkmagic
-// Modified by: Cype Developments
-
-$getjob = mysql_real_escape_string(@$_GET['job']);
-if(@$getjob != NULL) {
-	$cygnus = '';
-	if (isset($_GET['ck'])) {
-		$cygnus = " AND characters.job >= '1000'";
+﻿<?php
+$egetjob = $mysqli->real_escape_string(@$_GET['job']);
+$getjob = preg_replace("/[^A-Za-z0-9 ]/", '', $egetjob); # Escape and Strip
+$dir = "/";
+if(@$getjob != NULL && ctype_alpha($getjob)) {
+	if($getjob == "beginner"){
+		$show = "AND c.job = 000";
 	}
-	$show = $cygnus." AND characters.job LIKE '".$getjob."%'";
+	elseif($getjob == "warrior"){
+		$show = "AND c.job = 100 OR c.job = 110 OR c.job = 120 OR c.job = 130 OR c.job = 121 OR c.job = 112 OR c.job = 122 OR c.job = 132";
+	}
+	elseif($getjob == "magician"){
+		$show = "AND c.job = 210 OR c.job = 220 OR c.job = 230 OR c.job = 211 OR c.job = 221 OR c.job = 231 OR c.job = 212 OR c.job = 222 OR c.job = 232";
+	}
+	elseif($getjob == "bowman"){
+		$show = "AND c.job = 300 OR c.job = 310 OR c.job = 320 OR c.job = 311 OR c.job = 321 OR c.job = 312 OR c.job = 322";
+	}
+	elseif($getjob == "thief"){
+		$show = "AND c.job = 400 OR c.job = 410 OR c.job = 420 OR c.job = 411 OR c.job = 421 OR c.job = 422";
+	}	
+	elseif($getjob == "pirate"){
+		$show = "AND c.job = 500 OR c.job = 500 OR c.job = 510 OR c.job = 520 OR c.job = 511 OR c.job = 521 OR c.job = 512 OR c.job = 522";
+	}
+	elseif($getjob == "cygnus"){
+		$show = "AND c.job = 1000 OR c.job = 1100 OR c.job = 1110 OR c.job = 1111 OR c.job = 1112 OR c.job = 1200 OR c.job = 1210 OR c.job = 1211 OR c.job = 1212 OR c.job = 1300 OR c.job = 1310 OR c.job = 1311 OR c.job = 1312 OR c.job = 1400 OR c.job = 1410 OR c.job = 4111 OR c.job = 1412 OR c.job = 1500 OR c.job = 1511 OR c.job = 1512";
+	}	
+	elseif($getjob == "aran"){
+		$show = "AND c.job = 2000 OR c.job = 2100 OR c.job = 2110 OR c.job = 2111 OR c.job = 2112";
+	}
+	elseif($getjob == "all"){
+		$show = "";
+	}
 } else {
 	$show = "";
+	$getjob = "all";
 }
-$start = mysql_real_escape_string(@$_GET['start']);
-if(@$start) {
-	$start = $start;
-} else {
-	$start = 0;
-}
-$search = @$_GET['search'];
+$estart = $mysqli->real_escape_string(@$_GET['start']);
+$start = intval(+preg_replace("/[^A-Za-z0-9 ]/", '', $estart)); # Escape and Strip and ensure it's a number
+
+$esearch = $mysqli->real_escape_string(@$_GET['search']);
+$search = preg_replace("/[^A-Za-z0-9 ]/", '', $esearch); # Escape and Strip
 if(isset($search)) {
-$search = mysql_real_escape_string(@$_POST['search']);
-	$csearch = " AND characters.name LIKE '".$search."%'";
+$esearch = $mysqli->real_escape_string(@$_POST['search']);
+$search = preg_replace("/[^A-Za-z0-9 ]/", '', $esearch); # Escape and Strip
+	$csearch = " AND c.name LIKE '".$search."%'";
 } else {
 	$csearch = "";
 }
-
-$order = mysql_real_escape_string(@$_GET['order']);
+$order = $mysqli->real_escape_string(@$_GET['order']);
 if(@$order) {
 	$order = $order." DESC,";
 } else {
 		$order = "";
-		$result2 = mysql_query("SELECT level, exp, characters.name name, meso, job, fame, logo, logoColor, guilds.name guildname, logoBG, logoBGColor, COUNT(eventstats.characterid) wins FROM accounts, characters LEFT JOIN guilds ON guilds.guildid = characters.guildid LEFT JOIN eventstats ON characters.id=eventstats.characterid WHERE characters.gm < '$gmlevel' AND accountid = accounts.id AND banned = 0 ".$show." ".$csearch." GROUP BY characters.id DESC ORDER BY $order level DESC, exp DESC") or die("IT IS LINE ". __LINE__ . "<br />" . mysql_error());
-		$num_players=mysql_num_rows($result2);
+		$result2 = $mysqli->query("SELECT c.name , c.job , c.level, c.reborns, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE c.gm < '$gmlevel' ".$show."".$csearch." GROUP BY c.id DESC ORDER BY reborns DESC, level DESC LIMIT $start, 15") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
+		$num_players = $result2->num_rows;
 }
 if(isset($search)){
 	$row_number = 0;
 	$int = 0;
-	while(($row = mysql_fetch_array( $result2 )) && !$row_number){
+	while(($row = $result2->fetch_assoc()) && !$row_number){
 		if(strtolower($row['name']) == strtolower($search)){
 			$row_number = $int;
 		}
@@ -65,125 +67,74 @@ if(isset($search)){
 		$start = $row_number - ($row_number % 5);
 	}
 }
+#$result = $mysqli->query("SELECT reborns, level, exp, characters.name name, accounts.loggedin, meso, job, fame FROM accounts, characters LEFT JOIN guilds ON guilds.guildid = characters.guildid WHERE characters.gm < '$gmlevel' AND accountid = accounts.id AND banned = 0 ".$show."".$csearch." GROUP BY characters.id DESC ORDER BY reborns DESC, level DESC LIMIT $start, 15") or die("IT IS LINE ". __LINE__ . "<br />" . mysql_error());
+$result = $mysqli->query("SELECT c.name , c.job, c.level, c.reborns, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE c.gm < '$gmlevel' ".$show."".$csearch." GROUP BY c.id DESC ORDER BY reborns DESC, level DESC LIMIT $start, 15") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
+echo "
+<div class=\"row\">
+<div class=\"col-md-5\">
+	<div class=\"well well2\" style=\"margin: 0 auto; display: inline-block;margin-bottom:0px;\">
+	<a href=\"/rankings/beginner\"><img src=\"".$dir."assets/img/rank/beginner.png\" data-toggle=\"tooltip\" title=\"Beginner\"/></a>
+	<a href=\"/rankings/warrior\"><img src=\"".$dir."assets/img/rank/warrior.png\" data-toggle=\"tooltip\" title=\"Warrior\"/></a>
+	<a href=\"/rankings/magician\"><img src=\"".$dir."assets/img/rank/magician.png\" data-toggle=\"tooltip\" title=\"Magician\"/></a>
+	<a href=\"/rankings/bowman\"><img src=\"".$dir."assets/img/rank/bowman.png\" data-toggle=\"tooltip\" title=\"Bowman\"/></a>
+	<a href=\"/rankings/thief\"><img src=\"".$dir."assets/img/rank/thief.png\" data-toggle=\"tooltip\" title=\"Thief\"/></a>
+	<a href=\"/rankings/pirate\"><img src=\"".$dir."assets/img/rank/pirate.png\" data-toggle=\"tooltip\" title=\"Pirate\"/></a>
+	<a href=\"/rankings/cygnus\"><img src=\"".$dir."assets/img/rank/cygnus.png\" data-toggle=\"tooltip\" title=\"Cygnus\"/></a>
+	<a href=\"/rankings/aran\"><img src=\"".$dir."assets/img/rank/aran.png\" data-toggle=\"tooltip\" title=\"Aran\"/></a>
+	<img src=\"".$dir."assets/img/rank/guild.png\"/>
+	<img src=\"".$dir."assets/img/rank/fame.png\"/>
+	</div>
+</div>
+<div class=\"col-md-4 col-md-offset-3\">
+	<form id='search_form' method='post' action='/rankings&amp;order=".isset($_POST['order'])."&amp;search'>
+			<div style=\"float:right;\">
+			<div class=\"well well2\" style=\"margin-bottom:0px;\">
+				<div class=\"input-group\">			
+					<input type='text' name='search' id='s' class='form-control' placeholder='Character Name' required value='".$search."'/>
+						<span class=\"input-group-btn\">
+							<button class=\"btn btn-primary\" type=\"submit\"><i class=\"icon-search\"></i> Search</button>
+						</span>
+				</div>
+			</div>
+		</div>
+	</form>
+	</div>
+</div><hr/>";
+echo "
+<div class=\"table-responsive\">
+<table class=\"table table-striped table-hover center-table table-bordered\">
+	<thead>
+		<tr>
+			<th>Rank</th>
+			<th class=\"hidden-sm hidden-xs\">Picture</th>
+			<th>Name</th>
+			<th>Job</th>
+			<th>Rebirths</th>
+			<th>Level</th>
+			<th>Guild</th>
+		</tr>
+	</thead>
+<tbody>";
 
-$result = mysql_query("SELECT level, exp, characters.name name, meso, job, fame, logo, logoColor, guilds.name guildname, logoBG, logoBGColor, COUNT(eventstats.characterid) wins FROM accounts, characters LEFT JOIN guilds ON guilds.guildid = characters.guildid LEFT JOIN eventstats ON characters.id=eventstats.characterid WHERE characters.gm < '$gmlevel' AND accountid = accounts.id AND banned = 0 ".$show."".$csearch." GROUP BY characters.id DESC ORDER BY $order level DESC, exp DESC LIMIT $start, 5") or die("IT IS LINE ". __LINE__ . "<br />" . mysql_error());
-		echo "
-						
-							<form id='search_form' method='post' action='?cype=main&page=ranking&order=".isset($_POST['order'])."&job=".isset($_POST['job'])."&search'>
-								<input type='text' name='search' id='s' onmousedown=\"if(this.value=='Character Search'){this.value='';}\" onblur=\"if(this.value==''){this.value='Character Search'}\" value='' class='swap_value' />
-								<input type='hidden' name='start' value='".isset($_POST['start'])."' />
-								<input type='hidden' name='order' value='".isset($_POST['order'])."' />
-								<input type='hidden' name='job' value='".isset($_POST['job'])."' />
-								<input type='submit' value='Search' id='go' alt='Search' title='Search' />
-							</form>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>";
+$ranking=$start;
+$backcolor="";
+$rootfolder = "";
+require_once("assets/img/GD/coordinates.php");
+require_once("assets/img/GD/cache_character.php");	
 
+while($row = $result->fetch_assoc()) {
+	$ranking++;
+	$name = $row['name'];
+	createChar($name, $mysqli, $rootfolder);
+	$cachechar = $mysqli->query("SELECT hash, name FROM prefix_gdcache WHERE name='".$name."'")->fetch_assoc();
 	echo "
 		<tr>
-			<td>
-				<table style='border:.3em solid #505151;' border='0' width='100%' cellspacing='0'>";
-	echo "
-					<tr style='height: 40px;' align ='center' valign='middle'>
-						<td class='ranktitle'>
-							<b>Rank</b>
-						</td>
-						<td class='ranktitle'>
-							<b>Character</b>
-						</td>
-						<td class='ranktitle'>
-							<b>Name</b>
-						</td>
-						<td class='ranktitle'>
-							<b>Fame</b>
-						</td>
-						<td class='ranktitle'>
-							<b>FoJ</b>
-						</td>
-						<td class='ranktitle'>
-							<b>Job</b>
-						</td>
-						<td style='background:#727575; color: #FFF; padding:10px;'>
-							<b>Level</b>
-						</td>
-					</tr>";
-		
-	$ranking=$start;
-	$backcolor="ffffff";
-
-	while($row = mysql_fetch_array( $result )) {
-
-		if(@$backcolor2 == "ffffff")
-			$backcolor2 = "f3f3f3";
-			else
-				$backcolor2 = "ffffff";
-		if(@$row_number == $ranking && $search){
-			$backcolor = "cacaca";
-		}
-	else{
-		$backcolor=$backcolor2;
-    }
-	$ranking++;
-	
-echo "
-					<tr>
-						<td style='border-bottom:1px solid #e3e3e3;' align='center' bgcolor='#".$backcolor."'>
-							<b>$ranking</b>
-						</td>
-						<td style='border-bottom:1px solid #e3e3e3;' align='center' bgcolor='#".$backcolor."'>
-							<b><img src='GD/?n=".$row['name']."' alt='".$row['name']."' /></b>
-						</td>
-						<td style='border-bottom:1px solid #e3e3e3;' align='center' bgcolor='#".$backcolor."'>
-							<a href='#".$row['name']."'>
-								<b>".$row['name']."</b>
-							</a>
-							<br />";
-if($row['guildname'])
-	echo "
-							<b>".$row['guildname']."</b>
-							<br />
-								<img src='GD/guild.php?back=".$row['logoBG']."&amp;backcolor=".$row['logoBGColor']."&amp;top=".$row['logo']."&amp;topcolor=".$row['logoColor']."' alt='".$row['guildname']."' />";
-	else
-		echo "
-							<b>
-								<s>Guildless</s>
-							</b>";
-		echo "		
-						</td>
-						<td style='border-bottom:1px solid #e3e3e3;' align='center' bgcolor='#".$backcolor."'>
-							<b>".$row['fame']."</b>
-						</td>
-						<td style='border-bottom:1px solid #e3e3e3;' align='center' bgcolor='#".$backcolor."'>
-							<b>".$row['wins']."</b>
-						</td>
-						<td style='border-bottom:1px solid #e3e3e3;' align='center' bgcolor='#".$backcolor."'>
-							<b>";
-				if($row['job'] == 0)
-					echo "
-							<img src='images/class/job_beginner.gif' alt='Beginner' />";
-				if($row['job'] >= 100 && $row['job'] < 200)
-					echo "
-							<img src='images/class/job_warrior.gif' alt='Warrior' />";
-				if($row['job'] >= 200 && $row['job'] < 300)
-					echo "
-							<img src='images/class/job_magician.gif' alt='Magician' />";
-				if($row['job'] >= 300 && $row['job'] < 400)
-					echo "
-							<img src='images/class/job_bowman.gif' alt='Bowman' />";
-				if($row['job'] >= 400 && $row['job'] < 500)
-					echo "
-							<img src='images/class/job_thief.gif' alt='Theif' />";
-				if($row['job'] >= 500 && $row['job'] < 600)
-					echo "
-							<img src='images/class/job_pirate.gif' alt='Pirate' />"; 
-				if($row['job'] >= 900 && $row['job'] < 1000)
-					echo "
-							<img src='images/class/job_gm.gif' alt='GM' />";
-					echo "
-							<br />";
+			<td><span class=\"badge\">$ranking</span></td>
+			<td class=\"hidden-sm hidden-xs\" style=\"height:140px;overflow:hidden;\"><img class=\"bg_container img-rounded img-responsive\" style=\"background-image:url(/assets/img/rank/bg/bg";
+			echo $row['bgtype'];
+			echo ".png);margin: 0 auto;\"/><img src=\"".$dir."assets/img/GD/Characters/".$cachechar['hash'].".png\" alt=\"".$cachechar['name']."\" class=\"avatar img-responsive\" style=\"margin: 0 auto;\"></td>
+			<td><a href=\"/user/".$row['name']."\">".$row['name']."</a></td>
+			<td>";
 				if ($row['job']=="000")
 					echo "Beginner";
 				if ($row['job']=="100")
@@ -272,123 +223,93 @@ if($row['guildname'])
 					echo "GMs";
 				if ($row['job']=="910")
 					echo "SuperGM";
-echo "
-						</b>
-						</td>
-						<td style='border-bottom:1px solid #e3e3e3;' align='center' bgcolor='#".$backcolor."'>
-							<b>
-								".$row['level']."
-								<font size='-3' color='green'>
-									<br />(".$row['exp'].")
-								</font>
-							</b>
-						</td>
-					</tr>";
+				if ($row['job']=="1000")
+				echo "Noblesse";
+				if ($row['job']=="1100")
+					echo "Dawn Warrior";
+				if ($row['job']=="1110")
+					echo "Dawn Warrior 2";
+				if ($row['job']=="1111")
+					echo "Dawn Warrior 3";
+				if ($row['job']=="1112")
+					echo "Dawn Warrior 4";
+				if ($row['job']=="1200")
+					echo "Flame Wizard";
+				if ($row['job']=="1210")
+					echo "Flame Wizard 2";
+				if ($row['job']=="1211")
+					echo "Flame Wizard 3";
+				if ($row['job']=="1212")
+					echo "Flame Wizard 4";
+				if ($row['job']=="1300")
+					echo "Wind Archer";
+				if ($row['job']=="1310")
+					echo "Wind Archer 2";
+				if ($row['job']=="1311")
+					echo "Wind Archer 3";
+				if ($row['job']=="1312")
+					echo "Wind Archer 4";
+			if ($row['job']=="1400")
+					echo "Night Walker";
+				if ($row['job']=="1410")
+					echo "Night Walker 2";
+				if ($row['job']=="1411")
+					echo "Night Walker 3";
+				if ($row['job']=="1412")
+					echo "Night Walker 4";
+				if ($row['job']=="1500")
+					echo "Thunder Breaker";
+				if ($row['job']=="1510")
+					echo "Thunder Breaker 2";
+				if ($row['job']=="1511")
+					echo "Thunder Breaker 3";
+				if ($row['job']=="1512")
+					echo "Thunder Breaker 4";
+				if ($row['job']=="2000")
+					echo "Legend";
+				if ($row['job']=="2100")
+					echo "Aran";
+				if ($row['job']=="2111")
+					echo "Aran 2";
+				if ($row['job']=="2112")
+					echo "Aran 3";
+		
+	echo "</td>
+			<td>".$row['reborns']."</td>";						
+					
+	echo "
+			<td>".$row['level']."</td>
+			<td>";
+			if ($row['guildid'] != "" && $row['logoBGColor'] != "0") {
+				echo $row['gname'];
+				$guild = "&nbsp;<img class=\"guildlogo\" src=\"".$dir."assets/img/GD/guild.php?back=".$row['logoBG']."&amp;backcolor=".$row['logoBGColor']."&amp;top=".$row['logo']."&amp;topcolor=".$row['logoColor']."\" alt=\"".$row['gname']."\"/>";
+				echo $guild;
+			}
+			elseif($row['guildid'] != "" && $row['logoBGColor'] == "0") {
+				echo $row['gname'];
+			}
+			else {
+				echo "Guildless" . "&nbsp;<img class=\"guildlogo\" src=\"".$dir."assets/img/GD/guild.php?back=".$row['logoBG']."&amp;backcolor=".$row['logoBGColor']."&amp;top=".$row['logo']."&amp;topcolor=".$row['logoColor']."\" alt=\"".$row['gname']."\"/>";
+			}
+		
+		echo"</td>
+		</tr>";				
 	}
 echo "
-				</table><br />
-				<table border='0' width='100%' cellspacing='0'>
-					<tr valign='top'>
-						<td>";
-if($start)
-	echo "
-							<a href='?cype=main&amp;page=ranking&amp;start=". ($start - 5) ."&amp;order=". isset($_POST['order']) ."&amp;job=". isset($_POST['job']) ."'>
-								<img src='$styledir/images/prev.gif' alt='Previous' style='border:0px;' />&nbsp;
-							</a>";
-	else
-		echo "
-							<img src='$styledir/images/prev.gif' alt='Previous' style='border:0px;' />&nbsp;";
-if($num_players % 5)
-	$num_players = $num_players - ($num_players % 5);
-	else
-		$num_players -= 5;
-if($start <= $num_players - 5)
-	echo "
-							<a href='?cype=main&amp;page=ranking&amp;start=". ($start + 5) ."&amp;order=". isset($_POST['order']) ."&amp;job=". isset($_POST['job']) ."'>
-								<img src='$styledir/images/next.gif' alt='Next' style='border:0px;' />
-							</a>";
-	else
-		echo "
-							<img src='$styledir/images/next.gif' alt='Next' style='border:0px;' />";
-	echo "
-						</td>
-						<td class='regtext' align='center'>
-							<b>
-								<a href='?cype=main&amp;page=ranking&amp;order=level&amp;job=". isset($_POST['job']) ."'>
-									Level
-								</a>
-								| 
-								<a href='?cype=main&amp;page=ranking&amp;order=fame&amp;job=".isset($_POST['fame'])."'>
-									Fame
-								</a>
-								 | 
-								<a href='?cype=main&amp;page=ranking&amp;order=wins&amp;job=". isset($_POST['job']) ."'>
-									FoJ Wins
-								</a>
-							</b>
-						</td>
-						<td align='right'>
-							<b>Page: </b>
-							<select id=\"p_op\" onchange=\"document.location.href='?cype=main&amp;page=ranking&amp;start='+document.getElementById('p_op').value+'&amp;order=". isset($_POST['order'])."&amp;job=".isset($_POST['job'])."';\">";
-		for( $int = 0; $int <= floor($num_players / 5); $int++){
-			if( $start == ($int * 5))
-				echo "
-								<option selected='selected' value='". ($int * 5) ."'>".($int + 1)."</option>\n";
-				else
-					echo "
-								<option value='". ($int * 5) ."'>".($int + 1)."</option>\n";
-		}
+	</tbody>
+</table>
+</div>
+<ul class=\"pager\">
+	";
 
-		echo "
-							</select>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td class=\"tdbox\">
-				<table width='100%' cellspacing='0' border='0'>
-					<tr align='center'>
-						<td>
-							<a href='?cype=main&amp;page=ranking&amp;order=". $_POST['order'] ."'>
-								<img src='images/class/job_all.gif' alt='All' />
-							</a>
-						</td>
-						<td>
-							<a href='?cype=main&amp;page=ranking&amp;order=". $_POST['order'] ."&amp;job=0'>
-								<img src='images/class/job_beginner.gif' alt='Beginner' />
-							</a>
-						</td>
-						<td>
-							<a href='?cype=main&amp;page=ranking&amp;order=". $_POST['order'] ."&amp;job=1'>
-								<img src='images/class/job_warrior.gif' alt='Warrior' />
-							</a>
-						</td>
-						<td>
-							<a href='?cype=main&amp;page=ranking&amp;order=". $_POST['order'] ."&amp;job=2'>
-								<img src='images/class/job_magician.gif' alt='Magician' />
-							</a>
-						</td>
-						<td>
-							<a href='?cype=main&amp;page=ranking&amp;order=". $_POST['order'] ."&amp;job=3'>
-								<img src='images/class/job_bowman.gif' alt='Bowman' />
-							</a>
-						</td>
-						<td>
-							<a href='?cype=main&amp;page=ranking&amp;order=". $_POST['order'] ."&amp;job=4'>
-								<img src='images/class/job_thief.gif' alt='Thief' />
-							</a>
-						</td>
-						<td>
-							<a href='?cype=main&amp;page=ranking&amp;order=". $_POST['order'] ."&amp;job=5'>
-								<img src='images/class/job_pirate.gif' alt='Pirate' />
-							</a>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>";
-
+if($start == 0 || $start<=15) {
+	echo "  <li class=\"previous\"><a href=\"/rankings/".$getjob."/\"><i class=\"icon-arrow-left\"></i> Previous</a></li>";
+}
+else{
+		echo "<li class=\"previous\"><a href=\"/rankings/".$getjob."/". abs($start - 15) ."\"><i class=\"icon-arrow-left\"></i> Previous</a></li>";
+}
+echo"
+	<li class=\"next\"><a href=\"/rankings/".$getjob."/". abs($start + 15) ."\">Next<i class=\"icon-arrow-right\"></i></a></li>";
 ?>
+
+</ul>

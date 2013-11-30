@@ -1,7 +1,5 @@
 <?php 
-# Begin Session
 session_start();
-
 # Disable Notices
 
 

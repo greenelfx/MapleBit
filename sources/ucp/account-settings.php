@@ -1,9 +1,7 @@
 <?php 
 if($_SESSION['id']){
 	echo "
-		<legend>
-			Account Settings
-		</legend>";
+		<h2 class=\"text-left\">Account Settings</h2><hr/>";
 	if(!isset($_POST['modify'])){
 		$query = $mysqli->query("SELECT * FROM `accounts` WHERE `id`='".$_SESSION['id']."'") or die(mysql_error());
 		$row = $query->fetch_assoc();
@@ -14,19 +12,19 @@ if($_SESSION['id']){
 				".$row['name']."
 		<div class=\"form-group\">
 			<label for=\"cPassword\">Current Password</label>
-			<input type=\"password\" class=\"form-control\" id=\"cPassword\" placeholder=\"Current Password\" maxlength=\"12\" name=\"current\" />
+			<input type=\"password\" class=\"form-control\" id=\"cPassword\" placeholder=\"Current Password\" name=\"current\" />
 		</div>
 		<div class=\"form-group\">
 			<label for=\"nPassword\">New Password</label>
-			<input type=\"password\" class=\"form-control\" id=\"nPassword\" placeholder=\"New Password\" maxlength=\"12\" name=\"password\" />
+			<input type=\"password\" class=\"form-control\" id=\"nPassword\" placeholder=\"New Password\" name=\"password\" />
 		</div>
 		<div class=\"form-group\">
 			<label for=\"coPassword\">Confirm Password</label>
-			<input type=\"password\" class=\"form-control\" id=\"coPassword\" placeholder=\"Confirm Password\" maxlength=\"12\" name=\"copassword\" />
+			<input type=\"password\" class=\"form-control\" id=\"coPassword\" placeholder=\"Confirm Password\" name=\"copassword\" />
 		</div>
 		<div class=\"form-group\">
 			<label for=\"Email\">Email</label>
-			<input type=\"email\" class=\"form-control\" id=\"Email\" placeholder=\"email@dot.com\" maxlength=\"12\" name=\"email\" value=\"".$row['email']."\" />
+			<input type=\"email\" class=\"form-control\" id=\"Email\" placeholder=\"email@dot.com\" maxlength=\"50\" name=\"email\" value=\"".$row['email']."\" />
 		</div>
 		<div class=\"form-group\">
 			<label for=\"Birthday\">Birthday</label>
@@ -36,36 +34,36 @@ if($_SESSION['id']){
 		</form><br/>";
 
 	}else{
-		$u = $mysqli->query("SELECT * FROM `accounts` WHERE `id`='".$_SESSION['id']."'") or die(mysql_error());
+		$u = $mysqli->query("SELECT * FROM `accounts` WHERE `id`='".$_SESSION['id']."'") or die();
 		$userz = $u->fetch_assoc();
-		$current = sql_sanitize($_POST['current']);
-		$pass = sql_sanitize($_POST['password']);
-		$cpass = sql_sanitize($_POST['copassword']);
-		$email = sql_sanitize($_POST['email']);
-		$birth = sql_sanitize($_POST['birth']);
+		$current = mysql_escape($_POST['current']);
+		$pass = mysql_escape($_POST['password']);
+		$cpass = mysql_escape($_POST['copassword']);
+		$email = mysql_escape($_POST['email']);
+		$birth = mysql_escape($_POST['birth']);
 		
 		if($current){
 			if($userz['password'] == hash('sha512',$current.$userz['salt']) || sha1($current) == $userz['password']){
 				if($pass != $cpass){
-					echo "Passwords do not match.";
+					echo "<div class=\"alert alert-danger\">asswords do not match.</div>";
 				}else{
 					if(strlen($pass) < 6){
-						echo "Your password must be between 6 and 12 characters.";
+						echo "<div class=\"alert alert-danger\">Your password must be between 6 and 12 characters.</div>";
 					}elseif(strlen($pass) > 12){
-						echo "Your password must be between 6 and 12 characters.";
+						echo "<div class=\"alert alert-danger\">Your password must be between 6 and 12 characters.</div>";
 					}else{
-						$u = $mysqli->query("UPDATE `accounts` SET `password`='".sha1($pass)."',`salt`=NULL WHERE `name`='".$userz['name']."'") or die(mysql_error());
-						echo "Your changes have successfully been saved.";
+						$u = $mysqli->query("UPDATE `accounts` SET `password`='".sha1($pass)."',`salt`=NULL WHERE `name`='".$userz['name']."'") or die();
+						echo "<div class=\"alert alert-success\">Your changes have successfully been saved.</div>";
 					}
 				}
 			}else{
-				echo "The password you have entered is incorrect.";
+				echo "<div class=\"alert alert-danger\">The password you have entered is incorrect.</div>";
 			}
 		}elseif($email == ""){
-			echo "Please supply an email address.";
+			echo "<div class=\"alert alert-danger\">Please supply an email address.</div>";
 		}else{
-			$u = $mysqli->query("UPDATE `accounts` SET `email`='".$email."',`birthday`='".$birth."' WHERE `name`='".$userz['name']."'") or die(mysql_error());
-			echo "Your changes have successfully been saved.";
+			$u = $mysqli->query("UPDATE `accounts` SET `email`='".$email."',`birthday`='".$birth."' WHERE `name`='".$userz['name']."'") or die();
+			echo "<div class=\"alert alert-success\">Your changes have successfully been saved.</div>";
 		}
 	};
 }else{

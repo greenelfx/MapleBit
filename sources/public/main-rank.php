@@ -132,7 +132,7 @@ echo "
 						".$job."<br/>";
 					}
             }
-			echo "</div>";
+			echo "<hr/></div>";
 ?>
 <script type="text/javascript">
 	var image = new Image();

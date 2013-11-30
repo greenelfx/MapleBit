@@ -1,7 +1,4 @@
 	</div>
-		  <div class="col-md-2 well hidden-xs">
-			<?php include("sources/public/rightmenu.php"); ?>
-		</div>
 		<br />
 	</div></div>
 <footer>

@@ -17,4 +17,4 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 ?>
-<legend>Download</legend>
+<h2 class="text-left">Downloads</h2><hr/>

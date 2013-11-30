@@ -10,7 +10,7 @@ if(isset($_GET['page'])){
 			include ("sources/public/main-news.php");
 			include ("sources/public/main-events.php");
 			echo "</div>";
-			echo "<div class=\"row\" style=\"margin-top:30px;\">";
+			echo "<br/><div class=\"row\">";
 			include ("sources/public/main-rank.php");
 			include ("sources/public/main-gm.php");
 			echo "</div><br/>";

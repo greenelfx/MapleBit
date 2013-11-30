@@ -17,8 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-echo "
-<div class=\"col-md-6\">
+echo "<div class=\"col-md-6\">
 <a href='?cype=main&amp;page=events'><h4>Events &raquo;</h4></a><hr/>";
 	$i = 0;
 	$ge = $mysqli->query("SELECT * FROM ".$prefix."events ORDER BY id DESC LIMIT 4") or die(mysql_error());
@@ -45,5 +44,5 @@ echo "
 		if($i == 0) {
 			echo "No events to display right now!";
 		}
-echo "</div>";
+echo "<hr/></div>";
 ?>

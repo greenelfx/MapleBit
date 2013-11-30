@@ -365,24 +365,27 @@ function shortTitle($title){
 	$title = $title."...";
 	return $title;
 }
-
+function mysql_escape($string) {
+	global $mysqli, $prefix;
+	$string = $mysqli->real_escape_string($string);
+	return $string;
+}
 function sql_sanitize( $sCode ) {
 	global $mysqli, $prefix;
 	$escapedCode = $mysqli->real_escape_string( $sCode );
 	$sCode = preg_replace("/[^a-zA-Z0-9]+/", "", $escapedCode);	
 	return $sCode;							
 }
-function sanitize_space( $sCode ) {
+function sanitize_space($string) {
 	global $mysqli, $prefix;
-	$escapedCode = $mysqli->real_escape_string( $sCode );
-	$sCode = preg_replace("/^[\w\-\s]+$/", "", $escapedCode);	
-	return $sCode;							
+	$string = $mysqli->real_escape_string($string);
+	return preg_replace('/[^a-zA-Z0-9\s]/', '', $string);
 }
 
 function unSolved($type){
 	global $mysqli, $prefix;
 	if($type == "ticket"){
-		$GrabTickets = $mysqli->query("SELECT * FROM `".$prefix."tickets` WHERE `status` = 'Open'");
+		$GrabTickets = $mysqli->query("SELECT * FROM ".$prefix."tickets WHERE status = 1");
 		$counttick = $GrabTickets->num_rows;
 		if($counttick == 1){
 			$tickquant = "is";
@@ -522,13 +525,12 @@ function getNav() {
 	$navtype = $query->fetch_assoc();
 	$nav = "";
 		if ($navtype['nav'] == "0"){
-			$nav = "<nav class=\"navbar navbar-default navbar-fixed-top\" role=\"navigation\">";
-			echo $nav;
+			$nav = "navbar navbar-default";
 		}
 		if ($navtype['nav'] == "1"){
-			$nav = "<nav class=\"navbar navbar-default navbar-inverse navbar-fixed-top\" role=\"navigation\">";
-			echo $nav;
+			$nav = "navbar navbar-default navbar-inverse";
 		}
+	return $nav;
 }
 
 function countOnline() {

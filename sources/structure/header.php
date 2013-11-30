@@ -9,26 +9,21 @@
 <link href="assets/css/addon.css" rel="stylesheet" type="text/css" />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <script type="text/javascript" src="assets/js/bootstrap.js"></script>
-<script>
-// Rollover Ranking Images
-function roll(img_name, img_src){
-		document[img_name].src = img_src;
-}
-</script>
+<script type="text/javascript" src="assets/js/login.js"></script>
 </head>
 
 <body>
-<?php getNav();?>
+<div class="container">
+<nav class="<?php echo getNav();?>" role="navigation" style="bottom:-22px;">
 	<div class="navbar-header">
-		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-			<span class="sr-only">Toggle navigation</span>
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		</button>
 		<a class="navbar-brand" href="#"><?php echo $servername; ?></a>
 	</div>	
-	<div class="collapse navbar-collapse navbar-ex1-collapse">
+	<div class="navbar-collapse collapse">
 		<ul class="nav navbar-nav">
               <li><a href="?cype=main">Home</a></li>
 			<?php
@@ -52,7 +47,14 @@ function roll(img_name, img_src){
 				<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $name; ?><b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="?cype=main&amp;page=members&amp;name=<?php echo $_SESSION['pname'] ?>">Profile</a></li>
+					<?php
+						if($_SESSION['pname'] == "") {
+							echo "<li><a href=\"?cype=ucp&page=profname\">Set Profile Name</a></li>";
+						}
+						else {
+							echo "<li><a href=\"?cype=main&amp;page=members&amp;name=".$_SESSION['pname']."\">Profile</a></li>";
+						}
+					?>
 						<li><a href="?cype=ucp&page=mail&s=3"><?php mailStats(3)?> Unread Mail</a></li>
 						<li><a href="?cype=ucp&amp;page=charfix">Character Fix</a></li>
 						<li class="divider"></li>
@@ -64,9 +66,9 @@ function roll(img_name, img_src){
 	</div>
 </nav>
 
-<div class="container">
-  <div class="row">
-      <div class="col-md-2 well">
-			<?php include("sources/public/leftmenu.php"); ?>
-		</div>
-		 <div class="col-md-8">
+<div class="well">
+<div class="row">
+	<div class="col-md-3">
+		<?php include("sources/structure/sidebar.php"); ?>
+	</div>
+<div class="col-md-9">
