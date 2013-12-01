@@ -1,4 +1,7 @@
-﻿<?php
+﻿<h2 class="text-left">Rankings</h2>
+<hr/>
+<?php
+error_reporting(-1);
 $egetjob = $mysqli->real_escape_string(@$_GET['job']);
 $getjob = preg_replace("/[^A-Za-z0-9 ]/", '', $egetjob); # Escape and Strip
 $dir = "/";
@@ -67,25 +70,22 @@ if(isset($search)){
 		$start = $row_number - ($row_number % 5);
 	}
 }
-#$result = $mysqli->query("SELECT reborns, level, exp, characters.name name, accounts.loggedin, meso, job, fame FROM accounts, characters LEFT JOIN guilds ON guilds.guildid = characters.guildid WHERE characters.gm < '$gmlevel' AND accountid = accounts.id AND banned = 0 ".$show."".$csearch." GROUP BY characters.id DESC ORDER BY reborns DESC, level DESC LIMIT $start, 15") or die("IT IS LINE ". __LINE__ . "<br />" . mysql_error());
 $result = $mysqli->query("SELECT c.name , c.job, c.level, c.reborns, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE c.gm < '$gmlevel' ".$show."".$csearch." GROUP BY c.id DESC ORDER BY reborns DESC, level DESC LIMIT $start, 15") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
 echo "
 <div class=\"row\">
-<div class=\"col-md-5\">
+<div class=\"col-md-6\">
 	<div class=\"well well2\" style=\"margin: 0 auto; display: inline-block;margin-bottom:0px;\">
-	<a href=\"/rankings/beginner\"><img src=\"".$dir."assets/img/rank/beginner.png\" data-toggle=\"tooltip\" title=\"Beginner\"/></a>
-	<a href=\"/rankings/warrior\"><img src=\"".$dir."assets/img/rank/warrior.png\" data-toggle=\"tooltip\" title=\"Warrior\"/></a>
-	<a href=\"/rankings/magician\"><img src=\"".$dir."assets/img/rank/magician.png\" data-toggle=\"tooltip\" title=\"Magician\"/></a>
-	<a href=\"/rankings/bowman\"><img src=\"".$dir."assets/img/rank/bowman.png\" data-toggle=\"tooltip\" title=\"Bowman\"/></a>
-	<a href=\"/rankings/thief\"><img src=\"".$dir."assets/img/rank/thief.png\" data-toggle=\"tooltip\" title=\"Thief\"/></a>
-	<a href=\"/rankings/pirate\"><img src=\"".$dir."assets/img/rank/pirate.png\" data-toggle=\"tooltip\" title=\"Pirate\"/></a>
-	<a href=\"/rankings/cygnus\"><img src=\"".$dir."assets/img/rank/cygnus.png\" data-toggle=\"tooltip\" title=\"Cygnus\"/></a>
-	<a href=\"/rankings/aran\"><img src=\"".$dir."assets/img/rank/aran.png\" data-toggle=\"tooltip\" title=\"Aran\"/></a>
-	<img src=\"".$dir."assets/img/rank/guild.png\"/>
-	<img src=\"".$dir."assets/img/rank/fame.png\"/>
+	<a href=\"/rankings/beginner\"><img src=\"assets/img/rank/beginner.png\" data-toggle=\"tooltip\" title=\"Beginner\"/></a>
+	<a href=\"/rankings/warrior\"><img src=\"assets/img/rank/warrior.png\" data-toggle=\"tooltip\" title=\"Warrior\"/></a>
+	<a href=\"/rankings/magician\"><img src=\"assets/img/rank/magician.png\" data-toggle=\"tooltip\" title=\"Magician\"/></a>
+	<a href=\"/rankings/bowman\"><img src=\"assets/img/rank/bowman.png\" data-toggle=\"tooltip\" title=\"Bowman\"/></a>
+	<a href=\"/rankings/thief\"><img src=\"assets/img/rank/thief.png\" data-toggle=\"tooltip\" title=\"Thief\"/></a>
+	<a href=\"/rankings/pirate\"><img src=\"assets/img/rank/pirate.png\" data-toggle=\"tooltip\" title=\"Pirate\"/></a>
+	<a href=\"/rankings/cygnus\"><img src=\"assets/img/rank/cygnus.png\" data-toggle=\"tooltip\" title=\"Cygnus\"/></a>
+	<a href=\"/rankings/aran\"><img src=\"assets/img/rank/aran.png\" data-toggle=\"tooltip\" title=\"Aran\"/></a>
 	</div>
 </div>
-<div class=\"col-md-4 col-md-offset-3\">
+<div class=\"col-md-5 col-md-offset-1\">
 	<form id='search_form' method='post' action='/rankings&amp;order=".isset($_POST['order'])."&amp;search'>
 			<div style=\"float:right;\">
 			<div class=\"well well2\" style=\"margin-bottom:0px;\">
@@ -111,7 +111,6 @@ echo "
 			<th>Job</th>
 			<th>Rebirths</th>
 			<th>Level</th>
-			<th>Guild</th>
 		</tr>
 	</thead>
 <tbody>";
@@ -126,13 +125,11 @@ while($row = $result->fetch_assoc()) {
 	$ranking++;
 	$name = $row['name'];
 	createChar($name, $mysqli, $rootfolder);
-	$cachechar = $mysqli->query("SELECT hash, name FROM prefix_gdcache WHERE name='".$name."'")->fetch_assoc();
+	$cachechar = $mysqli->query("SELECT hash, name FROM ".$prefix."gdcache WHERE name='".$name."'")->fetch_assoc();
 	echo "
 		<tr>
 			<td><span class=\"badge\">$ranking</span></td>
-			<td class=\"hidden-sm hidden-xs\" style=\"height:140px;overflow:hidden;\"><img class=\"bg_container img-rounded img-responsive\" style=\"background-image:url(/assets/img/rank/bg/bg";
-			echo $row['bgtype'];
-			echo ".png);margin: 0 auto;\"/><img src=\"".$dir."assets/img/GD/Characters/".$cachechar['hash'].".png\" alt=\"".$cachechar['name']."\" class=\"avatar img-responsive\" style=\"margin: 0 auto;\"></td>
+			<td class=\"hidden-sm hidden-xs\"><img src=\"assets/img/GD/Characters/".$cachechar['hash'].".png\" alt=\"".$cachechar['name']."\" class=\"avatar img-responsive\" style=\"margin: 0 auto;\"></td>
 			<td><a href=\"/user/".$row['name']."\">".$row['name']."</a></td>
 			<td>";
 				if ($row['job']=="000")
@@ -279,20 +276,6 @@ while($row = $result->fetch_assoc()) {
 					
 	echo "
 			<td>".$row['level']."</td>
-			<td>";
-			if ($row['guildid'] != "" && $row['logoBGColor'] != "0") {
-				echo $row['gname'];
-				$guild = "&nbsp;<img class=\"guildlogo\" src=\"".$dir."assets/img/GD/guild.php?back=".$row['logoBG']."&amp;backcolor=".$row['logoBGColor']."&amp;top=".$row['logo']."&amp;topcolor=".$row['logoColor']."\" alt=\"".$row['gname']."\"/>";
-				echo $guild;
-			}
-			elseif($row['guildid'] != "" && $row['logoBGColor'] == "0") {
-				echo $row['gname'];
-			}
-			else {
-				echo "Guildless" . "&nbsp;<img class=\"guildlogo\" src=\"".$dir."assets/img/GD/guild.php?back=".$row['logoBG']."&amp;backcolor=".$row['logoBGColor']."&amp;top=".$row['logo']."&amp;topcolor=".$row['logoColor']."\" alt=\"".$row['gname']."\"/>";
-			}
-		
-		echo"</td>
 		</tr>";				
 	}
 echo "
