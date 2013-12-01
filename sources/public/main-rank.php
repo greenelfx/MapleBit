@@ -1,4 +1,5 @@
 <?php 
+error_reporting(E_ALL | E_STRICT);
 /*
     Copyright (C) 2009  Murad <Murawd>
 						Josh L. <Josho192837>
@@ -19,11 +20,17 @@
 echo "
 <div class=\"col-md-6\">
 <a href='?cype=main&amp;page=events'><h4>Rankings &raquo;</h4></a><hr/>";
-
-	$gc = $mysqli->query("SELECT * FROM `characters` WHERE `gm`='0' ORDER BY `level` DESC,`exp`") or die(mysql_error());
-		$p = 0;
+	$gc = $mysqli->query("SELECT * FROM characters WHERE gm='0' ORDER BY level DESC,exp LIMIT 5") or die(mysql_error());
+	$p = 0;
+	$backcolor="";
+	$rootfolder = "";
+	require_once("assets/img/GD/coordinates.php");
+	require_once("assets/img/GD/cache_character.php");	
 	while($player = $gc->fetch_assoc() and $p <=4){
 		$char = $player['accountid'];
+		$name = $player['name'];
+		createChar($name, $rootfolder);
+		$cachechar = $mysqli->query("SELECT hash, name FROM ".$prefix."gdcache WHERE name='".$name."'")->fetch_assoc();
 		$ban1 = $mysqli->query("SELECT banned FROM accounts WHERE id = $char");
 		$ban = $ban1->fetch_assoc();
 	  	if ($ban["banned"] == 1){ 
@@ -119,22 +126,17 @@ echo "
 					$job = "GM";
 				}elseif($player["job"] == "910"){
 					$job = "SuperGM";
-}
+}		
+
 		if ($p == 1){
-			echo "<img src=\"GD/?n=".$player['name']."\" alt='".$player['name']."' />";
+			echo "<img src=\"assets/img/GD/Characters/".$cachechar['hash'].".png\" alt='".$cachechar['name']."' name=\"top5\"/>";
 		}
-			echo "	
-				<span onmouseover=\"roll('top5', 'GD/?n=".$player['name']."'); this.style.backgroundColor='';\" onmouseout=\"this.style.backgroundColor=''\"></span>
-						<a href=\"#".$player['name']."\">".$player['name']."</a>
-
-						".$player['level']."
-
-						".$job."<br/>";
+			echo "
+					<a href=\"#".$player['name']."\" onmouseover=\"roll('top5', 'assets/img/GD/Characters/".$cachechar['hash'].".png')\">".$player['name']."</a> | ";
 					}
-            }
-			echo "<hr/></div>";
+					#".$player['level']."
+						#".$job."<br/>";
+				}
+            #}
+			echo "</div>";
 ?>
-<script type="text/javascript">
-	var image = new Image();
-	image.src = "GD/?n=".$player['name'].";
-</script>
