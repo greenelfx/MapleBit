@@ -1,23 +1,4 @@
 <?php 
-/*
-    Copyright (C) 2009  Murad <Murawd>
-						Josh L. <Josho192837>
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-
 if(isset($_GET['id'])){
 	$id = $mysqli->real_escape_string($_GET['id']);
 	$gn = $mysqli->query("SELECT * FROM `".$prefix."news` WHERE `id`='".$id."'") or die();
@@ -49,11 +30,11 @@ if(isset($_GET['id'])){
 	$fetchg = $flood->fetch_assoc();
 	$seconds = 60*$cypefloodint;
 	if(isset($_SESSION['id'])){
-		if($_SESSION['mute'] == "1"){
+		if(isset($_SESSION['mute']) == "1"){
 			include("sources/public/mutemessage.php");
 		}
 		if($n['locked'] == "1"){
-			echo "<div class=\"alert alert-error\">This article has been locked.</div>";
+			echo "<div class=\"alert alert-danger\">This article has been locked.</div>";
 		}elseif($_SESSION['pname'] == NULL){
 			echo "You must assign a profile name before you can comment news articles.";
 		}elseif($cypeflood > 0 && (time() - $seconds) < $fetchg['dateadded']) {
