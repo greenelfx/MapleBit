@@ -14,6 +14,10 @@
 function roll(img_name1, img_src1) {
 document[img_name1].src = img_src1;
 }
+function goBack()
+  {
+  window.history.back()
+  }
 </script>
 </head>
 <body>

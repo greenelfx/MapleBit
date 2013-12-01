@@ -1,0 +1,9 @@
+main
+guildlist
+accessdenied
+main-events
+main-news
+news
+main-rank
+register
+vote
