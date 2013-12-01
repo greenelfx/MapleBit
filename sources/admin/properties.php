@@ -288,7 +288,7 @@ $('#myTab a').click(function (e) {
   $(this).tab('show');
 })
 </script>
-<legend>Site Properties</legend>
+<h2 class=\"text-left\">Site Configuration</h2><hr/>
  <ul id=\"myTab\" class=\"nav nav-tabs\">
               <li class=\"active\"><a href=\"#mainconfig\" data-toggle=\"tab\">Main Configuration</a></li>
               <li><a href=\"#links\" data-toggle=\"tab\">Links</a></li>
