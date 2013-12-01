@@ -35,20 +35,20 @@ else {
 	$fetchNX = $mysqli->query("SELECT * FROM `".$prefix."buynx` WHERE `meso` = '".$selPack."'") or die();
 	$selNX = $fetchNX->fetch_assoc();
 	if($selChar == NULL) {
-		echo 'You need to select a character to pay for the NX.<br />[<a href="javascript:history.go(-1);">Go Back</a>]';
+		echo "<div class=\"alert alert-danger\">You need to select a character to pay for the NX.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 	}
 	elseif($selPack == NULL) {
-		echo 'You need to select a package that you want to buy.<br />[<a href="javascript:history.go(-1);">Go Back</a>]';
+		echo "<div class=\"alert alert-danger\">You need to select a package that you want to buy.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 	}
 	elseif($getMeso['meso'] < $selPack) {
-		echo 'The character you chose does not have enough mesos to buy this package.<br />[<a href="javascript:history.go(-1);">Go Back</a>]';
+		echo "<div class=\"alert alert-danger\">The character you chose does not have enough mesos to buy this package.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 	}
 	else {
 		$fetchCharId = $mysqli->query("SELECT * FROM `characters` WHERE `id` = '".$selChar."'") or die();
 		$getCharId = $fetchCharId->fetch_assoc();
 		$mysqli->query("UPDATE `characters` SET `meso` = meso - ".$selPack." WHERE `id` = ".$selChar."") or die();
 		$mysqli->query("UPDATE `accounts` SET `paypalNX` = paypalNX + ".$selNX['nx']." WHERE `id` = ".$getCharId['accountid']."") or die();
-		echo 'You have purchased <b>'.number_format($selNX['nx']).' NX</b> for <b>'.number_format($selPack).'. Mesos</b>. The mesos have been taken from <b>'.$getCharId['name'].'</b>.<br /><br />Thank you for your purchase,<br />Cype.<br />[<a href="?cype=ucp&page=buynx">Buy NX</a>]';
+		echo "<div class=\"alert alert-success\">You have purchased <b>".number_format($selNX['nx'])." NX</b> for <b>".number_format($selPack)." Mesos</b>. The mesos have been taken from <b>".$getCharId['name']."</b>.<hr/>Thank you for your purchase!</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 	}
 }
 ?>
