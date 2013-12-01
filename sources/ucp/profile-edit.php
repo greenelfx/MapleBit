@@ -5,29 +5,35 @@ if($_SESSION['id']){
 	}else{
 		echo "<h2 class=\"text-left\">My Profile</h2><hr/>";
 		if(!isset($_POST['edit'])){
-			$gp = $mysqli->query("SELECT * FROM `".$prefix."profile` WHERE `accountid`='".$_SESSION['id']."'") or die(mysql_error());
+			$gp = $mysqli->query("SELECT * FROM ".$prefix."profile WHERE accountid='".$_SESSION['id']."'") or die();
 			$p = $gp->fetch_assoc();
-			$gc = $mysqli->query("SELECT * FROM `characters` WHERE `accountid`='".$_SESSION['id']."'") or die(mysql_error());
+			$gc = $mysqli->query("SELECT * FROM characters WHERE accountid='".$_SESSION['id']."'") or die();
+			$cgc = $gc->num_rows;
 			echo "
-		<form method=\"POST\" role=\"form\">
+		<form method=\"post\" role=\"form\">
 		<b>Profile Name: </b>
 			".$p['name']."
-		<div class=\"form-group\">
-			<label for=\"mainChar\">Main Character:</label>
+		<div class=\"form-group\">";
+			if($cgc > 0){
+				echo "<label for=\"mainChar\">Main Character:</label>
 				<select name=\"mainchar\" class=\"form-control\" id=\"mainChar\">";
-			while($c = $gc->fetch_assoc()){
-				echo "
-					<option value=\"".$c['id']."\">".$c['name']."</option>";
+				while($c = $gc->fetch_assoc()){
+					echo "
+						<option value=\"".$c['id']."\">".$c['name']."</option>";
+				}
+				echo "</select>";
 			}
-			echo "
-				</select>
+			else {
+				echo "<hr/><div class=\"alert alert-danger\">You don't have any characters!</div><hr/>";
+			}
+	echo "
 		</div>
 		<div class=\"form-group\">
 			<label for=\"realName\">Real Name:</label>
 			<input type=\"text\" class=\"form-control\" name=\"realname\" value=\"".$p['realname']."\" required id=\"realName\"/>
 		</div>
 		<div class=\"form-group\">
-			<label for=\"myAge\">Age:</label>
+			<label for=\"myAge\">Age: </label>
 			<select name=\"age\" class=\"form-control\" id=\"myAge\">
 				<option value=\"".$p['age']."\">".$p['age']."</option>";
 			$i = 7;
@@ -297,9 +303,12 @@ if($_SESSION['id']){
 		</div>
 		<div class=\"form-group\">
 			<label for=\"favJob\">Favorite Job:</label>
-				<select name=\"favjob\" class=\"form-control\" id=\"favJob\">
-					<option value=\"".$p['favjob']."\">".$p['favjob']."</option>
-							<optgroup label=\"Beginner\">
+				<select name=\"favjob\" class=\"form-control\" id=\"favJob\">";
+				if(isset($p['favjob'])) {
+					echo "<option value=\"".$p['favjob']."\">".$p['favjob']."</option>";
+				}
+					echo "	
+								<optgroup label=\"Beginner\">
 								<option value=\"Beginner\">Beginner</option>
 								<option value=\"PermaNoob\">PermaNoob</option>
 							</optgroup>
@@ -357,13 +366,13 @@ if($_SESSION['id']){
 						</select>
 					</div>
 		<div class=\"form-group\">
-			<label for=\"aboutMe\">About Me:</label>
+			<label>About Me:</label>
 				<textarea name=\"text\" style=\"height:200px\" maxlength=\"200\" class=\"form-control\" id=\"textCount\">".stripslashes($p['text'])."</textarea>
-				<p id=\"counter\"></p>
+		</div>
+			<p id=\"counter\"></p>
 			<div class=\"alert alert-info\">Please keep in mind that all of this information will be public.</div>
 			<input type=\"submit\" name=\"edit\" value=\"Update &raquo;\" class=\"btn btn-primary\"/>
 			</form>
-		</div>
 			<script type=\"text/javascript\">
 			$('#textCount').keyup(function () {
 			var left = 200 - $(this).val().length;

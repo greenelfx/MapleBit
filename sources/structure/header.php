@@ -10,11 +10,11 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <script type="text/javascript" src="assets/js/bootstrap.js"></script>
 <script type="text/javascript" src="assets/js/login.js"></script>
-<SCRIPT LANGUAGE="JAVASCRIPT">
+<script>
 function roll(img_name1, img_src1) {
 document[img_name1].src = img_src1;
 }
-</SCRIPT>
+</script>
 </head>
 <body>
 <div class="container">
@@ -53,13 +53,13 @@ document[img_name1].src = img_src1;
 					<ul class="dropdown-menu">
 					<?php
 						if($_SESSION['pname'] == "") {
-							echo "<li><a href=\"?cype=ucp&page=profname\">Set Profile Name</a></li>";
+							echo "<li><a href=\"?cype=ucp&amp;page=profname\">Set Profile Name</a></li>";
 						}
 						else {
 							echo "<li><a href=\"?cype=main&amp;page=members&amp;name=".$_SESSION['pname']."\">Profile</a></li>";
 						}
 					?>
-						<li><a href="?cype=ucp&page=mail&s=3"><?php mailStats(3)?> Unread Mail</a></li>
+						<li><a href="?cype=ucp&amp;page=mail&amp;s=3"><?php mailStats(3)?> Unread Mail</a></li>
 						<li><a href="?cype=ucp&amp;page=charfix">Character Fix</a></li>
 						<li class="divider"></li>
 						<li><a href="?cype=misc&amp;script=logout">Log Out</a></li>

@@ -327,10 +327,12 @@ $('#myTab a').click(function (e) {
 
 <div class=\"tab-pane fade\" id=\"info\">
 	<br/>
-	<b>Server Version:</b><br/>
-		<select name=\"version\" class=\"form-control\">
+	<div class=\"form-group\">
+	<label for=\"serverVersion\">Server Version:</label>
+		<select name=\"version\" class=\"form-control\" id=\"serverVersion\">
 			".$dversion."
-		</select><br/>
+		</select>
+	</div>
 	<div class=\"form-group\">
 		<label for=\"expRate\">Experience Rate:</label>
 		<input name=\"exprate\" type=\"text\" maxlength=\"10\" class='form-control' id=\"expRate\" value=\"".$exprate."\" required/>
@@ -341,16 +343,18 @@ $('#myTab a').click(function (e) {
 	</div>	
 	<div class=\"form-group\">
 		<label for=\"dropRate\">Drop Rate:</label>
-		<input name=\"doprate\" type=\"text\" maxlength=\"10\" class='form-control' id=\"mesoRate\" value=\"".$droprate."\" required/>
+		<input name=\"doprate\" type=\"text\" maxlength=\"10\" class='form-control' id=\"dropRate\" value=\"".$droprate."\" required/>
 	</div>
 	<div class=\"form-group\">
 		<label for=\"playerCap\">Player Cap:</label>
 		<input name=\"pcap\" type=\"text\" maxlength=\"20\" class='form-control' id=\"playerCap\" value=\"".$pcap."\" required/>
 	</div>
-	<b>Flood Prevention:</b><br/>
-		<select name=\"floodp\" class=\"form-control\">
+	<div class=\"form-group\">
+	<label for=\"floodPrevention\">Flood Prevention:</label>
+		<select name=\"floodp\" class=\"form-control\" id=\"floodPrevention\">
 				".$flooddefault."
-		</select><br/>
+		</select>
+	</div>
 	<div class=\"form-group\">
 		<label for=\"postingInterval\">Posting Interval:</label> <small>Amount of time in seconds between comments</small>
 		<input name=\"floodi\" type=\"text\" maxlength=\"10\" class='form-control' id=\"postingInterval\" value=\"".$cypefloodint."\" required/>
