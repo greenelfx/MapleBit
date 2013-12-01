@@ -6,16 +6,16 @@ if(!isset($_POST['buyNX'])) {
 	$fetchChar = $mysqli->query("SELECT * FROM `characters` WHERE `accountid` = '".$_SESSION['id']."'") or die();
 	$countChar = $fetchChar->num_rows;
 	if($countChar == 0) {
-		echo "<div class=\"alert alert-danger\">Oops! You don't have any characters!</div>";
+		echo "<div class=\"alert alert-danger\">Oops! You don't have any characters!</div></form>";
 	}
 	else {
 	while($getChar = $fetchChar->fetch_assoc())	{
-		echo '<label class="radio"><input type="radio" name="selChar" value="'.$getChar['id'].'">'.$getChar['name'].'</input></label>';
+		echo '<label class="radio"><input type="radio" name="selChar" value="'.$getChar['id'].'"/>'.$getChar['name'].'</label>';
 	}
 	echo "<h4>Select a Package</h4>";
 	$fetchPack = $mysqli->query("SELECT * FROM `".$prefix."buynx`");
 		if($fetchPack->num_rows == 0){
-			echo "<div class=\"alert alert-danger\">Oops! Looks like there's no NX packages available right now!</div>";
+			echo "<div class=\"alert alert-danger\">Oops! Looks like there's no NX packages available right now!</div></form>";
 		} 
 		else{
 			while($getPack = $fetchPack->fetch_assoc()) {

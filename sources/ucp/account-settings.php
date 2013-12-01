@@ -7,7 +7,7 @@ if($_SESSION['id']){
 		$row = $query->fetch_assoc();
 		echo "
 		<div class=\"alert alert-warning\">If you want to keep your current password, leave the password fields blank! <a class=\"close\" data-dismiss=\"alert\" href=\"#\" aria-hidden=\"true\">&times;</a></div>
-		<form method=\"post\" action='' role=\"form\">
+		<form method=\"post\" role=\"form\">
 			<b><abbr title=\"You can't change this!\">Username</abbr></b>
 				".$row['name']."
 		<div class=\"form-group\">

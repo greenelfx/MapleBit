@@ -14,9 +14,9 @@ $('#myTab a').click(function (e) {
   $(this).tab('show');
 })
 </script>
-<legend>
-Welcome Back, ".getInfo('accname', 'cype_session', 'accid')."</b>
-</legend>
+<h2 class=\"text-left\">
+Welcome Back, ".getInfo('accname', 'cype_session', 'accid')."</h2>
+<hr/>
 <ul id=\"myTab\" class=\"nav nav-tabs\">
 	<li class=\"active\"><a href=\"#account\" data-toggle=\"tab\">Account</a></li>
 	<li><a href=\"#community\" data-toggle=\"tab\">Community</a></li>

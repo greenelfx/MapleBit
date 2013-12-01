@@ -62,18 +62,18 @@ if(isset($_SESSION['pname']) && $_SESSION['pname'] != ""){
 							echo "
 									<select name=\"support\" id=\"typeTicket\" class=\"form-control\">
 										<option selected=\"selected\">&middot; Ticket Subgroup &middot;</option>
-									<optgroup label=\"Game\">Game Help</optgroup
+									<optgroup label=\"Game Help\">
 										<option value=\"Bug\" >Bug Report</option>
 										<option value=\"NPC Bug\" >NPC Bug</option>
 										<option value=\"Connection\">Connection</option>
-									<optgroup label=\"Website\">WebSite Help
+									<optgroup label=\"Website\">
 										<option value=\"Missing / Broken Link\">Missing / Broken Link</option>
 										<option value=\"Error on Page\">Error on a Page</option>
 										<option value=\"Page is not functioning\">Page not functioning correctly</option>
-									<optgroup label=\"Account\">Account Help
+									<optgroup label=\"Account Help\">
 										<option value=\"Account\" >Account issue</option>
 										<option value=\"Abuse\" >User Abuse</option>
-									<optgroup label=\"Banning\">Banning Help
+									<optgroup label=\"Banning Help\">
 										<option value=\"Appeal\" >Ban Appeal</option>
 								</select>
 				</div>
@@ -151,10 +151,10 @@ if(isset($_SESSION['pname']) && $_SESSION['pname'] != ""){
 				}
 				else {
 				echo "
-					<form method=\"post\" action\"\">
+					<form method=\"post\">
 					 <div class=\"form-group\">
 						<label for=\"respondTicket\">Response:</label>
-						<textarea name=\"comment\" style=\"height:150px;\" class=\"form-control\" id=\"respondTicket\"/></textarea>
+						<textarea name=\"comment\" style=\"height:150px;\" class=\"form-control\" id=\"respondTicket\"></textarea>
 						<hr/>
 						<input type=\"submit\" name=\"subcomment\" value=\"Submit Response\" class=\"btn btn-primary\"/>
 					</div>
@@ -181,9 +181,6 @@ if(isset($_SESSION['pname']) && $_SESSION['pname'] != ""){
 						}
 					}
 				}
-			echo "
-			</fieldset>
-		";
 	}
 	elseif(isset($_GET['ticket']) == "closed"){
 	echo "<h2 class=\"text-left\">Closed Tickets</h2><hr/>";

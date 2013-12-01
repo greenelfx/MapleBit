@@ -1,6 +1,6 @@
 <?php 
 if($_SESSION['id']){
-	if(isset($_SESSION['id'])){
+	if(isset($_SESSION['pname']) == ""){
 		echo "
 		<h2 class=\"text-left\">Set Profile Name</h2><hr/>
 		Once you've created a profile, other people can view your biography, character, and so on. Note that none of your private information will be shown.<br />
@@ -11,7 +11,7 @@ if($_SESSION['id']){
 		<b>2.</b> If the name is taken, you will be notified. If not, your profile will be created.<br />
 		<b>3.</b> Afterwards you can go to the community menu and change your profile informations.<br /><br />
 
-		<form method=\"post\" action=''>
+		<form method=\"post\">
 			<input type=\"text\" name=\"name\" placeholder=\"Profile Name\" class=\"form-control\" required><br/>
 			<input type=\"submit\" name=\"create\" class=\"btn btn-primary\" value=\"Submit &raquo;\" />
 		</form>
@@ -37,7 +37,9 @@ if($_SESSION['id']){
 			}
 		};
 	}else{
-		echo "<div class=\"alert alert-danger\"><h4>Oops!</h4>Looks like you already have a profile name!</div>";
+		echo "<div class=\"alert alert-danger\">Oops! Looks like you already have a profile name!</div>";
 	}
+} else {
+	header("Location: ?cype=main");
 }
 ?>

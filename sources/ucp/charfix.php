@@ -7,7 +7,7 @@ if(isset($_SESSION['id'])){
 		Is your character stuck at a bugged map, and everytime you login you get kicked back to your desktop?<br />
 		Fill out this form below, and your character will be warped to Henesys, and you should be able to log back in!
 		<hr/>
-			<form method=\"post\" action=''>
+			<form method=\"post\">
 				<b>Select character:</b><br/>
 			<select name=\"char\" class=\"form-control\">";
 			$s = $mysqli->query("SELECT * FROM `characters` WHERE `accountid`='".$_SESSION['id']."' ORDER BY `id` ASC") or die(mysql_error());
@@ -37,7 +37,7 @@ if(isset($_SESSION['id'])){
 				echo "
 				Are you trying to log in to the game, but can't because it says your account is already logged in? This happens when you don't log off safely on server restarts, and can be fixed easily. All you have to do, is pressing the button below!
 				<hr/>
-				<form method=\"post\" action=''>
+				<form method=\"post\">
 						<input type=\"submit\" name=\"dc\" value=\"Disconnect Account &raquo;\" class=\"btn btn-info\"/>
 				</form>";
 			}else{
