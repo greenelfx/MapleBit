@@ -10,8 +10,12 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <script type="text/javascript" src="assets/js/bootstrap.js"></script>
 <script type="text/javascript" src="assets/js/login.js"></script>
+<SCRIPT LANGUAGE="JAVASCRIPT">
+function roll(img_name1, img_src1) {
+document[img_name1].src = img_src1;
+}
+</SCRIPT>
 </head>
-
 <body>
 <div class="container">
 <nav class="<?php echo getNav();?>" role="navigation" style="bottom:-22px;">
