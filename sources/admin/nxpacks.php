@@ -41,16 +41,16 @@ if($_SESSION['admin'] == 1) {
 					$meso = isset($_POST['meso']) ? $_POST['meso'] : '';
 					$nx = isset($_POST['nx']) ? $_POST['nx'] : '';
 					if(empty($meso)) {
-						echo '<div class="alert alert-error">You need to enter a  meso amount. <a href="javascript:history.go(-1);">Go Back</a></div>';
+						echo "<div class=\"alert alert-error\">You need to enter a  meso amount.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}
 					elseif(empty($nx)) {
-						echo '<div class="alert alert-error">You need to enter an NX amount. <a href="javascript:history.go(-1);">Go Back</a></div>';
+						echo "<div class=\"alert alert-error\">You need to enter an NX amount.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}
 					elseif(!is_numeric($meso)) {
-						echo '<div class="alert alert-error">You can only enter numbers. <a href="javascript:history.go(-1);">Go Back</a></div>';
+						echo "<div class=\"alert alert-error\">You can only enter numbers.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}
 					elseif(!is_numeric($nx)) {
-						echo '<div class="alert alert-error">You can only enter numbers. <a href="javascript:history.go(-1);">Go Back</a></div>';
+						echo "<div class=\"alert alert-error\">You can only enter numbers.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}
 					else {
 						$mysqli->query("UPDATE `cype_buynx` SET `meso` = '".$meso."', `nx` = '".$nx."' WHERE `id` = '".$id."'");
