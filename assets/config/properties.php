@@ -24,6 +24,7 @@ $mesorate = $prop['mesorate'];
 $droprate = $prop['droprate'];
 /* Flood Prevention */
 $cypeflood = $prop['flood'];
+$pcap = $prop['pcap'];
 /* Flood Interval */
 $cypefloodint = $prop['floodint'];
 /* Level for GMs and up */
