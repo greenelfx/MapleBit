@@ -473,9 +473,9 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 					<span class=\"help-block\">What level GM should be allowed to access the GM panel?</span>
 				</div>
 				<div class=\"form-group\">
-					<label for=\"siteInput\">Site Path <span class=\"label label-danger\">IMPORTANT. NO TRAILING SLASH</span></label>
+					<label for=\"siteInput\">Site Path <span class=\"label label-danger\">IMPORTANT. NEEDS BEGINNING SLASH AND NO TRAILING SLASH</span></label>
 					<input name=\"sitepath\" type=\"text\" maxlength=\"10\" class='form-control' id=\"siteInput\" placeholder=\"/\" value=\"/\" required/>
-					<span class=\"help-block\">/ indicates the root directory. /cype indicates that Cype has been installed in a folder called Cype. Do <b>not</b> use a trailing slash</span>
+					<span class=\"help-block\">/ indicates the root directory. /cype indicates that Cype has been installed in a folder called Cype. Do <b>not</b> use a trailing slash. If Cype is installed in a subdirectory, leave the initial /</span>
 				</div>
 				</div>
 				<hr/>
