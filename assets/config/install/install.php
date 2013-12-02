@@ -334,7 +334,7 @@ CREATE TABLE ".$prefix."gdcache (
 
 ALTER TABLE `accounts` MODIFY COLUMN `nick` TEXT NULL DEFAULT NULL;
 
-ALTER TABLE `accounts` MODIFY COLUMN `sitelogged` TEXT NULL DEFAULT NULL;
+ALTER TABLE `accounts` ADD COLUMN `sitelogged` TEXT NULL DEFAULT NULL;
 
 ALTER TABLE `".$prefix."properties` ADD COLUMN `gmlevel` INTEGER NOT NULL DEFAULT 1;
 ");
