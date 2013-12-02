@@ -38,7 +38,7 @@ body {
 				else{echo "<li><a href=\"?cype=main&amp;page=register\">Register</a></li>";}
 			?>
               <li><a href="?cype=main&amp;page=download">Download</a></li>
-			  <li><a href="?cype=main&amp;page=ranking">Rankings</a></li>
+			  <li><a href="?cype=main&amp;page=rankings">Rankings</a></li>
 			  <li><a href="?cype=main&amp;page=vote">Vote</a></li>
 			  <li><a href="?cype=main&amp;page=chat">Chat</a></li>
 			  <li><a href="?cype=main&amp;page=donate">Donate</a></li>

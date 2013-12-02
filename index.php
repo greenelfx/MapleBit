@@ -2,7 +2,6 @@
 session_start();
 # Disable Notices
 
-
 # Is Cype installed?
 if(!file_exists('assets/config/install/installdone.txt')){
 	header("Location: assets/config/install/install.php");
