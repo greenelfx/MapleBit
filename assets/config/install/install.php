@@ -166,7 +166,7 @@ CREATE TABLE `".$prefix."properties` (
   `vlink` TEXT NOT NULL,
   PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-INSERT INTO ".$prefix."properties (version) VALUES (83);
+INSERT INTO ".$prefix."properties (version, theme, nav, colnx, colvp, vlink) VALUES (83, 'cerulean', 0, 'paypalNX', 'votepoints', 'http://www.gtop100.com/maplestory');
 
 DROP TABLE IF EXISTS `".$prefix."pages`;
 CREATE TABLE `".$prefix."pages` (
