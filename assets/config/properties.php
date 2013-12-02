@@ -34,6 +34,12 @@ $gmlevel = $prop['gmlevel'];
 $MaxAcc = $prop['maxaccounts'];
 /* Get Theme */
 $theme = $prop['theme'];
+$getdarkhemes = array("cyborg", "slate");
+if (in_array($theme, $getdarkhemes)) {
+    $themetype = "dark";
+} else{
+	$themetype = "light";
+}
 /*Get Vote Config*/
 $vlink = $prop['vlink'];
 $gnx = $prop['gnx'];
