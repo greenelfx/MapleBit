@@ -70,7 +70,7 @@ if(file_exists('installdone.txt')){
 							<div class="col-lg-5">
 								<input type="text" class="form-control" id="inputPrefix" placeholder="Database Prefix" name="DBprefix" value="cype_">
 							</div>
-						</div>						
+						</div>
 						<hr/>
 							<input type="submit" class="btn btn-default btn-lg" value="Continue &raquo;" style="float:right"/>
 						</form>
@@ -166,7 +166,7 @@ CREATE TABLE `".$prefix."properties` (
   `vlink` TEXT NOT NULL,
   PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-INSERT INTO `".$prefix."properties` (version) VALUES (83);
+INSERT INTO ".$prefix."properties (version) VALUES (83);
 
 DROP TABLE IF EXISTS `".$prefix."pages`;
 CREATE TABLE `".$prefix."pages` (
@@ -325,6 +325,12 @@ CREATE TABLE `".$prefix."profile` (
 PRIMARY KEY ( `id` )
 ) ENGINE = MYISAM ;
 
+CREATE TABLE ".$prefix."gdcache (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `hash` varchar(32) NOT NULL,
+  `name` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 
 ALTER TABLE `accounts` MODIFY COLUMN `nick` TEXT NULL DEFAULT NULL;
 
@@ -345,65 +351,73 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				$smeso = $mysqli->real_escape_string(stripslashes($_POST['mesorate']));
 				$sdrop = $mysqli->real_escape_string(stripslashes($_POST['droprate']));
 				$sgmlevel = $mysqli->real_escape_string(stripslashes($_POST['gmlevel']));
+				$ssiteurl = $mysqli->real_escape_string(stripslashes($_POST['sitepath']));		
 				$sversion = $_POST['version'];
 			
 				$stop = "false";
 				if(empty($sservername)){
-					echo '<font color="red">Your server doesn&apos;t have a name?</font>';
+					echo '<div class="alert alert-danger">Your server doesn&apos;t have a name?</div>';
 					$stop = "true";
 					echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
 				}
 				if($stop == "false"){
 					if(empty($sclient)){
-						echo '<font color="red">You need a client link.</font>';
+						echo '<div class="alert alert-danger">You need a client link.</div>';
 						$stop = "true";
 						echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
 					}
 				}
 				if($stop == "false"){
 					if(empty($sforumurl)){
-						echo '<font color="red">You need to enter a forum URL. If you don&apos; have one, just put a &apos;#&apos; in the text box.</font>';
+						echo '<div class="alert alert-danger">You need to enter a forum URL. If you don&apos; have one, just put a &apos;#&apos; in the text box.</div>';
 						$stop = "true";
 						echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
 					}
 				}
 				if($stop == "false"){
 					if(empty($svote)){
-						echo '<font color="red">Enter a voting link. If you are unsure, put a &apos;#&apos; in the text box.</font>';
+						echo '<div class="alert alert-danger">Enter a voting link. If you are unsure, put a &apos;#&apos; in the text box.</div>';
 						$stop = "true";
 						echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
 					}
 				}
 				if($stop == "false"){
 					if(empty($sexp)){
-						echo '<font color="red">Enter an exp rate. Don&apos;t put an x in the text box!</font>';
+						echo '<div class="alert alert-danger">Enter an exp rate. Don&apos;t put an x in the text box!</div>';
 						$stop = "true";
 						echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
 					}
 				}
 				if($stop == "false"){
 					if(empty($smeso)){
-						echo '<font color="red">Enter a meso rate. Don&apos;t put an x in the text box!</font>';
+						echo '<div class="alert alert-danger">Enter a meso rate. Don&apos;t put an x in the text box!</div>';
 						$stop = "true";
 						echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
 					}
 				}
 				if($stop == "false"){
 					if(empty($sdrop)){
-						echo '<font color="red">Enter an drop rate. Don&apos;t put an x in the text box!</font>';
+						echo '<div class="alert alert-danger">Enter an drop rate. Don&apos;t put an x in the text box!</div>';
 						$stop = "true";
 						echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
 					}
 				}
 				if($stop == "false"){
 					if(empty($sgmlevel)){
-						echo '<font color="red">Enter the level that you must be to be GM (Usually 1)</font>';
+						echo '<div class="alert alert-danger">Enter the level that you must be to be GM (Usually 1)</div>';
 						$stop = "true";
 						echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
 					}
-				}			
+				}
 				if($stop == "false"){
-					$mysqli->query("UPDATE ".$prefix."properties SET name='$sservername', client='$sclient', version='$sversion', forumurl='$sforumurl', vote='$svote', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', flood='1', floodint='20', theme='cerulean', nav='0', pcap='100'");
+					if(empty($ssiteurl)){
+						echo '<div class="alert alert-danger">Enter the site path</div>';
+						$stop = "true";
+						echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
+					}
+				}	
+				if($stop == "false"){
+					$mysqli->query("UPDATE ".$prefix."properties SET name='$sservername', client='$sclient', version='$sversion', forumurl='$sforumurl', siteurl='$ssiteurl', vote='$svote', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', flood='1', floodint='20', theme='cerulean', nav='0', pcap='100'");
 					echo "Working...";
 					echo "<meta http-equiv=\"refresh\" content=\"1; url=?install=done\" />";
 				}
@@ -457,6 +471,11 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 					<label for=\"gmAccess\">GM Access</label>
 					<input name=\"gmlevel\" type=\"text\" maxlength=\"10\" class='form-control' id=\"gmAccess\" placeholder=\"3\" value=\"3\" required/>
 					<span class=\"help-block\">What level GM should be allowed to access the GM panel?</span>
+				</div>
+				<div class=\"form-group\">
+					<label for=\"siteInput\">Site Path <span class=\"label label-danger\">IMPORTANT. NO TRAILING SLASH</span></label>
+					<input name=\"sitepath\" type=\"text\" maxlength=\"10\" class='form-control' id=\"siteInput\" placeholder=\"/\" value=\"/\" required/>
+					<span class=\"help-block\">/ indicates the root directory. /cype indicates that Cype has been installed in a folder called Cype. Do <b>not</b> use a trailing slash</span>
 				</div>
 				</div>
 				<hr/>
