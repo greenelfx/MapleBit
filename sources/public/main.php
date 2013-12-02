@@ -28,17 +28,17 @@ if(isset($_GET['page'])){
 			include('sources/public/news.php');
 		}elseif($main == "events"){
 			include('sources/public/events.php');
-		}elseif($main == "ranking"){
-			include('sources/public/ranking.php');
+		}elseif($main == "rankings"){
+			include('sources/public/rankings.php');
 		}elseif($main == "register"){
 			include('sources/public/register.php');
 		}elseif($main == "vote"){
 			include('sources/public/vote.php');
 		}
 		else {
-		header("Location: ?cype=main");
+		header("Location: $siteurl/main");
 		}
 	}else{
-		header("Location: ?cype=main");
+		header("Location: $siteurl/main");
 	}
 ?>

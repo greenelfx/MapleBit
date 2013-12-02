@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?php echo $sitetitle.$pb; ?></title>
 <link rel="icon" href="favicon.ico" type="image/x-icon" />
-<link href="assets/css/<?php echo $theme; ?>.min.css" rel="stylesheet" type="text/css" />
-<link href="assets/css/addon.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo $siteurl; ?>/assets/css/<?php echo $theme; ?>.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo $siteurl; ?>/assets/css/addon.css" rel="stylesheet" type="text/css" />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-<script type="text/javascript" src="assets/js/bootstrap.js"></script>
-<script type="text/javascript" src="assets/js/login.js"></script>
+<script type="text/javascript" src="<?php echo $siteurl; ?>/assets/js/bootstrap.js"></script>
+<script type="text/javascript" src="<?php echo $siteurl; ?>/assets/js/login.js"></script>
 <script>
 function roll(img_name1, img_src1) {
 document[img_name1].src = img_src1;
@@ -41,7 +41,7 @@ function goBack()
 				else{echo "<li><a href=\"?cype=main&amp;page=register\">Register</a></li>";}
 			?>
               <li><a href="?cype=main&amp;page=download">Download</a></li>
-			  <li><a href="?cype=main&amp;page=ranking">Rankings</a></li>
+			  <li><a href="?cype=main&amp;page=rankings">Rankings</a></li>
 			  <li><a href="?cype=main&amp;page=vote">Vote</a></li>
 			  <li><a href="?cype=main&amp;page=chat">Chat</a></li>
 			  <li><a href="?cype=main&amp;page=donate">Donate</a></li>

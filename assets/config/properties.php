@@ -12,6 +12,7 @@ $servername = $prop['name'];
 /* Site title */
 $sitetitle = $prop['name'];
 $pb = " (Powered by Cype)";
+$siteurl = $prop['siteurl'];
 /* Download link for client */
 $client = $prop['client'];
 /* Server Version */
