@@ -1,6 +1,6 @@
-<?php 
+<?php
 if($_SESSION['id']){
-	if(isset($_SESSION['pname']) == ""){
+	if($_SESSION['pname'] == NULL){
 		echo "
 		<h2 class=\"text-left\">Set Profile Name</h2><hr/>
 		Once you've created a profile, other people can view your biography, character, and so on. Note that none of your private information will be shown.<br />
@@ -19,7 +19,7 @@ if($_SESSION['id']){
 
 		if(isset($_POST['create'])){
 			$name = $mysqli->real_escape_string($_POST['name']);
-			$pcheck = $mysqli->query("SELECT * FROM `".$prefix."profile` WHERE `name`='".$name."'") or die();
+			$pcheck = $mysqli->query("SELECT * FROM ".$prefix."profile WHERE name='".$name."'") or die();
 			if($countpcheck = $pcheck->num_rows >= 1){
 				echo "<div class=\"alert alert-danger\">The profile name entered is already in use. Please select another one.</div>";
 			}elseif($name == ""){
@@ -31,11 +31,11 @@ if($_SESSION['id']){
 			}elseif(ctype_alnum($name) == false) {
 				echo "<div class=\"alert alert-danger\">Special characters are not allowed.</div>";
 			}else{
-				$i = $mysqli->query("INSERT INTO `".$prefix."profile` (`accountid`,`name`) VALUES ('".$_SESSION['id']."','".$name."')") or die();
+				$i = $mysqli->query("INSERT INTO ".$prefix."profile (accountid, name, mainchar) VALUES ('".$_SESSION['id']."','".$name."', NULL)") or die();
 				echo "<div class=\"alert alert-success\">The profile name has been created! You can now go to the community page and edit your public profile.</div>";
 				$_SESSION['pname'] = $name;
 			}
-		};
+		}
 	}else{
 		echo "<div class=\"alert alert-danger\">Oops! Looks like you already have a profile name!</div>";
 	}
