@@ -45,7 +45,7 @@ if($_SESSION['id']){
 		if($current){
 			if($userz['password'] == hash('sha512',$current.$userz['salt']) || sha1($current) == $userz['password']){
 				if($pass != $cpass){
-					echo "<div class=\"alert alert-danger\">asswords do not match.</div>";
+					echo "<div class=\"alert alert-danger\">Passwords do not match.</div>";
 				}else{
 					if(strlen($pass) < 6){
 						echo "<div class=\"alert alert-danger\">Your password must be between 6 and 12 characters.</div>";
