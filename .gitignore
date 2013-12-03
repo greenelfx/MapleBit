@@ -1,6 +1,7 @@
 #################
 ## Cype Files
 #################
+assets/config/install/installdone.txt
 log.php
 sources/admin/log.php
 assets/img/GD/**/
