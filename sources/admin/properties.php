@@ -14,141 +14,99 @@ if($_SESSION['admin']){
 		$sexp = $mysqli->real_escape_string(stripslashes($_POST['exprate']));
 		$smeso = $mysqli->real_escape_string(stripslashes($_POST['mesorate']));
 		$sdrop = $mysqli->real_escape_string(stripslashes($_POST['droprate']));
-		$smbanner = $mysqli->real_escape_string(stripslashes($_POST['mbanner']));
-		$smblink = $mysqli->real_escape_string(stripslashes($_POST['mblink']));
-		$sscroller = $mysqli->real_escape_string(stripslashes($_POST['scroller']));
-		$scypedir = $mysqli->real_escape_string(stripslashes($_POST['cypedir']));
-		$semail = $mysqli->real_escape_string(stripslashes($_POST['email']));
+		#$smbanner = $mysqli->real_escape_string(stripslashes($_POST['mbanner']));
 		$spcap = $mysqli->real_escape_string(stripslashes($_POST['pcap']));
 		$floodp = $mysqli->real_escape_string(stripslashes($_POST['floodp']));
 		$floodi = $mysqli->real_escape_string(stripslashes($_POST['floodi']));
-		$accMax = $mysqli->real_escape_string(stripslashes($_POST['maxaccounts']));
 		$sgmlevel = $mysqli->real_escape_string(stripslashes($_POST['gmlevel']));
 		$sversion = $_POST['version'];
 		
 		$stop = "false";
 		if(empty($sservername)){
-			echo '<div class="alert alert-error">Your server doesn&apos;t have a name?</div>';
+			echo '<div class="alert alert-danger">Your server doesn&apos;t have a name?</div>';
 			$stop = "true";
-			redirect("?cype=admin&page=properties");
+			redirect_wait5("?cype=admin&page=properties");
 		}
 		if($stop == "false"){
 			if(empty($sclient)){
-				echo '<div class="alert alert-error">You need a client link.</div>';
+				echo '<div class="alert alert-danger">You need a client link.</div>';
 				$stop = "true";
-				redirect("?cype=admin&page=properties");
+				redirect_wait5("?cype=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			if(empty($sforumurl)){
-				echo '<div class="alert alert-error">You need to enter a forum URL. If you don&apos; have one, just put a &apos;#&apos; in the text box.</div>';
+				echo '<div class="alert alert-danger">You need to enter a forum URL. If you don&apos; have one, just put a &apos;#&apos; in the text box.</div>';
 				$stop = "true";
-				redirect("?cype=admin&page=properties");
+				redirect_wait5("?cype=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			if(!is_numeric($floodp)) {
-				echo '<div class="alert alert-error">Hacking Attempt Detected!</div>';
+				echo '<div class="alert alert-danger">Hacking Attempt Detected!</div>';
 				$stop = "true";
-				redirect("?cype=admin&page=properties");
+				redirect_wait5("?cype=admin&page=properties");
 			} else if(!is_numeric($floodi)) {
-				echo '<div class="alert alert-error">Invalid flood interval entered.</div>';
+				echo '<div class="alert alert-danger">Invalid flood interval entered.</div>';
 				$stop = "true";
-				redirect("?cype=admin&page=properties");
-			}
-		}
-		if($stop == "false") {
-			if(!is_numeric($accMax)) {
-				echo '<div class="alert alert-error">Please enter a valid amount of accounts per IP.</div>';
-				$stop = "true";
-				redirect("?cype=admin&page=properties");	
+				redirect_wait5("?cype=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			if(empty($ssiteurl)){
-				echo '<div class="alert alert-error">You need to enter a site URL. If you are unsure, just put a &apos;/&apos; in the text box.</div>';
+				echo '<div class="alert alert-danger">You need to enter a site URL. If you are unsure, just put a &apos;/&apos; in the text box.</div>';
 				$stop = "true";
-				redirect("?cype=admin&page=properties");
+				redirect_wait5("?cype=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			if(empty($sexp)){
-				echo '<div class="alert alert-error">Enter an exp rate. Don&apos;t put an x in the text box!</div>';
+				echo '<div class="alert alert-danger">Enter an exp rate.</div>';
 				$stop = "true";
-				redirect("?cype=admin&page=properties");
+				redirect_wait5("?cype=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			if(empty($smeso)){
-				echo '<div class="alert alert-error">Enter a meso rate. Don&apos;t put an x in the text box!</div>';
+				echo '<div class="alert alert-danger">Enter a meso rate.</div>';
 				$stop = "true";
-				redirect("?cype=admin&page=properties");
+				redirect_wait5("?cype=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			if(empty($sdrop)){
-				echo '<div class="alert alert-error">Enter an drop rate. Don&apos;t put an x in the text box!</div>';
+				echo '<div class="alert alert-danger">Enter an drop rate.</div>';
 				$stop = "true";
-				redirect("?cype=admin&page=properties");
+				redirect_wait5("?cype=admin&page=properties");
 			}
 		}
-		if($stop == "false"){
-			if(empty($smbanner)){
-				echo '<div class="alert alert-error">Enter the link to your middle banner. If you are unsure, leave the text box as is.</div>';
-				$stop = "true";
-				redirect("?cype=admin&page=properties");
-			}
-		}
-		if($stop == "false"){
-			if(empty($smblink)){
-				echo '<div class="alert alert-error">Enter a link for the middle banner. If you are unsure, put &apos;#&apos; in the text box.</div>';
-				$stop = "true";
-				redirect("?cype=admin&page=properties");
-			}
-		}
-		if($stop == "false"){
-			if(empty($sscroller)){
-				echo '<div class="alert alert-error">Enter your desired scrolling message.</div>';
-				$stop = "true";
-				redirect("?cype=admin&page=properties");
-			}
-		}
-		
-		if($stop == "false"){
-			if(empty($scypedir)){
-				echo '<div class="alert alert-error">Enter the Cype Directory. Default is /cype/</div>';
-				$stop = "true";
-				redirect("?cype=admin&page=properties");
-			}
-		}
-		if($stop == "false"){
-			if(empty($semail)){
-				echo '<div class="alert alert-error">Enter your email.</div>';
-				$stop = "true";
-				redirect("?cype=admin&page=properties");
-			}
-		}
-		
+		#if($stop == "false"){
+		#	if(empty($smbanner)){
+		#		echo '<div class="alert alert-danger">Enter the link to your middle banner. If you are unsure, leave the text box as is.</div>';
+		#		$stop = "true";
+		#		redirect_wait5("?cype=admin&page=properties");
+		#	}
+		#}		
 		if($stop == "false"){
 			if(empty($spcap)){
-				echo '<div class="alert alert-error">Enter a player cap.</div>';
+				echo '<div class="alert alert-danger">Enter a player cap.</div>';
 				$stop = "true";
-				redirect("?cype=admin&page=properties");
+				redirect_wait5("?cype=admin&page=properties");
 			}
 		}
 		
 		if($stop == "false"){
 			if(empty($sgmlevel)){
-				echo '<div class="alert alert-error">Enter a level for GMs.</div>';
+				echo '<div class="alert alert-danger">Enter a level for GMs.</div>';
 				$stop = "true";
-				redirect("?cype=admin&page=properties");
+				redirect_wait5("?cype=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
-			$mquery = "UPDATE cype_properties SET name='$sservername', title='$ssitetitle', siteurl = '$ssiteurl' client='$sclient', version='$sversion', forumurl='$sforumurl', siteurl='$ssiteurl', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', mbanner='$smbanner', mblink='$smblink', scroller='$sscroller', flood='$floodp', floodint='$floodi', cypedir='$scypedir', email='$semail', pcap='$spcap', maxaccounts='$accMax', gmlevel='$sgmlevel'";
+			$mquery = "UPDATE ".$prefix."properties SET name='$sservername', client='$sclient', forumurl='$sforumurl', siteurl = '$ssiteurl', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', version='$sversion', flood='$floodp', floodint='$floodi', pcap='$spcap', gmlevel='$sgmlevel'";
 			$exec = $mysqli->query($mquery);
 			echo "<legend>Success</legend><div class=\"alert alert-success\">Configuration Updated</div>";
-			redirect("?cype=admin&page=properties");
+			redirect_wait5("?cype=admin&page=properties");
 		}
 	}
 	elseif($do == ""){
@@ -278,10 +236,6 @@ $('#myTab a').click(function (e) {
 		<input name=\"servername\" type=\"text\" maxlength=\"100\" class='form-control' id=\"serverName\" value=\"".$servername."\" required/>
 	</div>
 	<div class=\"form-group\">
-		<label for=\"maxAccounts\">Max Accounts</label> <small>(Per IP Address. 0 = Unlimited)</small>
-		<input name=\"maxaccounts\" type=\"text\" maxlength=\"100\" class='form-control' id=\"maxAccounts\" value=\"".$servername."\" required/>
-	</div>
-	<div class=\"form-group\">
 		<label for=\"gmLevel\">Level for GM Panel Access:</label>
 		<input name=\"gmlevel\" type=\"text\" maxlength=\"100\" class='form-control' id=\"gmLevel\" value=\"".$gmlevel."\" required/>
 	</div>
@@ -322,7 +276,7 @@ $('#myTab a').click(function (e) {
 	</div>	
 	<div class=\"form-group\">
 		<label for=\"dropRate\">Drop Rate:</label>
-		<input name=\"doprate\" type=\"text\" maxlength=\"10\" class='form-control' id=\"dropRate\" value=\"".$droprate."\" required/>
+		<input name=\"droprate\" type=\"text\" maxlength=\"10\" class='form-control' id=\"dropRate\" value=\"".$droprate."\" required/>
 	</div>
 	<div class=\"form-group\">
 		<label for=\"playerCap\">Player Cap:</label>
