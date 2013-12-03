@@ -113,7 +113,7 @@ if(isset($_SESSION['pname']) && $_SESSION['pname'] != ""){
 							echo "<meta http-equiv=\"refresh\" content=\"0; url=?cype=ucp&amp;page=ticket\"/>";
 						}
 						else{
-							echo "<div class=\"alert alert-danger\">The ticket you have created was not able to be completed due to an error. Please contact the admin.</div>";
+							echo "<div class=\"alert alert-danger\">The ticket you have created was not able to be completed due to an error. Please make sure you have selected the correct type of ticket.</div>";
 						}
 					}
 				}
