@@ -1,22 +1,4 @@
 <?php 
-/*
-    Copyright (C) 2009  Murad <Murawd>
-						Josh L. <Josho192837>
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 if(isset($_GET["do"])){
 	$do = $_GET["do"];
 }else {
@@ -26,7 +8,6 @@ if(isset($_GET["do"])){
 if($_SESSION['admin']){
 	if($do == "submit"){
 		$sservername = $mysqli->real_escape_string(stripslashes($_POST['servername']));
-		$ssitetitle = $mysqli->real_escape_string(stripslashes($_POST['sitetitle']));
 		$sclient = $mysqli->real_escape_string(stripslashes($_POST['client']));
 		$sforumurl = $mysqli->real_escape_string(stripslashes($_POST['forumurl']));
 		$ssiteurl = $mysqli->real_escape_string(stripslashes($_POST['siteurl']));
@@ -44,99 +25,92 @@ if($_SESSION['admin']){
 		$accMax = $mysqli->real_escape_string(stripslashes($_POST['maxaccounts']));
 		$sgmlevel = $mysqli->real_escape_string(stripslashes($_POST['gmlevel']));
 		$sversion = $_POST['version'];
-	
+		
 		$stop = "false";
 		if(empty($sservername)){
 			echo '<div class="alert alert-error">Your server doesn&apos;t have a name?</div>';
 			$stop = "true";
-			header("refresh: 1; url=?cype=admin&page=properties");
-		}
-		if($stop == "false"){
-			if(empty($ssitetitle)){
-				echo '<div class="alert alert-error">Your site doesn&apos;t have a name?</div>';
-				$stop = "true";
-				header("refresh: 1; url=?cype=admin&page=properties");
-			}
+			redirect("?cype=admin&page=properties");
 		}
 		if($stop == "false"){
 			if(empty($sclient)){
 				echo '<div class="alert alert-error">You need a client link.</div>';
 				$stop = "true";
-				header("refresh: 1; url=?cype=admin&page=properties");
+				redirect("?cype=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			if(empty($sforumurl)){
 				echo '<div class="alert alert-error">You need to enter a forum URL. If you don&apos; have one, just put a &apos;#&apos; in the text box.</div>';
 				$stop = "true";
-				header("refresh: 1; url=?cype=admin&page=properties");
+				redirect("?cype=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			if(!is_numeric($floodp)) {
 				echo '<div class="alert alert-error">Hacking Attempt Detected!</div>';
 				$stop = "true";
-				header("refresh: 1; url=?cype=admin&page=properties");
+				redirect("?cype=admin&page=properties");
 			} else if(!is_numeric($floodi)) {
 				echo '<div class="alert alert-error">Invalid flood interval entered.</div>';
 				$stop = "true";
-				header("refresh: 1; url=?cype=admin&page=properties");
+				redirect("?cype=admin&page=properties");
 			}
 		}
 		if($stop == "false") {
 			if(!is_numeric($accMax)) {
 				echo '<div class="alert alert-error">Please enter a valid amount of accounts per IP.</div>';
 				$stop = "true";
-				header("refresh: 1; url=?cype=admin&page=properties");	
+				redirect("?cype=admin&page=properties");	
 			}
 		}
 		if($stop == "false"){
 			if(empty($ssiteurl)){
 				echo '<div class="alert alert-error">You need to enter a site URL. If you are unsure, just put a &apos;/&apos; in the text box.</div>';
 				$stop = "true";
-				header("refresh: 1; url=?cype=admin&page=properties");
+				redirect("?cype=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			if(empty($sexp)){
 				echo '<div class="alert alert-error">Enter an exp rate. Don&apos;t put an x in the text box!</div>';
 				$stop = "true";
-				header("refresh: 1; url=?cype=admin&page=properties");
+				redirect("?cype=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			if(empty($smeso)){
 				echo '<div class="alert alert-error">Enter a meso rate. Don&apos;t put an x in the text box!</div>';
 				$stop = "true";
-				header("refresh: 1; url=?cype=admin&page=properties");
+				redirect("?cype=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			if(empty($sdrop)){
 				echo '<div class="alert alert-error">Enter an drop rate. Don&apos;t put an x in the text box!</div>';
 				$stop = "true";
-				header("refresh: 1; url=?cype=admin&page=properties");
+				redirect("?cype=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			if(empty($smbanner)){
 				echo '<div class="alert alert-error">Enter the link to your middle banner. If you are unsure, leave the text box as is.</div>';
 				$stop = "true";
-				header("refresh: 1; url=?cype=admin&page=properties");
+				redirect("?cype=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			if(empty($smblink)){
 				echo '<div class="alert alert-error">Enter a link for the middle banner. If you are unsure, put &apos;#&apos; in the text box.</div>';
 				$stop = "true";
-				header("refresh: 1; url=?cype=admin&page=properties");
+				redirect("?cype=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			if(empty($sscroller)){
 				echo '<div class="alert alert-error">Enter your desired scrolling message.</div>';
 				$stop = "true";
-				header("refresh: 1; url=?cype=admin&page=properties");
+				redirect("?cype=admin&page=properties");
 			}
 		}
 		
@@ -144,14 +118,14 @@ if($_SESSION['admin']){
 			if(empty($scypedir)){
 				echo '<div class="alert alert-error">Enter the Cype Directory. Default is /cype/</div>';
 				$stop = "true";
-				header("refresh: 1; url=?cype=admin&page=properties");
+				redirect("?cype=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			if(empty($semail)){
 				echo '<div class="alert alert-error">Enter your email.</div>';
 				$stop = "true";
-				header("refresh: 1; url=?cype=admin&page=properties");
+				redirect("?cype=admin&page=properties");
 			}
 		}
 		
@@ -159,7 +133,7 @@ if($_SESSION['admin']){
 			if(empty($spcap)){
 				echo '<div class="alert alert-error">Enter a player cap.</div>';
 				$stop = "true";
-				header("refresh: 1; url=?cype=admin&page=properties");
+				redirect("?cype=admin&page=properties");
 			}
 		}
 		
@@ -167,14 +141,14 @@ if($_SESSION['admin']){
 			if(empty($sgmlevel)){
 				echo '<div class="alert alert-error">Enter a level for GMs.</div>';
 				$stop = "true";
-				header("refresh: 1; url=?cype=admin&page=properties");
+				redirect("?cype=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
-			$mquery = "UPDATE cype_properties SET name='$sservername', title='$ssitetitle', client='$sclient', version='$sversion', forumurl='$sforumurl', siteurl='$ssiteurl', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', mbanner='$smbanner', mblink='$smblink', scroller='$sscroller', flood='$floodp', floodint='$floodi', cypedir='$scypedir', email='$semail', pcap='$spcap', maxaccounts='$accMax', gmlevel='$sgmlevel'";
+			$mquery = "UPDATE cype_properties SET name='$sservername', title='$ssitetitle', siteurl = '$ssiteurl' client='$sclient', version='$sversion', forumurl='$sforumurl', siteurl='$ssiteurl', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', mbanner='$smbanner', mblink='$smblink', scroller='$sscroller', flood='$floodp', floodint='$floodi', cypedir='$scypedir', email='$semail', pcap='$spcap', maxaccounts='$accMax', gmlevel='$sgmlevel'";
 			$exec = $mysqli->query($mquery);
 			echo "<legend>Success</legend><div class=\"alert alert-success\">Configuration Updated</div>";
-			header("refresh: 1; url=?cype=admin&page=properties");
+			redirect("?cype=admin&page=properties");
 		}
 	}
 	elseif($do == ""){
@@ -310,7 +284,12 @@ $('#myTab a').click(function (e) {
 	<div class=\"form-group\">
 		<label for=\"gmLevel\">Level for GM Panel Access:</label>
 		<input name=\"gmlevel\" type=\"text\" maxlength=\"100\" class='form-control' id=\"gmLevel\" value=\"".$gmlevel."\" required/>
-	</div>		
+	</div>
+	<div class=\"form-group\">
+		<label for=\"siteURL\">Site Path: <span class=\"label label-danger\">IMPORTANT. NO TRAILING SLASH</span></label>
+		<input name=\"siteurl\" type=\"text\" maxlength=\"100\" class='form-control' id=\"siteURL\" value=\"".$siteurl."\" required/>
+		<span class=\"help-block\">/ indicates the root directory. /cype indicates that Cype has been installed in a folder called Cype. Do <b>not</b> use a trailing slash</span>			
+	</div>	
 </div>
 
 <div class=\"tab-pane fade\" id=\"links\">
