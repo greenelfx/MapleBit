@@ -9,12 +9,12 @@ if(isset($is_ajax) && $is_ajax) {
 	$i = $s->fetch_assoc();
 	if($i['password'] == hash('sha512',$p.$i['salt']) || sha1($p) == $i['password']){
 		$userz = $mysqli->query("SELECT * FROM `accounts` WHERE `name`='".$i['name']."' AND `password`='".$i['password']."'") or die();
-		$checkpname = $mysqli->query("SELECT name FROM ".$prefix."profile")->fetch_assoc();
 		$auser = $userz->fetch_assoc();
+		$checkpname = $mysqli->query("SELECT * FROM ".$prefix."profile WHERE accountid=".$auser['id']."")->fetch_assoc();
 		$_SESSION['id'] = $auser['id'];
 		$_SESSION['name'] = $auser['name'];	
-		if(!isset($checkpname['name'])){
-			$_SESSION['pname'] = "";
+		if($checkpname['name'] == 0){
+			$_SESSION['pname'] = NULL;
 		}
 		else {$_SESSION['pname'] = $checkpname['name'];}
 		if($auser['webadmin'] == "1"){

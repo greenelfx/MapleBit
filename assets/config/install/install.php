@@ -315,13 +315,13 @@ CREATE TABLE `".$prefix."profile` (
 `id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
 `accountid` INT( 10 ) NOT NULL ,
 `name` VARCHAR( 16 ) NOT NULL ,
-`mainchar` INT( 10 ) NOT NULL ,
-`realname` VARCHAR( 32 ) NOT NULL ,
+`mainchar` INT( 10 ) NOT NULL DEFAULT NULL,
+`realname` VARCHAR( 255 ) NOT NULL DEFAULT NULL,
 `age` INT( 2 ) NOT NULL ,
-`country` TEXT NULL DEFAULT NULL,
-`motto` TEXT NULL DEFAULT NULL,
-`favjob` TEXT NULL DEFAULT NULL,
-`text` TEXT NULL DEFAULT NULL,
+`country` VARCHAR( 255 ) NULL DEFAULT NULL,
+`motto` VARCHAR( 255 ) NULL DEFAULT NULL,
+`favjob` VARCHAR( 255 ) NULL DEFAULT NULL,
+`text` VARCHAR( 200 ) NULL DEFAULT NULL,
 PRIMARY KEY ( `id` )
 ) ENGINE = MYISAM ;
 
@@ -473,9 +473,9 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 					<span class=\"help-block\">What level GM should be allowed to access the GM panel?</span>
 				</div>
 				<div class=\"form-group\">
-					<label for=\"siteInput\">Site Path <span class=\"label label-danger\">IMPORTANT. NEEDS BEGINNING SLASH AND NO TRAILING SLASH</span></label>
+					<label for=\"siteInput\">Site Path <span class=\"label label-danger\">IMPORTANT. NO TRAILING SLASH</span></label>
 					<input name=\"sitepath\" type=\"text\" maxlength=\"10\" class='form-control' id=\"siteInput\" placeholder=\"/\" value=\"/\" required/>
-					<span class=\"help-block\">/ indicates the root directory. /cype indicates that Cype has been installed in a folder called Cype. Do <b>not</b> use a trailing slash. If Cype is installed in a subdirectory, leave the initial /</span>
+					<span class=\"help-block\">/ indicates the root directory. /cype indicates that Cype has been installed in a folder called Cype. Do <b>not</b> use a trailing slash</span>
 				</div>
 				</div>
 				<hr/>
