@@ -8,15 +8,18 @@ if(isset($is_ajax) && $is_ajax) {
 	$s = $mysqli->query("SELECT * FROM `accounts` WHERE `name`='".$u."'") or die();
 	$i = $s->fetch_assoc();
 	if($i['password'] == hash('sha512',$p.$i['salt']) || sha1($p) == $i['password']){
+		#echo "SELECT * FROM `accounts` WHERE `name`='".$i['name']."' AND `password`='".$i['password']."'";
 		$userz = $mysqli->query("SELECT * FROM `accounts` WHERE `name`='".$i['name']."' AND `password`='".$i['password']."'") or die();
 		$auser = $userz->fetch_assoc();
-		$checkpname = $mysqli->query("SELECT * FROM ".$prefix."profile WHERE accountid=".$auser['id']."")->fetch_assoc();
+		$checkpname = $mysqli->query("SELECT * FROM ".$prefix."profile WHERE accountid=".$auser['id']."");
+		$countcheckpname = $checkpname->num_rows;
+		$checkprofile = $checkpname->fetch_assoc();
 		$_SESSION['id'] = $auser['id'];
 		$_SESSION['name'] = $auser['name'];	
-		if($checkpname['name'] == 0){
-			$_SESSION['pname'] = NULL;
+		if($countcheckpname == 1){
+			$_SESSION['pname'] =  $checkprofile['name'];
 		}
-		else {$_SESSION['pname'] = $checkpname['name'];}
+		else {$_SESSION['pname'] = "checkpname";}
 		if($auser['webadmin'] == "1"){
 			$_SESSION['admin'] = $auser['webadmin'];
 		}

@@ -312,18 +312,19 @@ PRIMARY KEY ( `id` )
 
 DROP TABLE IF EXISTS `".$prefix."profile`;
 CREATE TABLE `".$prefix."profile` (
-`id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
-`accountid` INT( 10 ) NOT NULL ,
-`name` VARCHAR( 16 ) NOT NULL ,
-`mainchar` INT( 10 ) NOT NULL DEFAULT NULL,
-`realname` VARCHAR( 255 ) NOT NULL DEFAULT NULL,
-`age` INT( 2 ) NOT NULL ,
-`country` VARCHAR( 255 ) NULL DEFAULT NULL,
-`motto` VARCHAR( 255 ) NULL DEFAULT NULL,
-`favjob` VARCHAR( 255 ) NULL DEFAULT NULL,
-`text` VARCHAR( 200 ) NULL DEFAULT NULL,
-PRIMARY KEY ( `id` )
-) ENGINE = MYISAM ;
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `accountid` int(10) DEFAULT NULL,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `mainchar` int(10) DEFAULT NULL,
+  `realname` varchar(255) DEFAULT NULL,
+  `age` int(2) DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `motto` varchar(255) DEFAULT NULL,
+  `favjob` varchar(255) DEFAULT NULL,
+  `text` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `accountid_UNIQUE` (`accountid`)
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 CREATE TABLE ".$prefix."gdcache (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
