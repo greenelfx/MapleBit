@@ -240,9 +240,9 @@ $('#myTab a').click(function (e) {
 		<input name=\"gmlevel\" type=\"text\" maxlength=\"100\" class='form-control' id=\"gmLevel\" value=\"".$gmlevel."\" required/>
 	</div>
 	<div class=\"form-group\">
-		<label for=\"siteURL\">Site Path: <span class=\"label label-danger\">IMPORTANT. NO TRAILING SLASH</span></label>
+		<label for=\"siteURL\">Site Path: <span class=\"label label-danger\">IMPORTANT. NEEDS TRAILING SLASH</span></label>
 		<input name=\"siteurl\" type=\"text\" maxlength=\"100\" class='form-control' id=\"siteURL\" value=\"".$siteurl."\" required/>
-		<span class=\"help-block\">/ indicates the root directory. /cype indicates that Cype has been installed in a folder called Cype. Do <b>not</b> use a trailing slash</span>			
+		<span class=\"help-block\">/ indicates the root directory. /cype/ indicates that Cype has been installed in a folder called Cype. You <b>must</b> use a trailing slash</span>			
 	</div>	
 </div>
 

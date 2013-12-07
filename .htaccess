@@ -1,10 +1,4 @@
 Options -Indexes
-RewriteEngine on
-RewriteRule ^main/rankings/([^/]+)/([^/]+)$ index.php?cype=main&page=rankings&job=$1&start=$2 [S=1]
-RewriteRule ^main/rankings/([^/]+)$ index.php?cype=main&page=rankings&job=$1 [S=1]
-RewriteRule ^main/rankings/ index.php?cype=main&page=rankings [S=1]
-RewriteRule ^main/rankings index.php?cype=main&page=rankings
-RewriteRule ^([a-zA-Z]+)/?([a-zA-Z0-9/]*)$ index.php?cype=$1&page=$2 [L,QSA]
 RewriteCond %{HTTP_USER_AGENT} ^BlackWidow [OR] 
 RewriteCond %{HTTP_USER_AGENT} ^Bot\ mailto:craftbot@yahoo.com [OR] 
 RewriteCond %{HTTP_USER_AGENT} ^ChinaClaw [OR] 
