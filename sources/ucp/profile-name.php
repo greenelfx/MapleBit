@@ -1,7 +1,6 @@
 <?php
-echo $_SESSION['pname'];
 if($_SESSION['id']){
-	if($_SESSION['pname'] == NULL){
+	if($_SESSION['pname'] == "checkpname"){
 		echo "
 		<h2 class=\"text-left\">Set Profile Name</h2><hr/>
 		Once you've created a profile, other people can view your biography, character, and so on. Note that none of your private information will be shown.<br />

@@ -75,14 +75,14 @@ echo "
 <div class=\"row\">
 <div class=\"col-md-6\">
 	<div class=\"well well2\" style=\"margin: 0 auto; display: inline-block;margin-bottom:0px;\">
-	<a href=\"".$siteurl."/main/rankings/beginner\"><img src=\"".$siteurl."/assets/img/rank/beginner.png\" data-toggle=\"tooltip\" title=\"Beginner\"/></a>
-	<a href=\"".$siteurl."/main/rankings/warrior\"><img src=\"".$siteurl."/assets/img/rank/warrior.png\" data-toggle=\"tooltip\" title=\"Warrior\"/></a>
-	<a href=\"".$siteurl."/main/rankings/magician\"><img src=\"".$siteurl."/assets/img/rank/magician.png\" data-toggle=\"tooltip\" title=\"Magician\"/></a>
-	<a href=\"".$siteurl."/main/rankings/bowman\"><img src=\"".$siteurl."/assets/img/rank/bowman.png\" data-toggle=\"tooltip\" title=\"Bowman\"/></a>
-	<a href=\"".$siteurl."/main/rankings/thief\"><img src=\"".$siteurl."/assets/img/rank/thief.png\" data-toggle=\"tooltip\" title=\"Thief\"/></a>
-	<a href=\"".$siteurl."/main/rankings/pirate\"><img src=\"".$siteurl."/assets/img/rank/pirate.png\" data-toggle=\"tooltip\" title=\"Pirate\"/></a>
-	<a href=\"".$siteurl."/main/rankings/cygnus\"><img src=\"".$siteurl."/assets/img/rank/cygnus.png\" data-toggle=\"tooltip\" title=\"Cygnus\"/></a>
-	<a href=\"".$siteurl."/main/rankings/aran\"><img src=\"".$siteurl."/assets/img/rank/aran.png\" data-toggle=\"tooltip\" title=\"Aran\"/></a>
+	<a href=\"".$siteurl."/main/rankings/beginner\"><img src=\"".$siteurl."assets/img/rank/beginner.png\" data-toggle=\"tooltip\" title=\"Beginner\"/></a>
+	<a href=\"".$siteurl."/main/rankings/warrior\"><img src=\"".$siteurl."assets/img/rank/warrior.png\" data-toggle=\"tooltip\" title=\"Warrior\"/></a>
+	<a href=\"".$siteurl."/main/rankings/magician\"><img src=\"".$siteurl."assets/img/rank/magician.png\" data-toggle=\"tooltip\" title=\"Magician\"/></a>
+	<a href=\"".$siteurl."/main/rankings/bowman\"><img src=\"".$siteurl."assets/img/rank/bowman.png\" data-toggle=\"tooltip\" title=\"Bowman\"/></a>
+	<a href=\"".$siteurl."/main/rankings/thief\"><img src=\"".$siteurl."assets/img/rank/thief.png\" data-toggle=\"tooltip\" title=\"Thief\"/></a>
+	<a href=\"".$siteurl."/main/rankings/pirate\"><img src=\"".$siteurl."assets/img/rank/pirate.png\" data-toggle=\"tooltip\" title=\"Pirate\"/></a>
+	<a href=\"".$siteurl."/main/rankings/cygnus\"><img src=\"".$siteurl."assets/img/rank/cygnus.png\" data-toggle=\"tooltip\" title=\"Cygnus\"/></a>
+	<a href=\"".$siteurl."/main/rankings/aran\"><img src=\"".$siteurl."assets/img/rank/aran.png\" data-toggle=\"tooltip\" title=\"Aran\"/></a>
 	</div>
 </div>
 <div class=\"col-md-5 col-md-offset-1\">
