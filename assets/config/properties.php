@@ -13,6 +13,7 @@ $servername = $prop['name'];
 $sitetitle = $prop['name'];
 $pb = " (Powered by Cype)";
 $siteurl = $prop['siteurl'];
+$banner = $prop['mbanner'];
 /* Download link for client */
 $client = $prop['client'];
 /* Server Version */

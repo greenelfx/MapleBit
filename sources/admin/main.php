@@ -66,12 +66,14 @@ if($_SESSION['id']){
   </div>
   <div class="col-md-3">
   	<div class="well">
-	<a href="?cype=main&amp;page=guildlist">View Guilds<br/>
-	<a href="?cype=admin&amp;page=banned">View Banned Members</a>
+		<a href="?cype=admin&amp;page=banner">Add Banner<br/>
+		<!--<a href="?cype=admin&amp;page=background">Add Background-->
 	</div>
   </div>
   <div class="col-md-3">
   	<div class="well">
+	<a href="?cype=main&amp;page=guildlist">View Guilds<br/>
+	<a href="?cype=admin&amp;page=banned">View Banned Members</a><br/>
 	<a href="?cype=admin&amp;page=gmlog">View GM Log</a>
 	</div>
   </div>
@@ -103,6 +105,8 @@ if($_SESSION['id']){
 				include('sources/admin/theme.php');
 			}elseif($admin == "pages"){
 				include('sources/admin/pages.php');
+			}elseif($admin == "banner"){
+				include('sources/admin/banner.php');
 			}elseif($admin == "ticket"){
 				include('sources/admin/ticket.php');
 			}
