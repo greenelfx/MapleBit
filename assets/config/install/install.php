@@ -334,9 +334,8 @@ CREATE TABLE ".$prefix."gdcache (
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 
 ALTER TABLE `accounts` MODIFY COLUMN `nick` TEXT NULL DEFAULT NULL;
-
 ALTER TABLE `accounts` ADD COLUMN `sitelogged` TEXT NULL DEFAULT NULL;
-
+ALTER TABLE `accounts` ADD COLUMN `webadmin` int(1) DEFAULT '0';
 ALTER TABLE `".$prefix."properties` ADD COLUMN `gmlevel` INTEGER NOT NULL DEFAULT 1;
 ");
 echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";

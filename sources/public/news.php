@@ -35,7 +35,7 @@ if(isset($_GET['id'])){
 		}
 		if($n['locked'] == "1"){
 			echo "<div class=\"alert alert-danger\">This article has been locked.</div>";
-		}elseif($_SESSION['pname'] == NULL){
+		}elseif($_SESSION['pname'] == "checkpname"){
 			echo "You must assign a profile name before you can comment news articles.";
 		}elseif($cypeflood > 0 && (time() - $seconds) < $fetchg['dateadded']) {
 			echo "<b>You may only post every ".$cypefloodint." minutes to prevent spam.</b>";

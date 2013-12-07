@@ -50,7 +50,7 @@ if(@$_GET['id']){
 			include("sources/public/mutemessage.php");
 		}if($b['locked'] == "1"){
 			echo "<div class=\"alert alert-error\">This article has been locked.</div>";
-		}elseif($_SESSION['pname'] == NULL){
+		}elseif($_SESSION['pname'] == "checkpname"){
 			echo "You must assign a profile name before you can comment news articles.";
 		}elseif($cypeflood > 0 && (time() - $seconds) < $fetchg['dateadded']) {
 			echo "<b>You may only post every ".$cypefloodint." minutes to prevent spam.</b>";

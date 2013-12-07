@@ -57,7 +57,7 @@ function goBack()
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $name; ?><b class="caret"></b></a>
 					<ul class="dropdown-menu">
 					<?php
-						if($_SESSION['pname'] == "") {
+						if($_SESSION['pname'] == "checkpname") {
 							echo "<li><a href=\"?cype=ucp&amp;page=profname\">Set Profile Name</a></li>";
 						}
 						else {

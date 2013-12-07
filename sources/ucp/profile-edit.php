@@ -1,6 +1,6 @@
 <?php 
 if($_SESSION['id']){
-	if($_SESSION['pname'] == NULL){
+	if($_SESSION['pname'] == "checkpname"){
 		echo "<div class=\"alert alert-danger\">You must assign a profile name before you can edit your public profile.</div>";
 	}else{
 		echo "<h2 class=\"text-left\">My Profile</h2><hr/>";
