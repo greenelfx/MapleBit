@@ -8,7 +8,7 @@ if(isset($_SESSION['id'])){
 		if($_GET['action']=="add"){
 			echo "
 			<h2 class=\"text-left\">Add News</h2><hr/>";
-			if($_SESSION['pname'] == NULL){
+			if($_SESSION['pname'] == "checkpname"){
 				echo "<div class=\"alert alert-danger\">You must assign a profile name before you can enter this page.</div>";
 			}else{
 				if(!isset($_POST['add'])){

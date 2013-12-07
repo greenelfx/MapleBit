@@ -23,6 +23,7 @@ function goBack()
 </head>
 <body>
 <div class="container">
+<img src="<?php echo $banner; ?>" alt="banner" class="img-responsive" style="margin: 0 auto;margin-top:20px;">
 <nav class="<?php echo getNav();?>" role="navigation" style="bottom:-22px;">
 	<div class="navbar-header">
 		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
