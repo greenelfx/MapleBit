@@ -3,30 +3,12 @@
 	bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
 </script>
 <?php 
-/*
-    Copyright (C) 2009  Murad <Murawd>
-						Josh L. <Josho192837>
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 if(isset($_SESSION['id'])){
 	if($_SESSION['admin']){
 		if($_GET['action']=="add"){
 			echo "
 			<legend>Add An Event</legend>";
-			if($_SESSION['pname'] == NULL){
+			if($_SESSION['pname'] == "checkpname"){
 				echo "You must assign a profile name before you can enter this page.";
 			}else{
 				if(!isset($_POST['add'])){

@@ -675,17 +675,8 @@ function redirect($url)
         echo '</noscript>'; exit;
     }
 }
-function redirect_wait5($url)
-{
-    if (!headers_sent())
-    {    
-        header('Location: '.$url);
-        exit;
-        }
-    else
-        {  
-        echo '<meta http-equiv="refresh" content="5;url='.$url.'" />';
-		exit;
-    }
+function redirect_wait5($url) {
+	echo '<meta http-equiv="refresh" content="5;url='.$url.'" />';
+	exit;
 }
 ?>
