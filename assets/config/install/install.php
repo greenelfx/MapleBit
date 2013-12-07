@@ -420,7 +420,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				if($stop == "false"){
 					$mysqli->query("UPDATE ".$prefix."properties SET name='$sservername', client='$sclient', version='$sversion', forumurl='$sforumurl', siteurl='$ssiteurl', vote='$svote', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', flood='1', floodint='20', theme='cerulean', nav='0', pcap='100'");
 					echo "Working...";
-					echo "<meta http-equiv=\"refresh\" content=\"1; url=?install=done\" />";
+					echo "<meta http-equiv=\"refresh\" content=\"1; url=?install=5\" />";
 				}
 			}else{
 				include('../properties.php');
@@ -474,9 +474,9 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 					<span class=\"help-block\">What level GM should be allowed to access the GM panel?</span>
 				</div>
 				<div class=\"form-group\">
-					<label for=\"siteInput\">Site Path <span class=\"label label-danger\">IMPORTANT. NO TRAILING SLASH</span></label>
+					<label for=\"siteInput\">Site Path <span class=\"label label-danger\">IMPORTANT. NEED TRAILING SLASH</span></label>
 					<input name=\"sitepath\" type=\"text\" maxlength=\"10\" class='form-control' id=\"siteInput\" placeholder=\"/\" value=\"/\" required/>
-					<span class=\"help-block\">/ indicates the root directory. /cype indicates that Cype has been installed in a folder called Cype. Do <b>not</b> use a trailing slash</span>
+					<span class=\"help-block\">/ indicates the root directory. /cype/ indicates that Cype has been installed in a folder called Cype. You <b>must</b> use a trailing slash</span>
 				</div>
 				</div>
 				<hr/>
@@ -486,6 +486,33 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				";
 			}
 			break;
+		case 5:
+		echo "
+		<h4>Extract GD Images</h4>
+		<hr/>";
+		if(isset($_POST['auto'])){
+			echo "<b>Extracting archive. This may take some time.</b><hr/>";
+			$zip = new ZipArchive;
+			if ($zip->open('../../img/GD/GD.zip') === TRUE) {
+			  $zip->extractTo('../../img/GD/');
+			  $zip->close();
+			  echo "<div class=\"alert alert-success\">Success. Please click the button below to proceed.</div><hr/><a href=\"?install=done\" class=\"btn btn-primary btn-lg\" style=\"float:right;\">Finish Installation &raquo;</a><br/><br/>";
+			} else {
+			  echo "<div class=\"alert alert-warning\">Failed.</div><hr/>";
+			}
+		}
+		elseif(isset($_POST['myself'])) {
+			echo "<meta http-equiv=\"refresh\" content=\"0; url=?install=done\" />";
+		}
+		else {
+		echo "For the rankings to work, you need the GD archive to be extracted. This can take some time, so you can either do it yourself later, or have it done automatically. If you choose to do it yourself, go to assets/img/GD and extract the .zip archive.
+		<hr/>
+		<form method=\"post\">
+			<input type=\"submit\" name=\"auto\" class=\"btn btn-primary btn-lg\" value=\"Do it for me! &raquo;\" style=\"float:right;\"/>
+			<input type=\"submit\" name=\"myself\" class=\"btn btn-warning btn-lg\" value=\"I&#39;ll do it myself! &raquo;\" style=\"float:left;\"/><br/><br/>
+		</form>";
+		}
+		break;
 		case "done":
 			echo "<h4>Woohoo! You're done installing Cype!</h4>
 			<hr/>
