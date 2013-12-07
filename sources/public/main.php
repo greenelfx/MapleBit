@@ -36,9 +36,9 @@ if(isset($_GET['page'])){
 			include('sources/public/vote.php');
 		}
 		else {
-		header("Location: $siteurl/main");
+		header("Location: $siteurl");
 		}
 	}else{
-		header("Location: $siteurl/main");
+		header("Location: $siteurl");
 	}
 ?>
