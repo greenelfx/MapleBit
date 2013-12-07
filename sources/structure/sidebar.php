@@ -16,7 +16,7 @@ if(isset($_SESSION['id'])){
 		<a href=\"?cype=gmcp\" class=\"btn btn-default btn-block\">GM Panel</a>
 		";
 	}
-	if(@$_SESSION['pname'] == NULL){
+	if(@$_SESSION['pname'] == "checkpname"){
 		echo "
 		<a href=\"?cype=ucp&amp;page=profname\" class=\"btn btn-default btn-block\">Set Profile Name</a>
 		";
