@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?php echo $sitetitle.$pb; ?></title>
 <link rel="icon" href="favicon.ico" type="image/x-icon" />
-<link href="assets/css/<?php echo $theme; ?>.min.css" rel="stylesheet" type="text/css" />
-<link href="assets/css/addon.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo $siteurl; ?>assets/css/<?php echo $theme; ?>.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo $siteurl; ?>assets/css/addon.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 body {
   min-height: 200px;
@@ -14,8 +14,8 @@ body {
 }
 </style>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-<script type="text/javascript" src="assets/js/bootstrap.js"></script>
-<script type="text/javascript" src="assets/js/login.js"></script>
+<script type="text/javascript" src="<?php echo $siteurl; ?>assets/js/bootstrap.js"></script>
+<script type="text/javascript" src="<?php echo $siteurl; ?>assets/js/login.js"></script>
 </head>
 
 <body>
