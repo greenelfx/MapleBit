@@ -12,7 +12,7 @@ if($getcype == "misc"){
 	}elseif($script == "logout"){
 		include('sources/misc/logout.php');
 	}else{
-		header("Location: ?cype=main");
+		redirect("?cype=main");
 	}
 }
 ?>

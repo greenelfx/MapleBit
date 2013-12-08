@@ -1,0 +1,5 @@
+READY:
+admin_header
+footer
+header
+sidebar

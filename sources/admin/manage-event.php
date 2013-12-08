@@ -45,7 +45,7 @@ if(isset($_SESSION['id'])){
 					}elseif($content == ""){
 						echo "You must enter some content.";
 					}else{
-						$i = $mysqli->query("INSERT INTO `cype_events` (`title`,`author`,`date`,`type`,`status`,`content`) VALUES ('".$title."','".$_SESSION['pname']."','".$date."','".$cat."','".$status."','".$content."')") or die(mysql_error());
+						$i = $mysqli->query("INSERT INTO ".$prefix."events (`title`,`author`,`date`,`type`,`status`,`content`) VALUES ('".$title."','".$_SESSION['pname']."','".$date."','".$cat."','".$status."','".$content."')") or die(mysql_error());
 						echo "Your event has been posted.";
 					}
 				}
