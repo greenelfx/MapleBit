@@ -1,9 +1,19 @@
+READY:
 main
 guildlist
 accessdenied
 main-events
 main-news
-news
 main-rank
+main-gm
 register
 vote
+gmblog
+news
+home
+events
+members
+
+NOT READY:
+download
+rankings

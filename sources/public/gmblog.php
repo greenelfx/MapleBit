@@ -1,38 +1,21 @@
 <?php 
-/*
-    Copyright (C) 2009  Murad <Murawd>
-						Josh L. <Josho192837>
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
 if(@$_GET['id']){
 	$id = sql_sanitize($_GET['id']);
-	$gb = $mysqli->query("SELECT * FROM `".$prefix."gmblog` WHERE `id`='".$id."'") or die(mysql_error());
+	$gb = $mysqli->query("SELECT * FROM ".$prefix."gmblog WHERE id='".$id."'") or die();
 	$b = $gb->fetch_assoc();
 	echo "
-		<legend>".$b['title']." | Posted by <a href=\"?cype=main&amp;page=members&amp;name=".$b['author']."\">".$b['author']."</a> on ".$b['date']."</legend>";
-	echo nl2br(stripslashes($b['content']))."<br /><br />";
-	$gc = $mysqli->query("SELECT * FROM `".$prefix."bcomments` WHERE `bid`='".$id."' ORDER BY `id` ASC") or die(mysql_error());
+		<h2 class=\"text-left\">".$b['title']." | Posted by <a href=\"?cype=main&amp;page=members&amp;name=".$b['author']."\">".$b['author']."</a> on ".$b['date']."</h2><hr/>";
+	echo nl2br(stripslashes($b['content']))."<hr/>";
+	$gc = $mysqli->query("SELECT * FROM ".$prefix."bcomments WHERE bid='".$id."' ORDER BY id ASC") or die();
 	$cc = $gc->num_rows;
-	$flood = $mysqli->query("SELECT * FROM `".$prefix."bcomments` WHERE `bid`='".sql_sanitize($id)."' && `author`='".sql_sanitize($_SESSION['pname'])."' ORDER BY `dateadded` DESC LIMIT 1") or die(mysql_error());
+	$flood = $mysqli->query("SELECT * FROM ".$prefix."bcomments WHERE bid='".sql_sanitize($id)."' && author='".sql_sanitize($_SESSION['pname'])."' ORDER BY dateadded DESC LIMIT 1") or die();
 	$fetchg = $flood->fetch_assoc();
 	$seconds = 60*$cypefloodint;
 
 	echo "
 		<b>".$b['views']."</b> Views and <b>".$cc."</b> Responses<hr/>";
 
-	$av = $mysqli->query("UPDATE `".$prefix."gmblog` SET `views` = views + 1 WHERE `id`='".$id."'") or die(mysql_error());
+	$av = $mysqli->query("UPDATE ".$prefix."gmblog SET views = views + 1 WHERE id='".$id."'") or die();
 	if(isset($_SESSION['admin']) || isset($_SESSION['gm'])){
 		if($b['locked'] == "1"){
 			$buttontext = "Unlock";
@@ -47,26 +30,31 @@ if(@$_GET['id']){
 	}
 	if(isset($_SESSION['id'])){
 		if($_SESSION['mute'] == "1"){
-			include("sources/public/mutemessage.php");
+			echo "<div class==\"alert alert-danger\">You have been muted. Please contact an administrator</div>";
 		}if($b['locked'] == "1"){
-			echo "<div class=\"alert alert-error\">This article has been locked.</div>";
+			echo "<div class=\"alert alert-danger\">This article has been locked.</div>";
 		}elseif($_SESSION['pname'] == "checkpname"){
-			echo "You must assign a profile name before you can comment news articles.";
+			echo "<div class=\"alert alert-danger\">You must assign a profile name before you can comment blogs.</div>";
 		}elseif($cypeflood > 0 && (time() - $seconds) < $fetchg['dateadded']) {
-			echo "<b>You may only post every ".$cypefloodint." minutes to prevent spam.</b>";
+			echo "<div class=\"alert alert-danger\">You may only post every ".$cypefloodint." minutes to prevent spam.</div>";
 		}else{
 			echo "
-				<form method=\"post\" action=''>
-					<b>Mood:</b><br/>
-						<select name=\"feedback\">
+			<form method=\"post\">
+				 <div class=\"form-group\">
+					<label for=\"inputMood\">Mood</label>
+						<select name=\"feedback\" class=\"form-control\" id=\"inputMood\">
 							<option value=\"0\">Positive</option>
 							<option value=\"1\">Neutral</option>
 							<option value=\"2\">Negative</option>
-						</select><br/>
-					<b>Comment:</b><br/>
-					<textarea name=\"text\" class=\"form-control\" rows=\"5\"></textarea><br/>
+						</select>
+					</div>
+					<div class=\"form-group\">
+						<label for=\"inputComment\">Comment:</label>
+						<textarea name=\"text\" class=\"form-control\" rows=\"5\" id=\"inputComment\"></textarea>
+					</div>
+					<hr/>
 					<input type=\"submit\" name=\"comment\" value=\"Comment\" class=\"btn btn-primary\"/>
-				</form>";
+			</form>";
 		}
 	}else{
 		echo "
@@ -75,19 +63,19 @@ if(@$_GET['id']){
 	if(@$_POST['comment']){
 		$feedback = sanitize_space($_POST['feedback']);
 		$date = date("m-d-y g:i A");
-		$comment = bbcodeParser(sanitize_space($_POST['text']));
+		$comment = sanitize_space($_POST['text']);
 		if($comment == ""){
 			echo "
 				<br/><div class=\"alert alert-danger\">You cannot leave the comment field blank!</div>";
 		}else{
 			$timestamp = time();
-			$i = $mysqli->query("INSERT INTO `".$prefix."bcomments` (`bid`,`author`,`feedback`,`date`,`comment`,`dateadded`) VALUES ('".$id."','".$_SESSION['pname']."','".$feedback."','".$date."','".$comment."','".$timestamp."')") or die(mysql_error());
+			$i = $mysqli->query("INSERT INTO ".$prefix."bcomments (bid, author, feedback, date, comment, dateadded) VALUES ('".$id."','".$_SESSION['pname']."','".$feedback."','".$date."','".$comment."','".$timestamp."')") or die(mysql_error());
 			echo "
 				<meta http-equiv='refresh' content=\"0; url=?cype=main&amp;page=gmblog&amp;id=".$id."\">";
 		}
 	}
 	echo "<hr />";
-	if($ngc = $gc->num_rows <= 0){
+	if($ngc = $gc->num_rows <= 0 && $b['locked'] == "0"){
 		echo "<div class=\"alert alert-info\">There are no comments for this blog yet. Be the first to comment!</div>";
 	}else{
 		while($c = $gc->fetch_assoc()){
@@ -102,30 +90,26 @@ if(@$_GET['id']){
 				<font color=\"red\">Negative</font>";
 			}
 			$modify = "";
-
 			if (isset($_SESSION['gm'])) {
-				$modify = "- <a href=\"?cype=gmcp&amp;page=manblog&amp;action=pdel&amp;id=".$c['id']."\" title=\"Delete This Comment\">X</a>";
+				$modify = "- <a href=\"?cype=gmcp&amp;page=manblog&amp;action=pdel&amp;id=".$c['id']."\" title=\"Delete This Comment\" class=\"btn btn-default\">Delete</a>";
 			}
-
 			echo "
-					<legend>
-						<b>".$c['author']."</b> - ".$c['date']."".$modify."
-					</legend>
+			<h4><b>".$c['author']."</b> - Posted on ".$c['date']." ".$modify."</h4>
 					<b>Feedback:</b> ".$feedback."<br />
 					".stripslashes($c['comment'])."
 				<br />";
 		}
 	}
 }else{
-	$gb = $mysqli->query("SELECT * FROM `".$prefix."gmblog` ORDER BY `id` DESC") or die(mysql_error());
+	$gb = $mysqli->query("SELECT * FROM ".$prefix."gmblog ORDER BY id DESC") or die();
 	$rows = $gb->num_rows;
 	if ($rows < 1) {
 		echo "<div class=\"alert alert-danger\">Oops! No blogs to display right now!</div>";
 	}
 	else {
-	echo "<legend>".$servername." GM Blogs</legend>";
+	echo "<h2 class=\"text-left\">".$servername." GM Blogs</h2><hr/>";
 	while($b = $gb->fetch_assoc()){
-		$gc = $mysqli->query("SELECT * FROM `".$prefix."bcomments` WHERE `bid`='".$b['id']."' ORDER BY `id` ASC") or die(mysql_error());
+		$gc = $mysqli->query("SELECT * FROM ".$prefix."bcomments WHERE bid='".$b['id']."' ORDER BY id ASC") or die();
 		$cc = $gc->num_rows;
 		echo "
 			[".$b['date']."]
@@ -137,7 +121,7 @@ if(@$_GET['id']){
 		if (isset($_SESSION['gm'])) {
 			echo "
 			<span class=\"commentbubble\">
-				<a href=\"?cype=admin&amp;page=manblog&amp;action=edit&amp;id=".$n['id']."\">Edit</a> | 
+				<a href=\"?cype=admin&amp;page=manblog&amp;action=edit&amp;id=".$b['id']."\">Edit</a> | 
 				<a href=\"?cype=admin&amp;page=manblog&amp;action=del\">Delete</a> | 
 				<a href=\"?cype=admin&amp;page=manblog&amp;action=lock\">Lock</a>&nbsp;
 			</span>";
@@ -145,11 +129,4 @@ if(@$_GET['id']){
 	}
 }
 }
-	echo "
-		<tr>
-			<td height='4'></td>
-		</tr>
-	</tbody>
-</table>";
-
 ?>

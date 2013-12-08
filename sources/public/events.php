@@ -1,7 +1,7 @@
 <?php 
 if(@$_GET['id']){
 	$id = $mysqli->real_escape_string($_GET['id']);
-	$ge = $mysqli->query("SELECT * FROM `".$prefix."events` WHERE `id`='".sql_sanitize($id)."'") or die(mysql_error());
+	$ge = $mysqli->query("SELECT * FROM ".$prefix."events WHERE id='".sql_sanitize($id)."'") or die();
 	$e = $ge->fetch_assoc();
 	echo "
 		<legend>".stripslashes($e['title'])." | Posted by <a href=\"?cype=main&amp;page=members&amp;name=".$e['author']."\">".$e['author']."</a> on ".$e['date']."</legend>
@@ -13,16 +13,16 @@ if(@$_GET['id']){
 			$status = "<div class=\"alert\">Event is on Standby</div>";
 	}
 	if($e['status'] == "Ended"){
-		$status = "<div class=\"alert alert-error\">This event has ended</div>";
+		$status = "<div class=\"alert alert-danger\">This event has ended</div>";
 	}
 	echo " ".$status."";
 	echo nl2br(stripslashes($e['content']))."
 	<br /><br />";
-	$gc = $mysqli->query("SELECT * FROM `".$prefix."ecomments` WHERE `eid`='".sql_sanitize($id)."' ORDER BY `id` ASC") or die(mysql_error());
+	$gc = $mysqli->query("SELECT * FROM ".$prefix."ecomments WHERE eid='".sql_sanitize($id)."' ORDER BY id ASC") or die();
 	$cc = $gc->num_rows;
 	echo "<b>".$e['views']."</b> Views and <b>".$cc."</b> Reponses";
 	echo "<hr />";
-	$av = $mysqli->query("UPDATE `".$prefix."events` SET `views` = views + 1 WHERE `id`='".sql_sanitize($id)."'") or die();
+	$av = $mysqli->query("UPDATE ".$prefix."events SET views = views + 1 WHERE id='".sql_sanitize($id)."'") or die();
 	if(isset($_SESSION['admin'])){
 		if($e['locked'] == "1"){
 			$buttontext = "Unlock";
@@ -35,31 +35,36 @@ if(@$_GET['id']){
 			<a href=\"?cype=admin&amp;page=manevent&amp;action=".$buttonlink."\" class=\"btn btn-default\">".$buttontext."</a>
 			<hr />";
 	}
-	$flood = $mysqli->query("SELECT * FROM `".$prefix."ecomments` WHERE `eid`='".sql_sanitize($id)."' && `author`='".sql_sanitize($_SESSION['pname'])."' ORDER BY `dateadded` DESC LIMIT 1") or die();
+	$flood = $mysqli->query("SELECT * FROM ".$prefix."ecomments WHERE eid='".sql_sanitize($id)."' && author='".sql_sanitize($_SESSION['pname'])."' ORDER BY dateadded DESC LIMIT 1") or die();
 	$fetchg = $flood->fetch_assoc();
 	$seconds = 60*$cypefloodint;
 
 	if(isset($_SESSION['id'])){
-		if($_SESSION['mute'] ==" 1"){
-			include("source/public/mutemessage.php");
+		if($_SESSION['mute'] =="1"){
+			echo "<div class==\"alert alert-danger\">You have been muted. Please contact an administrator</div>";
 		}if($e['locked'] == "1"){
-			echo "<div class=\"alert alert-error\">This article has been locked.</div>";
+			echo "<div class=\"alert alert-danger\">This article has been locked.</div>";
 		}elseif($_SESSION['pname'] == "checkpname"){
-			echo "You must assign a profile name before you can comment news articles.";
+			echo "<div class=\"alert alert-danger\">You must assign a profile name before you can comment news articles.</div>";
 		}elseif($cypeflood > 0 && (time() - $seconds) < $fetchg['dateadded']) {
-			echo "<b>You may only post every ".$cypefloodint." minutes to prevent spam.</b>";
+			echo "<div class=\"alert alert-danger\">You may only post every ".$cypefloodint." minutes to prevent spam.</div>";
 		}else{
 			echo "
-			<form method=\"post\" action=''>
-				<b>Mood:</b>
-					<select name=\"feedback\">
-						<option value=\"0\">Positive</option>
-						<option value=\"1\">Neutral</option>
-						<option value=\"2\">Negative</option>
-					</select><br/>
-				<b>Comment:</b><br />
-				<textarea name=\"text\" class=\"form-control\" rows=\"5\"></textarea><br/>
-				<input type=\"submit\" name=\"comment\" value=\"Submit Comment\" class=\"btn btn-primary\" />
+			<form method=\"post\">
+				 <div class=\"form-group\">
+					<label for=\"inputMood\">Mood</label>
+						<select name=\"feedback\" class=\"form-control\" id=\"inputMood\">
+							<option value=\"0\">Positive</option>
+							<option value=\"1\">Neutral</option>
+							<option value=\"2\">Negative</option>
+						</select>
+					</div>
+					<div class=\"form-group\">
+						<label for=\"inputComment\">Comment:</label>
+						<textarea name=\"text\" class=\"form-control\" rows=\"5\" id=\"inputComment\"></textarea>
+					</div>
+					<hr/>
+					<input type=\"submit\" name=\"comment\" value=\"Comment\" class=\"btn btn-primary\"/>
 			</form>";
 		}
 	}else{
@@ -69,12 +74,12 @@ if(@$_GET['id']){
 		$author = $_SESSION['pname'];
 		$feedback = $mysqli->real_escape_string($_POST['feedback']);
 		$date = date("m-d-y g:i A");
-		$comment = htmlspecialchars($mysqli->real_escape_string($_POST['text']));
+		$comment = $mysqli->real_escape_string($_POST['text']);
 		if($comment == ""){
 			echo "<br/><div class=\"alert alert-danger\">You cannot leave the comment field blank!</div>";
 		}else{
 			$timestamp = time();
-			$i = $mysqli->query("INSERT INTO `".$prefix."ecomments` (`eid`,`author`,`feedback`,`date`,`comment`,`dateadded`) VALUES ('".sql_sanitize($id)."','".sql_sanitize($author)."','".sql_sanitize($feedback)."','".sql_sanitize($date)."','".sql_sanitize($comment)."','".sql_sanitize($timestamp)."')") or die();
+			$i = $mysqli->query("INSERT INTO ".$prefix."ecomments (eid, author, feedback, date, comment, dateadded) VALUES ('".sql_sanitize($id)."','".sql_sanitize($author)."','".sql_sanitize($feedback)."','".sql_sanitize($date)."','".sanitize_space($comment)."','".sql_sanitize($timestamp)."')") or die();
 			echo "<meta http-equiv=refresh content=\"0; url=?cype=main&amp;page=events&amp;id=".$id."\" />";
 		}
 	}
@@ -95,24 +100,25 @@ if(@$_GET['id']){
 			}
 			$modify = "";	
 			if(isset($_SESSION['admin'])){
-				$modify = "<a href=\"?cype=admin&amp;page=mannews&amp;action=pdel&amp;id=".$c['id']."\" class=\"btn btn-inverse text-right\">Remove Comment</a>";
+				$modify = "<a href=\"?cype=admin&amp;page=mannews&amp;action=pdel&amp;id=".$c['id']."\" class=\"btn btn-default text-right\">Delete</a>";
 			}
 			echo "
-				<b>".$c['author']."</b> at ".$c['date']."
-				<br/><b>Mood:</b> ".$feedback."<br />
-				<b>Comment:</b> ".stripslashes($c['comment'])."<br />".$modify."<br /><hr/>";
+			<h4><b>".$c['author']."</b> - Posted on ".$c['date']." ".$modify."</h4>
+					<b>Feedback:</b> ".$feedback."<br />
+					".stripslashes($c['comment'])."
+				<br />";
 		}
 	}
 }else{
-	$ge = $mysqli->query("SELECT * FROM `".$prefix."events` ORDER BY `id` DESC") or die();
+	$ge = $mysqli->query("SELECT * FROM ".$prefix."events ORDER BY id DESC") or die();
 	$rows = $ge->num_rows;
 	if ($rows < 1) {
 		echo "<div class=\"alert alert-danger\">Oops! No events to display right now!</div>";
 	}
 	else {
-	echo "<legend>".$servername." Events</legend>";
+	echo "<h2 class=\"text-left\">".$servername." Events</h2><hr/>";
 	while($e = $ge->fetch_assoc()){
-		$gc = $mysqli->query("SELECT * FROM `".$prefix."ecomments` WHERE `eid`='".sql_sanitize($e['id'])."' ORDER BY `id` ASC") or die();
+		$gc = $mysqli->query("SELECT * FROM ".$prefix."ecomments WHERE eid='".sql_sanitize($e['id'])."' ORDER BY id ASC") or die();
 		$cc = $gc->num_rows;
 		echo "<img src=\"assets/img/news/".$e['type'].".gif\" alt='' />";
 		echo "[".$e['date']."]  
@@ -123,7 +129,7 @@ if(@$_GET['id']){
 		if(isset($_SESSION['admin'])){
 			echo "
 			<span class=\"commentbubble\">
-				<a href=\"?cype=admin&amp;page=manevent&amp;action=edit&amp;id=".$n['id']."\">Edit</a> | 
+				<a href=\"?cype=admin&amp;page=manevent&amp;action=edit&amp;id=".$e['id']."\">Edit</a> | 
 				<a href=\"?cype=admin&amp;page=manevent&amp;action=del\">Delete</a> | 
 				<a href=\"?cype=admin&amp;page=manevent&amp;action=lock\">Lock</a>&nbsp;
 			</span>";

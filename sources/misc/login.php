@@ -16,12 +16,16 @@ if(isset($is_ajax) && $is_ajax) {
 		$checkprofile = $checkpname->fetch_assoc();
 		$_SESSION['id'] = $auser['id'];
 		$_SESSION['name'] = $auser['name'];	
+		$_SESSION['mute'] = $auser['mute'];	
 		if($countcheckpname == 1){
 			$_SESSION['pname'] =  $checkprofile['name'];
 		}
 		else {$_SESSION['pname'] = "checkpname";}
 		if($auser['webadmin'] == "1"){
 			$_SESSION['admin'] = $auser['webadmin'];
+		}
+		if($auser['gm'] >= 3){
+			$_SESSION['gm'] = $auser['gm'];
 		}
         echo "success";
 	}

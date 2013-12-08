@@ -1,0 +1,9 @@
+READY:
+gmcp
+ucp
+structure
+misc
+
+NTO READY:
+admin
+public

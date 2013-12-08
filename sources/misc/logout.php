@@ -8,8 +8,8 @@ if($_SESSION['id']){
 	session_destroy();
 	$_SESSION = array();
 	include('sources/public/main.php');
-	echo "<meta http-equiv=refresh content=\"0; url=?cype=main\">";
+	redirect("?cype=main");
 }else{
-	echo "<meta http-equiv=refresh content=\"0; url=?cype=main\">";
+	redirect("?cype=main");
 }
 ?>

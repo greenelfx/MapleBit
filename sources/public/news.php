@@ -1,10 +1,10 @@
 <?php 
 if(isset($_GET['id'])){
 	$id = $mysqli->real_escape_string($_GET['id']);
-	$gn = $mysqli->query("SELECT * FROM `".$prefix."news` WHERE `id`='".$id."'") or die();
+	$gn = $mysqli->query("SELECT * FROM ".$prefix."news WHERE id='".$id."'") or die();
 	$n = $gn->fetch_assoc();
 	echo "
-		<legend>".stripslashes($n['title'])." | Posted by <a href=\"?cype=main&amp;page=members&amp;name=".$n['author']."\">".$n['author']."</a> on ".$n['date']."</legend>
+		<h2 class=\"text-left\">".stripslashes($n['title'])." | Posted by <a href=\"?cype=main&amp;page=members&amp;name=".$n['author']."\">".$n['author']."</a> on ".$n['date']."</h2><hr/>
 		";
 	echo nl2br(stripslashes($n['content']))."
 	<br /><br />
@@ -30,28 +30,33 @@ if(isset($_GET['id'])){
 	$fetchg = $flood->fetch_assoc();
 	$seconds = 60*$cypefloodint;
 	if(isset($_SESSION['id'])){
-		if(isset($_SESSION['mute']) == "1"){
-			include("sources/public/mutemessage.php");
+		if($_SESSION['mute'] == "1"){
+			echo "<div class==\"alert alert-danger\">You have been muted. Please contact an administrator</div>";
 		}
 		if($n['locked'] == "1"){
 			echo "<div class=\"alert alert-danger\">This article has been locked.</div>";
 		}elseif($_SESSION['pname'] == "checkpname"){
-			echo "You must assign a profile name before you can comment news articles.";
+			echo "<div class=\"alert alert-danger\">You must assign a profile name before you can comment news articles.</div>";
 		}elseif($cypeflood > 0 && (time() - $seconds) < $fetchg['dateadded']) {
-			echo "<b>You may only post every ".$cypefloodint." minutes to prevent spam.</b>";
+			echo "<div class=\"alert alert-danger\">You may only post every ".$cypefloodint." minutes to prevent spam.</div>";
 		}else{
 			echo "
-				<form method=\"post\" action=''>
-						<b>Mood:</b> 
-							<select name=\"feedback\">
-								<option value=\"0\">Positive</option>
-								<option value=\"1\">Neutral</option>
-								<option value=\"2\">Negative</option>
-							</select><br/>
-						<b>Comment:</b><br />
-						<textarea name=\"text\" class=\"form-control\" rows=\"5\"></textarea><br/>
-						<input type=\"submit\" name=\"comment\" value=\"Submit Comment\" class=\"btn btn-primary\"/>
-				</form>";
+			<form method=\"post\">
+				 <div class=\"form-group\">
+					<label for=\"inputMood\">Mood</label>
+						<select name=\"feedback\" class=\"form-control\" id=\"inputMood\">
+							<option value=\"0\">Positive</option>
+							<option value=\"1\">Neutral</option>
+							<option value=\"2\">Negative</option>
+						</select>
+					</div>
+					<div class=\"form-group\">
+						<label for=\"inputComment\">Comment:</label>
+						<textarea name=\"text\" class=\"form-control\" rows=\"5\" id=\"inputComment\"></textarea>
+					</div>
+					<hr/>
+					<input type=\"submit\" name=\"comment\" value=\"Comment\" class=\"btn btn-primary\"/>
+			</form>";
 		}
 	}else{
 		echo "
@@ -65,7 +70,7 @@ if(isset($_GET['id'])){
 			echo "<br/><div class=\"alert alert-danger\">You cannot leave the comment field blank!</div>";
 		}else{
 			$timestamp = time();
-			$i = $mysqli->query("INSERT INTO `".$prefix."ncomments` (`nid`,`author`,`feedback`,`date`,`comment`,`dateadded`) VALUES ('".$id."','".$_SESSION['pname']."','".$feedback."','".$date."','".$comment."','".$timestamp."')") or die();
+			$i = $mysqli->query("INSERT INTO ".$prefix."ncomments (nid, author, feedback, date, comment, dateadded) VALUES ('".$id."','".$_SESSION['pname']."','".$feedback."','".$date."','".$comment."','".$timestamp."')") or die();
 			echo "<meta http-equiv=refresh content=\"0; url=?cype=main&amp;page=news&amp;id=".$id."\" />";
 		}
 	}
@@ -84,26 +89,25 @@ if(isset($_GET['id'])){
 			}
 			$modify = "";
 			if(isset($_SESSION['admin'])){
-				$modify = "<a href=\"?cype=admin&amp;page=mannews&amp;action=pdel&amp;id=".$c['id']."\" class=\"btn btn-inverse text-right\">Remove Comment</a>";
+				$modify = "<a href=\"?cype=admin&amp;page=mannews&amp;action=pdel&amp;id=".$c['id']."\" class=\"btn btn-default text-right\">Delete</a>";
 			}
 			echo "
-				<b>".$c['author']."</b> at ".$c['date']."
-				<br/><b>Mood:</b> ".$feedback."<br />
-				<b>Comment:</b> ".stripslashes($c['comment'])."<br />".$modify."<br /><hr/>";
+			<h4><b>".$c['author']."</b> - Posted on ".$c['date']." ".$modify."</h4>
+					<b>Feedback:</b> ".$feedback."<br />
+					".stripslashes($c['comment'])."
+				<br />";
 		}
 	}
 }else{
-	$gn = $mysqli->query("SELECT * FROM `".$prefix."news` ORDER BY `id` DESC") or die();
-
+	$gn = $mysqli->query("SELECT * FROM ".$prefix."news ORDER BY id DESC") or die();
 	$rows = $gn->num_rows;
-
 	if ($rows < 1) {
 		echo "<div class=\"alert alert-danger\">Oops! There isn't any news to display right now!</div>";
 	}
 	else{
-	echo "<legend>".$servername." News</legend>";
+	echo "<h2 class=\"text-left\">".$servername." News</h2><hr/>";
 	while($n = $gn->fetch_assoc()){
-		$gc = $mysqli->query("SELECT * FROM `".$prefix."ncomments` WHERE `nid`='".$n['id']."' ORDER BY `id` ASC") or die();
+		$gc = $mysqli->query("SELECT * FROM ".$prefix."ncomments WHERE nid='".$n['id']."' ORDER BY id ASC") or die();
 		$cc = $gc->num_rows;
 		echo "
 			<img src=\"assets/img/news/".$n['type'].".gif\" alt='".$n['type']."' />
