@@ -8,6 +8,11 @@
 <link href="<?php echo $siteurl; ?>assets/css/<?php echo $theme; ?>.min.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo $siteurl; ?>assets/css/addon.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo $siteurl; ?>assets/css/<?php echo $themetype; ?>.css" rel="stylesheet" type="text/css" />
+<style>
+body{
+	background: #<?php echo $bgcolor; ?> url(<?php echo $background; ?>) <?php echo $bgrepeat . " " . $bgcenter; ?>;
+}
+</style>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <script type="text/javascript" src="<?php echo $siteurl; ?>assets/js/bootstrap.js"></script>
 <script type="text/javascript" src="<?php echo $siteurl; ?>assets/js/login.js"></script>
@@ -23,7 +28,9 @@ function goBack()
 </head>
 <body>
 <div class="container">
-<img src="<?php echo $banner; ?>" alt="banner" class="img-responsive" style="margin: 0 auto;margin-top:20px;">
+<?php
+if($banner != ""){echo "<img src=\"".$banner." alt=\"banner\" class=\"img-responsive\" style=\"margin: 0 auto;margin-top:20px;\">";} 
+?>
 <nav class="<?php echo getNav();?>" role="navigation" style="bottom:-22px;">
 	<div class="navbar-header">
 		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
