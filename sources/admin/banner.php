@@ -16,7 +16,7 @@ if($_SESSION['admin']){
 	}
 	else {
 		$url = mysql_escape($_POST["url"]);
-		$mysqli->query("UPDATE ".$prefix."properties SET mbanner='$url'");
+		$mysqli->query("UPDATE ".$prefix."properties SET banner='$url'");
 		echo "<div class=\"alert alert-success\">Successfully updated banner.</div>";
 		redirect_wait5("?cype=admin");
 	}

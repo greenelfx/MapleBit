@@ -66,8 +66,8 @@ if($_SESSION['id']){
   </div>
   <div class="col-md-3">
   	<div class="well">
-		<a href="?cype=admin&amp;page=banner">Add Banner<br/>
-		<!--<a href="?cype=admin&amp;page=background">Add Background-->
+		<a href="?cype=admin&amp;page=banner">Add Banner</a><br/>
+		<a href="?cype=admin&amp;page=background">Add Background</a>
 	</div>
   </div>
   <div class="col-md-3">
@@ -107,6 +107,8 @@ if($_SESSION['id']){
 				include('sources/admin/pages.php');
 			}elseif($admin == "banner"){
 				include('sources/admin/banner.php');
+			}elseif($admin == "background"){
+				include('sources/admin/background.php');
 			}elseif($admin == "ticket"){
 				include('sources/admin/ticket.php');
 			}
@@ -118,10 +120,10 @@ if($_SESSION['id']){
 			header("Location: ?cype=admin");
 		}
 	}else{
-		include('sources/public/accessdenied.php');
+		redirect("?cype=main");
 	}
 }else{
-	include('sources/public/accessdenied.php');
+	redirect("?cype=main");
 }
 
 ?>
