@@ -14,6 +14,7 @@ if(isset($_GET['page'])){
 			include ("sources/public/main-rank.php");
 			include ("sources/public/main-gm.php");
 			echo "</div><br/>";
+			include ("sources/public/home.php");
 		}elseif($main == "download"){
 			include('sources/public/download.php');
 		}elseif($main == "events"){
@@ -36,9 +37,9 @@ if(isset($_GET['page'])){
 			include('sources/public/vote.php');
 		}
 		else {
-		header("Location: $siteurl");
+			redirect("?cype=main");
 		}
 	}else{
-		header("Location: $siteurl");
+		redirect("?cype=main");
 	}
 ?>

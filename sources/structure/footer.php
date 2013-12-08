@@ -1,5 +1,5 @@
 	</div>
-		<br />
+		<br/>
 	</div></div>
 <footer>
 	<div class="container">
