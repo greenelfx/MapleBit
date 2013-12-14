@@ -34,7 +34,7 @@ function goBack()
 <body>
 <div class="container">
 <?php
-if($banner != ""){echo "<img src=\"".$banner." alt=\"banner\" class=\"img-responsive\" style=\"margin: 0 auto;margin-top:20px;\">";} 
+if($banner != ""){echo "<img src=\"".$banner."\" alt=\"banner\" class=\"img-responsive\" style=\"margin: 0 auto;margin-top:20px;\">";} 
 ?>
 <nav class="<?php echo getNav();?>" role="navigation" style="bottom:-22px;">
 	<div class="navbar-header">

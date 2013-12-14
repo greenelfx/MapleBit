@@ -2,6 +2,8 @@
 <?php 
 if($_SESSION['admin']){
 	if(!isset($_POST['url'])) {
+	if($bgfixed = "fixed"){$bgfixedcheck = "checked";}
+	if($bgcenter = "center"){$bgcentercheck = "checked";}
 		echo "<h2 class=\"text-left\">Site Background</h2><hr/>
 		<p>Many sites have a background to make the website more personalized. There is not a default image size, but you may want to play around with some sizes to see what you like.</p>
 		<p>To upload an image, please go to <a href=\"http://www.imgur.com\">imgur.com</a>, and then enter in the image url below. The URL will look like this: i.imgur.com/abcdefghi.jpg. Of course, you may use any other website to host your image.</p><hr/>
@@ -27,13 +29,13 @@ if($_SESSION['admin']){
 			</div>
 			 <div class=\"checkbox\">
 				<label>
-					<input type=\"checkbox\" name=\"bgcenter\" value=\"center\">Center Background (Yes)
+					<input type=\"checkbox\" name=\"bgcenter\" value=\"center\" $bgcentercheck>Center Background (Yes)
 				</label>
 			</div>
 			<span class=\"help-block\">Background images can be centered.</span>
 			 <div class=\"checkbox\">
 				<label>
-					<input type=\"checkbox\" name=\"bgfixed\" value=\"fixed\">Fixed Background (Yes)
+					<input type=\"checkbox\" name=\"bgfixed\" value=\"fixed\" $bgfixedcheck>Fixed Background (Yes)
 				</label>
 			</div>				
 			<span class=\"help-block\">Background images can be fixed (won&#39;t scroll).</span>
