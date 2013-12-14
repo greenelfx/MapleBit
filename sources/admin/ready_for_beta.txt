@@ -1,3 +1,15 @@
+READY:
+background
+banner
+banned
 manage-news
-properties
+manage-event
 theme
+votevonfig
+nxpacks
+tickets
+
+NOT READY:
+properties
+gmlog
+

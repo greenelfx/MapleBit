@@ -110,8 +110,7 @@ if($_SESSION['admin'] == 1) {
 			break;
 	}
 }
-else
-{
-	include('sources/public/accessdenied.php');
+else {
+	redirect("?cype");
 }
 ?>

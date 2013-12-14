@@ -11,6 +11,11 @@
 <style>
 body{
 	background: #<?php echo $bgcolor; ?> url(<?php echo $background; ?>) <?php echo $bgrepeat . " " . $bgcenter; ?>;
+	<?php if($bgfixed != "") {
+	echo "background-attachment: " . $bgfixed . ";";
+	}
+	?>
+	
 }
 </style>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
