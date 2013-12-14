@@ -33,7 +33,7 @@ if($_SESSION['id']){
 					</div>
 					<div class=\"tab-pane fade\" id=\"ticket\">
 					<br/>
-					<a href=\"?cype=gmcp&amp;page=ticket\">".unSolved("ticket")."
+					".unSolved("ticket")."
 					</div>
 					</div>";
 			}elseif($gmcp == "manblog"){

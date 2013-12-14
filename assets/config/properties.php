@@ -18,6 +18,7 @@ $background = $prop['background'];
 $bgcolor = $prop['bgcolor'];
 $bgrepeat = $prop['bgrepeat'];
 $bgcenter = $prop['bgcenter'];
+$bgfixed = $prop['bgfixed'];
 /* Download link for client */
 $client = $prop['client'];
 /* Server Version */

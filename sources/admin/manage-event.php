@@ -4,78 +4,97 @@
 </script>
 <?php 
 if(isset($_SESSION['id'])){
-	if($_SESSION['admin']){
-		if($_GET['action']=="add"){
+	if(isset($_SESSION['admin'])){
+		if(empty($_GET['action'])){
+			echo "<h2 class=\"text-left\">Manage Events</h2><hr/>
+				<a href=\"?cype=admin&amp;page=manevent&amp;action=add\"><b>Add Event &raquo;</b></a><br/>
+				<a href=\"?cype=admin&amp;page=manevent&amp;action=edit\">Edit Event</a><br/>
+				<a href=\"?cype=admin&amp;page=manevent&amp;action=del\">Delete Event</a><br/>
+			";
+		}
+		elseif($_GET['action']=="add"){
 			echo "
-			<legend>Add An Event</legend>";
+			<h2 class=\"text-left\">Add Event</h2><hr/>";
 			if($_SESSION['pname'] == "checkpname"){
-				echo "You must assign a profile name before you can enter this page.";
+				echo "<div class=\"alert alert-danger\">You must assign a profile name before you can enter this page.</div>";
 			}else{
 				if(!isset($_POST['add'])){
 					echo "
-				<form method=\"post\" action=''>
-				<b>Title:</b><br/>
-				<input type=\"text\" style='width:50%;' name=\"title\" required/><br/>
-				<b>Author:</b><br/>
-				".$_SESSION['pname']."<br/>
-				<b>Category:</b><br/>
-				<select name=\"cat\">
+			<form method=\"post\" role=\"form\">
+			<div class=\"form-group\">
+				<label for=\"title\">Title</label>
+				<input type=\"text\" name=\"title\" class=\"form-control\" id=\"title\" placeholder=\"Title\" required/>
+			</div>
+			<b>Author:</b> ".$_SESSION['pname']."<br/>
+			<div class=\"form-group\">
+				<label for=\"category\">Category</label>
+				<select name=\"cat\" class=\"form-control\" id=\"category\">
 					<option value=\"ct_news_event_info\">Info</option>
 					<option value=\"ct_news_event_lot\">Prize</option>
 					<option value=\"ct_news_event_end\">End</option>
-				</select><br/>
-				<b>Status:</b><br/>
-				<select name=\"status\">
+				</select>
+			</div>
+			<div class=\"form-group\">
+				<label for=\"status\">Status</label>
+				<select name=\"status\" class=\"form-control\" id=\"status\">
 					<option value=\"Active\">Active</option>
 					<option value=\"Standby\">Standby</option>
 				</select>
-				<textarea name=\"content\" style=\"height:300px;width:100%;\"></textarea><br/>
-				<input type=\"submit\" name=\"add\" class=\"btn btn-primary\" value=\"Add Event &raquo;\" />
-				</form>";
+			</div>
+			<textarea name=\"content\" style=\"height:300px;width:100%;\" class=\"form-control\"></textarea><br/>
+			<input type=\"submit\" name=\"add\" class=\"btn btn-primary\" value=\"Add News Article &raquo;\" />
+		</form>";
 				}else{
 					$title = $mysqli->real_escape_string($_POST['title']);
+					$author = $_SESSION['pname'];
 					$date = date("m.d");
 					$cat = $mysqli->real_escape_string($_POST['cat']);
 					$status = $mysqli->real_escape_string($_POST['status']);
 					$content = $mysqli->real_escape_string($_POST['content']);
 					if($title == ""){
-						echo "You must enter a title.";
-					}elseif($cat == ""){
-						echo "You must select a category.";
+						echo "<div class=\"alert alert-danger\">You must enter a title.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+					}elseif(empty($cat)){
+						echo "<div class=\"alert alert-danger\">You must select a category.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}elseif($content == ""){
-						echo "You must enter some content.";
+						echo "<div class=\"alert alert-danger\">You must enter some content.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}else{
-						$i = $mysqli->query("INSERT INTO ".$prefix."events (`title`,`author`,`date`,`type`,`status`,`content`) VALUES ('".$title."','".$_SESSION['pname']."','".$date."','".$cat."','".$status."','".$content."')") or die(mysql_error());
-						echo "Your event has been posted.";
+						$i = $mysqli->query("INSERT INTO ".$prefix."events (title, author, date, type, status, content) VALUES ('".$title."','".$_SESSION['pname']."','".$date."','".$cat."','".$status."','".$content."')") or die(mysql_error());
+						echo "Your event has been posted.<hr/><a href=\"?cype=admin\" class=\"btn btn-primary\">&laquo; Go Back</a>";
 					}
 				}
 			}
+			echo "
+		";
 		}elseif($_GET['action']=="edit"){
 			echo "
-			<legend>Edit An Event</legend>";
+			<h2 class=\"text-left\">Edit an Event</h2><hr/>";
 			if(isset($_GET['id'])){
 				$id = $mysqli->real_escape_string($_GET['id']);
-				$ge = $mysqli->query("SELECT * FROM `cype_events` WHERE `id`='".$id."'") or die();
+				$ge = $mysqli->query("SELECT * FROM ".$prefix."events WHERE id='".$id."'") or die();
 				$e = $ge->fetch_assoc();
 				if(!isset($_POST['edit'])){
 					echo "
 			<form method=\"post\" action=''>
-			<b>Title:</b><br/>
-			<input type=\"text\" style='width:50%;' name=\"title\" value=\"".$e['title']."\" required/><br/>
-			<b>Author:</b><br/>
-			".$e['author']."<br/>
-			<b>Category:</b><br/>
-			<select name=\"cat\">
-				<option value=\"ct_news_event_info\">Info</option>
-				<option value=\"ct_news_event_lot\">Prize</option>
-				<option value=\"ct_news_event_end\">End</option>
-			</select><br/>
-			<b>Status:</b><br/>
-			<select name=\"status\">
-				<option value=\"Active\">Active</option>
-				<option value=\"Standby\">Standby</option>
-				<option value=\"Ended\">End</option>
-			</select><br/>
+			<div class=\"form-group\">
+				<label for=\"title\">Title</label>
+				<input type=\"text\" name=\"title\" class=\"form-control\" id=\"title\" placeholder=\"Title\" value=\"".$e['title']."\" required/>
+			</div>
+			<b>Author:</b> ".$e['author']."<br/>
+			<div class=\"form-group\">
+				<label for=\"category\">Category</label>
+				<select name=\"cat\" class=\"form-control\" id=\"category\">
+					<option value=\"ct_news_event_info\">Info</option>
+					<option value=\"ct_news_event_lot\">Prize</option>
+					<option value=\"ct_news_event_end\">End</option>
+				</select>
+			</div>
+			<div class=\"form-group\">
+				<label for=\"status\">Status</label>
+				<select name=\"status\" class=\"form-control\" id=\"status\">
+					<option value=\"Active\">Active</option>
+					<option value=\"Standby\">Standby</option>
+				</select>
+			</div>
 			<textarea name=\"content\" style=\"height:300px;width:100%;\">".stripslashes($e['content'])."</textarea><br/>
 			<input type=\"submit\" name=\"edit\" class=\"btn btn-primary\" value=\"Edit Event &raquo;\" />
 			</form>";
@@ -91,24 +110,25 @@ if(isset($_SESSION['id'])){
 					}elseif($content == ""){
 						echo "You must enter some content.";
 					}else{
-						$u = $mysqli->query("UPDATE `cype_events` SET `title`='".$title."',`type`='".$cat."',`status`='".$status."',`content`='".$content."' WHERE `id`='".$id."'") or die();
+						$u = $mysqli->query("UPDATE ".$prefix."events SET title='".$title."', type='".$cat."', status='".$status."', content='".$content."' WHERE id='".$id."'") or die();
 						echo "The event has been edited.";
 					}
 				}
 			}else{
-				echo "Select an event to modify:<br/>";
-				$ge = $mysqli->query("SELECT * FROM `cype_events` ORDER BY `id` DESC") or die();
-				while($e = $ge->fetch_assoc()){
-					echo "
-						[".$e['date']."] <a href=\"?cype=admin&amp;page=manevent&amp;action=edit&amp;id=".$e['id']."\">".$e['title']."</a> [#".$e['id']."]<br/>
-					";
+				$ge = $mysqli->query("SELECT * FROM ".$prefix."events ORDER BY id DESC") or die();
+				$cge = $ge->num_rows;
+				if($cge > 0){
+					echo "Select an event to modify:<hr/>";
+					while($e = $ge->fetch_assoc()){
+						echo "
+							[".$e['date']."] <a href=\"?cype=admin&amp;page=manevent&amp;action=edit&amp;id=".$e['id']."\">".$e['title']."</a> [#".$e['id']."]<hr/>
+						";
+					}
+				} else {
+					echo "<div class=\"alert alert-danger\">No Events found!</div>";
 				}
 			}
-			echo "
-			</table>
-		</fieldset>";
-
-		} else if ($_GET['action']=="pdel") {
+		} elseif ($_GET['action']=="pdel") {
 			if (!isset($_GET['id'])) {
 				echo "No Comment ID Specified.";
 			} else if (!is_numeric($_GET['id'])) {
@@ -133,38 +153,30 @@ if(isset($_SESSION['id'])){
 			}
 
 		}elseif($_GET['action']=="del"){
-			echo "
-			<legend>Delete An Event</legend>";
+			echo "<h2 class=\"text-left\">Delete an Event</h2><hr/>";
 			if(!isset($_POST['del'])){
 				echo "
 			<form method=\"post\" action=''>
-				Select an event to delete:<br/>
-				<select name=\"event\">
+			<div class=\"form-group\">
+				<label for=\"deleteEvent\">Select an event to delete:</label>
+				<select name=\"event\" class=\"form-control\" id=\"deleteEvent\">
 					<option value=\"\">Please select...</option>";
-				$ge = $mysqli->query("SELECT * FROM `cype_events` ORDER BY `id` DESC") or die();
+				$ge = $mysqli->query("SELECT * FROM ".$prefix."events ORDER BY id DESC") or die();
 				while($e = $ge->fetch_assoc()){
 					echo "
 					<option value=\"".$e['id']."\">#".$e['id']." - ".$e['title']."</option>";
 				}
 				echo "
-				</select><br/>
+				</select>
 				<hr/>
-				<b>Confirm Deletion:</b><br/>
-				<select name=\"dec\">
-					<option value=\"0\">No</option>
-					<option value=\"1\">Yes</option>
-				</select><br/><br/>
-				<input type=\"submit\" name=\"del\" value=\"Delete &raquo;\" class=\"btn btn-default\"/>
+				<input type=\"submit\" name=\"del\" value=\"Delete &raquo;\" class=\"btn btn-danger\"/>
 				</form>";
 			}else{
 				$event = $mysqli->real_escape_string($_POST['event']);
-				$dec = $mysqli->real_escape_string($_POST['dec']);
 				if($event == ""){
-					echo "<div class=\"alert alert-block\">Please select an event to delete.</div>";
-				}elseif($dec == "0"){
-					echo "<div class=\"alert alert-error\">The event was not deleted because you selected No.</div>";
+					echo "<div class=\"alert alert-block\">Please select an event to delete.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 				}else{
-					$d = $mysqli->query("DELETE FROM `cype_events` WHERE `id`='".$event."'") or die();
+					$d = $mysqli->query("DELETE FROM ".$prefix."events WHERE id='".$event."'") or die();
 					echo "<div class=\"alert alert-success\">The event has been deleted.</div>";
 				}
 			}
@@ -224,11 +236,11 @@ if(isset($_SESSION['id'])){
 					echo "<div class=\"alert alert-success\">The event has been unlocked.</div>";
 				}
 			}
+		} else {
+			redirect("?cype");
 		}
-	}else{
-		include('sources/public/accessdenied.php');
 	}
 }else{
-	echo "You must be logged in to use this feature.";
+	redirect("?cype");
 }
 ?>

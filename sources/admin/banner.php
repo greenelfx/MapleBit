@@ -20,5 +20,7 @@ if($_SESSION['admin']){
 		echo "<div class=\"alert alert-success\">Successfully updated banner.</div>";
 		redirect_wait5("?cype=admin");
 	}
+} else{
+	redirect("?cype");
 }
 ?>

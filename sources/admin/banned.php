@@ -1,6 +1,6 @@
 <?php 
 if($_SESSION['admin']){
-	$result = $mysqli->query("SELECT name, banreason, ip FROM accounts WHERE banned = 1") or die();
+	$result = $mysqli->query("SELECT name, banreason, ip FROM accounts WHERE banned >= 1") or die();
 		echo "
 	<h2 class=\"text-left\">Banned Members</h2>
 	<hr/>
@@ -14,6 +14,8 @@ if($_SESSION['admin']){
 	</thead>
 	<tbody>";
 	while($row = $result->fetch_assoc()){
+	if($row['banreason'] == ""){$row['banreason'] = "None Given";}
+	if($row['ip'] == ""){$row['ip'] = "Not Recorded";}
 		echo "
 				<tr>
 					<td>
@@ -30,5 +32,7 @@ if($_SESSION['admin']){
 	echo "</tbody>
 	</table>
 ";
+} else{
+	redirect("?cype");
 }
 ?>
