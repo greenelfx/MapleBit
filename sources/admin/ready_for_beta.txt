@@ -8,6 +8,8 @@ theme
 votevonfig
 nxpacks
 tickets
+mute-user
+unmute-user
 
 NOT READY:
 properties

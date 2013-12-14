@@ -135,18 +135,18 @@ if(isset($_SESSION['id'])){
 				echo "Invalid Comment ID.";
 			} else {
 				$eventid = $mysqli->real_escape_string($_GET['id']);
-				$query = $mysqli->query("SELECT * FROM cype_ecomments WHERE id = ".$eventid."") or die();
+				$query = $mysqli->query("SELECT * FROM ".$prefix."ecomments WHERE id = ".$eventid."") or die();
 				$rows = $query->num_rows;
 				$fetch = $query->fetch_assoc();
 	
 				if ($rows != 1) {
-					echo "Comment ID Does Not Exists.";
+					echo "<div class=\"alert alert-danger\">Comment ID doesn't exist!</div>";
 				} else {
-					$delete = "DELETE FROM cype_ecomments WHERE id = ".$eventid."";
+					$delete = "DELETE FROM ".$prefix."ecomments WHERE id = ".$eventid."";
 					if ($mysqli->query($delete)) {
 						header("Location:?cype=main&page=events&id=".$fetch['eid']);
 					} else {
-						echo "Error deleting event comment.";
+						echo "<div class=\"alert alert-danger\">Error deleting event comment.</div>";
 					}
 				}
 
@@ -174,7 +174,7 @@ if(isset($_SESSION['id'])){
 			}else{
 				$event = $mysqli->real_escape_string($_POST['event']);
 				if($event == ""){
-					echo "<div class=\"alert alert-block\">Please select an event to delete.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+					echo "<div class=\"alert alert-danger\">Please select an event to delete.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 				}else{
 					$d = $mysqli->query("DELETE FROM ".$prefix."events WHERE id='".$event."'") or die();
 					echo "<div class=\"alert alert-success\">The event has been deleted.</div>";

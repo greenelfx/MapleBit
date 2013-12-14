@@ -1,22 +1,4 @@
 <?php 
-/*
-    Copyright (C) 2009  Murad <Murawd>
-						Josh L. <Josho192837>
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 if($_SESSION['id']){
 	if($_SESSION['admin']){
 		if(isset($_GET['name'])){
@@ -24,9 +6,9 @@ if($_SESSION['id']){
 			$ga = $mysqli->query("SELECT * FROM `accounts` WHERE `id` LIKE '%".getInfo('accid', $name, 'profilename')."%'") or die();
 			$a = $ga->fetch_assoc();
 			echo "
-			<legend>Unmute A User From Posting - ".$name."</legend>
+			<h2 class=\"text-left\">Unmute A User From Posting - ".$name."</h2><hr/>
 		";
-			if(!$_POST['unmute']){
+			if(!isset($_POST['unmute'])){
 				echo "
 				<div class=\"alert alert-info\"><a href=\"?cype=admin&page=unmuteuser\">Search for another user &raquo;</a></div>
 				<form method=\"post\" action=''>
@@ -45,7 +27,7 @@ if($_SESSION['id']){
 			}
 		}else{
 			echo "
-			<legend>Unmute User</legend>";
+			<h2 class=\"text-left\">Unmute User</h2><hr/>";
 			$gm = $mysqli->query("SELECT * FROM `accounts` WHERE `mute`='1' ORDER BY `name` ASC") or die();
 			$countmuted = $gm->num_rows;
 			if($countmuted < 1){
@@ -54,16 +36,16 @@ if($_SESSION['id']){
 			else {
 				echo "Select User:<br/>";
 				while($m = $gm->fetch_assoc()){
-					$gp = $mysqli->query("SELECT * FROM `cype_profile` WHERE `accountid`='".$m['id']."'") or die();
+					$gp = $mysqli->query("SELECT * FROM ".$prefix."profile WHERE `accountid`='".$m['id']."'") or die();
 					$p = $gp->fetch_assoc();
 						echo "<a href=\"?cype=admin&amp;page=unmuteuser&amp;name=".$p['name']."\">".$p['name']."</a>";
 				}
 			}
 		}
 	}else{
-		include('sources/public/accessdenied.php');
+		redirect("?cype");
 	}
 }else{
-	echo "You must log in to use this feature.";
+	redirect("?cype");
 }
 ?>

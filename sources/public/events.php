@@ -10,7 +10,7 @@ if(@$_GET['id']){
 		$status = "<div class=\"alert alert-success\">Event is active</div>";
 	}
 	if($e['status'] == "Standby"){
-			$status = "<div class=\"alert\">Event is on Standby</div>";
+			$status = "<div class=\"alert alert-warning\">Event is on Standby</div>";
 	}
 	if($e['status'] == "Ended"){
 		$status = "<div class=\"alert alert-danger\">This event has ended</div>";
@@ -41,8 +41,8 @@ if(@$_GET['id']){
 
 	if(isset($_SESSION['id'])){
 		if($_SESSION['mute'] =="1"){
-			echo "<div class==\"alert alert-danger\">You have been muted. Please contact an administrator</div>";
-		}if($e['locked'] == "1"){
+			echo "<div class=\"alert alert-danger\">You have been muted. Please contact an administrator</div>";
+		}elseif($e['locked'] == "1"){
 			echo "<div class=\"alert alert-danger\">This article has been locked.</div>";
 		}elseif($_SESSION['pname'] == "checkpname"){
 			echo "<div class=\"alert alert-danger\">You must assign a profile name before you can comment news articles.</div>";
@@ -79,7 +79,7 @@ if(@$_GET['id']){
 			echo "<br/><div class=\"alert alert-danger\">You cannot leave the comment field blank!</div>";
 		}else{
 			$timestamp = time();
-			$i = $mysqli->query("INSERT INTO ".$prefix."ecomments (eid, author, feedback, date, comment, dateadded) VALUES ('".sql_sanitize($id)."','".sql_sanitize($author)."','".sql_sanitize($feedback)."','".sql_sanitize($date)."','".sanitize_space($comment)."','".sql_sanitize($timestamp)."')") or die();
+			$i = $mysqli->query("INSERT INTO ".$prefix."ecomments (eid, author, feedback, date, comment, dateadded) VALUES ('".$id."','".$author."','".$feedback."','".$date."','".sanitize_space($comment)."','".sql_sanitize($timestamp)."')") or die();
 			echo "<meta http-equiv=refresh content=\"0; url=?cype=main&amp;page=events&amp;id=".$id."\" />";
 		}
 	}
@@ -100,7 +100,7 @@ if(@$_GET['id']){
 			}
 			$modify = "";	
 			if(isset($_SESSION['admin'])){
-				$modify = "<a href=\"?cype=admin&amp;page=mannews&amp;action=pdel&amp;id=".$c['id']."\" class=\"btn btn-default text-right\">Delete</a>";
+				$modify = "<a href=\"?cype=admin&amp;page=manevent&amp;action=pdel&amp;id=".$c['id']."\" class=\"btn btn-default text-right\">Delete</a>";
 			}
 			echo "
 			<h4><b>".$c['author']."</b> - Posted on ".$c['date']." ".$modify."</h4>
@@ -132,7 +132,7 @@ if(@$_GET['id']){
 				<a href=\"?cype=admin&amp;page=manevent&amp;action=edit&amp;id=".$e['id']."\">Edit</a> | 
 				<a href=\"?cype=admin&amp;page=manevent&amp;action=del\">Delete</a> | 
 				<a href=\"?cype=admin&amp;page=manevent&amp;action=lock\">Lock</a>&nbsp;
-			</span>";
+			</span><br/>";
 		}
 	}
 }
