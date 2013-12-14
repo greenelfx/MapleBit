@@ -147,6 +147,7 @@ CREATE TABLE `".$prefix."properties` (
   `bgcolor` text,
   `bgrepeat` text,
   `bgcenter` text,
+  `bgfixed` text,
   `flood` tinyint(4) NOT NULL DEFAULT '1',
   `floodint` int(11) DEFAULT NULL,
   `cypedir` text,
@@ -501,11 +502,10 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 			echo "<meta http-equiv=\"refresh\" content=\"0; url=?install=done\" />";
 		}
 		else {
-		echo "For the rankings to work, you need the GD archive to be extracted. This can take some time, so you can either do it yourself later, or have it done automatically. If you choose to do it yourself, go to assets/img/GD and extract the .zip archive.
+		echo "For the rankings to work, you need the GD archive to be extracted. This can take some time. Go to assets/img/GD and extract the .zip archive.
 		<hr/>
 		<form method=\"post\">
-			<input type=\"submit\" name=\"auto\" class=\"btn btn-primary btn-lg\" value=\"Do it for me! &raquo;\" style=\"float:right;\"/>
-			<input type=\"submit\" name=\"myself\" class=\"btn btn-warning btn-lg\" value=\"I&#39;ll do it myself! &raquo;\" style=\"float:left;\"/><br/><br/>
+			<input type=\"submit\" name=\"myself\" class=\"btn btn-warning btn-lg\" value=\"OK, I&#39;ll do it! &raquo;\" style=\"float:right;\"/><br/><br/>
 		</form>";
 		}
 		break;

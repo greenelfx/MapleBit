@@ -29,8 +29,14 @@ if($_SESSION['admin']){
 				<label>
 					<input type=\"checkbox\" name=\"bgcenter\" value=\"center\">Center Background (Yes)
 				</label>
-			</div>	
+			</div>
 			<span class=\"help-block\">Background images can be centered.</span>
+			 <div class=\"checkbox\">
+				<label>
+					<input type=\"checkbox\" name=\"bgfixed\" value=\"fixed\">Fixed Background (Yes)
+				</label>
+			</div>				
+			<span class=\"help-block\">Background images can be fixed (won&#39;t scroll).</span>
 			<hr/>
 			<button type=\"submit\" class=\"btn btn-primary\" required>Submit &raquo;</button>
 		</form>
@@ -40,10 +46,13 @@ if($_SESSION['admin']){
 		$url = mysql_escape($_POST["url"]);
 		$bgcolor = mysql_escape($_POST["bgcolor"]);
 		$bgrepeat = mysql_escape($_POST["bgrepeat"]);
-		$bgcenter = mysql_escape($_POST["bgcenter"]);
-		$mysqli->query("UPDATE ".$prefix."properties SET background = '$url', bgcolor = '$bgcolor', bgrepeat = '$bgrepeat', bgcenter = '$bgcenter'");
+		if(mysql_escape(isset($_POST["bgcenter"])) == 1){ $bgcenter = "center"; } else { $bgcenter = ""; }
+		if(mysql_escape(isset($_POST["bgfixed"])) == 1){ $bgfixed = "fixed"; } else { $bgfixed = ""; }
+		$mysqli->query("UPDATE ".$prefix."properties SET background = '$url', bgcolor = '$bgcolor', bgrepeat = '$bgrepeat', bgcenter = '$bgcenter', bgfixed = '$bgfixed'");
 		echo "<div class=\"alert alert-success\">Successfully updated background.</div>";
 		redirect_wait5("?cype=admin&page=background");
 	}
+} else{
+	redirect("?cype");
 }
 ?>

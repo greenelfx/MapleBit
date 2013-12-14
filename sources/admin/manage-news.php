@@ -5,7 +5,14 @@
 <?php 
 if(isset($_SESSION['id'])){
 	if(isset($_SESSION['admin'])){
-		if($_GET['action']=="add"){
+		if(empty($_GET['action'])){
+			echo "<h2 class=\"text-left\">Manage News</h2><hr/>
+				<a href=\"?cype=admin&amp;page=mannews&amp;action=add\"><b>Add News &raquo;</b></a><br/>
+				<a href=\"?cype=admin&amp;page=mannews&amp;action=edit\">Edit News</a><br/>
+				<a href=\"?cype=admin&amp;page=mannews&amp;action=del\">Delete News</a><br/>
+			";
+		}
+		elseif($_GET['action']=="add"){
 			echo "
 			<h2 class=\"text-left\">Add News</h2><hr/>";
 			if($_SESSION['pname'] == "checkpname"){
@@ -19,11 +26,13 @@ if(isset($_SESSION['id'])){
 				<input type=\"text\" name=\"title\" class=\"form-control\" id=\"title\" placeholder=\"Title\" required/>
 			</div>
 			<b>Author:</b> ".$_SESSION['pname']."<br/>
-			<b>Category:</b><br/>
-			<select name=\"cat\" class=\"form-control\">
-				<option value=\"ct_news_notice_notice\">Notice</option>
-				<option value=\"ct_news_gameup\">Game Up</option>
-			</select><br/>
+			<div class=\"form-group\">
+				<label for=\"category\">Category</label>
+				<select name=\"cat\" class=\"form-control\">
+					<option value=\"ct_news_notice_notice\">Notice</option>
+					<option value=\"ct_news_gameup\">Game Up</option>
+				</select>
+			</div>
 			<textarea name=\"content\" style=\"height:300px;width:100%;\" class=\"form-control\"></textarea><br/>
 			<input type=\"submit\" name=\"add\" class=\"btn btn-primary\" value=\"Add News Article &raquo;\" />
 		</form>";
@@ -41,7 +50,7 @@ if(isset($_SESSION['id'])){
 						echo "<div class=\"alert alert-danger\">You must enter some content.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}else{
 						$i = $mysqli->query("INSERT INTO ".$prefix."news (title, author, type, date, content) VALUES ('".$title."','".$author."','".$cat."','".$date."','".$content."')") or die();
-						echo "<div class=\"alert alert-success\">Your news article has been posted.</div>";
+						echo "<div class=\"alert alert-success\">Your news article has been posted.</div><hr/><a href=\"?cype=admin\" class=\"btn btn-primary\">&laquo; Go Back</a>";
 					}
 				}
 			}
@@ -62,12 +71,12 @@ if(isset($_SESSION['id'])){
 				<input type=\"text\" name=\"title\" class=\"form-control\" id=\"title\" placeholder=\"Title\" value=\"".$n['title']."\" required/>
 			</div>
 				<b>Author:</b> ".$n['author']."<br/>
-				<b>Category:</b><br/>
 				<div class=\"form-group\">
-				<select name=\"cat\" class=\"form-control\">
-					<option value=\"ct_news_notice_notice\">Notice</option>
-					<option value=\"ct_news_gameup\">Game Up</option>
-				</select>
+					<label for=\"category\">Category</label>
+					<select name=\"cat\" class=\"form-control\">
+						<option value=\"ct_news_notice_notice\">Notice</option>
+						<option value=\"ct_news_gameup\">Game Up</option>
+					</select>
 				</div>
 				<textarea name=\"content\" style=\"height:300px;width:100%;\" class=\"form-control\">".stripslashes($n['content'])."</textarea><br/>
 				<input type=\"submit\" name=\"edit\" class=\"btn btn-primary\" value=\"Edit News Article &raquo;\" />		
@@ -88,17 +97,20 @@ if(isset($_SESSION['id'])){
 					}
 				}
 			}else{
-				echo "
-				Select a news article to modify:<hr/>
-				";
 				$gn = $mysqli->query("SELECT * FROM ".$prefix."news ORDER BY id DESC") or die();
-				while($n = $gn->fetch_assoc()){
-					echo "
-					[".$n['date']."] <a href=\"?cype=admin&amp;page=mannews&amp;action=edit&amp;id=".$n['id']."\">".$n['title']."</a><hr/>
-					";
+				$cgn = $gn->num_rows;
+				if($cgn > 0){
+					echo "Select a news article to modify:<hr/>";
+					while($n = $gn->fetch_assoc()){
+						echo "
+						[".$n['date']."] <a href=\"?cype=admin&amp;page=mannews&amp;action=edit&amp;id=".$n['id']."\">".$n['title']."</a><hr/>
+						";
+					}
+				} else{
+					echo "<div class=\"alert alert-danger\">No News Articles found!</div>";
 				}
 			}
-		} else if ($_GET['action']=="pdel") {
+		} elseif ($_GET['action']=="pdel") {
 			if (!isset($_GET['id'])) {
 				echo "No Comment ID Specified.";
 			} else if (!is_numeric($_GET['id'])) {
@@ -211,11 +223,11 @@ if(isset($_SESSION['id'])){
 					echo "<div class=\"alert alert-success\">The news article has been unlocked.</div>";
 				}
 			}
+		} else {
+			redirect("?cype");
 		}
-	}else{
-		include('sources/public/accessdenied.php');
 	}
 }else{
-	echo "You must be logged in to use this feature.";
+	redirect("?cype");
 }
 ?>

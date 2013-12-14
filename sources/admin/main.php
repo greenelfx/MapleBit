@@ -48,6 +48,7 @@ if($_SESSION['id']){
   <div class="col-md-3">
   	<div class="well">
 	<a href="?cype=admin&amp;page=voteconfig">Edit Vote Configuration</a>
+	<a href="?cype=admin&amp;page=nxpacks">Add NX Packages</a>
 	</div>
   </div>
 </div>
@@ -61,13 +62,13 @@ if($_SESSION['id']){
   <div class="col-md-3 ">
 	<div class="well">
 	<a href="?cype=admin&amp;page=theme">Edit Theme</a><br/>
-	Want to spice your site up? Change your theme here!
+	<a href="?cype=admin&amp;page=banner">Add Banner</a><br/>
+	<a href="?cype=admin&amp;page=background">Add Background</a>
 	</div>
   </div>
   <div class="col-md-3">
   	<div class="well">
-		<a href="?cype=admin&amp;page=banner">Add Banner</a><br/>
-		<a href="?cype=admin&amp;page=background">Add Background</a>
+		<a href="?cype=admin&amp;page=ticket">Manage Tickets</a>
 	</div>
   </div>
   <div class="col-md-3">
@@ -83,14 +84,10 @@ if($_SESSION['id']){
 				include('sources/admin/voteconfig.php');
 			}elseif($admin == "gmlog"){
 				include('sources/admin/gmlog.php');
-			}elseif($admin == "logs"){
-				include('sources/admin/logs.php');
 			}elseif($admin == "manevent"){
 				include('sources/admin/manage-event.php');
 			}elseif($admin == "mannews"){
 				include('sources/admin/manage-news.php');
-			}elseif($admin == "manuser"){
-				include('sources/admin/manage-user.php');
 			}elseif($admin == "muteuser"){
 				include('sources/admin/mute-user.php');
 			}elseif($admin == "unmuteuser"){
@@ -103,8 +100,6 @@ if($_SESSION['id']){
 				include('sources/admin/nxpacks.php');
 			}elseif($admin == "theme"){
 				include('sources/admin/theme.php');
-			}elseif($admin == "pages"){
-				include('sources/admin/pages.php');
 			}elseif($admin == "banner"){
 				include('sources/admin/banner.php');
 			}elseif($admin == "background"){
@@ -117,7 +112,7 @@ if($_SESSION['id']){
 			include("sources/structure/footer.php");
 			}
 		}else{
-			header("Location: ?cype=admin");
+			redirect("?cype=main");
 		}
 	}else{
 		redirect("?cype=main");

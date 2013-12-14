@@ -1,75 +1,38 @@
 <?php 
-/*
-    Copyright (C) 2009  Murad <Murawd>
-						Josh L. <Josho192837>
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 if($_SESSION['gm'] || $_SESSION['admin']){
-	$order = $mysqli->real_escape_string($_POST['order']);
-	$search = $mysqli->real_escape_string($_POST['search']);
-	$page = $mysqli->real_escape_string($_POST['page']);
-	$limit = $page*15;
-	$limit2 = $limit+15;
-	$rank = $page*15;
-	$rank2 = 0;
-	$orderby = "cid DESC";
-
-	echo "
-		<legend>GM Log</legend>
-			<form method='POST' action='?cype=admin&amp;page=gmlog' class=\"pull-right\">
-			<div class=\"input-append\">
-				<input type='text' name='search' value='$search' id='appendedInputButton' required/>
-				<input type='submit' value='Search' id='go' alt='Search' title='Search' class='btn'/>
-			</div>
-			</form>
-		<table class=\"table table-bordered table-hover table-striped\">
-		<thead>
+	if(isset($_POST['search'])){$search = $mysqli->real_escape_string($_POST['search']);} else {$search = "";}
+	$query = $mysqli->query("SELECT characters.id AS cid, characters.name AS cname, gmlog.cid AS cid, gmlog.command AS command, gmlog.when AS 'when' FROM characters,gmlog WHERE characters.id = gmlog.cid ORDER BY gmlog.when DESC LIMIT 200");
+	echo "<table class=\"table table-hover\">";
+	echo "<thead>
 			<tr>
-				<th>
-					Name
-				</td>
-				<th>
-					Command
-				</td>
-				<th>
-					Time
-				</td>
-			</tr></thead>";
-if($search == ""){
-	$limit = $limit+1;
-	$log = $mysqli->query("SELECT * FROM gmlog WHERE command LIKE '!' order by $orderby LIMIT $limit, 15");
-	}else{
-	$log = $mysqli->query("SELECT * FROM gmlog WHERE command LIKE '%$search%' AND command LIKE '!' order by $orderby LIMIT $limit,15");
+				<th>Character</th>
+				<th>Command</th>
+				<th>When</th>
+			</tr>
+		</thead>
+	<tbody>";
+	$commands = array();
+	while($row = $query->fetch_assoc()) {
+		$commands[] = $row['command'];
+		$warp = '!warp';
+		$kill = '!kill';
+		$dc = '!dc';
+	  if(strpos($row['command'], $warp) === false) {$warp_class = "";}
+		else {$warp_class= "info";}
+	  if(strpos($row['command'], $dc) === false){$dc_class = "";}
+		else {$dc_class= "error";}
+	  if(strpos($row['command'], $kill) === false){$jail_class = "";}
+		else {$jail_class= "warning";}
+		echo "<h5><tr class=".$jail_class."".$warp_class."".$dc_class."><td>&nbsp;&nbsp;";
+		echo $row['cname'];
+		echo "&nbsp;</td><td>&nbsp;";
+		echo $row['command'];
+		echo "&nbsp;</td><td>";
+		echo $row['when'];
+		echo "</td></tr></h5>";
 	}
-while($player = $log->fetch_assoc()){
-	echo "
-			<tr>
-				<td>
-					".$player['charname']."
-				</td>
-				<td>
-					".$player['command']."
-				</td>
-				<td align='center'>
-					".$player['when']."
-				</td>
-			</tr>";
-}
-	echo "
-		</table>
-		";
+		echo "</tbody></table>";
+} else{
+	redirect("?cype");
 }
 ?>
