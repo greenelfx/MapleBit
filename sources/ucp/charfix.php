@@ -10,7 +10,7 @@ if(isset($_SESSION['id'])){
 			<form method=\"post\">
 				<b>Select character:</b><br/>
 			<select name=\"char\" class=\"form-control\">";
-			$s = $mysqli->query("SELECT * FROM `characters` WHERE `accountid`='".$_SESSION['id']."' ORDER BY `id` ASC") or die(mysql_error());
+			$s = $mysqli->query("SELECT * FROM characters WHERE accountid='".$_SESSION['id']."' ORDER BY id ASC") or die();
 			while($c = $s->fetch_assoc()){
 				echo "
 									<option value=\"".$c['id']."\">".$c['name']."</option>";
@@ -27,7 +27,7 @@ if(isset($_SESSION['id'])){
 			$char = $mysqli->real_escape_string($_POST['char']);
 			$henesys = $mysqli->real_escape_string($_POST['map']);
 			$dec = $mysqli->real_escape_string($_POST['dec']);
-			$m = $mysqli->query("UPDATE `characters` SET `map`='".$henesys."' WHERE `id`='".$char."'") or die(mysql_error());
+			$m = $mysqli->query("UPDATE characters SET map='".$henesys."' WHERE id='".$char."'") or die();
 			echo "<div class=\"alert alert-success\"><b>Fix succesful.</b> Your character will now spawn at Henesys.</div>";
 			
 		}
@@ -42,12 +42,12 @@ if(isset($_SESSION['id'])){
 				</form>";
 			}else{
 				$name = $_SESSION['name'];
-				$g = $mysqli->query("SELECT * FROM `accounts` WHERE `name`='".$name."'") or die(mysql_error());
+				$g = $mysqli->query("SELECT * FROM `accounts` WHERE `name`='".$name."'") or die();
 				$u = $g->fetch_assoc();
-				if($u['dc']=="0"){
-					echo "<div class=\"alert\">You are already logged out in-game.</div>";
+				if($u['loggedin']=="0"){
+					echo "<div class=\"alert alert-warning\">You are already logged out in-game.</div>";
 				}else{
-					$s = $mysqli->query("UPDATE `accounts` SET `loggedin`='0' WHERE `name`='".$name."'") or die(mysql_error());
+					$s = $mysqli->query("UPDATE accounts SET loggedin='0' WHERE name='".$name."'") or die();
 					echo "<div class=\"alert alert-success\">Your account has been fixed! You should be able to log in normally now.</div>";
 				}
 			}
@@ -59,6 +59,7 @@ if(isset($_SESSION['id'])){
 		";
 	}
 }else{
-	echo "You must be logged in to use this feature.";
+	echo "<div class=\"alert alert-danger\">You must be logged in to use this feature.</div>";
+	redirect_wait5("?cype");
 }
 ?>

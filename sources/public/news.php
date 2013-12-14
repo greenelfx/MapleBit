@@ -1,4 +1,4 @@
-<?php 
+<?php
 if(isset($_GET['id'])){
 	$id = $mysqli->real_escape_string($_GET['id']);
 	$gn = $mysqli->query("SELECT * FROM ".$prefix."news WHERE id='".$id."'") or die();
@@ -30,10 +30,10 @@ if(isset($_GET['id'])){
 	$fetchg = $flood->fetch_assoc();
 	$seconds = 60*$cypefloodint;
 	if(isset($_SESSION['id'])){
-		if($_SESSION['mute'] == "1"){
-			echo "<div class==\"alert alert-danger\">You have been muted. Please contact an administrator</div>";
+		if($_SESSION['mute'] == 1){
+			echo "<div class=\"alert alert-danger\">You have been muted. Please contact an administrator</div>";
 		}
-		if($n['locked'] == "1"){
+		elseif($n['locked'] == "1"){
 			echo "<div class=\"alert alert-danger\">This article has been locked.</div>";
 		}elseif($_SESSION['pname'] == "checkpname"){
 			echo "<div class=\"alert alert-danger\">You must assign a profile name before you can comment news articles.</div>";

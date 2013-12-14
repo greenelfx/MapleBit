@@ -117,18 +117,18 @@ if(isset($_SESSION['id'])){
 				echo "Invalid Comment ID.";
 			} else {
 				$newsid = $mysqli->real_escape_string($_GET['id']);
-				$query = $mysqli->query("SELECT * FROM cype_ncomments WHERE id = ".$newsid."") or die();
+				$query = $mysqli->query("SELECT * FROM ".$prefix."ncomments WHERE id = ".$newsid."") or die();
 				$rows = $query->num_rows;
 				$fetch = $query->fetch_assoc();
 				
 				if ($rows != 1) {
-					echo "Comment ID Does Not Exists.";
+					echo "<div class=\"alert alert-danger\">Comment ID doesn't exist!</div>";
 				} else {
-					$delete = "DELETE FROM cype_ncomments WHERE id = ".$newsid."";
+					$delete = "DELETE FROM ".$prefix."ncomments WHERE id = ".$newsid."";
 					if ($mysqli->query($delete)) {
 						header("Location:?cype=main&page=news&id=".$fetch['nid']);
 					} else {
-						echo "Error deleting news comment.";
+						echo "<div class=\"alert alert-danger\">Error deleting news comment.</div>";
 					}
 				}
 

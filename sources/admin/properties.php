@@ -289,7 +289,7 @@ $('#myTab a').click(function (e) {
 		</select>
 	</div>
 	<div class=\"form-group\">
-		<label for=\"postingInterval\">Posting Interval:</label> <small>Amount of time in seconds between comments</small>
+		<label for=\"postingInterval\">Posting Interval:</label> <small>Amount of time in minutes between comments</small>
 		<input name=\"floodi\" type=\"text\" maxlength=\"10\" class='form-control' id=\"postingInterval\" value=\"".$cypefloodint."\" required/>
 	</div>
 </div>
@@ -298,6 +298,6 @@ $('#myTab a').click(function (e) {
 </form>";
 	}
 }else{
-	include('sources/public/accessdenied.php');
+	redirect("?cype");
 }
 ?>

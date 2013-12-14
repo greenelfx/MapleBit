@@ -3,7 +3,7 @@ gmcp
 ucp
 structure
 misc
-
-NTO READY:
 admin
+
+NOT READY:
 public

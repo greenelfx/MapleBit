@@ -33,7 +33,7 @@ if($_SESSION['id']){
 			}
 		}else{
 			echo "
-			<legend>Mute User</legend>
+			<h2 class=\"text-left\">Mute User</h2><hr/>
 		";
 		if(!isset($_POST['search'])){
 				echo "
@@ -47,7 +47,7 @@ if($_SESSION['id']){
 				<div class=\"alert alert-error\">You cannot leave the search field blank.</div>
 			";
 				}else{
-					$ga = $mysqli->query("SELECT * FROM `cype_profile` WHERE `name` LIKE '%".$search."%' ORDER BY `name` ASC") or die();
+					$ga = $mysqli->query("SELECT * FROM ".$prefix."profile WHERE `name` LIKE '%".$search."%' ORDER BY `name` ASC") or die();
 					while($a = $ga->fetch_assoc()){
 						echo "
 		
@@ -59,7 +59,7 @@ if($_SESSION['id']){
 	echo "
 	<br/><br/>
 	<form method=\"post\" action=''>
-		<input type=\"text\" name=\"name\" placeholder=\"Username\" required class=\"form-control\" style=\"width:50%;\"/> 
+		<input type=\"text\" name=\"name\" placeholder=\"Username\" required class=\"form-control\"\"/> 
 		<br/><input type=\"submit\" name=\"search\" class=\"btn btn-primary\" value=\"Search &raquo;\" />
 	</form>
 	";

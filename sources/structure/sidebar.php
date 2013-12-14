@@ -41,7 +41,7 @@ if(isset($_SESSION['id'])){
 			<input type="password" name="password" maxlength="12" class="form-control" placeholder="Password" id="password" required/>
 		</div>
 		<a id="login" class="btn btn-primary btn-block">Login</a>
-		<a href="/register" class="btn btn-info btn-block">Register</a>
+		<a href="?cype=main&page=register" class="btn btn-info btn-block">Register</a>
     </form>
 		<div id="message"></div>
 <?php
