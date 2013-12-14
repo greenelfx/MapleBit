@@ -48,6 +48,6 @@ if($_SESSION['admin'] == 1) {
 	}
 }
 else {
-	include('sources/public/accessdenied.php');
+	redirect("?cype");
 }
 ?>

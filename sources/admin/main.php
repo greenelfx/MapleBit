@@ -27,16 +27,16 @@ if($_SESSION['id']){
 <div class="row">
   <div class="col-md-3">
 	<div class="well">
-		<li><a href="?cype=admin&page=mannews&amp;action=add"><b>Add News &raquo;</b></a></li>
-		<li><a href="?cype=admin&page=mannews&amp;action=edit">Edit News</a></li>
-		<li><a href="?cype=admin&page=mannews&amp;action=del">Delete News</a></li>
+		<a href="?cype=admin&page=mannews&amp;action=add"><b>Add News &raquo;</b></a><br/>
+		<a href="?cype=admin&page=mannews&amp;action=edit">Edit News</a><br/>
+		<a href="?cype=admin&page=mannews&amp;action=del">Delete News</a>
 	</div>
   </div>
   <div class="col-md-3 ">
 	<div class="well">
-		<li><a href="?cype=admin&amp;page=manevent&amp;action=add"><b>Add Event &raquo;</b></a></li>
-        <li><a href="?cype=admin&amp;page=manevent&amp;action=edit">Edit Event</a></li>
-        <li><a href="?cype=admin&amp;page=manevent&amp;action=del">Delete Event</a></li>
+		<a href="?cype=admin&amp;page=manevent&amp;action=add"><b>Add Event &raquo;</b></a><br/>
+        <a href="?cype=admin&amp;page=manevent&amp;action=edit">Edit Event</a><br/>
+        <a href="?cype=admin&amp;page=manevent&amp;action=del">Delete Event</a>
 	</div>
   </div>
   <div class="col-md-3">
@@ -47,7 +47,7 @@ if($_SESSION['id']){
   </div>
   <div class="col-md-3">
   	<div class="well">
-	<a href="?cype=admin&amp;page=voteconfig">Edit Vote Configuration</a>
+	<a href="?cype=admin&amp;page=voteconfig">Edit Vote Configuration</a><br/>
 	<a href="?cype=admin&amp;page=nxpacks">Add NX Packages</a>
 	</div>
   </div>
