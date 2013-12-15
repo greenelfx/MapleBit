@@ -8,10 +8,6 @@ if(@$_GET['id']){
 	echo nl2br(stripslashes($b['content']))."<hr/>";
 	$gc = $mysqli->query("SELECT * FROM ".$prefix."bcomments WHERE bid='".$id."' ORDER BY id ASC") or die();
 	$cc = $gc->num_rows;
-	$flood = $mysqli->query("SELECT * FROM ".$prefix."bcomments WHERE bid='".sql_sanitize($id)."' && author='".sql_sanitize($_SESSION['pname'])."' ORDER BY dateadded DESC LIMIT 1") or die();
-	$fetchg = $flood->fetch_assoc();
-	$seconds = 60*$cypefloodint;
-
 	echo "
 		<b>".$b['views']."</b> Views and <b>".$cc."</b> Responses<hr/>";
 
@@ -29,6 +25,9 @@ if(@$_GET['id']){
 			<hr />";
 	}
 	if(isset($_SESSION['id'])){
+	$flood = $mysqli->query("SELECT * FROM ".$prefix."bcomments WHERE bid='".$id."' && author='".$_SESSION['pname']."' ORDER BY dateadded DESC LIMIT 1") or die();
+	$fetchg = $flood->fetch_assoc();
+	$seconds = 60*$cypefloodint;
 		if($_SESSION['mute'] == "1"){
 			echo "<div class=\"alert alert-danger\">You have been muted. Please contact an administrator</div>";
 		}elseif($b['locked'] == "1"){
@@ -58,7 +57,7 @@ if(@$_GET['id']){
 		}
 	}else{
 		echo "
-			<br/><div class=\"alert alert-danger\">Please log in to comment!</div>";
+			<br/><div class=\"alert alert-danger\">Please log in to comment.</div>";
 	}
 	if(@$_POST['comment']){
 		$feedback = sanitize_space($_POST['feedback']);

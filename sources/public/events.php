@@ -35,11 +35,10 @@ if(@$_GET['id']){
 			<a href=\"?cype=admin&amp;page=manevent&amp;action=".$buttonlink."\" class=\"btn btn-default\">".$buttontext."</a>
 			<hr />";
 	}
-	$flood = $mysqli->query("SELECT * FROM ".$prefix."ecomments WHERE eid='".sql_sanitize($id)."' && author='".sql_sanitize($_SESSION['pname'])."' ORDER BY dateadded DESC LIMIT 1") or die();
-	$fetchg = $flood->fetch_assoc();
-	$seconds = 60*$cypefloodint;
-
 	if(isset($_SESSION['id'])){
+		$flood = $mysqli->query("SELECT * FROM ".$prefix."ecomments WHERE eid='".$id."' && author='".$_SESSION['pname']."' ORDER BY dateadded DESC LIMIT 1") or die();
+		$fetchg = $flood->fetch_assoc();
+		$seconds = 60*$cypefloodint;
 		if($_SESSION['mute'] =="1"){
 			echo "<div class=\"alert alert-danger\">You have been muted. Please contact an administrator</div>";
 		}elseif($e['locked'] == "1"){
