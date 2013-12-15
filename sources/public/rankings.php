@@ -75,18 +75,18 @@ echo "
 <div class=\"row\">
 <div class=\"col-md-6\">
 	<div class=\"well well2\" style=\"margin: 0 auto; display: inline-block;margin-bottom:0px;\">
-	<a href=\"".$siteurl."/main/rankings/beginner\"><img src=\"".$siteurl."assets/img/rank/beginner.png\" data-toggle=\"tooltip\" title=\"Beginner\"/></a>
-	<a href=\"".$siteurl."/main/rankings/warrior\"><img src=\"".$siteurl."assets/img/rank/warrior.png\" data-toggle=\"tooltip\" title=\"Warrior\"/></a>
-	<a href=\"".$siteurl."/main/rankings/magician\"><img src=\"".$siteurl."assets/img/rank/magician.png\" data-toggle=\"tooltip\" title=\"Magician\"/></a>
-	<a href=\"".$siteurl."/main/rankings/bowman\"><img src=\"".$siteurl."assets/img/rank/bowman.png\" data-toggle=\"tooltip\" title=\"Bowman\"/></a>
-	<a href=\"".$siteurl."/main/rankings/thief\"><img src=\"".$siteurl."assets/img/rank/thief.png\" data-toggle=\"tooltip\" title=\"Thief\"/></a>
-	<a href=\"".$siteurl."/main/rankings/pirate\"><img src=\"".$siteurl."assets/img/rank/pirate.png\" data-toggle=\"tooltip\" title=\"Pirate\"/></a>
-	<a href=\"".$siteurl."/main/rankings/cygnus\"><img src=\"".$siteurl."assets/img/rank/cygnus.png\" data-toggle=\"tooltip\" title=\"Cygnus\"/></a>
-	<a href=\"".$siteurl."/main/rankings/aran\"><img src=\"".$siteurl."assets/img/rank/aran.png\" data-toggle=\"tooltip\" title=\"Aran\"/></a>
+	<a href=\"?cype=main&page=rankings&job=beginner\"><img src=\"".$siteurl."assets/img/rank/beginner.png\" data-toggle=\"tooltip\" title=\"Beginner\"/></a>
+	<a href=\"?cype=main&page=rankings&job=warrior\"><img src=\"".$siteurl."assets/img/rank/warrior.png\" data-toggle=\"tooltip\" title=\"Warrior\"/></a>
+	<a href=\"?cype=main&page=rankings&job=magician\"><img src=\"".$siteurl."assets/img/rank/magician.png\" data-toggle=\"tooltip\" title=\"Magician\"/></a>
+	<a href=\"?cype=main&page=rankings&job=bowman\"><img src=\"".$siteurl."assets/img/rank/bowman.png\" data-toggle=\"tooltip\" title=\"Bowman\"/></a>
+	<a href=\"?cype=main&page=rankings&job=thief\"><img src=\"".$siteurl."assets/img/rank/thief.png\" data-toggle=\"tooltip\" title=\"Thief\"/></a>
+	<a href=\"?cype=main&page=rankings&job=pirate\"><img src=\"".$siteurl."assets/img/rank/pirate.png\" data-toggle=\"tooltip\" title=\"Pirate\"/></a>
+	<a href=\"?cype=main&page=rankings&job=cygnus\"><img src=\"".$siteurl."assets/img/rank/cygnus.png\" data-toggle=\"tooltip\" title=\"Cygnus\"/></a>
+	<a href=\"?cype=main&page=rankings&job=aran\"><img src=\"".$siteurl."assets/img/rank/aran.png\" data-toggle=\"tooltip\" title=\"Aran\"/></a>
 	</div>
 </div>
 <div class=\"col-md-5 col-md-offset-1\">
-	<form id='search_form' method='post' action='/rankings&amp;order=".isset($_POST['order'])."&amp;search'>
+	<form id='search_form' method='post' action='?cype=main&page=rankings&amp;order=".isset($_POST['order'])."&amp;search'>
 			<div style=\"float:right;\">
 			<div class=\"well well2\" style=\"margin-bottom:0px;\">
 				<div class=\"input-group\">			
@@ -129,7 +129,7 @@ while($row = $result->fetch_assoc()) {
 		<tr>
 			<td><span class=\"badge\">$ranking</span></td>
 			<td class=\"hidden-sm hidden-xs\"><img src=\"".$siteurl."/assets/img/GD/Characters/".$cachechar['hash'].".png\" alt=\"".$cachechar['name']."\" class=\"avatar img-responsive\" style=\"margin: 0 auto;\"></td>
-			<td><a href=\"/user/".$row['name']."\">".$row['name']."</a></td>
+			<td><a href=\"?cype=main&page=user&user=".$row['name']."\">".$row['name']."</a></td>
 			<td>";
 				if ($row['job']=="000")
 					echo "Beginner";
@@ -285,13 +285,13 @@ echo "
 	";
 
 if($start == 0 || $start<=15) {
-	echo "  <li class=\"previous\"><a href=\"".$siteurl."/main/rankings/".$getjob."/\"><i class=\"icon-arrow-left\"></i> Previous</a></li>";
+	echo "  <li class=\"previous\"><a href=\"?cype=main&page=rankings&job=".$getjob."/\"><i class=\"icon-arrow-left\"></i> Previous</a></li>";
 }
 else{
-		echo "<li class=\"previous\"><a href=\"".$siteurl."/main/rankings/".$getjob."/". abs($start - 15) ."\"><i class=\"icon-arrow-left\"></i> Previous</a></li>";
+		echo "<li class=\"previous\"><a href=\"?cype=main&page=rankings&job=".$getjob."&start=". abs($start - 15) ."\"><i class=\"icon-arrow-left\"></i> Previous</a></li>";
 }
 echo"
-	<li class=\"next\"><a href=\"".$siteurl."/main/rankings/".$getjob."/". abs($start + 15) ."\">Next<i class=\"icon-arrow-right\"></i></a></li>";
+	<li class=\"next\"><a href=\"?cype=main&page=rankings&job=".$getjob."&start=". abs($start + 15) ."\">Next<i class=\"icon-arrow-right\"></i></a></li>";
 ?>
 
 </ul>
