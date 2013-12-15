@@ -26,16 +26,16 @@ if(isset($_GET['id'])){
 			<a href=\"?cype=admin&amp;page=mannews&amp;action=".$buttonlink."\" class=\"btn btn-default\">".$buttontext."</a>
 			<hr />";
 	}
+	if(isset($_SESSION['id'])){
 	$flood = $mysqli->query("SELECT * FROM `".$prefix."ncomments` WHERE `nid`='".$id."' && `author`='".$_SESSION['pname']."' ORDER BY `dateadded` DESC LIMIT 1") or die();
 	$fetchg = $flood->fetch_assoc();
 	$seconds = 60*$cypefloodint;
-	if(isset($_SESSION['id'])){
 		if($_SESSION['mute'] == 1){
 			echo "<div class=\"alert alert-danger\">You have been muted. Please contact an administrator</div>";
 		}
 		elseif($n['locked'] == "1"){
 			echo "<div class=\"alert alert-danger\">This article has been locked.</div>";
-		}elseif($_SESSION['pname'] == "checkpname"){
+		}elseif(isset($_SESSION['pname']) == "checkpname"){
 			echo "<div class=\"alert alert-danger\">You must assign a profile name before you can comment news articles.</div>";
 		}elseif($cypeflood > 0 && (time() - $seconds) < $fetchg['dateadded']) {
 			echo "<div class=\"alert alert-danger\">You may only post every ".$cypefloodint." minutes to prevent spam.</div>";
