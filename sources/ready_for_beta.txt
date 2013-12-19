@@ -4,6 +4,7 @@ ucp
 structure
 misc
 admin
+public
 
 NOT READY:
-public
+admin

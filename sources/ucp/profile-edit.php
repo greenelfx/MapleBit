@@ -383,23 +383,20 @@ if($_SESSION['id']){
 			});
 			</script>";
 		}else{
-			$pname = sql_sanitize(isset($_POST['pname']));
-			$mainchar = sql_sanitize(isset($_POST['mainchar']));
-			$realname = sanitize_space($_POST['realname']);
-			$age = sql_sanitize($_POST['age']);
-			$country = $_POST['country'];
-			$motto = sanitize_space($_POST['motto']);
+			$pname = mysql_escape(isset($_POST['pname']));
+			$mainchar = mysql_escape(isset($_POST['mainchar']));
+			$realname = mysql_escape($_POST['realname']);
+			$age = mysql_escape($_POST['age']);
+			$country = mysql_escape($_POST['country']);
+			$motto = mysql_escape($_POST['motto']);
 			$favjob = $_POST['favjob'];
-			$text = sanitize_space($_POST['text']);
+			$text = mysql_escape($_POST['text']);
 			$u = $mysqli->query("UPDATE `".$prefix."profile` SET `mainchar`='".$mainchar."',`realname`='".$realname."',`age`='".$age."',`country`='".$country."',`motto`='".$motto."',`favjob`='".$favjob."',`text`='".$text."' WHERE `accountid`='".$_SESSION['id']."'") or die(mysql_error());
 				echo "Your public profile has been updated<br />";
 				echo "Click <a href=\"?cype=main&amp;page=members&name=".$_SESSION['pname']."\">here</a> to go to your profile.";
 			}
 		}
 	}else{
-		echo "
-		<legend>Error</legend>
-		No login session present.
-		";
+		redirect("?cype=main");
 }
 ?>

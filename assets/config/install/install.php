@@ -135,6 +135,7 @@ CREATE TABLE `".$prefix."properties` (
   `name` text,
   `title` text,
   `client` text,
+  `server` text,
   `version` int(11) NOT NULL DEFAULT '0',
   `forumurl` text,
   `siteurl` text,
@@ -334,7 +335,6 @@ CREATE TABLE ".$prefix."gdcache (
 ALTER TABLE `accounts` MODIFY COLUMN `nick` TEXT NULL DEFAULT NULL;
 ALTER TABLE `accounts` ADD COLUMN `sitelogged` TEXT NULL DEFAULT NULL;
 ALTER TABLE `accounts` ADD COLUMN `webadmin` int(1) DEFAULT '0';
-ALTER TABLE `".$prefix."properties` ADD COLUMN `gmlevel` INTEGER NOT NULL DEFAULT 1;
 ");
 echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 		break;
@@ -343,6 +343,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 			if(isset($_POST['submit'])){
 				$sservername = $mysqli->real_escape_string(stripslashes($_POST['servername']));
 				$sclient = $mysqli->real_escape_string(stripslashes($_POST['client']));
+				$sserver = $mysqli->real_escape_string(stripslashes($_POST['setup']));
 				$sforumurl = $mysqli->real_escape_string(stripslashes($_POST['forumurl']));
 				$svote = $mysqli->real_escape_string(stripslashes($_POST['vote']));
 				$sexp = $mysqli->real_escape_string(stripslashes($_POST['exprate']));
@@ -361,6 +362,13 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				if($stop == "false"){
 					if(empty($sclient)){
 						echo '<div class="alert alert-danger">You need a client link.</div>';
+						$stop = "true";
+						echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
+					}
+				}
+				if($stop == "false"){
+					if(empty($sserver)){
+						echo '<div class="alert alert-danger">You need a server link.</div>';
 						$stop = "true";
 						echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
 					}
@@ -414,8 +422,9 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 						echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
 					}
 				}	
+				}	
 				if($stop == "false"){
-					$mysqli->query("UPDATE ".$prefix."properties SET name='$sservername', client='$sclient', version='$sversion', forumurl='$sforumurl', siteurl='$ssiteurl', vote='$svote', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', flood='1', floodint='20', theme='cerulean', nav='0', pcap='100'");
+					$mysqli->query("UPDATE ".$prefix."properties SET name='$sservername', client='$sclient', server = '$sserver', version='$sversion', forumurl='$sforumurl', siteurl='$ssiteurl', vote='$svote', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', gmlevel = '$sgmlevel', flood='1', floodint='20', theme='cerulean', nav='0', pcap='100'");
 					echo "Working...";
 					echo "<meta http-equiv=\"refresh\" content=\"1; url=?install=5\" />";
 				}
@@ -432,6 +441,10 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				<div class=\"form-group\">
 					<label for=\"clientDL\">Client Link</label>
 					<input name=\"client\" type=\"text\" maxlength=\"100\" class='form-control' id=\"clientDL\" required/>
+				</div>
+				<div class=\"form-group\">
+					<label for=\"setupLink\">Setup Link</label>
+					<input name=\"setup\" type=\"text\" maxlength=\"100\" class='form-control' id=\"setupLink\" required/>
 				</div>
 				<div class=\"form-group\">
 					<label for=\"verion\">Version</label>

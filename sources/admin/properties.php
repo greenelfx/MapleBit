@@ -9,12 +9,12 @@ if($_SESSION['admin']){
 	if($do == "submit"){
 		$sservername = $mysqli->real_escape_string(stripslashes($_POST['servername']));
 		$sclient = $mysqli->real_escape_string(stripslashes($_POST['client']));
+		$sserver = $mysqli->real_escape_string(stripslashes($_POST['server']));
 		$sforumurl = $mysqli->real_escape_string(stripslashes($_POST['forumurl']));
 		$ssiteurl = $mysqli->real_escape_string(stripslashes($_POST['siteurl']));
 		$sexp = $mysqli->real_escape_string(stripslashes($_POST['exprate']));
 		$smeso = $mysqli->real_escape_string(stripslashes($_POST['mesorate']));
 		$sdrop = $mysqli->real_escape_string(stripslashes($_POST['droprate']));
-		#$smbanner = $mysqli->real_escape_string(stripslashes($_POST['mbanner']));
 		$spcap = $mysqli->real_escape_string(stripslashes($_POST['pcap']));
 		$floodp = $mysqli->real_escape_string(stripslashes($_POST['floodp']));
 		$floodi = $mysqli->real_escape_string(stripslashes($_POST['floodi']));
@@ -30,6 +30,13 @@ if($_SESSION['admin']){
 		if($stop == "false"){
 			if(empty($sclient)){
 				echo '<div class="alert alert-danger">You need a client link.</div>';
+				$stop = "true";
+				redirect_wait5("?cype=admin&page=properties");
+			}
+		}
+		if($stop == "false"){
+			if(empty($sserver)){
+				echo '<div class="alert alert-danger">You need a setup link.</div>';
 				$stop = "true";
 				redirect_wait5("?cype=admin&page=properties");
 			}
@@ -79,14 +86,7 @@ if($_SESSION['admin']){
 				$stop = "true";
 				redirect_wait5("?cype=admin&page=properties");
 			}
-		}
-		#if($stop == "false"){
-		#	if(empty($smbanner)){
-		#		echo '<div class="alert alert-danger">Enter the link to your middle banner. If you are unsure, leave the text box as is.</div>';
-		#		$stop = "true";
-		#		redirect_wait5("?cype=admin&page=properties");
-		#	}
-		#}		
+		}	
 		if($stop == "false"){
 			if(empty($spcap)){
 				echo '<div class="alert alert-danger">Enter a player cap.</div>';
@@ -103,7 +103,7 @@ if($_SESSION['admin']){
 			}
 		}
 		if($stop == "false"){
-			$mquery = "UPDATE ".$prefix."properties SET name='$sservername', client='$sclient', forumurl='$sforumurl', siteurl = '$ssiteurl', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', version='$sversion', flood='$floodp', floodint='$floodi', pcap='$spcap', gmlevel='$sgmlevel'";
+			$mquery = "UPDATE ".$prefix."properties SET name='$sservername', client='$sclient', server = '$sserver', forumurl='$sforumurl', siteurl = '$ssiteurl', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', version='$sversion', flood='$floodp', floodint='$floodi', pcap='$spcap', gmlevel='$sgmlevel'";
 			$exec = $mysqli->query($mquery);
 			echo "<legend>Success</legend><div class=\"alert alert-success\">Configuration Updated</div>";
 			redirect_wait5("?cype=admin&page=properties");
@@ -255,6 +255,10 @@ $('#myTab a').click(function (e) {
 	<div class=\"form-group\">
 		<label for=\"clientLink\">Client Link:</label>
 		<input name=\"client\" type=\"text\" maxlength=\"100\" class='form-control' id=\"clientLink\" value=\"".$client."\" required/>
+	</div>
+	<div class=\"form-group\">
+		<label for=\"setupLink\">Setup Link:</label>
+		<input name=\"server\" type=\"text\" maxlength=\"100\" class='form-control' id=\"setupLink\" value=\"".$server."\" required/>
 	</div>
 </div>
 

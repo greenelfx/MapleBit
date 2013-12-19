@@ -67,6 +67,6 @@ if($_SESSION['id']){
 		}
 	};
 }else{
-	include('sources/public/login.php');
+	redirect("?cype=main");
 }
 ?>

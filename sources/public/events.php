@@ -43,7 +43,7 @@ if(@$_GET['id']){
 			echo "<div class=\"alert alert-danger\">You have been muted. Please contact an administrator</div>";
 		}elseif($e['locked'] == "1"){
 			echo "<div class=\"alert alert-danger\">This article has been locked.</div>";
-		}elseif($_SESSION['pname'] == "checkpname"){
+		}elseif($_SESSION['pname'] === "checkpname"){
 			echo "<div class=\"alert alert-danger\">You must assign a profile name before you can comment news articles.</div>";
 		}elseif($cypeflood > 0 && (time() - $seconds) < $fetchg['dateadded']) {
 			echo "<div class=\"alert alert-danger\">You may only post every ".$cypefloodint." minutes to prevent spam.</div>";
@@ -124,15 +124,15 @@ if(@$_GET['id']){
 			<b><a href=\"?cype=main&amp;page=events&amp;id=".$e['id']."\">".stripslashes($e['title'])."</a></b>
 		<span class=\"commentbubble\">
 			<b>".$e['views']."</b> views | <b>".$cc."</b> comments
-		</span>";
+		";
 		if(isset($_SESSION['admin'])){
 			echo "
-			<span class=\"commentbubble\">
 				<a href=\"?cype=admin&amp;page=manevent&amp;action=edit&amp;id=".$e['id']."\">Edit</a> | 
 				<a href=\"?cype=admin&amp;page=manevent&amp;action=del\">Delete</a> | 
 				<a href=\"?cype=admin&amp;page=manevent&amp;action=lock\">Lock</a>&nbsp;
-			</span><br/>";
+			";
 		}
+	echo "</span><br/>";
 	}
 }
 }

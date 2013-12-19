@@ -1,4 +1,5 @@
 <?php
+if(isset($_SESSION['id'])){
 if(!isset($_POST['buyNX'])) {
 	echo "<form name=\"buynx\" method=\"post\">
 	<h2 class=\"text-left\">Buy NX</h2><hr/>
@@ -50,5 +51,8 @@ else {
 		$mysqli->query("UPDATE `accounts` SET `paypalNX` = paypalNX + ".$selNX['nx']." WHERE `id` = ".$getCharId['accountid']."") or die();
 		echo "<div class=\"alert alert-success\">You have purchased <b>".number_format($selNX['nx'])." NX</b> for <b>".number_format($selPack)." Mesos</b>. The mesos have been taken from <b>".$getCharId['name']."</b>.<hr/>Thank you for your purchase!</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 	}
+}
+} else{
+	redirect("?cype=main");
 }
 ?>

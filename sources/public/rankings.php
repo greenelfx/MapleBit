@@ -128,7 +128,7 @@ while($row = $result->fetch_assoc()) {
 	echo "
 		<tr>
 			<td><span class=\"badge\">$ranking</span></td>
-			<td class=\"hidden-sm hidden-xs\"><img src=\"".$siteurl."/assets/img/GD/Characters/".$cachechar['hash'].".png\" alt=\"".$cachechar['name']."\" class=\"avatar img-responsive\" style=\"margin: 0 auto;\"></td>
+			<td class=\"hidden-sm hidden-xs\"><img src=\"".$siteurl."assets/img/GD/Characters/".$cachechar['hash'].".png\" alt=\"".$cachechar['name']."\" class=\"avatar img-responsive\" style=\"margin: 0 auto;\"></td>
 			<td><a href=\"?cype=main&page=user&user=".$row['name']."\">".$row['name']."</a></td>
 			<td>";
 				if ($row['job']=="000")

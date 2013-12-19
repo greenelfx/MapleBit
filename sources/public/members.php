@@ -36,7 +36,7 @@ if(@$_GET['name']){
 		if(empty($p['country'])){$p['country'] = "Not Set";}
 		if(empty($p['motto'])){$p['motto'] = "Not Set";}
 		if(empty($p['age'])){$p['age'] = "Not Set";}
-		if(empty($p['job'])){$p['job'] = "Not Set";}
+		if(empty($p['favjob'])){$p['favjob'] = "Not Set";}
 		if(empty($p['text'])){$p['text'] = "Not Set";}
 		echo "
 			<legend>".$name."'s Profile (".$p['realname'].")</legend>

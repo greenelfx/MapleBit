@@ -66,9 +66,9 @@ echo "
 				include('sources/ucp/mail.php');
 			}
 		}else{
-			header("Location: ?cype=ucp");
+			redirect("?cype=main");
 		}
 	}else{
-			header("Location: ?cype=main");
+		redirect("?cype=main");
 	}
 ?>
