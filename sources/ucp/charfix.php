@@ -60,6 +60,6 @@ if(isset($_SESSION['id'])){
 	}
 }else{
 	echo "<div class=\"alert alert-danger\">You must be logged in to use this feature.</div>";
-	redirect_wait5("?cype");
+	redirect("?cype=main");
 }
 ?>

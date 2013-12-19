@@ -1,3 +1,0 @@
-<?php
-	redirect("?cype=main");
-?>
