@@ -511,12 +511,16 @@ function buyNX($char, $info, $pack){
 
 function mailStats($s) {
 	global $mysqli, $prefix;
-	if($s == 1) {
+	if($s == 4) {
 		$show = "from";
 	} else {
 		$show = "to";
 	}
-	$mailCount = $mysqli->query("SELECT * FROM `".$prefix."mail` WHERE `".$show."`='".$_SESSION['pname']."' AND `status`='".$s."'");
+	if($s != 1){
+		$mailCount = $mysqli->query("SELECT * FROM `".$prefix."mail` WHERE `".$show."`='".$_SESSION['pname']."' AND `status`='".$s."'");
+	} else{
+		$mailCount = $mysqli->query("SELECT * FROM `".$prefix."mail` WHERE `".$show."`='".$_SESSION['pname']."'");
+	}
 	echo $mailCount->num_rows;
 }
 function getNav() {

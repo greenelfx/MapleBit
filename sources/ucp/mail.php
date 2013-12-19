@@ -1,13 +1,19 @@
 <?php 
 if(basename($_SERVER["PHP_SELF"]) != "mail.php" && $_SESSION['id'] && $_SESSION['pname'] != NULL) {
 ignore_user_abort(true);	# Prevent User Abort
+#1 = Anything
+#2 = Read
+#3 = Unread
+#4 = Sent
+#5 = Draft
 ?>
 	<h2 class="text-left">Mailbox</h2><hr/>
 		<ul class="breadcrumb">
-			<li><a href="?cype=ucp&amp;page=mail&amp;s=3">Unread: <?php mailStats(3)?></a><span class="divider">/</span></li>
-			<li><a href="?cype=ucp&amp;page=mail&amp;s=2">Read: <?php mailStats(2)?></a><span class="divider">/</span></li>
-			<li><a href="?cype=ucp&amp;page=mail&amp;s=1">Sent: <?php mailStats(1)?></a><span class="divider">/</span></li>
-			<li><a href="?cype=ucp&amp;page=mail&amp;s=5">Drafts: <?php mailStats(5)?></a><span class="divider">/</span></li>				
+			<li><a href="?cype=ucp&amp;page=mail&amp;s=1">Inbox: <?php mailStats(1)?></a><span class="divider"></span></li>
+			<li><a href="?cype=ucp&amp;page=mail&amp;s=2">Read: <?php mailStats(2)?></a><span class="divider"></span></li>
+			<li><a href="?cype=ucp&amp;page=mail&amp;s=3">Unread: <?php mailStats(3)?></a><span class="divider"></span></li>
+			<li><a href="?cype=ucp&amp;page=mail&amp;s=4">Sent: <?php mailStats(4)?></a><span class="divider"></span></li>
+			<li><a href="?cype=ucp&amp;page=mail&amp;s=5">Drafts: <?php mailStats(5)?></a><span class="divider"></span></li>				
 		</ul>
 		<h3 class="text-left">Send Mail</h3><hr/>
 				<form method="post" action="?cype=ucp&amp;page=mail&amp;send">
@@ -34,17 +40,21 @@ ignore_user_abort(true);	# Prevent User Abort
 					$title = "";
 					if(isset($_GET['showmail'])) {
 						$title = "Viewing Mail";
-					} else if($tid == 2) {
+					} elseif($tid == 1) {
+						$title = "Inbox - All";
+					} elseif($tid == 2) {
 						$title = "Inbox - Read Messages";
-					} else if($tid == 3) {
+					} elseif($tid == 3) {
 						$title = "Inbox - Unread";
-					} else if($tid == 1) {
+					} elseif($tid == 4) {
 						$title = "Outbox - Sent Messages";
-					} else if($tid == 5) {
+					} elseif($tid == 5) {
 						$title = "Drafts";
+					} else {
+						$title = "Inbox - All";
 					}
 				?>
-			<legend><?php echo $title?></legend>
+			<legend><?php echo $title . $tid ;?></legend>
 					<?php
 					if(isset($_GET['showmail']) && !empty($_GET['showmail'])) {
 						$error = "<legend>System Error</legend> Invalid Message ID Or You Do Not Have Valid Permission.";
@@ -104,25 +114,30 @@ ignore_user_abort(true);	# Prevent User Abort
 						0 = Junk
 						*/
 
-						if($status > 5 || $status < 0 || !isset($_GET['s'])) {
-							if(isset($_GET['s']) == 0){
-								$status = 0;
-							} elseif(isset($_GET['s']) == 1){
-								$status = 1;
+						if($status >= 5 || $status < 0 || !isset($_GET['s'])) {
+							if(isset($_GET['s']) == 5){
+								$status = 5;
 							} elseif(isset($_GET['s']) == 2){
 								$status = 2;
-							} elseif(isset($_GET['s']) == 5){
-								$status = 5;
-							} else{
+							} elseif(isset($_GET['s']) == 3){
 								$status = 3;
+							} elseif(isset($_GET['s']) == 4){
+								$status = 4;
+							} else{
+								$status = 1;
 							}
 						}
 						$totalMails = 10;	# Mails Per Page
-						if($status == 1 || $status == 5){
+						if($status == 5){
 							$mailCount = $mysqli->query("SELECT COUNT(*) FROM `".$prefix."mail` WHERE `from`='".$_SESSION['pname']."' AND `status`='".$status."'") or die();
-						} else {
+						} 
+						elseif($status == 1) {
+							$mailCount = $mysqli->query("SELECT COUNT(*) FROM `".$prefix."mail` WHERE `to`='".$_SESSION['pname']."'") or die();
+						}
+						else {
 							$mailCount = $mysqli->query("SELECT COUNT(*) FROM `".$prefix."mail` WHERE `to`='".$_SESSION['pname']."' AND `status`='".$status."'") or die();
 						}
+
 						$getrows = $mailCount->num_rows;
 						$totalpages = ceil($getrows / $totalMails);
 						
@@ -151,9 +166,12 @@ ignore_user_abort(true);	# Prevent User Abort
 						} else {
 							$next = $page+1;
 						}
-						if($status == 1 || $status == 5){
+						if($status == 5){
 							$query = $mysqli->query("SELECT * FROM `".$prefix."mail` WHERE `from`='".$_SESSION['pname']."' AND `status`='".$status."' ORDER BY `mailid` DESC LIMIT ".$offset.", ".$totalMails."") or die();
-						} else{
+						}	elseif($status == 1) {
+							$query = $mysqli->query("SELECT * FROM `".$prefix."mail` WHERE `to`='".$_SESSION['pname']."' ORDER BY `mailid` DESC") or die();
+						}
+						else{
 							$query = $mysqli->query("SELECT * FROM `".$prefix."mail` WHERE `to`='".$_SESSION['pname']."' AND `status`='".$status."' ORDER BY `mailid` DESC LIMIT ".$offset.", ".$totalMails."") or die();
 						}
 						echo "<table class=\"table table-bordered table-striped table-hover\">
@@ -178,9 +196,10 @@ ignore_user_abort(true);	# Prevent User Abort
 							echo "	<td><a href=\"?cype=ucp&amp;page=mail&amp;showmail=".$fetch['mailid']."\">".$int."</a></td>
 									<td><a href=\"?cype=ucp&amp;page=mail&amp;showmail=".$fetch['mailid']."\">".$fetch['from']."</a></td>
 									<td><a href=\"?cype=ucp&amp;page=mail&amp;showmail=".$fetch['mailid']."\">".$fetch['title']."</a></td>
-									<td><a href=\"?cype=ucp&amp;page=mail&amp;showmail=".$fetch['mailid']."\">".$date."</a></td>";
+									<td><a href=\"?cype=ucp&amp;page=mail&amp;showmail=".$fetch['mailid']."\">".$date."</a></td>
+								</tr>";
 						}
-						echo "	</tr>
+						echo "	
 							</tbody>
 						</table>";
 						if($totalpages < 1 && tid != "") {
@@ -188,12 +207,6 @@ ignore_user_abort(true);	# Prevent User Abort
 						} 
 						elseif($tid == "" ) {
 						?>
-						<ul class="breadcrumb">
-							<li><a href="?cype=ucp&amp;page=mail&amp;s=3">Unread: <?php mailStats(3)?></a><span class="divider">/</span></li>
-							<li><a href="?cype=ucp&amp;page=mail&amp;s=2">Read: <?php mailStats(2)?></a><span class="divider">/</span></li>
-							<li><a href="?cype=ucp&amp;page=mail&amp;s=1">Sent: <?php mailStats(1)?></a><span class="divider">/</span></li>
-							<li><a href="?cype=ucp&amp;page=mail&amp;s=5">Drafts: <?php mailStats(5)?></a><span class="divider">/</span></li>											
-						</ul>
 					<?php
 						}else {
 					?>

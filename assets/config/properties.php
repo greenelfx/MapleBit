@@ -21,6 +21,7 @@ $bgcenter = $prop['bgcenter'];
 $bgfixed = $prop['bgfixed'];
 /* Download link for client */
 $client = $prop['client'];
+$server = $prop['server'];
 /* Server Version */
 $version = $prop['version'];
 /* Forum url*/

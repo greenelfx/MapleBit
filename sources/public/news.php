@@ -35,7 +35,7 @@ if(isset($_GET['id'])){
 		}
 		elseif($n['locked'] == "1"){
 			echo "<div class=\"alert alert-danger\">This article has been locked.</div>";
-		}elseif(isset($_SESSION['pname']) == "checkpname"){
+		}elseif(isset($_SESSION['pname']) === "checkpname"){
 			echo "<div class=\"alert alert-danger\">You must assign a profile name before you can comment news articles.</div>";
 		}elseif($cypeflood > 0 && (time() - $seconds) < $fetchg['dateadded']) {
 			echo "<div class=\"alert alert-danger\">You may only post every ".$cypefloodint." minutes to prevent spam.</div>";
@@ -114,16 +114,15 @@ if(isset($_GET['id'])){
 			[".$n['date']."] <b><a href=\"?cype=main&page=news&amp;id=".$n['id']."\">".stripslashes($n['title'])."</a></b>
 		<span class=\"commentbubble\">	
 			<b>".$n['views']."</b> views | <b>".$cc."</b> comments
-		</span>";
+		";
 		if(isset($_SESSION['admin'])){
 			echo "
-			<span class=\"commentbubble\">
 				<a href=\"?cype=admin&amp;page=mannews&amp;action=edit&amp;id=".$n['id']."\">Edit</a> | 
 				<a href=\"?cype=admin&amp;page=mannews&amp;action=del\">Delete</a> |
 				<a href=\"?cype=admin&amp;page=mannews&amp;action=lock\">Lock</a>&nbsp;
-			</span>";
+			";
 		}
-		echo "<br/>";
+		echo "</span><br/>";
 	}
 }
 }

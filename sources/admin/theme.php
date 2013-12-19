@@ -24,7 +24,7 @@ if($_SESSION['admin'] == 1) {
 					 <label class="radio"><input type="radio" name="theme" value="slate" />Slate</label>
 					 <label class="radio"><input type="radio" name="theme" value="spacelab" />Spacelab</label>
 					 <label class="radio"><input type="radio" name="theme" value="united" />United</label>
-					 <label class="radio"><input type="radio" name="theme" value="Yeti" />Yeti</label>
+					 <label class="radio"><input type="radio" name="theme" value="yeti" />Yeti</label>
 					 <hr/>
 					 <label class="radio"><input type="radio" name="nav" value="0" checked/>Normal Navigation Bar</label>
 					 <label class="radio"><input type="radio" name="nav" value="1" />Inverse Navigation Bar</label>
