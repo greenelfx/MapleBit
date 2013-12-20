@@ -421,8 +421,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 						$stop = "true";
 						echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
 					}
-				}	
-				}	
+				}
 				if($stop == "false"){
 					$mysqli->query("UPDATE ".$prefix."properties SET name='$sservername', client='$sclient', server = '$sserver', version='$sversion', forumurl='$sforumurl', siteurl='$ssiteurl', vote='$svote', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', gmlevel = '$sgmlevel', flood='1', floodint='20', theme='cerulean', nav='0', pcap='100'");
 					echo "Working...";
@@ -430,6 +429,8 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				}
 			}else{
 				include('../properties.php');
+				$url = $_SERVER["REQUEST_URI"];
+				$url = str_replace('/assets/config/install/install.php?install=4','',$url) . "/";
 				echo "
 				<h4>Site Configuration</h4>
 				<form method=\"post\" action=\"\" role=\"form\">
@@ -485,8 +486,8 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				</div>
 				<div class=\"form-group\">
 					<label for=\"siteInput\">Site Path <span class=\"label label-danger\">IMPORTANT. NEED TRAILING SLASH</span></label>
-					<input name=\"sitepath\" type=\"text\" maxlength=\"10\" class='form-control' id=\"siteInput\" placeholder=\"/\" value=\"/\" required/>
-					<span class=\"help-block\">/ indicates the root directory. /cype/ indicates that Cype has been installed in a folder called Cype. You <b>must</b> use a trailing slash</span>
+					<input name=\"sitepath\" type=\"text\" maxlength=\"10\" class='form-control' id=\"siteInput\" placeholder=\"/\" value=\"".$url."\" required/>
+					<span class=\"help-block\">/ indicates the root directory. /cype/ indicates that Cype has been installed in a folder called cype. You <b>must</b> use a trailing slash</span>
 				</div>
 				</div>
 				<hr/>
