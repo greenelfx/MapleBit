@@ -105,7 +105,7 @@ if($_SESSION['admin']){
 		if($stop == "false"){
 			$mquery = "UPDATE ".$prefix."properties SET name='$sservername', client='$sclient', server = '$sserver', forumurl='$sforumurl', siteurl = '$ssiteurl', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', version='$sversion', flood='$floodp', floodint='$floodi', pcap='$spcap', gmlevel='$sgmlevel'";
 			$exec = $mysqli->query($mquery);
-			echo "<legend>Success</legend><div class=\"alert alert-success\">Configuration Updated</div>";
+			echo "<h2 class=\"text-left\">Success</h2><hr/><div class=\"alert alert-success\">Configuration Updated</div>";
 			redirect_wait5("?cype=admin&page=properties");
 		}
 	}
