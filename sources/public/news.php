@@ -9,7 +9,8 @@ if(isset($_GET['id'])){
 	echo nl2br(stripslashes($n['content']))."
 	<br /><br />
 	";
-	$gc = $mysqli->query("SELECT * FROM `".$prefix."ncomments` WHERE `nid`='".$id."' ORDER BY `id` ASC") or die();
+	$gc = $mysqli->query("SELECT ".$prefix."ncomments.*, accounts.email, accounts.id As id1, ".$prefix."profile.accountid, ".$prefix."profile.name FROM ".$prefix."ncomments INNER JOIN ".$prefix."profile ON ".$prefix."ncomments.author = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id") or die();
+	#$gc = $mysqli->query("SELECT * FROM `".$prefix."ncomments` WHERE `nid`='".$id."' ORDER BY `id` ASC") or die();
 	$cc = $gc->num_rows;
 	echo "
 	<b>".$n['views']."</b> Views and <b>".$cc."</b> Responses<hr />";
@@ -92,10 +93,11 @@ if(isset($_GET['id'])){
 				$modify = "<a href=\"?cype=admin&amp;page=mannews&amp;action=pdel&amp;id=".$c['id']."\" class=\"btn btn-default text-right\">Delete</a>";
 			}
 			echo "
+			<div class=\"well\"><img src=\"" . get_gravatar($c['email']) . "\" alt=\"".$c['author']."\" class=\"img-responsive\" style=\"float:left;padding-right:10px;\"/>
 			<h4><b>".$c['author']."</b> - Posted on ".$c['date']." ".$modify."</h4>
-					<b>Feedback:</b> ".$feedback."<br />
+					<b>Feedback:</b> ".$feedback."<hr />
 					".stripslashes($c['comment'])."
-				<br />";
+				</div>";
 		}
 	}
 }else{
