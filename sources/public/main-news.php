@@ -18,11 +18,7 @@ echo "
 		}else{
 			echo stripslashes($title);
 		}
-		echo "
-			</a>
-			<span class=\"commentbubble\">
-			<b>".$cc."</b>
-			<img src=\"assets/img/news/comment.png\" alt=\"Comment\"/></span><br/>";
+		echo "<span class=\"badge pull-right\">".$cc."</span></a><br/>";
 		$i++;
 }
 
