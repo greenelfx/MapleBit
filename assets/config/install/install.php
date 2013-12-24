@@ -330,11 +330,11 @@ CREATE TABLE ".$prefix."gdcache (
   `hash` varchar(32) NOT NULL,
   `name` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+) ENGINE = MYISAM ;
 
-ALTER TABLE `accounts` MODIFY COLUMN `nick` TEXT NULL DEFAULT NULL;
-ALTER TABLE `accounts` ADD COLUMN `sitelogged` TEXT NULL DEFAULT NULL;
-ALTER TABLE `accounts` ADD COLUMN `webadmin` int(1) DEFAULT '0';
+ALTER TABLE accounts ADD `nick` varchar(20);
+ALTER TABLE accounts ADD `sitelogged` TEXT;
+ALTER TABLE accounts ADD `webadmin` int(1) DEFAULT 0;
 ");
 echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 		break;
