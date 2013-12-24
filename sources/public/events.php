@@ -4,7 +4,7 @@ if(@$_GET['id']){
 	$ge = $mysqli->query("SELECT * FROM ".$prefix."events WHERE id='".sql_sanitize($id)."'") or die();
 	$e = $ge->fetch_assoc();
 	echo "
-		<legend>".stripslashes($e['title'])." | Posted by <a href=\"?cype=main&amp;page=members&amp;name=".$e['author']."\">".$e['author']."</a> on ".$e['date']."</legend>
+		<h2 class=\"text-left\">".stripslashes($e['title'])." | Posted by <a href=\"?cype=main&amp;page=members&amp;name=".$e['author']."\">".$e['author']."</a> on ".$e['date']."</h2><hr/>
 	";
 	if($e['status'] == "Active"){
 		$status = "<div class=\"alert alert-success\">Event is active</div>";
@@ -18,7 +18,7 @@ if(@$_GET['id']){
 	echo " ".$status."";
 	echo nl2br(stripslashes($e['content']))."
 	<br /><br />";
-	$gc = $mysqli->query("SELECT * FROM ".$prefix."ecomments WHERE eid='".sql_sanitize($id)."' ORDER BY id ASC") or die();
+	$gc = $mysqli->query("SELECT ".$prefix."ecomments.*, accounts.email, accounts.id As id1, ".$prefix."profile.accountid, ".$prefix."profile.name FROM ".$prefix."ecomments INNER JOIN ".$prefix."profile ON ".$prefix."ecomments.author = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id") or die();
 	$cc = $gc->num_rows;
 	echo "<b>".$e['views']."</b> Views and <b>".$cc."</b> Reponses";
 	echo "<hr />";
@@ -102,10 +102,11 @@ if(@$_GET['id']){
 				$modify = "<a href=\"?cype=admin&amp;page=manevent&amp;action=pdel&amp;id=".$c['id']."\" class=\"btn btn-default text-right\">Delete</a>";
 			}
 			echo "
+			<div class=\"well\"><img src=\"" . get_gravatar($c['email']) . "\" alt=\"".$c['author']."\" class=\"img-responsive\" style=\"float:left;padding-right:10px;\"/>
 			<h4><b>".$c['author']."</b> - Posted on ".$c['date']." ".$modify."</h4>
-					<b>Feedback:</b> ".$feedback."<br />
+					<b>Feedback:</b> ".$feedback."<hr />
 					".stripslashes($c['comment'])."
-				<br />";
+				</div>";
 		}
 	}
 }else{

@@ -15,8 +15,7 @@ echo "
 		}else{
 			echo stripslashes($title);
 		}
-		echo "</a><br/>
-		";
+		echo "<span class=\"badge pull-right\">".$cc."</span></a><br/>";
 		$i++;
 	}
 	if($i == 0) {
