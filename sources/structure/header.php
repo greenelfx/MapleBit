@@ -59,7 +59,7 @@ if($banner != ""){echo "<img src=\"".$banner."\" alt=\"banner\" class=\"img-resp
 			  <li><a href="?cype=main&amp;page=vote">Vote</a></li>
 			  <li><a href="?cype=main&amp;page=chat">Chat</a></li>
 			  <li><a href="?cype=main&amp;page=donate">Donate</a></li>
-			  <li><a href="#">Forums</a></li>			  
+			  <li><a href="<?php echo $forumurl; ?>">Forums</a></li>			  
             </ul>
 		<?php	
 			if(isset($_SESSION['id'])){
