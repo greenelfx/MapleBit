@@ -49,7 +49,7 @@ if(isset($_SESSION['gm'])){
 							" . $tickets['ticketid'] . "
 						</th>
 						<td>
-							<a href =\"?cype=admin&amp;page=ticket&amp;a=$tickets[ticketid]&amp;ticket=Yes\">
+							<a href =\"?base=admin&amp;page=ticket&amp;a=$tickets[ticketid]&amp;ticket=Yes\">
 								" . $tickets['title'] . "
 							</a>
 						</td>
@@ -124,7 +124,7 @@ if(isset($_SESSION['gm'])){
 					$closeTicket = mysql_query("UPDATE `cype_tickets` SET `status` = 'Closed' WHERE `id` = '{$_GET['a']}'");
 					if($closeTicket){
 						echo "This ticket was successfuly closed! You will be redirected in two seconds.
-						<meta http-equiv=\"refresh\" content=\"2; url=?cype=admin&amp;page=ticket\"/>
+						<meta http-equiv=\"refresh\" content=\"2; url=?base=admin&amp;page=ticket\"/>
 						";
 					}
 				}
@@ -133,6 +133,6 @@ if(isset($_SESSION['gm'])){
 		";
 	}
 } else {
-	header('Location:?cype=admin');
+	header('Location:?base=admin');
 }
 ?>

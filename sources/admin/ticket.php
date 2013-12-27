@@ -23,7 +23,7 @@ if(isset($_SESSION['admin'])){
 								" . $tickets['ticketid'] . "
 							</th>
 							<td>
-								<a href =\"?cype=admin&amp;page=ticket&amp;a=$tickets[ticketid]&amp;ticket=Yes\">
+								<a href =\"?base=admin&amp;page=ticket&amp;a=$tickets[ticketid]&amp;ticket=Yes\">
 									" . $tickets['title'] . "
 								</a>
 							</td>
@@ -94,11 +94,11 @@ if(isset($_SESSION['admin'])){
 					$closeTicket = $mysqli->query("UPDATE ".$prefix."tickets SET status = 0 WHERE ticketid = '".sql_sanitize($_GET['a'])."'");
 					if($closeTicket){
 						echo "<div class=\"alert alert-success\">This ticket was successfully closed! You will be redirected in five seconds.</div>";
-						redirect_wait5("?cype=admin&amp;page=ticket");
+						redirect_wait5("?base=admin&amp;page=ticket");
 					}
 				}
 	}
 } else {
-	redirect("?cype");
+	redirect("?base");
 }
 ?>

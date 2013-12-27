@@ -41,6 +41,6 @@ if($_SESSION['id']){
 		echo "<div class=\"alert alert-danger\">Oops! Looks like you already have a profile name!</div>";
 	}
 } else {
-	redirect("?cype=main");
+	redirect("?base=main");
 }
 ?>

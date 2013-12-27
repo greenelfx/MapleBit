@@ -9,14 +9,14 @@ ignore_user_abort(true);	# Prevent User Abort
 ?>
 	<h2 class="text-left">Mailbox</h2><hr/>
 		<ul class="breadcrumb">
-			<li><a href="?cype=ucp&amp;page=mail&amp;s=1">Inbox: <?php mailStats(1)?></a><span class="divider"></span></li>
-			<li><a href="?cype=ucp&amp;page=mail&amp;s=2">Read: <?php mailStats(2)?></a><span class="divider"></span></li>
-			<li><a href="?cype=ucp&amp;page=mail&amp;s=3">Unread: <?php mailStats(3)?></a><span class="divider"></span></li>
-			<li><a href="?cype=ucp&amp;page=mail&amp;s=4">Sent: <?php mailStats(4)?></a><span class="divider"></span></li>
-			<li><a href="?cype=ucp&amp;page=mail&amp;s=5">Drafts: <?php mailStats(5)?></a><span class="divider"></span></li>				
+			<li><a href="?base=ucp&amp;page=mail&amp;s=1">Inbox: <?php mailStats(1)?></a><span class="divider"></span></li>
+			<li><a href="?base=ucp&amp;page=mail&amp;s=2">Read: <?php mailStats(2)?></a><span class="divider"></span></li>
+			<li><a href="?base=ucp&amp;page=mail&amp;s=3">Unread: <?php mailStats(3)?></a><span class="divider"></span></li>
+			<li><a href="?base=ucp&amp;page=mail&amp;s=4">Sent: <?php mailStats(4)?></a><span class="divider"></span></li>
+			<li><a href="?base=ucp&amp;page=mail&amp;s=5">Drafts: <?php mailStats(5)?></a><span class="divider"></span></li>				
 		</ul>
 		<h3 class="text-left">Send Mail</h3><hr/>
-				<form method="post" action="?cype=ucp&amp;page=mail&amp;send">
+				<form method="post" action="?base=ucp&amp;page=mail&amp;send">
 				<div class="form-group">
 					<label for="inputRecipient">Recipient</label>
 					<input type="text" value="<?php if(isset($_GET['uc'])){ echo $_GET['uc']; }?>"name="recipent" placeholder="Recipient" class="form-control" id="inputRecipient" required/>
@@ -35,7 +35,7 @@ ignore_user_abort(true);	# Prevent User Abort
 				</form>
 				<hr/>
 				<?php
-					$seconds = 60*$cypefloodint;
+					$seconds = 60*$basefloodint;
 					$tid = intval(isset($_GET['s']));
 					$title = "";
 					if(isset($_GET['showmail'])) {
@@ -80,7 +80,7 @@ ignore_user_abort(true);	# Prevent User Abort
 									$mysqli->query("UPDATE `".$prefix."mail` SET status = '2' WHERE `mailid`='".$mailarray['mailid']."'") or die();
 							}
 							echo "
-								<form method=\"post\" action=\"?cype=ucp&amp;page=mail\">
+								<form method=\"post\" action=\"?base=ucp&amp;page=mail\">
 									<b>Title</b>".$mailarray['title']."<br/>
 									<b>".$mailuserd.":</b> ".$mailuser."<br />
 									<b>Date:</b> ".$mailarray['dateadded']."<br/>
@@ -99,7 +99,7 @@ ignore_user_abort(true);	# Prevent User Abort
 						}
 					} else {
 					?>
-					<form method="post" action="?cype=ucp&amp;page=mail">
+					<form method="post" action="?base=ucp&amp;page=mail">
 					<?php
 						$status = $mysqli->real_escape_string(intval(isset($_GET['s'])));
 						$page = $mysqli->real_escape_string(intval(isset($_GET['p'])));
@@ -193,10 +193,10 @@ ignore_user_abort(true);	# Prevent User Abort
 								$dot = "...";
 							}
 							$date = substr($fetch['dateadded'], -8, 8);
-							echo "	<td><a href=\"?cype=ucp&amp;page=mail&amp;showmail=".$fetch['mailid']."\">".$int."</a></td>
-									<td><a href=\"?cype=ucp&amp;page=mail&amp;showmail=".$fetch['mailid']."\">".$fetch['from']."</a></td>
-									<td><a href=\"?cype=ucp&amp;page=mail&amp;showmail=".$fetch['mailid']."\">".$fetch['title']."</a></td>
-									<td><a href=\"?cype=ucp&amp;page=mail&amp;showmail=".$fetch['mailid']."\">".$date."</a></td>
+							echo "	<td><a href=\"?base=ucp&amp;page=mail&amp;showmail=".$fetch['mailid']."\">".$int."</a></td>
+									<td><a href=\"?base=ucp&amp;page=mail&amp;showmail=".$fetch['mailid']."\">".$fetch['from']."</a></td>
+									<td><a href=\"?base=ucp&amp;page=mail&amp;showmail=".$fetch['mailid']."\">".$fetch['title']."</a></td>
+									<td><a href=\"?base=ucp&amp;page=mail&amp;showmail=".$fetch['mailid']."\">".$date."</a></td>
 								</tr>";
 						}
 						echo "	
@@ -214,10 +214,10 @@ ignore_user_abort(true);	# Prevent User Abort
 							<br />
 							<?php
 								if($prev-1 > 0) {
-									echo '<a href="?cype=ucp&amp;page=mail&amp;s='.$status.'&amp;p='.$prev.'"><img src="images/prev.gif" alt="Previous Mails" /></a>&nbsp;';
+									echo '<a href="?base=ucp&amp;page=mail&amp;s='.$status.'&amp;p='.$prev.'"><img src="images/prev.gif" alt="Previous Mails" /></a>&nbsp;';
 								}
 								if($prev != $next) {
-									echo '<a href="?cype=ucp&amp;page=mail&amp;s='.$status.'&amp;p='.$next.'"><img src="images/next.gif" alt="More Mails" /></a>';
+									echo '<a href="?base=ucp&amp;page=mail&amp;s='.$status.'&amp;p='.$next.'"><img src="images/next.gif" alt="More Mails" /></a>';
 								}
 							?>
 							<hr /><div align="right">
@@ -254,7 +254,7 @@ ignore_user_abort(true);	# Prevent User Abort
 										$execute = $mysqli->query("DELETE FROM `".$prefix."mail` WHERE `mailid` = '".$postid."'") or die();
 										$message = "<div class=\"alert alert-success\">Message deleted.</div>";
 									} else if($_POST['modify'] == "Reply") {
-										$message = "<META http-equiv=\"refresh\" content=\"0;URL=?cype=ucp&page=mail&uc=".$ffound['from']."\">";
+										$message = "<META http-equiv=\"refresh\" content=\"0;URL=?base=ucp&page=mail&uc=".$ffound['from']."\">";
 									} else if($_POST['modify'] == "Save") {
 										$execute = $mysqli->query("UPDATE `".$prefix."mail` SET `status` = '4' WHERE `mailid` = '".$postid."'") or die();
 										$message = "<div class=\"alert alert-success\">Selected Message Has Been Saved!</div>";
@@ -265,7 +265,7 @@ ignore_user_abort(true);	# Prevent User Abort
 							echo $message;
 						} else if(isset($_GET['send']) && isset($_POST)) {
 							$message = strip_tags($mysqli->real_escape_string($_POST['content']));
-							$message = str_replace($censored, '*CYPE*', $message);	// Content Filtering
+							$message = str_replace($censored, '*base*', $message);	// Content Filtering
 							$recipent = $mysqli->real_escape_string($_POST['recipent']);
 							$title = $mysqli->real_escape_string($_POST['title']);
 							$timestamp = time();
@@ -279,7 +279,7 @@ ignore_user_abort(true);	# Prevent User Abort
 								$reply = "Please Set A Profile Name Before Sending Mails.";
 							} else if($recipent == $_SESSION['pname']) {
 								$reply = "Sending Mails To Yourself Is Just Sad.";
-							} else if($cypeflood > 0 && (time() - $seconds) < $grab['dateadded']) {
+							} else if($baseflood > 0 && (time() - $seconds) < $grab['dateadded']) {
 								$reply = "You May Only Send A Mail Every 5 Minutes.";
 							} else if(strlen($message) < 10 || strlen($message) > 400) {
 								$reply = "Please Enter A Valid Content.";
@@ -319,6 +319,6 @@ ignore_user_abort(true);	# Prevent User Abort
 	</table>
 <?php
 } else {
-	header('Location:?cype=ucp');
+	header('Location:?base=ucp');
 }
 ?>

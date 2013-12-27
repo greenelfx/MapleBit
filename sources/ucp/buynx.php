@@ -53,6 +53,6 @@ else {
 	}
 }
 } else{
-	redirect("?cype=main");
+	redirect("?base=main");
 }
 ?>

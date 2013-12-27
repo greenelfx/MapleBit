@@ -10,7 +10,7 @@ if($_SESSION['id']){
 		";
 			if(!isset($_POST['unmute'])){
 				echo "
-				<div class=\"alert alert-info\"><a href=\"?cype=admin&page=unmuteuser\">Search for another user &raquo;</a></div>
+				<div class=\"alert alert-info\"><a href=\"?base=admin&page=unmuteuser\">Search for another user &raquo;</a></div>
 				<form method=\"post\" action=''>
 				<b>Username:</b> ".$a['name']."<br/>
 				<b>Profile name:</b> ".$name."
@@ -21,7 +21,7 @@ if($_SESSION['id']){
 				$u = $mysqli->query("UPDATE `accounts` SET `mute`='0' WHERE `id`='".getInfo('accid', $name, 'profilename')."'") or die();
 				echo "
 				<div class=\"alert alert-success\"><b>Success!</b> ".$name." has been unmuted.</div>
-				<div class=\"alert alert-info\"><a href=\"?cype=admin&page=unmuteuser\">Unmute another user &raquo;</a></div>
+				<div class=\"alert alert-info\"><a href=\"?base=admin&page=unmuteuser\">Unmute another user &raquo;</a></div>
 			";
 				
 			}
@@ -31,21 +31,21 @@ if($_SESSION['id']){
 			$gm = $mysqli->query("SELECT * FROM `accounts` WHERE `mute`='1' ORDER BY `name` ASC") or die();
 			$countmuted = $gm->num_rows;
 			if($countmuted < 1){
-				echo "<div class=\"alert alert-info\"><a href=\"?cype=admin&page=muteuser\">No users muted! Mute user &raquo;</a></div>";
+				echo "<div class=\"alert alert-info\"><a href=\"?base=admin&page=muteuser\">No users muted! Mute user &raquo;</a></div>";
 			}
 			else {
 				echo "Select User:<br/>";
 				while($m = $gm->fetch_assoc()){
 					$gp = $mysqli->query("SELECT * FROM ".$prefix."profile WHERE `accountid`='".$m['id']."'") or die();
 					$p = $gp->fetch_assoc();
-						echo "<a href=\"?cype=admin&amp;page=unmuteuser&amp;name=".$p['name']."\">".$p['name']."</a>";
+						echo "<a href=\"?base=admin&amp;page=unmuteuser&amp;name=".$p['name']."\">".$p['name']."</a>";
 				}
 			}
 		}
 	}else{
-		redirect("?cype");
+		redirect("?base");
 	}
 }else{
-	redirect("?cype");
+	redirect("?base");
 }
 ?>

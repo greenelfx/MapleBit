@@ -5,7 +5,7 @@ if(isset($_GET['page'])){
 	$ucp = "";
 }
 	if(isset($_SESSION['id'])){
-		if($getcype == "ucp"){
+		if($getbase == "ucp"){
 			if($ucp == ""){
 				echo "
 <script>
@@ -15,27 +15,27 @@ $('#myTab a').click(function (e) {
 })
 </script>
 <h2 class=\"text-left\">
-Welcome Back, ".getInfo('accname', 'cype_session', 'accid')."</h2>
+Welcome Back, ".getInfo('accname', 'base_session', 'accid')."</h2>
 <hr/>
 <ul id=\"myTab\" class=\"nav nav-tabs\">
 	<li class=\"active\"><a href=\"#account\" data-toggle=\"tab\">Account</a></li>
 	<li><a href=\"#community\" data-toggle=\"tab\">Community</a></li>
-	<li><a href=\"?cype=ucp&amp;page=buynx\">Cash Shop</a></li>
-	<li><a href=\"?cype=ucp&amp;page=ticket\">Tickets</a></li>
+	<li><a href=\"?base=ucp&amp;page=buynx\">Cash Shop</a></li>
+	<li><a href=\"?base=ucp&amp;page=ticket\">Tickets</a></li>
 </ul>
  <div id=\"myTabContent\" class=\"tab-content\">
 <div class=\"tab-pane fade in active\" id=\"account\">
 	<br/>
-	<a href=\"?cype=ucp&amp;page=accset\"><b>Account Settings</b></a><br/>
-	<a href=\"?cype=ucp&amp;page=charfix\">Character Fixes</a><br/><br/>
+	<a href=\"?base=ucp&amp;page=accset\"><b>Account Settings</b></a><br/>
+	<a href=\"?base=ucp&amp;page=charfix\">Character Fixes</a><br/><br/>
 </div>";
 echo "
 <div class=\"tab-pane fade\" id=\"community\">
     <br/>
-	<a href=\"?cype=main&amp;page=mail\">Mail</a><br/>
-	<a href=\"?cype=main&amp;page=ranking\">Rankings</a><br/>
-	<a href=\"?cype=main&amp;page=members\">Members</a><br/>
-	<a href=\"?cype=main&amp;page=guildlist\">Guild List</a><br/><br/>
+	<a href=\"?base=main&amp;page=mail\">Mail</a><br/>
+	<a href=\"?base=main&amp;page=rankings\">Rankings</a><br/>
+	<a href=\"?base=main&amp;page=members\">Members</a><br/>
+	<a href=\"?base=main&amp;page=guildlist\">Guild List</a><br/><br/>
 </div></div>
 ";
 if(!isset($_SESSION['pname'])){
@@ -43,11 +43,11 @@ echo "
 <div class=\"alert alert-danger\">
   <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>
   <h4>Whoa there!</h4>
-<a href=\"?cype=ucp&amp;page=profname\">You need set up a profile name &raquo;</a>
+<a href=\"?base=ucp&amp;page=profname\">You need set up a profile name &raquo;</a>
 </div>";
 }else{
 echo "
-<div class=\"well\"><a href=\"?cype=ucp&amp;page=profedit\">Edit Public Profile</a></div><br />";
+<div class=\"well\"><a href=\"?base=ucp&amp;page=profedit\">Edit Public Profile</a></div><br />";
 }
 
 			}elseif($ucp == "accset"){
@@ -66,9 +66,9 @@ echo "
 				include('sources/ucp/mail.php');
 			}
 		}else{
-			redirect("?cype=main");
+			redirect("?base=main");
 		}
 	}else{
-		redirect("?cype=main");
+		redirect("?base=main");
 	}
 ?>

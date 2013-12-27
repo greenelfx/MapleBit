@@ -25,73 +25,73 @@ if($_SESSION['admin']){
 		if(empty($sservername)){
 			echo '<div class="alert alert-danger">Your server doesn&apos;t have a name?</div>';
 			$stop = "true";
-			redirect_wait5("?cype=admin&page=properties");
+			redirect_wait5("?base=admin&page=properties");
 		}
 		if($stop == "false"){
 			if(empty($sclient)){
 				echo '<div class="alert alert-danger">You need a client link.</div>';
 				$stop = "true";
-				redirect_wait5("?cype=admin&page=properties");
+				redirect_wait5("?base=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			if(empty($sserver)){
 				echo '<div class="alert alert-danger">You need a setup link.</div>';
 				$stop = "true";
-				redirect_wait5("?cype=admin&page=properties");
+				redirect_wait5("?base=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			if(empty($sforumurl)){
 				echo '<div class="alert alert-danger">You need to enter a forum URL. If you don&apos; have one, just put a &apos;#&apos; in the text box.</div>';
 				$stop = "true";
-				redirect_wait5("?cype=admin&page=properties");
+				redirect_wait5("?base=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			if(!is_numeric($floodp)) {
 				echo '<div class="alert alert-danger">Hacking Attempt Detected!</div>';
 				$stop = "true";
-				redirect_wait5("?cype=admin&page=properties");
+				redirect_wait5("?base=admin&page=properties");
 			} else if(!is_numeric($floodi)) {
 				echo '<div class="alert alert-danger">Invalid flood interval entered.</div>';
 				$stop = "true";
-				redirect_wait5("?cype=admin&page=properties");
+				redirect_wait5("?base=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			if(empty($ssiteurl)){
 				echo '<div class="alert alert-danger">You need to enter a site URL. If you are unsure, just put a &apos;/&apos; in the text box.</div>';
 				$stop = "true";
-				redirect_wait5("?cype=admin&page=properties");
+				redirect_wait5("?base=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			if(empty($sexp)){
 				echo '<div class="alert alert-danger">Enter an exp rate.</div>';
 				$stop = "true";
-				redirect_wait5("?cype=admin&page=properties");
+				redirect_wait5("?base=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			if(empty($smeso)){
 				echo '<div class="alert alert-danger">Enter a meso rate.</div>';
 				$stop = "true";
-				redirect_wait5("?cype=admin&page=properties");
+				redirect_wait5("?base=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			if(empty($sdrop)){
 				echo '<div class="alert alert-danger">Enter an drop rate.</div>';
 				$stop = "true";
-				redirect_wait5("?cype=admin&page=properties");
+				redirect_wait5("?base=admin&page=properties");
 			}
 		}	
 		if($stop == "false"){
 			if(empty($spcap)){
 				echo '<div class="alert alert-danger">Enter a player cap.</div>';
 				$stop = "true";
-				redirect_wait5("?cype=admin&page=properties");
+				redirect_wait5("?base=admin&page=properties");
 			}
 		}
 		
@@ -99,14 +99,14 @@ if($_SESSION['admin']){
 			if(empty($sgmlevel)){
 				echo '<div class="alert alert-danger">Enter a level for GMs.</div>';
 				$stop = "true";
-				redirect_wait5("?cype=admin&page=properties");
+				redirect_wait5("?base=admin&page=properties");
 			}
 		}
 		if($stop == "false"){
 			$mquery = "UPDATE ".$prefix."properties SET name='$sservername', client='$sclient', server = '$sserver', forumurl='$sforumurl', siteurl = '$ssiteurl', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', version='$sversion', flood='$floodp', floodint='$floodi', pcap='$spcap', gmlevel='$sgmlevel'";
 			$exec = $mysqli->query($mquery);
 			echo "<h2 class=\"text-left\">Success</h2><hr/><div class=\"alert alert-success\">Configuration Updated</div>";
-			redirect_wait5("?cype=admin&page=properties");
+			redirect_wait5("?base=admin&page=properties");
 		}
 	}
 	elseif($do == ""){
@@ -227,7 +227,7 @@ $('#myTab a').click(function (e) {
               <li><a href=\"#info\" data-toggle=\"tab\">Game Info</a></li>
             </ul>
 			
-		<form method='post' action='?cype=admin&amp;page=properties&amp;do=submit'>
+		<form method='post' action='?base=admin&amp;page=properties&amp;do=submit'>
             <div id=\"myTabContent\" class=\"tab-content\">
 <div class=\"tab-pane fade in active\" id=\"mainconfig\">
 <br/>
@@ -242,7 +242,7 @@ $('#myTab a').click(function (e) {
 	<div class=\"form-group\">
 		<label for=\"siteURL\">Site Path: <span class=\"label label-danger\">IMPORTANT. NEEDS TRAILING SLASH</span></label>
 		<input name=\"siteurl\" type=\"text\" maxlength=\"100\" class='form-control' id=\"siteURL\" value=\"".$siteurl."\" required/>
-		<span class=\"help-block\">/ indicates the root directory. /cype/ indicates that Cype has been installed in a folder called Cype. You <b>must</b> use a trailing slash</span>			
+		<span class=\"help-block\">/ indicates the root directory. /base/ indicates that base has been installed in a folder called base. You <b>must</b> use a trailing slash</span>			
 	</div>	
 </div>
 
@@ -302,6 +302,6 @@ $('#myTab a').click(function (e) {
 </form>";
 	}
 }else{
-	redirect("?cype");
+	redirect("?base");
 }
 ?>

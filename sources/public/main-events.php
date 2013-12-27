@@ -1,6 +1,6 @@
 <?php 
 echo "<div class=\"col-md-6\">
-<a href='?cype=main&amp;page=events'><h4>Events &raquo;</h4></a><hr/>";
+<a href='?base=main&amp;page=events'><h4>Events &raquo;</h4></a><hr/>";
 	$i = 0;
 	$ge = $mysqli->query("SELECT * FROM ".$prefix."events ORDER BY id DESC LIMIT 4") or die(mysql_error());
 	while($e = $ge->fetch_assoc()){
@@ -11,7 +11,7 @@ echo "<div class=\"col-md-6\">
 		echo "
 			<img src=\"assets/img/news/".$e['type'].".gif\" class=\"absmiddle\" alt='".$e['type']."' />
 			[".$e['date']."]
-			<a href=\"?cype=main&amp;page=events&amp;id=".$e['id']."\">";
+			<a href=\"?base=main&amp;page=events&amp;id=".$e['id']."\">";
 		if(strlen($title) > $maxlength){
 			echo stripslashes(shortTitle($title));
 		}else{

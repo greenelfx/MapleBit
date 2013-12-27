@@ -6,7 +6,7 @@ if(isset($_GET['page'])){
 }
 if($_SESSION['id']){
 	if($_SESSION['gm'] || $_SESSION['admin']){
-		if($getcype == "gmcp"){
+		if($getbase == "gmcp"){
 			if($gmcp == ""){
 				echo "<h2 class=\"text-left\">GameMaster Panel</h2><hr/>";
 				echo "
@@ -26,9 +26,9 @@ if($_SESSION['id']){
 					<br/>
 					Welcome to the GM Blog section. You can write, edit, and delete <b>your</b> blogs, but you can't modify anyone else's blogs. Please select an option below.
 					<hr/>
-					  <a href=\"?cype=gmcp&amp;page=manblog&amp;action=add\" class=\"btn btn-primary\">Add</a>
-					  <a href=\"?cype=gmcp&amp;page=manblog&amp;action=edit\" class=\"btn btn-info\">Edit</a>
-					  <a href=\"?cype=gmcp&amp;page=manblog&amp;action=del\" class=\"btn btn-default\">Delete</a>
+					  <a href=\"?base=gmcp&amp;page=manblog&amp;action=add\" class=\"btn btn-primary\">Add</a>
+					  <a href=\"?base=gmcp&amp;page=manblog&amp;action=edit\" class=\"btn btn-info\">Edit</a>
+					  <a href=\"?base=gmcp&amp;page=manblog&amp;action=del\" class=\"btn btn-default\">Delete</a>
 					<hr/>
 					</div>
 					<div class=\"tab-pane fade\" id=\"ticket\">
@@ -42,12 +42,12 @@ if($_SESSION['id']){
 				include('sources/gmcp/ticket.php');
 			}
 		}else{
-			header("Location: ?cype=gmcp");
+			header("Location: ?base=gmcp");
 		}
 	}else{
-		redirect("?cype");
+		redirect("?base");
 	}
 }else{
-	redirect("?cype");
+	redirect("?base");
 }
 ?>
