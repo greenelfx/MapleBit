@@ -9,7 +9,7 @@ $host['password'] = ''; // Database Password [Leave blank if unsure]
 $host['database'] = 'mapleblade'; // Database Name
 
 //Database Prefix
-$prefix = "cypebeta_";
+$prefix = "bit_";
 // What is your server`s log in port - Don`t change if you aren`t sure.
 $loginport = "7575";
 // What is your server`s world port - Don`t change if you aren`t sure.
