@@ -47,18 +47,18 @@ if($banner != ""){echo "<img src=\"".$banner."\" alt=\"banner\" class=\"img-resp
 	</div>	
 	<div class="navbar-collapse collapse">
 		<ul class="nav navbar-nav">
-              <li><a href="?cype=main">Home</a></li>
+              <li><a href="?base=main">Home</a></li>
 			<?php
 				if(isset($_SESSION['id'])){
 					echo "";
 				}
-				else{echo "<li><a href=\"?cype=main&amp;page=register\">Register</a></li>";}
+				else{echo "<li><a href=\"?base=main&amp;page=register\">Register</a></li>";}
 			?>
-              <li><a href="?cype=main&amp;page=download">Download</a></li>
-			  <li><a href="?cype=main&amp;page=rankings">Rankings</a></li>
-			  <li><a href="?cype=main&amp;page=vote">Vote</a></li>
-			  <li><a href="?cype=main&amp;page=chat">Chat</a></li>
-			  <li><a href="?cype=main&amp;page=donate">Donate</a></li>
+              <li><a href="?base=main&amp;page=download">Download</a></li>
+			  <li><a href="?base=main&amp;page=rankings">Rankings</a></li>
+			  <li><a href="?base=main&amp;page=vote">Vote</a></li>
+			  <li><a href="?base=main&amp;page=chat">Chat</a></li>
+			  <li><a href="?base=main&amp;page=donate">Donate</a></li>
 			  <li><a href="<?php echo $forumurl; ?>">Forums</a></li>			  
             </ul>
 		<?php	
@@ -71,16 +71,16 @@ if($banner != ""){echo "<img src=\"".$banner."\" alt=\"banner\" class=\"img-resp
 					<ul class="dropdown-menu">
 					<?php
 						if($_SESSION['pname'] == "checkpname") {
-							echo "<li><a href=\"?cype=ucp&amp;page=profname\">Set Profile Name</a></li>";
+							echo "<li><a href=\"?base=ucp&amp;page=profname\">Set Profile Name</a></li>";
 						}
 						else {
-							echo "<li><a href=\"?cype=main&amp;page=members&amp;name=".$_SESSION['pname']."\">Profile</a></li>";
+							echo "<li><a href=\"?base=main&amp;page=members&amp;name=".$_SESSION['pname']."\">Profile</a></li>";
 						}
 					?>
-						<li><a href="?cype=ucp&amp;page=mail&amp;s=3"><?php mailStats(3)?> Unread Mail</a></li>
-						<li><a href="?cype=ucp&amp;page=charfix">Character Fix</a></li>
+						<li><a href="?base=ucp&amp;page=mail&amp;s=3"><?php mailStats(3)?> Unread Mail</a></li>
+						<li><a href="?base=ucp&amp;page=charfix">Character Fix</a></li>
 						<li class="divider"></li>
-						<li><a href="?cype=misc&amp;script=logout">Log Out</a></li>
+						<li><a href="?base=misc&amp;script=logout">Log Out</a></li>
 					</ul>
 				</li>
 			</ul>

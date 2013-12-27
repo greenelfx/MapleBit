@@ -54,12 +54,12 @@ if(isset($_SESSION['id'])){
 	}else{
 		echo "
 			<h2 class=\"text-left\">Character Fixes</h2><hr/>
-			<a href=\"?cype=ucp&amp;page=charfix&amp;fix=unstuck\">Move Character &raquo;</a><br />
-			<a href=\"?cype=ucp&amp;page=charfix&amp;fix=dc\">Unstuck Account &raquo;</a><br />
+			<a href=\"?base=ucp&amp;page=charfix&amp;fix=unstuck\">Move Character &raquo;</a><br />
+			<a href=\"?base=ucp&amp;page=charfix&amp;fix=dc\">Unstuck Account &raquo;</a><br />
 		";
 	}
 }else{
 	echo "<div class=\"alert alert-danger\">You must be logged in to use this feature.</div>";
-	redirect("?cype=main");
+	redirect("?base=main");
 }
 ?>

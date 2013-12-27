@@ -2,7 +2,7 @@
 session_start();
 # Disable Notices
 
-# Is Cype installed?
+# Is MapleBit installed?
 if(!file_exists('assets/config/install/installdone.txt')){
 	header("Location: assets/config/install/install.php");
 	exit;
@@ -14,12 +14,12 @@ if(!file_exists('assets/config/install/installdone.txt')){
 	require_once("assets/config/properties.php");
 	require_once("assets/config/afuncs.php");
 
-	# Define $getcype variable
-	$getcype = isset($_GET['cype']) ? $_GET['cype'] : "";
+	# Define $getbase variable
+	$getbase = isset($_GET['base']) ? $_GET['base'] : "";
 
-	switch($getcype){
+	switch($getbase){
 		case NULL:
-			header('Location: ?cype=main');
+			header('Location: ?base=main');
 			break;
 		case "main":
 			include("sources/structure/header.php");

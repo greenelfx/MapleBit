@@ -1,12 +1,12 @@
 <?php 
 if(isset($_SESSION['id'])){
-    echo "<meta http-equiv=refresh content=\"0; url=?cype=ucp\">";
+    echo "<meta http-equiv=refresh content=\"0; url=?base=ucp\">";
 }
 else{
 echo "<h2 class=\"text-left\">Registration</h2><hr/>";
 if (@$_POST["register"] != "1") {
 ?>
-	<form action="?cype=main&page=register" method="POST" role="form">
+	<form action="?base=main&page=register" method="POST" role="form">
 	<div class="form-group">
 		<label for="inputUser">Username</label>
 		<input type="text" name="musername" maxlength="12" class="form-control" id="inputUser" required autocomplete="off" placeholder="Username">
@@ -43,7 +43,7 @@ if (@$_POST["register"] != "1") {
 		!isset($_POST["mpwcheck"]) OR
 		!isset($_POST["memail"]) OR
 		!isset($_POST["recaptcha_response_field"])) {
-		die ("<div class=\"alert alert-error\"><b>Error A:</b> Please fill in the correct ReCAPTCHA code!<br/><a href=\"?cype=main&page=register\" class=\"areg\">&laquo; Go Back</a></div>");
+		die ("<div class=\"alert alert-error\"><b>Error A:</b> Please fill in the correct ReCAPTCHA code!<br/><a href=\"?base=main&page=register\" class=\"areg\">&laquo; Go Back</a></div>");
 	}
 	
 	$getusername = $mysqli->real_escape_string($_POST["musername"]); # Get Username
@@ -72,20 +72,20 @@ if (@$_POST["register"] != "1") {
 	}
 	
 	if (!$continue) {
-		echo ("<div class=\"content\"><div class=\"contentbg registerbg\"></div><div class=\"body_register\"><div class=\"alert alert-danger\"><b>Error:</b> Please fill in the correct ReCAPTCHA code!<br/><a href=\"?cype=main&page=register\" class=\"areg\">&laquo; Go Back</a></div></div></div>");
+		echo ("<div class=\"content\"><div class=\"contentbg registerbg\"></div><div class=\"body_register\"><div class=\"alert alert-danger\"><b>Error:</b> Please fill in the correct ReCAPTCHA code!<br/><a href=\"?base=main&page=register\" class=\"areg\">&laquo; Go Back</a></div></div></div>");
 	} else {
 		$select_user_result = $mysqli->query("SELECT id FROM accounts WHERE name='".$username."' OR email='".$email."' LIMIT 1");
 		$returned = $select_user_result->num_rows;	
 		if ($returned > 0) {
-			echo ("<div class=\"alert alert-danger\"><b>Error:</b> This username or email is already used!<br/><a href=\"?cype=main&page=register\">&laquo; Go Back</a>");
+			echo ("<div class=\"alert alert-danger\"><b>Error:</b> This username or email is already used!<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a>");
 		} else if ($password != $confirm_password) {
-			echo ("<div class=\"alert alert-danger\">Passwords didn't match!<br/><a href=\"?cype=main&page=register\">&laquo; Go Back</a></div></div></div>");
+			echo ("<div class=\"alert alert-danger\">Passwords didn't match!<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a></div></div></div>");
 		} else if (strlen($password) < 4 || strlen($password) > 12) {
-			echo ("<div class=\"alert alert-danger\">Your password must be between 4-12 characters<br/><a href=\"?cype=main&page=register\">&laquo; Go Back</a>");
+			echo ("<div class=\"alert alert-danger\">Your password must be between 4-12 characters<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a>");
 		} else if (strlen($username) < 4 || strlen($username) > 12) {
-			echo ("<div class=\"alert alert-danger\">Your username must be between 4-12 characters<br/><a href=\"?cype=main&page=register\">&laquo; Go Back</a>");
+			echo ("<div class=\"alert alert-danger\">Your username must be between 4-12 characters<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a>");
 		} else if (!strstr($email, '@')) {
-			echo ("<div class=\"alert alert-danger\">You have filled in a wrong email address<br/><a href=\"?cype=main&page=register\">&laquo; Go Back</a>");
+			echo ("<div class=\"alert alert-danger\">You have filled in a wrong email address<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a>");
 		} else {
 			//All data is ok
 			$insert_user_query = "INSERT INTO accounts (`name`, `password`, `ip`, `email`, `birthday`) VALUES ('".$username."', '".hash("sha1", $password)."', '".$ip."', '".$email."', '".$birth."')";

@@ -67,6 +67,6 @@ if($_SESSION['id']){
 		}
 	};
 }else{
-	redirect("?cype=main");
+	redirect("?base=main");
 }
 ?>

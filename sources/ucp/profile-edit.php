@@ -393,10 +393,10 @@ if($_SESSION['id']){
 			$text = mysql_escape($_POST['text']);
 			$u = $mysqli->query("UPDATE `".$prefix."profile` SET `mainchar`='".$mainchar."',`realname`='".$realname."',`age`='".$age."',`country`='".$country."',`motto`='".$motto."',`favjob`='".$favjob."',`text`='".$text."' WHERE `accountid`='".$_SESSION['id']."'") or die(mysql_error());
 				echo "Your public profile has been updated<br />";
-				echo "Click <a href=\"?cype=main&amp;page=members&name=".$_SESSION['pname']."\">here</a> to go to your profile.";
+				echo "Click <a href=\"?base=main&amp;page=members&name=".$_SESSION['pname']."\">here</a> to go to your profile.";
 			}
 		}
 	}else{
-		redirect("?cype=main");
+		redirect("?base=main");
 }
 ?>

@@ -7,7 +7,7 @@ if($_SESSION['admin'] == 1) {
 		case NULL:		
 			echo "Welcome to CypeReboot's theming center! Instead of loading a whole bunch of files locally, CypeReboot uses Bootswatch, a collection of Bootstrap CSS themes, to customize the feel of the website.";
 			echo "<br/>Please browse <a href=\"http://bootswatch.com\">Bootswatch.</a>";
-			echo '<hr/><a href="?cype=admin&amp;page=theme&amp;do=apply" class="btn btn-primary">Configure Theme &raquo;</a>';
+			echo '<hr/><a href="?base=admin&amp;page=theme&amp;do=apply" class="btn btn-primary">Configure Theme &raquo;</a>';
 			break;
 		case 'apply':
 			if(!isset($_POST['apply']))
@@ -38,16 +38,16 @@ if($_SESSION['admin'] == 1) {
 				$nav = @$_POST['nav'];
 				if(isset($themeselect) && isset($nav)){
 					$query2 = $mysqli->query("UPDATE ".$prefix."properties SET theme = '$themeselect', nav = '$nav'");
-					echo "<div class=\"alert alert-success\">" . ucfirst($themeselect) . " applied.<br /><a href=\"?cype=admin&page=theme\">Back to Themes</a></div>";
+					echo "<div class=\"alert alert-success\">" . ucfirst($themeselect) . " applied.<br /><a href=\"?base=admin&page=theme\">Back to Themes</a></div>";
 				}
 				else {
-					echo "<div class=\"alert alert-danger\">Please select your theme and navigation bar type!<br /><a href=\"?cype=admin&page=theme&do=apply\">Back to Themes</a></div>";
+					echo "<div class=\"alert alert-danger\">Please select your theme and navigation bar type!<br /><a href=\"?base=admin&page=theme&do=apply\">Back to Themes</a></div>";
 				}
 			}
 	break;
 	}
 }
 else {
-	redirect("?cype");
+	redirect("?base");
 }
 ?>

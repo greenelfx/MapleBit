@@ -4,7 +4,7 @@ if(@$_GET['id']){
 	$ge = $mysqli->query("SELECT * FROM ".$prefix."events WHERE id='".sql_sanitize($id)."'") or die();
 	$e = $ge->fetch_assoc();
 	echo "
-		<h2 class=\"text-left\">".stripslashes($e['title'])." | Posted by <a href=\"?cype=main&amp;page=members&amp;name=".$e['author']."\">".$e['author']."</a> on ".$e['date']."</h2><hr/>
+		<h2 class=\"text-left\">".stripslashes($e['title'])." | Posted by <a href=\"?base=main&amp;page=members&amp;name=".$e['author']."\">".$e['author']."</a> on ".$e['date']."</h2><hr/>
 	";
 	if($e['status'] == "Active"){
 		$status = "<div class=\"alert alert-success\">Event is active</div>";
@@ -30,23 +30,23 @@ if(@$_GET['id']){
 		}
 		else {$buttontext = "Lock"; $buttonlink = "lock";}
 		echo "
-			<a href=\"?cype=admin&amp;page=manevent&amp;action=edit&amp;id=".$e['id']."\" class=\"btn btn-primary\">Edit</a>
-			<a href=\"?cype=admin&amp;page=manevent&amp;action=del\" class=\"btn btn-info\">Delete</a>
-			<a href=\"?cype=admin&amp;page=manevent&amp;action=".$buttonlink."\" class=\"btn btn-default\">".$buttontext."</a>
+			<a href=\"?base=admin&amp;page=manevent&amp;action=edit&amp;id=".$e['id']."\" class=\"btn btn-primary\">Edit</a>
+			<a href=\"?base=admin&amp;page=manevent&amp;action=del\" class=\"btn btn-info\">Delete</a>
+			<a href=\"?base=admin&amp;page=manevent&amp;action=".$buttonlink."\" class=\"btn btn-default\">".$buttontext."</a>
 			<hr />";
 	}
 	if(isset($_SESSION['id'])){
 		$flood = $mysqli->query("SELECT * FROM ".$prefix."ecomments WHERE eid='".$id."' && author='".$_SESSION['pname']."' ORDER BY dateadded DESC LIMIT 1") or die();
 		$fetchg = $flood->fetch_assoc();
-		$seconds = 60*$cypefloodint;
+		$seconds = 60*$basefloodint;
 		if($_SESSION['mute'] =="1"){
 			echo "<div class=\"alert alert-danger\">You have been muted. Please contact an administrator</div>";
 		}elseif($e['locked'] == "1"){
 			echo "<div class=\"alert alert-danger\">This article has been locked.</div>";
 		}elseif($_SESSION['pname'] === "checkpname"){
 			echo "<div class=\"alert alert-danger\">You must assign a profile name before you can comment news articles.</div>";
-		}elseif($cypeflood > 0 && (time() - $seconds) < $fetchg['dateadded']) {
-			echo "<div class=\"alert alert-danger\">You may only post every ".$cypefloodint." minutes to prevent spam.</div>";
+		}elseif($baseflood > 0 && (time() - $seconds) < $fetchg['dateadded']) {
+			echo "<div class=\"alert alert-danger\">You may only post every ".$basefloodint." minutes to prevent spam.</div>";
 		}else{
 			echo "
 			<form method=\"post\">
@@ -79,7 +79,7 @@ if(@$_GET['id']){
 		}else{
 			$timestamp = time();
 			$i = $mysqli->query("INSERT INTO ".$prefix."ecomments (eid, author, feedback, date, comment, dateadded) VALUES ('".$id."','".$author."','".$feedback."','".$date."','".sanitize_space($comment)."','".sql_sanitize($timestamp)."')") or die();
-			echo "<meta http-equiv=refresh content=\"0; url=?cype=main&amp;page=events&amp;id=".$id."\" />";
+			echo "<meta http-equiv=refresh content=\"0; url=?base=main&amp;page=events&amp;id=".$id."\" />";
 		}
 	}
 	echo "<hr />";
@@ -99,7 +99,7 @@ if(@$_GET['id']){
 			}
 			$modify = "";	
 			if(isset($_SESSION['admin'])){
-				$modify = "<a href=\"?cype=admin&amp;page=manevent&amp;action=pdel&amp;id=".$c['id']."\" class=\"btn btn-default text-right\">Delete</a>";
+				$modify = "<a href=\"?base=admin&amp;page=manevent&amp;action=pdel&amp;id=".$c['id']."\" class=\"btn btn-default text-right\">Delete</a>";
 			}
 			echo "
 			<div class=\"well\"><img src=\"" . get_gravatar($c['email']) . "\" alt=\"".$c['author']."\" class=\"img-responsive\" style=\"float:left;padding-right:10px;\"/>
@@ -122,15 +122,15 @@ if(@$_GET['id']){
 		$cc = $gc->num_rows;
 		echo "<img src=\"assets/img/news/".$e['type'].".gif\" alt='' />";
 		echo "[".$e['date']."]  
-			<b><a href=\"?cype=main&amp;page=events&amp;id=".$e['id']."\">".stripslashes($e['title'])."</a></b>
+			<b><a href=\"?base=main&amp;page=events&amp;id=".$e['id']."\">".stripslashes($e['title'])."</a></b>
 		<span class=\"commentbubble\">
 			<b>".$e['views']."</b> views | <b>".$cc."</b> comments
 		";
 		if(isset($_SESSION['admin'])){
 			echo "
-				<a href=\"?cype=admin&amp;page=manevent&amp;action=edit&amp;id=".$e['id']."\">Edit</a> | 
-				<a href=\"?cype=admin&amp;page=manevent&amp;action=del\">Delete</a> | 
-				<a href=\"?cype=admin&amp;page=manevent&amp;action=lock\">Lock</a>&nbsp;
+				<a href=\"?base=admin&amp;page=manevent&amp;action=edit&amp;id=".$e['id']."\">Edit</a> | 
+				<a href=\"?base=admin&amp;page=manevent&amp;action=del\">Delete</a> | 
+				<a href=\"?base=admin&amp;page=manevent&amp;action=lock\">Lock</a>&nbsp;
 			";
 		}
 	echo "</span><br/>";

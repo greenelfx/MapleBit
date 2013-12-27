@@ -7,7 +7,7 @@ if(isset($_GET['page'])){
 }
 if($_SESSION['id']){
 	if($_SESSION['admin']){
-		if($getcype == "admin"){
+		if($getbase == "admin"){
 			if($admin == ""){
 			include("sources/structure/admin_header.php");
 	
@@ -27,55 +27,55 @@ if($_SESSION['id']){
 <div class="row">
   <div class="col-md-3">
 	<div class="well">
-		<a href="?cype=admin&page=mannews&amp;action=add"><b>Add News &raquo;</b></a><br/>
-		<a href="?cype=admin&page=mannews&amp;action=edit">Edit News</a><br/>
-		<a href="?cype=admin&page=mannews&amp;action=del">Delete News</a>
+		<a href="?base=admin&page=mannews&amp;action=add"><b>Add News &raquo;</b></a><br/>
+		<a href="?base=admin&page=mannews&amp;action=edit">Edit News</a><br/>
+		<a href="?base=admin&page=mannews&amp;action=del">Delete News</a>
 	</div>
   </div>
   <div class="col-md-3 ">
 	<div class="well">
-		<a href="?cype=admin&amp;page=manevent&amp;action=add"><b>Add Event &raquo;</b></a><br/>
-        <a href="?cype=admin&amp;page=manevent&amp;action=edit">Edit Event</a><br/>
-        <a href="?cype=admin&amp;page=manevent&amp;action=del">Delete Event</a>
+		<a href="?base=admin&amp;page=manevent&amp;action=add"><b>Add Event &raquo;</b></a><br/>
+        <a href="?base=admin&amp;page=manevent&amp;action=edit">Edit Event</a><br/>
+        <a href="?base=admin&amp;page=manevent&amp;action=del">Delete Event</a>
 	</div>
   </div>
   <div class="col-md-3">
   	<div class="well">
-	<a href="?cype=admin&amp;page=muteuser">Mute User</a><br/>
-	<a href="?cype=admin&amp;page=unmuteuser">Unmute User</a><br/>
+	<a href="?base=admin&amp;page=muteuser">Mute User</a><br/>
+	<a href="?base=admin&amp;page=unmuteuser">Unmute User</a><br/>
 	</div>
   </div>
   <div class="col-md-3">
   	<div class="well">
-	<a href="?cype=admin&amp;page=voteconfig">Edit Vote Configuration</a><br/>
-	<a href="?cype=admin&amp;page=nxpacks">Add NX Packages</a>
+	<a href="?base=admin&amp;page=voteconfig">Edit Vote Configuration</a><br/>
+	<a href="?base=admin&amp;page=nxpacks">Add NX Packages</a>
 	</div>
   </div>
 </div>
 <div class="row">
   <div class="col-md-3">
 	<div class="well">
-	<a href="?cype=admin&amp;page=properties">Edit Site Configuration</a><br/>
+	<a href="?base=admin&amp;page=properties">Edit Site Configuration</a><br/>
 	Changes your rates, server name, and more!
 	</div>
   </div>
   <div class="col-md-3 ">
 	<div class="well">
-	<a href="?cype=admin&amp;page=theme">Edit Theme</a><br/>
-	<a href="?cype=admin&amp;page=banner">Add Banner</a><br/>
-	<a href="?cype=admin&amp;page=background">Add Background</a>
+	<a href="?base=admin&amp;page=theme">Edit Theme</a><br/>
+	<a href="?base=admin&amp;page=banner">Add Banner</a><br/>
+	<a href="?base=admin&amp;page=background">Add Background</a>
 	</div>
   </div>
   <div class="col-md-3">
   	<div class="well">
-		<a href="?cype=admin&amp;page=ticket">Manage Tickets</a>
+		<a href="?base=admin&amp;page=ticket">Manage Tickets</a>
 	</div>
   </div>
   <div class="col-md-3">
   	<div class="well">
-	<a href="?cype=main&amp;page=guildlist">View Guilds<br/>
-	<a href="?cype=admin&amp;page=banned">View Banned Members</a><br/>
-	<a href="?cype=admin&amp;page=gmlog">View GM Log</a>
+	<a href="?base=main&amp;page=guildlist">View Guilds<br/>
+	<a href="?base=admin&amp;page=banned">View Banned Members</a><br/>
+	<a href="?base=admin&amp;page=gmlog">View GM Log</a>
 	</div>
   </div>
 </div>
@@ -107,18 +107,18 @@ if($_SESSION['id']){
 			}elseif($admin == "ticket"){
 				include('sources/admin/ticket.php');
 			}
-			else{header("Location: ?cype=admin");}
+			else{header("Location: ?base=admin");}
 			if($admin!=""){
 			include("sources/structure/footer.php");
 			}
 		}else{
-			redirect("?cype=main");
+			redirect("?base=main");
 		}
 	}else{
-		redirect("?cype=main");
+		redirect("?base=main");
 	}
 }else{
-	redirect("?cype=main");
+	redirect("?base=main");
 }
 
 ?>
