@@ -4,7 +4,7 @@ echo '
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>CypeReboot Installation</title>
+<title>MapleBit Installation</title>
 <link href="../../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 <link href="style.css" rel="stylesheet" type="text/css" />
 <link rel="icon" href="../favicon.ico" type="image/x-icon" />
@@ -13,7 +13,7 @@ echo '
 
 <div class="container">
 	<div class="form-install">
-    <h2 class="form-install-heading">Cype Installation</h2>
+    <h2 class="form-install-heading">MapleBit Installation</h2>
 	';
 if(isset($_GET['install'])){
 	$install = $_GET['install'];
@@ -21,13 +21,13 @@ if(isset($_GET['install'])){
 	$install = "";
 }
 if(file_exists('installdone.txt')){
-	echo "<div class=\"alert alert-info\">Oops! Looks like Cype has already been installed! If you'd like, you can delete everything in the install folder, except for installdone.txt</div>";
+	echo "<div class=\"alert alert-info\">Oops! Looks like MapleBit has already been installed! If you'd like, you can delete everything in the install folder, except for installdone.txt</div>";
 }else{
 	switch($install){
 		case NULL:
-			echo '<h4>Welcome to Cype.</h4>
+			echo '<h4>Welcome to MapleBit.</h4>
 					<hr />
-					Welcome to Cype. Before you can use Cype, you need to give me your database information. Please make sure you have the following information handy:<br/><br/>
+					Welcome to MapleBit. Before you can use MapleBit, you need to give me your database information. Please make sure you have the following information handy:<br/><br/>
 					<ul><li>Database name</li><li>Database username</li><li>Database password</li><li>Database host (usually localhost)</li><li>Table Prefix</li></ul>
 					<br/>If the installer doesn\'t work for you, you can rename database.sample.php to database.php and fill out the information manually.
 					<hr/>
@@ -68,7 +68,7 @@ if(file_exists('installdone.txt')){
 						<div class="form-group">
 								<label for="inputPrefix" class="col-lg-4 control-label">Database Prefix</label>
 							<div class="col-lg-5">
-								<input type="text" class="form-control" id="inputPrefix" placeholder="Database Prefix" name="DBprefix" value="cype_">
+								<input type="text" class="form-control" id="inputPrefix" placeholder="Database Prefix" name="DBprefix" value="bit_">
 							</div>
 						</div>
 						<hr/>
@@ -437,7 +437,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				<div style='height:100%; width:500px;'>
 				<div class=\"form-group\">
 					<label for=\"serverName\">Server Name</label>
-					<input name=\"servername\" type=\"text\" maxlength=\"100\" value='Cype' class='form-control' id=\"serverName\" required/>
+					<input name=\"servername\" type=\"text\" maxlength=\"100\" value='MapleBit' class='form-control' id=\"serverName\" required/>
 				</div>
 				<div class=\"form-group\">
 					<label for=\"clientDL\">Client Link</label>
@@ -524,12 +524,12 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 		}
 		break;
 		case "done":
-			echo "<h4>Woohoo! You're done installing Cype!</h4>
+			echo "<h4>Woohoo! You're done installing MapleBit!</h4>
 			<hr/>
 				<form action=\"../../../?cype=main\" method=\"post\">
 					<input type=\"submit\" class=\"btn btn-success btn-lg\" value=\"Ok, let's go! &raquo;\" style=\"float:right;\"/><br/><br/>
 				</form>";
-			$content = "Congratulations on completing your Cype Installation! Leave this file here, or delete it if you would like to reconfigure your website.";
+			$content = "Congratulations on completing your MapleBit Installation! Leave this file here, or delete it if you would like to reconfigure your website.";
 			$fp = fopen("installdone.txt","wb");
 			fwrite($fp,$content);
 			fclose($fp);
