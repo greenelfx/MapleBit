@@ -7,9 +7,9 @@ if(isset($_SESSION['id'])){
 	if(isset($_SESSION['admin'])){
 		if(empty($_GET['action'])){
 			echo "<h2 class=\"text-left\">Manage Events</h2><hr/>
-				<a href=\"?cype=admin&amp;page=manevent&amp;action=add\"><b>Add Event &raquo;</b></a><br/>
-				<a href=\"?cype=admin&amp;page=manevent&amp;action=edit\">Edit Event</a><br/>
-				<a href=\"?cype=admin&amp;page=manevent&amp;action=del\">Delete Event</a><br/>
+				<a href=\"?base=admin&amp;page=manevent&amp;action=add\"><b>Add Event &raquo;</b></a><br/>
+				<a href=\"?base=admin&amp;page=manevent&amp;action=edit\">Edit Event</a><br/>
+				<a href=\"?base=admin&amp;page=manevent&amp;action=del\">Delete Event</a><br/>
 			";
 		}
 		elseif($_GET['action']=="add"){
@@ -59,7 +59,7 @@ if(isset($_SESSION['id'])){
 						echo "<div class=\"alert alert-danger\">You must enter some content.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}else{
 						$i = $mysqli->query("INSERT INTO ".$prefix."events (title, author, date, type, status, content) VALUES ('".$title."','".$_SESSION['pname']."','".$date."','".$cat."','".$status."','".$content."')") or die(mysql_error());
-						echo "Your event has been posted.<hr/><a href=\"?cype=admin\" class=\"btn btn-primary\">&laquo; Go Back</a>";
+						echo "Your event has been posted.<hr/><a href=\"?base=admin\" class=\"btn btn-primary\">&laquo; Go Back</a>";
 					}
 				}
 			}
@@ -121,7 +121,7 @@ if(isset($_SESSION['id'])){
 					echo "Select an event to modify:<hr/>";
 					while($e = $ge->fetch_assoc()){
 						echo "
-							[".$e['date']."] <a href=\"?cype=admin&amp;page=manevent&amp;action=edit&amp;id=".$e['id']."\">".$e['title']."</a> [#".$e['id']."]<hr/>
+							[".$e['date']."] <a href=\"?base=admin&amp;page=manevent&amp;action=edit&amp;id=".$e['id']."\">".$e['title']."</a> [#".$e['id']."]<hr/>
 						";
 					}
 				} else {
@@ -144,7 +144,7 @@ if(isset($_SESSION['id'])){
 				} else {
 					$delete = "DELETE FROM ".$prefix."ecomments WHERE id = ".$eventid."";
 					if ($mysqli->query($delete)) {
-						header("Location:?cype=main&page=events&id=".$fetch['eid']);
+						header("Location:?base=main&page=events&id=".$fetch['eid']);
 					} else {
 						echo "<div class=\"alert alert-danger\">Error deleting event comment.</div>";
 					}
@@ -237,10 +237,10 @@ if(isset($_SESSION['id'])){
 				}
 			}
 		} else {
-			redirect("?cype");
+			redirect("?base");
 		}
 	}
 }else{
-	redirect("?cype");
+	redirect("?base");
 }
 ?>

@@ -4,15 +4,15 @@ if(isset($_GET['script'])){
 }else{
 	$script = "";
 }
-if($getcype == "misc"){
+if($getbase == "misc"){
 	if($script == ""){
-		header("Location: ?cype=main");
+		header("Location: ?base=main");
 	}elseif($script == "login"){
 		include('sources/misc/login.php');
 	}elseif($script == "logout"){
 		include('sources/misc/logout.php');
 	}else{
-		redirect("?cype=main");
+		redirect("?base=main");
 	}
 }
 ?>

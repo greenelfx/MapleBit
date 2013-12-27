@@ -35,7 +35,7 @@ if($_SESSION['id']){
 						echo "<div class=\"alert alert-danger\">You must enter some content.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}else{
 						$i = $mysqli->query("INSERT INTO ".$prefix."gmblog (title, author, date, content) VALUES ('".$title."','".$_SESSION['pname']."','".$date."','".$content."')") or die(mysql_error());
-						echo "<div class=\"alert alert-success\">Your blog entry has been posted.</div><hr/><a href=\"?cype=gmcp\" class=\"btn btn-primary\">&laquo; Go Back</a>";
+						echo "<div class=\"alert alert-success\">Your blog entry has been posted.</div><hr/><a href=\"?base=gmcp\" class=\"btn btn-primary\">&laquo; Go Back</a>";
 					}
 				}
 			}elseif($_GET['action']=="edit"){
@@ -67,11 +67,11 @@ if($_SESSION['id']){
 								echo "<div class=\"alert alert-danger\">You must enter some content.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 							}else{
 								$u = $mysqli->query("UPDATE ".$prefix."gmblog SET title='".$title."', content='".$content."' WHERE id='".$id."'") or die();
-								echo "Blog entry, <b>".stripslashes($b['title'])."</b>, has been updated.<hr/><a href=\"?cype=gmcp\" class=\"btn btn-primary\">&laquo; Go Back</a>";
+								echo "Blog entry, <b>".stripslashes($b['title'])."</b>, has been updated.<hr/><a href=\"?base=gmcp\" class=\"btn btn-primary\">&laquo; Go Back</a>";
 							}
 						}
 					}else{
-						echo "<div class=\"alert alert-error\">This blog entry does not belong to you.</div><hr/><a href=\"?cype=gmcp\" class=\"btn btn-primary\">&laquo; Go Back</a>";
+						echo "<div class=\"alert alert-error\">This blog entry does not belong to you.</div><hr/><a href=\"?base=gmcp\" class=\"btn btn-primary\">&laquo; Go Back</a>";
 					}
 				}else{
 					echo "Edit your blogs:<br/>";
@@ -79,17 +79,17 @@ if($_SESSION['id']){
 						$gb = $mysqli->query("SELECT * FROM ".$prefix."gmblog WHERE author='".$_SESSION['pname']."' ORDER BY id ASC") or die();
 						while($b = $gb->fetch_assoc()){
 							echo "
-						[".$b['date']."] <a href=\"?cype=gmcp&amp;page=manblog&action=edit&id=".$b['id']."\">".stripslashes($b['title'])."</a><br/>";
+						[".$b['date']."] <a href=\"?base=gmcp&amp;page=manblog&action=edit&id=".$b['id']."\">".stripslashes($b['title'])."</a><br/>";
 						}
 					}
-					if($_SESSION['admin']){
+					if(isset($_SESSION['admin'])){
 						echo "
 						<hr/><b>Administrator Options<br/></b>
 						Select a blog entry to modify:<br/>";
 						$gab = $mysqli->query("SELECT * FROM ".$prefix."gmblog ORDER BY id ASC") or die();
 						while($ab = $gab->fetch_assoc()){
 							echo "
-								[".$ab['date']."] <a href=\"?cype=gmcp&amp;page=manblog&amp;action=edit&id=".$ab['id']."\">".stripslashes($ab['title'])."</a> by <a href=\"?cype=main&amp;page=members&name=".$ab['author']."\">".$ab['author']."</a><br/>
+								[".$ab['date']."] <a href=\"?base=gmcp&amp;page=manblog&amp;action=edit&id=".$ab['id']."\">".stripslashes($ab['title'])."</a> by <a href=\"?base=main&amp;page=members&name=".$ab['author']."\">".$ab['author']."</a><br/>
 								";
 						}
 						echo "<hr/>";
@@ -113,7 +113,7 @@ if($_SESSION['id']){
 					} else {
 						$delete = "DELETE FROM ".$prefix."bcomments WHERE id = ".$gmbid."";
 						if ($mysqli->query($delete)) {
-							header("Location:?cype=main&page=gmblog&id=".$fetch['bid']);
+							header("Location:?base=main&page=gmblog&id=".$fetch['bid']);
 						} else {
 							echo "<div class=\"alert alert-danger\">Error deleting blog comment.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 						}

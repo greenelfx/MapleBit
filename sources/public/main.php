@@ -4,7 +4,7 @@ if(isset($_GET['page'])){
 }else{
 	$main = "";
 }
-	if($getcype == "main"){
+	if($getbase == "main"){
 		if($main == ""){
 			echo "<div class=\"row\">";
 			include ("sources/public/main-news.php");
@@ -37,9 +37,9 @@ if(isset($_GET['page'])){
 			include('sources/public/vote.php');
 		}
 		else {
-			redirect("?cype=main");
+			redirect("?base=main");
 		}
 	}else{
-		redirect("?cype=main");
+		redirect("?base=main");
 	}
 ?>

@@ -52,9 +52,9 @@ if($_SESSION['admin']){
 		if(mysql_escape(isset($_POST["bgfixed"])) == 1){ $bgfixed = "fixed"; } else { $bgfixed = ""; }
 		$mysqli->query("UPDATE ".$prefix."properties SET background = '$url', bgcolor = '$bgcolor', bgrepeat = '$bgrepeat', bgcenter = '$bgcenter', bgfixed = '$bgfixed'");
 		echo "<div class=\"alert alert-success\">Successfully updated background.</div>";
-		redirect_wait5("?cype=admin&page=background");
+		redirect_wait5("?base=admin&page=background");
 	}
 } else{
-	redirect("?cype");
+	redirect("?base");
 }
 ?>

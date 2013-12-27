@@ -11,7 +11,7 @@ if($_SESSION['id']){
 			if(!isset($_POST['mute'])){
 				echo "
 		
-				<div class=\"alert alert-info\"><a href=\"?cype=admin&page=muteuser\">Search for another user &raquo;</a></div>
+				<div class=\"alert alert-info\"><a href=\"?base=admin&page=muteuser\">Search for another user &raquo;</a></div>
 				<form method=\"post\" action=''>
 				<b>Username:</b> ".$a['name']."<br/>
 				<b>Profile name:</b> ".$name."
@@ -21,13 +21,13 @@ if($_SESSION['id']){
 			}else{
 				if($a['gm']=="1"){
 					echo "<div class=\"alert alert-error\"><b>Error!</b> User is a GM, and was <b>not</b> muted.</div>
-				<a href=\"?cype=admin&page=muteuser&amp;name=".$_GET['name']."\">Back</a>
+				<a href=\"?base=admin&page=muteuser&amp;name=".$_GET['name']."\">Back</a>
 		";
 				}else{
 					$u = $mysqli->query("UPDATE `accounts` SET `mute`='1' WHERE `id`='".getInfo('accid', $name, 'profilename')."'") or die();
 					echo "
 				<div class=\"alert alert-success\"><b>Success!</b> ".$name." has been muted.</div>
-				<a href=\"?cype=admin&page=muteuser\">Mute another user</a>
+				<a href=\"?base=admin&page=muteuser\">Mute another user</a>
 			";
 				}
 			}
@@ -51,7 +51,7 @@ if($_SESSION['id']){
 					while($a = $ga->fetch_assoc()){
 						echo "
 		
-				<a href=\"?cype=admin&amp;page=muteuser&amp;name=".$a['name']."\">".$a['name']."</a><br />
+				<a href=\"?base=admin&amp;page=muteuser&amp;name=".$a['name']."\">".$a['name']."</a><br />
 			";
 					}
 				}
@@ -65,9 +65,9 @@ if($_SESSION['id']){
 	";
 		}
 	}else{
-		redirect("?cype");
+		redirect("?base");
 	}
 }else{
-	redirect("?cype");
+	redirect("?base");
 }
 ?>

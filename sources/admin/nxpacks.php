@@ -10,13 +10,13 @@ if($_SESSION['admin'] == 1) {
 			$countfetchPacks = $fetchPacks->num_rows;
 			if($countfetchPacks > 0) {
 				while($getPacks = $fetchPacks->fetch_assoc()) {
-					echo "<b>Package ".$getPacks['id'].":</b> ".number_format($getPacks['nx'])." NX for ".number_format($getPacks['meso'])." Mesos <div style=\"float:right;\"><a href=\"?cype=admin&page=nxpacks&do=edit&id=".$getPacks['id']."\" class=\"btn btn-primary\">Edit</a>&nbsp;&nbsp;<a href=\"?cype=admin&page=nxpacks&do=delete&id=".$getPacks['id']."\" class=\"btn btn-info\">Delete</a></div><br/><br/>";
+					echo "<b>Package ".$getPacks['id'].":</b> ".number_format($getPacks['nx'])." NX for ".number_format($getPacks['meso'])." Mesos <div style=\"float:right;\"><a href=\"?base=admin&page=nxpacks&do=edit&id=".$getPacks['id']."\" class=\"btn btn-primary\">Edit</a>&nbsp;&nbsp;<a href=\"?base=admin&page=nxpacks&do=delete&id=".$getPacks['id']."\" class=\"btn btn-info\">Delete</a></div><br/><br/>";
 				}
 			}
 			else {
 				echo "<div class=\"alert alert-danger\">No NX Packages have been added!</div>";
 			}
-			echo '<hr/><a href="?cype=admin&page=nxpacks&do=add" class="btn btn-primary">Add Package &raquo;</a>';
+			echo '<hr/><a href="?base=admin&page=nxpacks&do=add" class="btn btn-primary">Add Package &raquo;</a>';
 			break;
 		case 'edit':
 			if($id != NULL)	{
@@ -54,7 +54,7 @@ if($_SESSION['admin'] == 1) {
 					}
 					else {
 						$mysqli->query("UPDATE `cype_buynx` SET `meso` = '".$meso."', `nx` = '".$nx."' WHERE `id` = '".$id."'");
-						echo '<div class="alert alert-success"><b>Package '.$id.'</b> edited. <a href="?cype=admin&page=nxpacks&do=">NX Packages</a></div>';
+						echo '<div class="alert alert-success"><b>Package '.$id.'</b> edited. <a href="?base=admin&page=nxpacks&do=">NX Packages</a></div>';
 					}
 				}
 			}
@@ -65,7 +65,7 @@ if($_SESSION['admin'] == 1) {
 		case 'delete':
 			if($id != NULL) {
 				$mysqli->query("DELETE FROM ".$prefix."buynx WHERE id = '".$id."'") or die('Could not delete package');
-				echo "<div class=\"alert alert-success\"><b>Package ".$id."</b> deleted. <a href=\"?cype=admin&page=nxpacks&do=\">NX Packages</a></div>";
+				echo "<div class=\"alert alert-success\"><b>Package ".$id."</b> deleted. <a href=\"?base=admin&page=nxpacks&do=\">NX Packages</a></div>";
 			}
 			else {
 				echo 'Error.';
@@ -104,13 +104,13 @@ if($_SESSION['admin'] == 1) {
 				}
 				else {
 					$mysqli->query("INSERT INTO ".$prefix."buynx (meso, nx) VALUES ('".$meso."', '".$nx."')") or die();
-					echo '<div class="alert alert-success">Package added.<hr/><a href="?cype=admin&page=nxpacks">Add More NX Packages</a></div>';
+					echo '<div class="alert alert-success">Package added.<hr/><a href="?base=admin&page=nxpacks">Add More NX Packages</a></div>';
 				}
 			}
 			break;
 	}
 }
 else {
-	redirect("?cype");
+	redirect("?base");
 }
 ?>

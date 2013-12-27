@@ -7,9 +7,9 @@ if(isset($_SESSION['id'])){
 	if(isset($_SESSION['admin'])){
 		if(empty($_GET['action'])){
 			echo "<h2 class=\"text-left\">Manage News</h2><hr/>
-				<a href=\"?cype=admin&amp;page=mannews&amp;action=add\"><b>Add News &raquo;</b></a><br/>
-				<a href=\"?cype=admin&amp;page=mannews&amp;action=edit\">Edit News</a><br/>
-				<a href=\"?cype=admin&amp;page=mannews&amp;action=del\">Delete News</a><br/>
+				<a href=\"?base=admin&amp;page=mannews&amp;action=add\"><b>Add News &raquo;</b></a><br/>
+				<a href=\"?base=admin&amp;page=mannews&amp;action=edit\">Edit News</a><br/>
+				<a href=\"?base=admin&amp;page=mannews&amp;action=del\">Delete News</a><br/>
 			";
 		}
 		elseif($_GET['action']=="add"){
@@ -50,7 +50,7 @@ if(isset($_SESSION['id'])){
 						echo "<div class=\"alert alert-danger\">You must enter some content.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}else{
 						$i = $mysqli->query("INSERT INTO ".$prefix."news (title, author, type, date, content) VALUES ('".$title."','".$author."','".$cat."','".$date."','".$content."')") or die();
-						echo "<div class=\"alert alert-success\">Your news article has been posted.</div><hr/><a href=\"?cype=admin\" class=\"btn btn-primary\">&laquo; Go Back</a>";
+						echo "<div class=\"alert alert-success\">Your news article has been posted.</div><hr/><a href=\"?base=admin\" class=\"btn btn-primary\">&laquo; Go Back</a>";
 					}
 				}
 			}
@@ -103,7 +103,7 @@ if(isset($_SESSION['id'])){
 					echo "Select a news article to modify:<hr/>";
 					while($n = $gn->fetch_assoc()){
 						echo "
-						[".$n['date']."] <a href=\"?cype=admin&amp;page=mannews&amp;action=edit&amp;id=".$n['id']."\">".$n['title']."</a><hr/>
+						[".$n['date']."] <a href=\"?base=admin&amp;page=mannews&amp;action=edit&amp;id=".$n['id']."\">".$n['title']."</a><hr/>
 						";
 					}
 				} else{
@@ -126,7 +126,7 @@ if(isset($_SESSION['id'])){
 				} else {
 					$delete = "DELETE FROM ".$prefix."ncomments WHERE id = ".$newsid."";
 					if ($mysqli->query($delete)) {
-						header("Location:?cype=main&page=news&id=".$fetch['nid']);
+						header("Location:?base=main&page=news&id=".$fetch['nid']);
 					} else {
 						echo "<div class=\"alert alert-danger\">Error deleting news comment.</div>";
 					}
@@ -224,10 +224,10 @@ if(isset($_SESSION['id'])){
 				}
 			}
 		} else {
-			redirect("?cype");
+			redirect("?base");
 		}
 	}
 }else{
-	redirect("?cype");
+	redirect("?base");
 }
 ?>

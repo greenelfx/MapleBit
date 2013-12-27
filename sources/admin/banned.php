@@ -33,6 +33,6 @@ if($_SESSION['admin']){
 	</table>
 ";
 } else{
-	redirect("?cype");
+	redirect("?base");
 }
 ?>

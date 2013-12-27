@@ -7,7 +7,7 @@ if($real < 1){
 		$name = $_SESSION['name'];
 	} else{
 		$name = "";
-		echo "<meta http-equiv=refresh content=\"0; url=?cype=main\">";
+		echo "<meta http-equiv=refresh content=\"0; url=?base=main\">";
 		exit();
 	}
 }
@@ -52,7 +52,7 @@ if(@$_GET['name']){
 			<b>About Me:</b>
 			".nl2br(stripslashes($p['text']))."<br/>
 			<hr/>
-			<a href=\"?cype=ucp&amp;page=mail&amp;uc=$name\">Send me Mail!</a>
+			<a href=\"?base=ucp&amp;page=mail&amp;uc=$name\">Send me Mail!</a>
 			";
 }
 }elseif(@$_GET['action']=="search"){
@@ -65,7 +65,7 @@ if(@$_GET['name']){
 		</legend>";
 		while($s = $gs->fetch_assoc()){
 			echo "
-			<a href=\"?cype=main&amp;page=members&amp;name=".$s['name']."\">".$s['name']."</a><br />";
+			<a href=\"?base=main&amp;page=members&amp;name=".$s['name']."\">".$s['name']."</a><br />";
 		}
 	}
 }else{
@@ -78,7 +78,7 @@ if(@$_GET['name']){
 		You can select one to visit their profile or you can search for an user.<hr />
 		<div class=\"row\">
 		<div class=\"col-md-6 col-md-offset-6\">
-			<form method=\"post\" action=\"?cype=main&amp;page=members&amp;action=search\" role=\"form\">
+			<form method=\"post\" action=\"?base=main&amp;page=members&amp;action=search\" role=\"form\">
 			<div style=\"float:right;margin-bottom:0px;\">
 				<div class=\"input-group\">
 					<input type=\"text\" name=\"name\" placeholder=\"Profile Name\" required id=\"profileName\" class=\"form-control\"/> 				
@@ -106,7 +106,7 @@ if(@$_GET['name']){
 			<tr>
 				<td>".onlineCheck($p['accountid'])."</td>
 				<td>
-					<a href=\"?cype=main&amp;page=members&amp;name=".$p['name']."\">".$p['name']."</a>
+					<a href=\"?base=main&amp;page=members&amp;name=".$p['name']."\">".$p['name']."</a>
 				</td>
 			</tr>";
 	}

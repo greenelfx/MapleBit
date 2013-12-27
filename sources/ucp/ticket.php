@@ -23,7 +23,7 @@ if(isset($_SESSION['pname']) && $_SESSION['pname'] != ""){
 							" . ++$NumberTicket . "
 						</th>
 						<td>
-							<a href =\"?cype=ucp&amp;page=ticket&amp;a=$tickets[ticketid]&amp;ticket=Yes\">
+							<a href =\"?base=ucp&amp;page=ticket&amp;a=$tickets[ticketid]&amp;ticket=Yes\">
 								" . $tickets['title'] . "
 							</a>
 						</td>
@@ -38,7 +38,7 @@ if(isset($_SESSION['pname']) && $_SESSION['pname'] != ""){
 			}
 		echo "
 		</table>";
-			echo "<hr/><a href=\"?cype=ucp&amp;page=ticket&amp;ticket=create\" class=\"btn btn-primary\">Create Ticket</a>&nbsp;<a href=\"?cype=ucp&amp;page=ticket&amp;ticket=closed\" class=\"btn btn-info\">View Closed Tickets</a>";
+			echo "<hr/><a href=\"?base=ucp&amp;page=ticket&amp;ticket=create\" class=\"btn btn-primary\">Create Ticket</a>&nbsp;<a href=\"?base=ucp&amp;page=ticket&amp;ticket=closed\" class=\"btn btn-info\">View Closed Tickets</a>";
 		
 	}
 	if(@$_GET['ticket'] == "create"){
@@ -110,7 +110,7 @@ if(isset($_SESSION['pname']) && $_SESSION['pname'] != ""){
 							VALUES ('".$title."', '".$type."', '".$support."', '".$details."', '".date('F d - g:i A')."', '".$_SERVER['REMOTE_ADDR']."', '".$_SESSION['pname']."', 1)");
 							
 						if($newticket){
-							echo "<meta http-equiv=\"refresh\" content=\"0; url=?cype=ucp&amp;page=ticket\"/>";
+							echo "<meta http-equiv=\"refresh\" content=\"0; url=?base=ucp&amp;page=ticket\"/>";
 						}
 						else{
 							echo "<div class=\"alert alert-danger\">The ticket you have created was not able to be completed due to an error. Please make sure you have selected the correct type of ticket.</div>";
@@ -127,7 +127,7 @@ if(isset($_SESSION['pname']) && $_SESSION['pname'] != ""){
 		if($_SESSION['pname'] != $viewTicket['name']){
 			echo "
 				<div class=\"alert alert-danger\">You are not allowed to view this ticket. Your actions have been logged.</div>
-				<meta http-equiv=\"refresh\" content=\"1; url=?cype=main\"/>
+				<meta http-equiv=\"refresh\" content=\"1; url=?base=main\"/>
 			";
 			exit();
 		}
@@ -168,10 +168,10 @@ if(isset($_SESSION['pname']) && $_SESSION['pname'] != ""){
 						echo "Please provide more information.";
 					}
 					else{
-						$insertComment = $mysqli->query("INSERT INTO `cype_tcomments` (ticketid, user, content, date_com)
+						$insertComment = $mysqli->query("INSERT INTO `base_tcomments` (ticketid, user, content, date_com)
 							VALUES "."('".sql_sanitize($_GET['a'])."', '".$_SESSION['pname']."', '".$postComment."', '".date('F d - g:i A')."')") or die(mysql_error());
 						
-						$insertComment = $mysqli->query("UPDATE `cype_tickets` SET `date` = '".date('F d - g:i A')."' WHERE `ticketid` = '".sql_sanitize($_GET['a'])."'");
+						$insertComment = $mysqli->query("UPDATE `base_tickets` SET `date` = '".date('F d - g:i A')."' WHERE `ticketid` = '".sql_sanitize($_GET['a'])."'");
 							
 						if($insertComment){
 							echo "<meta http-equiv=\"refresh\" content=\"0; url=\"/>";
@@ -216,7 +216,7 @@ if(isset($_SESSION['pname']) && $_SESSION['pname'] != ""){
 							" . ++$TicketNumber . "
 						</td>
 						<td>
-							<a href = \"?cype=ucp&amp;page=ticket&amp;ticket=Yes&amp;a=$viewTickets[ticketid]\">
+							<a href = \"?base=ucp&amp;page=ticket&amp;ticket=Yes&amp;a=$viewTickets[ticketid]\">
 								" . $viewTickets['title'] . "
 							</a>
 						</td>
@@ -231,10 +231,10 @@ if(isset($_SESSION['pname']) && $_SESSION['pname'] != ""){
 			}
 			echo "
 		</table>
-		<br /><a href=\"?cype=ucp&amp;page=ticket\" class=\"btn btn-primary\">&laquo; Go Back</a>";
+		<br /><a href=\"?base=ucp&amp;page=ticket\" class=\"btn btn-primary\">&laquo; Go Back</a>";
 		}
 	}
 } else {
-	header('Location:?cype=ucp');
+	header('Location:?base=ucp');
 }
 ?>

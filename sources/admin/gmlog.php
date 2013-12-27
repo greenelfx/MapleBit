@@ -33,6 +33,6 @@ if($_SESSION['gm'] || $_SESSION['admin']){
 	}
 		echo "</tbody></table>";
 } else{
-	redirect("?cype");
+	redirect("?base");
 }
 ?>

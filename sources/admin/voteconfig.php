@@ -47,10 +47,10 @@ if($_SESSION['admin']){
 		elseif(empty($svtime)){echo "<div class=\"alert alert-danger\">Please enter a waiting time.</div>";}
 		else {
 			$mysqli->query("UPDATE ".$prefix."properties SET vlink='$svlink', gnx='$snx', gvp='$svp', colnx='$scolnx', colvp='$scolvp', vtime='$svtime'");
-			echo "<div class=\"alert alert-success\">Successfully updated vote configuration.</div><hr/><a href=\"?cype=admin\" class=\"btn btn-primary\">&laquo; Go Back</a>";
+			echo "<div class=\"alert alert-success\">Successfully updated vote configuration.</div><hr/><a href=\"?base=admin\" class=\"btn btn-primary\">&laquo; Go Back</a>";
 		}
 	}
 } else {
-	redirect ("?cype");
+	redirect ("?base");
 }
 ?>
