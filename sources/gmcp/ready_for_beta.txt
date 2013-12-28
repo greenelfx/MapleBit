@@ -1,4 +1,0 @@
-READY:
-main
-manage-blog
-ticket
