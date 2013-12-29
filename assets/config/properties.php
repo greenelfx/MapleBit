@@ -11,7 +11,7 @@ $ipaddress = isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDE
 $servername = $prop['name'];
 /* Site title */
 $sitetitle = $prop['name'];
-$pb = " (Powered by Cype)";
+$pb = " (Powered by MapleBit)";
 $siteurl = $prop['siteurl'];
 $banner = $prop['banner'];
 $background = $prop['background'];
@@ -31,10 +31,10 @@ $exprate = $prop['exprate'];
 $mesorate = $prop['mesorate'];
 $droprate = $prop['droprate'];
 /* Flood Prevention */
-$cypeflood = $prop['flood'];
+$baseflood = $prop['flood'];
 $pcap = $prop['pcap'];
 /* Flood Interval */
-$cypefloodint = $prop['floodint'];
+$basefloodint = $prop['floodint'];
 /* Level for GMs and up */
 $gmlevel = $prop['gmlevel'];
 /* Accounts Per IP */
