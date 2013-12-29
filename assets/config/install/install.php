@@ -335,6 +335,7 @@ CREATE TABLE ".$prefix."gdcache (
 ALTER TABLE accounts ADD `nick` varchar(20);
 ALTER TABLE accounts ADD `sitelogged` TEXT;
 ALTER TABLE accounts ADD `webadmin` int(1) DEFAULT 0;
+ALTER TABLE accounts ADD `mute` int(1) DEFAULT 0;
 ");
 echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 		break;
