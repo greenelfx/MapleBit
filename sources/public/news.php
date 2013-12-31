@@ -9,7 +9,7 @@ if(isset($_GET['id'])){
 	echo nl2br(stripslashes($n['content']))."
 	<br /><br />
 	";
-	$gc = $mysqli->query("SELECT ".$prefix."ncomments.*, accounts.email, accounts.id As id1, ".$prefix."profile.accountid, ".$prefix."profile.name FROM ".$prefix."ncomments INNER JOIN ".$prefix."profile ON ".$prefix."ncomments.author = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id") or die();
+	$gc = $mysqli->query("SELECT ".$prefix."ncomments.*, accounts.email, accounts.id As id1, ".$prefix."profile.accountid, ".$prefix."profile.name FROM ".$prefix."ncomments INNER JOIN ".$prefix."profile ON ".$prefix."ncomments.author = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE ".$prefix."ncomments.id= '".$id."'") or die();
 	$cc = $gc->num_rows;
 	echo "
 	<b>".$n['views']."</b> Views and <b>".$cc."</b> Responses<hr />";

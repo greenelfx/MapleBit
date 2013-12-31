@@ -204,7 +204,7 @@ if($_SESSION['admin']){
 			<option value=\"0\">Off</option>
 			<option value=\"1\" selected>On</option>";
 
-		if($cypeflood == 0) {
+		if($baseflood == 0) {
 			$flooddefault = "
 			<option value=\"0\" selected>Off</option>
 			<option value=\"1\">On</option>";
@@ -294,7 +294,7 @@ $('#myTab a').click(function (e) {
 	</div>
 	<div class=\"form-group\">
 		<label for=\"postingInterval\">Posting Interval:</label> <small>Amount of time in minutes between comments</small>
-		<input name=\"floodi\" type=\"text\" maxlength=\"10\" class='form-control' id=\"postingInterval\" value=\"".$cypefloodint."\" required/>
+		<input name=\"floodi\" type=\"text\" maxlength=\"10\" class='form-control' id=\"postingInterval\" value=\"".$basefloodint."\" required/>
 	</div>
 </div>
 </div>
