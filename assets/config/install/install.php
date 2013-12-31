@@ -332,6 +332,14 @@ CREATE TABLE ".$prefix."gdcache (
   PRIMARY KEY (`id`)
 ) ENGINE = MYISAM ;
 
+CREATE TABLE `votingrecords` ( 
+  `ip` varchar(30) NOT NULL DEFAULT '0', 
+  `account` varchar(13) NOT NULL DEFAULT '0', 
+  `date` int(11) NOT NULL DEFAULT '0', 
+  `times` bigint(20) unsigned NOT NULL DEFAULT '0', 
+  PRIMARY KEY (`ip`) 
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;  
+
 ALTER TABLE accounts ADD `nick` varchar(20);
 ALTER TABLE accounts ADD `sitelogged` TEXT;
 ALTER TABLE accounts ADD `webadmin` int(1) DEFAULT 0;
