@@ -18,7 +18,7 @@ if(@$_GET['id']){
 	echo " ".$status."";
 	echo nl2br(stripslashes($e['content']))."
 	<br /><br />";
-	$gc = $mysqli->query("SELECT ".$prefix."ecomments.*, accounts.email, accounts.id As id1, ".$prefix."profile.accountid, ".$prefix."profile.name FROM ".$prefix."ecomments INNER JOIN ".$prefix."profile ON ".$prefix."ecomments.author = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE ".$prefix."ecomments.id= '".$id."'") or die();
+	$gc = $mysqli->query("SELECT ".$prefix."ecomments.*, accounts.email, accounts.id As id1, ".$prefix."profile.accountid, ".$prefix."profile.name FROM ".$prefix."ecomments INNER JOIN ".$prefix."profile ON ".$prefix."ecomments.author = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE ".$prefix."ecomments.eid= '".$id."'") or die();
 	$cc = $gc->num_rows;
 	echo "<b>".$e['views']."</b> Views and <b>".$cc."</b> Reponses";
 	echo "<hr />";
