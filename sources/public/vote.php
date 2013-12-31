@@ -6,8 +6,8 @@
 	$redirect = "";
     $getaccount = $mysqli->real_escape_string(@$_POST['name']);  
 	$account = preg_replace("/[^A-Za-z0-9 ]/", '', $getaccount);
+
 	if ($account == '' && isset($_POST['submit'])) {$funct_error = 'You need to put in a username!';} 
-	
     elseif(isset($_POST['submit'])) { 
         $result = $mysqli->query("SELECT *, SUM(times) as amount FROM votingrecords WHERE NOT account='' AND NOT account='0' AND account='".$account."' OR ip='".$ipaddress."'") or die('Error - Could not look up vote record!');  
         $row = $result->fetch_assoc();
