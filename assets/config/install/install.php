@@ -325,6 +325,7 @@ CREATE TABLE `".$prefix."profile` (
   UNIQUE KEY `accountid_UNIQUE` (`accountid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `".$prefix."gdcache`;
 CREATE TABLE ".$prefix."gdcache (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `hash` varchar(32) NOT NULL,
@@ -332,13 +333,14 @@ CREATE TABLE ".$prefix."gdcache (
   PRIMARY KEY (`id`)
 ) ENGINE = MYISAM ;
 
+DROP TABLE IF EXISTS `votingrecords`;
 CREATE TABLE `votingrecords` ( 
   `ip` varchar(30) NOT NULL DEFAULT '0', 
   `account` varchar(13) NOT NULL DEFAULT '0', 
   `date` int(11) NOT NULL DEFAULT '0', 
   `times` bigint(20) unsigned NOT NULL DEFAULT '0', 
   PRIMARY KEY (`ip`) 
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;  
+) ENGINE=MYISAM;
 
 ALTER TABLE accounts ADD `nick` varchar(20);
 ALTER TABLE accounts ADD `sitelogged` TEXT;
