@@ -15,6 +15,7 @@ if($_SESSION['admin'] == 1) {
 				echo '
 					<form name="applytheme" method="post">
 					<label class="radio"><input type="radio" name="theme" value="bootstrap" checked/>Default Bootstrap</label>
+					 <label class="radio"><input type="radio" name="theme" value="amelia" />Amelia</label>
 					 <label class="radio"><input type="radio" name="theme" value="cerulean" />Cerulean</label>
 					 <label class="radio"><input type="radio" name="theme" value="cosmo" />Cosmo</label>
 					 <label class="radio"><input type="radio" name="theme" value="cyborg" />Cyborg</label>
