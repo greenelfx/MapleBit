@@ -59,7 +59,7 @@ if(isset($_SESSION['id'])){
 						echo "<div class=\"alert alert-danger\">You must enter some content.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}else{
 						$i = $mysqli->query("INSERT INTO ".$prefix."events (title, author, date, type, status, content) VALUES ('".$title."','".$_SESSION['pname']."','".$date."','".$cat."','".$status."','".$content."')") or die(mysql_error());
-						echo "Your event has been posted.<hr/><a href=\"?base=admin\" class=\"btn btn-primary\">&laquo; Go Back</a>";
+						echo "<div class=\"alert alert-success\">Your event has been posted.</div><hr/><a href=\"?base=admin\" class=\"btn btn-primary\">&laquo; Go Back</a>";
 					}
 				}
 			}
@@ -181,59 +181,62 @@ if(isset($_SESSION['id'])){
 				}
 			}
 		}elseif($_GET['action']=="lock"){
-			echo "
-			<legend>Lock Event</legend>";
+			echo "<h2 class=\"text-left\">Lock an Event</h2><hr/>";
 			if(!isset($_POST['lock'])){
 				echo "
-			<form method=\"post\" action=''>
-				Select a event to lock:<br/>
-				<select name=\"art\">
+			<form method=\"post\">
+			<div class=\"form-group\">
+			<label for=\"lockEvent\">Select an event to lock:</label>
+				<select name=\"art\" class=\"form-control\" id=\"lockEvent\">
 					<option value=\"\">Please select...</option>";
-				$ge = $mysqli->query("SELECT * FROM `cype_events` ORDER BY `id` DESC") or die();
+				$ge = $mysqli->query("SELECT * FROM ".$prefix."events WHERE locked = 0 ORDER BY id DESC") or die();
 				while($e = $ge->fetch_assoc()){
 					echo "
 						<option value=\"".$e['id']."\">#".$e['id']." - ".$e['title']."</option>";
 				}
 				echo "
-				</select><br/>
+				</select>
+			</div>
 				<hr/>
-				<input type=\"submit\" name=\"lock\" value=\"Lock &raquo;\" class=\"btn btn-inverse\"/>
+				<input type=\"submit\" name=\"lock\" value=\"Lock &raquo;\" class=\"btn btn-default\"/>
 			</form>";
 			}else{
 				$art = $mysqli->real_escape_string($_POST['art']);
 				if($art == ""){
-					echo "<div class=\"alert alert-block\">Please select an event to lock.</div>";
+					echo "<div class=\"alert alert-danger\">Please select an event to lock.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 				}else{
-					$d = $mysqli->query("UPDATE `cype_events` SET `locked` = 1 WHERE `id`='".$art."'") or die();
-					echo "<div class=\"alert alert-success\">The event has been locked.</div>";
+					$d = $mysqli->query("UPDATE ".$prefix."events SET locked = 1 WHERE id='".$art."'") or die();
+					echo "<div class=\"alert alert-success\">The event has been locked.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 				}
 			}
 		} elseif($_GET['action']=="unlock"){
 			echo "
-			<legend>Unlock Event</legend>";
+			<h2 class=\"text-left\">Unlock an Event</h2><hr/>";
 			if(!isset($_POST['unlock'])){
 				echo "
-			<form method=\"post\" action=''>
-				Select a event to unlock:<br/>
-				<select name=\"art\">
+			<form method=\"post\">
+			<div class=\"form-group\">
+			<label for=\"unlockEvent\">Select an event to unlock:</label>
+				<select name=\"art\" class=\"form-control\" id=\"unlockEvent\">
 					<option value=\"\">Please select...</option>";
-				$ge = $mysqli->query("SELECT * FROM `cype_events` WHERE `locked` = 1 ORDER BY `id` DESC") or die();
+				$ge = $mysqli->query("SELECT * FROM ".$prefix."events WHERE locked = 1 ORDER BY id DESC") or die();
 				while($e = $ge->fetch_assoc()){
 					echo "
 						<option value=\"".$e['id']."\">#".$e['id']." - ".$e['title']."</option>";
 				}
 				echo "
-				</select><br/>
+				</select>
+			</div>
 				<hr/>
-				<input type=\"submit\" name=\"unlock\" value=\"Unlock &raquo;\" class=\"btn btn-inverse\"/>
+				<input type=\"submit\" name=\"unlock\" value=\"Unlock &raquo;\" class=\"btn btn-default\"/>
 			</form>";
 			}else{
 				$art = $mysqli->real_escape_string($_POST['art']);
 				if($art == ""){
-					echo "<div class=\"alert alert-block\">Please select an event to unlock.</div>";
+					echo "<div class=\"alert alert-danger\">Please select an event to unlock.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 				}else{
-					$d = $mysqli->query("UPDATE `cype_events` SET `locked` = 0 WHERE `id`='".$art."'") or die();
-					echo "<div class=\"alert alert-success\">The event has been unlocked.</div>";
+					$d = $mysqli->query("UPDATE ".$prefix."events SET locked = 0 WHERE id='".$art."'") or die();
+					echo "<div class=\"alert alert-success\">The event has been unlocked.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 				}
 			}
 		} else {
