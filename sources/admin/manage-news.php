@@ -173,7 +173,7 @@ if(isset($_SESSION['id'])){
 			<label for=\"lockArticle\">Select a news article to lock:</label>
 				<select name=\"art\" class=\"form-control\" id=\"lockArticle\">
 					<option value=\"\">Please select...</option>";
-				$gn = $mysqli->query("SELECT * FROM ".$prefix."news ORDER BY id DESC") or die();
+				$gn = $mysqli->query("SELECT * FROM ".$prefix."news WHERE locked = 0 ORDER BY id DESC") or die();
 				while($n = $gn->fetch_assoc()){
 					echo "
 						<option value=\"".$n['id']."\">#".$n['id']." - ".$n['title']."</option>";
@@ -190,7 +190,7 @@ if(isset($_SESSION['id'])){
 					echo "<div class=\"alert alert-danger\">Please select a news article to lock.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 				}else{
 					$d = $mysqli->query("UPDATE ".$prefix."news SET locked = 1 WHERE id='".$art."'") or die();
-					echo "<div class=\"alert alert-success\">The news article has been locked.</div>";
+					echo "<div class=\"alert alert-success\">The news article has been locked.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 				}
 			}
 		} elseif($_GET['action']=="unlock"){
@@ -212,7 +212,7 @@ if(isset($_SESSION['id'])){
 				</select>
 			</div>
 				<hr/>
-				<input type=\"submit\" name=\"unlock\" value=\"Unlock &raquo;\" class=\"btn btn-inverse\"/>
+				<input type=\"submit\" name=\"unlock\" value=\"Unlock &raquo;\" class=\"btn btn-default\"/>
 			</form>";
 			}else{
 				$art = $mysqli->real_escape_string($_POST['art']);
@@ -220,7 +220,7 @@ if(isset($_SESSION['id'])){
 					echo "<div class=\"alert alert-danger\">Please select a news article to unlock.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 				}else{
 					$d = $mysqli->query("UPDATE ".$prefix."news SET locked = 0 WHERE id='".$art."'") or die();
-					echo "<div class=\"alert alert-success\">The news article has been unlocked.</div>";
+					echo "<div class=\"alert alert-success\">The news article has been unlocked.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 				}
 			}
 		} else {

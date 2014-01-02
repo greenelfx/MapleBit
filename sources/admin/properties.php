@@ -225,6 +225,7 @@ $('#myTab a').click(function (e) {
               <li class=\"active\"><a href=\"#mainconfig\" data-toggle=\"tab\">Main Configuration</a></li>
               <li><a href=\"#links\" data-toggle=\"tab\">Links</a></li>
               <li><a href=\"#info\" data-toggle=\"tab\">Game Info</a></li>
+				<li><a href=\"#comment\" data-toggle=\"tab\">Comment Configuration</a></li>
             </ul>
 			
 		<form method='post' action='?base=admin&amp;page=properties&amp;do=submit'>
@@ -286,6 +287,9 @@ $('#myTab a').click(function (e) {
 		<label for=\"playerCap\">Player Cap:</label>
 		<input name=\"pcap\" type=\"text\" maxlength=\"20\" class='form-control' id=\"playerCap\" value=\"".$pcap."\" required/>
 	</div>
+</div>
+<div class=\"tab-pane fade\" id=\"comment\">
+	<br/>
 	<div class=\"form-group\">
 	<label for=\"floodPrevention\">Flood Prevention:</label>
 		<select name=\"floodp\" class=\"form-control\" id=\"floodPrevention\">
