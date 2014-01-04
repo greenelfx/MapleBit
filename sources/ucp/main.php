@@ -48,7 +48,10 @@ echo "
 }else{
 echo "
 <div class=\"well\"><a href=\"?base=ucp&amp;page=profedit\">Edit Public Profile</a></div>
-<div class=\"well\"><a href=\"?base=misc&amp;page=gravatar\">Change Gravatar</a></div>";
+<div class=\"well\">
+	<a href=\"http://gravatar.com\">Change Gravatar</a><br/>
+	You will be redirected to <a href=\"http://gravatar.com\">http://gravatar.com.</a> Please sign up using the same email address you used to sign up for your game account. Your username and password can be whatever you want.
+</div>";
 }
 
 			}elseif($ucp == "accset"){
