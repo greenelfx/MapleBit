@@ -19,7 +19,7 @@ if($_SESSION['admin']){
 		$floodp = $mysqli->real_escape_string(stripslashes($_POST['floodp']));
 		$floodi = $mysqli->real_escape_string(stripslashes($_POST['floodi']));
 		$sgmlevel = $mysqli->real_escape_string(stripslashes($_POST['gmlevel']));
-		$sversion = $_POST['version'];
+		$sversion = $mysqli->real_escape_string(stripslashes($_POST['version']));
 		
 		$stop = "false";
 		if(empty($sservername)){
@@ -111,105 +111,14 @@ if($_SESSION['admin']){
 	}
 	elseif($do == ""){
 		include('assets/config/properties.php');
-		if($version == "55"){
-			$dversion = "
-				<option value=\"55\" selected=\"selected\">v55</option>
-				<option value=\"62\">v62</option>
-				<option value=\"75\">v75</option>
-				<option value=\"83\">v83</option>
-				<option value=\"90\">v90</option>
-				<option value=\"111\">v111</option>
-				<option value=\"117\">v117</option>
-				";
-		}
-		elseif($version == "62"){
-			$dversion = "
-				<option value=\"55\">v55</option>
-				<option value=\"62\" selected=\"selected\">v62</option>
-				<option value=\"75\">v75</option>
-				<option value=\"83\">v83</option>
-				<option value=\"90\">v90</option>
-				<option value=\"111\">v111</option>
-				<option value=\"117\">v117</option>
-				";
-		}
-		elseif($version == "75"){
-			$dversion = "
-				<option value=\"55\">v55</option>
-				<option value=\"62\">v62</option>
-				<option value=\"75\" selected=\"selected\">v75</option>
-				<option value=\"83\">v83</option>
-				<option value=\"90\">v90</option>
-				<option value=\"111\">v111</option>
-				<option value=\"117\">v117</option>
-				";
-		}
-		elseif($version == "83"){
-			$dversion = "
-				<option value=\"55\">v55</option>
-				<option value=\"62\">v62</option>
-				<option value=\"75\">v75</option>
-				<option value=\"83\" selected=\"selected\">v83</option>
-				<option value=\"90\">v90</option>
-				<option value=\"111\">v111</option>
-				<option value=\"117\">v117</option>
-				";
-		}
-		elseif($version == "90"){
-			$dversion = "
-				<option value=\"55\">v55</option>
-				<option value=\"62\">v62</option>
-				<option value=\"75\">v75</option>
-				<option value=\"83\">v83</option>
-				<option value=\"90\" selected=\"selected\">v90</option>
-				<option value=\"111\">v111</option>
-				<option value=\"117\">v117</option>
-				";
-		}
-		elseif($version == "111"){
-			$dversion = "
-				<option value=\"55\">v55</option>
-				<option value=\"62\">v62</option>
-				<option value=\"75\">v75</option>
-				<option value=\"83\">v83</option>
-				<option value=\"90\">v90</option>
-				<option value=\"111\" selected=\"selected\">v111</option>
-				<option value=\"117\">v117</option>
-				";
-		}
-		elseif($version == "117"){
-			$dversion = "
-				<option value=\"55\">v55</option>
-				<option value=\"62\">v62</option>
-				<option value=\"75\">v75</option>
-				<option value=\"83\">v83</option>
-				<option value=\"90\">v90</option>
-				<option value=\"111\">v111</option>
-				<option value=\"117\" selected=\"selected\">v117</option>
-				";
-		}
-		else{
-			$dversion = "
-				<option value=\"55\">v55</option>
-				<option value=\"62\">v62</option>
-				<option value=\"75\">v75</option>
-				<option value=\"83\">v83</option>
-				<option value=\"90\">v90</option>
-				<option value=\"111\">v111</option>
-				<option value=\"117\">v117</option>
-				";
-		}
-		
 		$flooddefault = "
 			<option value=\"0\">Off</option>
 			<option value=\"1\" selected>On</option>";
-
 		if($baseflood == 0) {
 			$flooddefault = "
 			<option value=\"0\" selected>Off</option>
 			<option value=\"1\">On</option>";
 		}
-	
 		$sadefault = "
 			<option value=\"0\" selected>Yes</option>
 			<option value=\"1\">No</option>";
@@ -237,11 +146,11 @@ $('#myTab a').click(function (e) {
 		<input name=\"servername\" type=\"text\" maxlength=\"100\" class='form-control' id=\"serverName\" value=\"".$servername."\" required/>
 	</div>
 	<div class=\"form-group\">
-		<label for=\"gmLevel\">Level for GM Panel Access:</label>
+		<label for=\"gmLevel\">GM Level for Panel Access</label>
 		<input name=\"gmlevel\" type=\"text\" maxlength=\"100\" class='form-control' id=\"gmLevel\" value=\"".$gmlevel."\" required/>
 	</div>
 	<div class=\"form-group\">
-		<label for=\"siteURL\">Site Path: <span class=\"label label-danger\">IMPORTANT. NEEDS TRAILING SLASH</span></label>
+		<label for=\"siteURL\">Site Path <span class=\"label label-danger\">IMPORTANT. NEEDS TRAILING SLASH</span></label>
 		<input name=\"siteurl\" type=\"text\" maxlength=\"100\" class='form-control' id=\"siteURL\" value=\"".$siteurl."\" required/>
 		<span class=\"help-block\">/ indicates the root directory. /base/ indicates that base has been installed in a folder called base. You <b>must</b> use a trailing slash</span>			
 	</div>	
@@ -250,15 +159,15 @@ $('#myTab a').click(function (e) {
 <div class=\"tab-pane fade\" id=\"links\">
 	<br/>
 	<div class=\"form-group\">
-		<label for=\"forumURL\">Forum URL:</label>
+		<label for=\"forumURL\">Forum URL</label>
 		<input name=\"forumurl\" type=\"text\" maxlength=\"100\" class='form-control' id=\"forumURL\" value=\"".$forumurl."\" required/>
 	</div>	
 	<div class=\"form-group\">
-		<label for=\"clientLink\">Client Link:</label>
+		<label for=\"clientLink\">Client Link</label>
 		<input name=\"client\" type=\"text\" maxlength=\"100\" class='form-control' id=\"clientLink\" value=\"".$client."\" required/>
 	</div>
 	<div class=\"form-group\">
-		<label for=\"setupLink\">Setup Link:</label>
+		<label for=\"setupLink\">Setup Link</label>
 		<input name=\"server\" type=\"text\" maxlength=\"100\" class='form-control' id=\"setupLink\" value=\"".$server."\" required/>
 	</div>
 </div>
@@ -266,38 +175,36 @@ $('#myTab a').click(function (e) {
 <div class=\"tab-pane fade\" id=\"info\">
 	<br/>
 	<div class=\"form-group\">
-	<label for=\"serverVersion\">Server Version:</label>
-		<select name=\"version\" class=\"form-control\" id=\"serverVersion\">
-			".$dversion."
-		</select>
+	<label for=\"serverVersion\">Server Version</label>
+		<input name=\"version\" type=\"text\" maxlength=\"6\" class='form-control' id=\"serverVersion\" value=\"".$version."\" required/>
 	</div>
 	<div class=\"form-group\">
-		<label for=\"expRate\">Experience Rate:</label>
+		<label for=\"expRate\">Experience Rate</label>
 		<input name=\"exprate\" type=\"text\" maxlength=\"10\" class='form-control' id=\"expRate\" value=\"".$exprate."\" required/>
 	</div>	
 	<div class=\"form-group\">
-		<label for=\"mesoRate\">Meso Rate:</label>
+		<label for=\"mesoRate\">Meso Rate</label>
 		<input name=\"mesorate\" type=\"text\" maxlength=\"10\" class='form-control' id=\"mesoRate\" value=\"".$mesorate."\" required/>
 	</div>	
 	<div class=\"form-group\">
-		<label for=\"dropRate\">Drop Rate:</label>
+		<label for=\"dropRate\">Drop Rate</label>
 		<input name=\"droprate\" type=\"text\" maxlength=\"10\" class='form-control' id=\"dropRate\" value=\"".$droprate."\" required/>
 	</div>
 	<div class=\"form-group\">
-		<label for=\"playerCap\">Player Cap:</label>
+		<label for=\"playerCap\">Player Cap</label>
 		<input name=\"pcap\" type=\"text\" maxlength=\"20\" class='form-control' id=\"playerCap\" value=\"".$pcap."\" required/>
 	</div>
 </div>
 <div class=\"tab-pane fade\" id=\"comment\">
 	<br/>
 	<div class=\"form-group\">
-	<label for=\"floodPrevention\">Flood Prevention:</label>
+	<label for=\"floodPrevention\">Comment Flood Prevention</label> <small>Forces users to wait an interval inbetween comments.</small>
 		<select name=\"floodp\" class=\"form-control\" id=\"floodPrevention\">
 				".$flooddefault."
 		</select>
 	</div>
 	<div class=\"form-group\">
-		<label for=\"postingInterval\">Posting Interval:</label> <small>Amount of time in minutes between comments</small>
+		<label for=\"postingInterval\">Posting Interval</label> <small>Amount of time in <b>minutes</b> between comments</small>
 		<input name=\"floodi\" type=\"text\" maxlength=\"10\" class='form-control' id=\"postingInterval\" value=\"".$basefloodint."\" required/>
 	</div>
 </div>

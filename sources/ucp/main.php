@@ -47,7 +47,8 @@ echo "
 </div>";
 }else{
 echo "
-<div class=\"well\"><a href=\"?base=ucp&amp;page=profedit\">Edit Public Profile</a></div><br />";
+<div class=\"well\"><a href=\"?base=ucp&amp;page=profedit\">Edit Public Profile</a></div>
+<div class=\"well\"><a href=\"?base=misc&amp;page=gravatar\">Change Gravatar</a></div>";
 }
 
 			}elseif($ucp == "accset"){
