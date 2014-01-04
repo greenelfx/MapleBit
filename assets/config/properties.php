@@ -23,7 +23,7 @@ $bgfixed = $prop['bgfixed'];
 $client = $prop['client'];
 $server = $prop['server'];
 /* Server Version */
-$version = $prop['version'];
+$version = (float)$prop['version'];
 /* Forum url*/
 $forumurl = $prop['forumurl'];
 /* Server Rates */
