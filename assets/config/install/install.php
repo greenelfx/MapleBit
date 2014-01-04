@@ -7,6 +7,9 @@ echo '
 <title>MapleBit Installation</title>
 <link href="../../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 <link href="style.css" rel="stylesheet" type="text/css" />
+<script>
+function goBack() {window.history.back()}
+</script>
 <link rel="icon" href="../favicon.ico" type="image/x-icon" />
 </head>
 <body>
@@ -29,7 +32,6 @@ if(file_exists('installdone.txt')){
 					<hr />
 					Welcome to MapleBit. Before you can use MapleBit, you need to give me your database information. Please make sure you have the following information handy:<br/><br/>
 					<ul><li>Database name</li><li>Database username</li><li>Database password</li><li>Database host (usually localhost)</li><li>Table Prefix</li></ul>
-					<br/>If the installer doesn\'t work for you, you can rename database.sample.php to database.php and fill out the information manually.
 					<hr/>
 					<form action="?install=1" method="post" style="float:right;">
 						<input type="submit" class="btn btn-primary btn-lg" value="Begin &raquo;" />
@@ -362,79 +364,86 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				$sdrop = $mysqli->real_escape_string(stripslashes($_POST['droprate']));
 				$sgmlevel = $mysqli->real_escape_string(stripslashes($_POST['gmlevel']));
 				$ssiteurl = $mysqli->real_escape_string(stripslashes($_POST['sitepath']));		
-				$sversion = $_POST['version'];
+				$sversion = $mysqli->real_escape_string(stripslashes($_POST['version']));
 			
 				$stop = "false";
 				if(empty($sservername)){
 					echo '<div class="alert alert-danger">Your server doesn&apos;t have a name?</div>';
 					$stop = "true";
-					echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
+					echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 				}
 				if($stop == "false"){
 					if(empty($sclient)){
 						echo '<div class="alert alert-danger">You need a client link.</div>';
 						$stop = "true";
-						echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}
 				}
 				if($stop == "false"){
 					if(empty($sserver)){
 						echo '<div class="alert alert-danger">You need a server link.</div>';
 						$stop = "true";
-						echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}
 				}
 				if($stop == "false"){
 					if(empty($sforumurl)){
 						echo '<div class="alert alert-danger">You need to enter a forum URL. If you don&apos; have one, just put a &apos;#&apos; in the text box.</div>';
 						$stop = "true";
-						echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}
 				}
 				if($stop == "false"){
 					if(empty($svote)){
 						echo '<div class="alert alert-danger">Enter a voting link. If you are unsure, put a &apos;#&apos; in the text box.</div>';
 						$stop = "true";
-						echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}
 				}
 				if($stop == "false"){
 					if(empty($sexp)){
 						echo '<div class="alert alert-danger">Enter an exp rate. Don&apos;t put an x in the text box!</div>';
 						$stop = "true";
-						echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}
 				}
 				if($stop == "false"){
 					if(empty($smeso)){
 						echo '<div class="alert alert-danger">Enter a meso rate. Don&apos;t put an x in the text box!</div>';
 						$stop = "true";
-						echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}
 				}
 				if($stop == "false"){
 					if(empty($sdrop)){
 						echo '<div class="alert alert-danger">Enter an drop rate. Don&apos;t put an x in the text box!</div>';
 						$stop = "true";
-						echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}
 				}
 				if($stop == "false"){
 					if(empty($sgmlevel)){
 						echo '<div class="alert alert-danger">Enter the level that you must be to be GM (Usually 1)</div>';
 						$stop = "true";
-						echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}
 				}
 				if($stop == "false"){
 					if(empty($ssiteurl)){
 						echo '<div class="alert alert-danger">Enter the site path</div>';
 						$stop = "true";
-						echo '<meta http-equiv="refresh" content="1; url=?install=4" />';
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}
 				}
 				if($stop == "false"){
-					$mysqli->query("UPDATE ".$prefix."properties SET name='$sservername', client='$sclient', server = '$sserver', version='$sversion', forumurl='$sforumurl', siteurl='$ssiteurl', vote='$svote', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', gmlevel = '$sgmlevel', flood='1', floodint='20', theme='cerulean', nav='0', pcap='100'");
+					if(is_numeric($sversion) == FALSE){
+						echo '<div class="alert alert-danger">Enter a numeric value for the server version</div>';
+						$stop = "true";
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+					}
+				}
+				if($stop == "false"){
+					$mysqli->query("UPDATE ".$prefix."properties SET name='$sservername', client='$sclient', server = '$sserver', version='$sversion', forumurl='$sforumurl', siteurl='$ssiteurl', vote='$svote', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', gmlevel = '$sgmlevel', flood='1', floodint='5', theme='cerulean', nav='0', pcap='100'");
 					echo "Working...";
 					echo "<meta http-equiv=\"refresh\" content=\"1; url=?install=5\" />";
 				}
@@ -460,15 +469,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				</div>
 				<div class=\"form-group\">
 					<label for=\"verion\">Version</label>
-				<select name=\"version\" class=\"form-control\">
-					<option value=\"55\">55</option>
-					<option value=\"60\">62</option>
-					<option value=\"75\">75</option>
-					<option value=\"83\" selected>83</option>
-					<option value=\"90\">90</option>
-					<option value=\"111\">111</option>
-					<option value=\"117\">117</option>
-				</select>
+					<input name=\"version\" type=\"text\" maxlength=\"6\" class='form-control' id=\"verion\" placeholder=\"83\" required/>
 				</div>
 				<div class=\"form-group\">
 					<label for=\"forum\">Forum URL</label>
@@ -512,7 +513,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 		echo "
 		<h4>Extract GD Images</h4>
 		<hr/>";
-		if(isset($_POST['auto'])){
+		if(isset($_POST['auto'])){ // ZIP Extraction, not used right now
 			echo "<b>Extracting archive. This may take some time.</b><hr/>";
 			$zip = new ZipArchive;
 			if ($zip->open('../../img/GD/GD.zip') === TRUE) {
