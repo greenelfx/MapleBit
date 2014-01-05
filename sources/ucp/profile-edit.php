@@ -384,7 +384,7 @@ if($_SESSION['id']){
 			</script>";
 		}else{
 			$pname = mysql_escape(isset($_POST['pname']));
-			$mainchar = mysql_escape(isset($_POST['mainchar']));
+			$mainchar = mysql_escape($_POST['mainchar']);
 			$realname = mysql_escape($_POST['realname']);
 			$age = mysql_escape($_POST['age']);
 			$country = mysql_escape($_POST['country']);
@@ -392,8 +392,8 @@ if($_SESSION['id']){
 			$favjob = $_POST['favjob'];
 			$text = mysql_escape($_POST['text']);
 			$u = $mysqli->query("UPDATE `".$prefix."profile` SET `mainchar`='".$mainchar."',`realname`='".$realname."',`age`='".$age."',`country`='".$country."',`motto`='".$motto."',`favjob`='".$favjob."',`text`='".$text."' WHERE `accountid`='".$_SESSION['id']."'") or die(mysql_error());
-				echo "Your public profile has been updated<br />";
-				echo "Click <a href=\"?base=main&amp;page=members&name=".$_SESSION['pname']."\">here</a> to go to your profile.";
+				echo "<div class=\"alert alert-success\">Your public profile has been updated<br />";
+				echo "Click <a href=\"?base=main&amp;page=members&name=".$_SESSION['pname']."\" class=\"alert-link\">here</a> to go to your profile.</div>";
 			}
 		}
 	}else{
