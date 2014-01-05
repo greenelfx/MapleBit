@@ -1,6 +1,12 @@
-<?php 
-$first = "reborns";
-$second = "level";
+<?php
+if($servertype == 1) { 
+	$first = "reborns";
+	$second = "level";
+} else {
+	$first = "level";
+	$second = "exp";
+}
+
 echo "
 <div class=\"col-md-6\">
 <a href='?base=main&amp;page=rankings'><h4>Rankings &raquo;</h4></a><hr/>";
