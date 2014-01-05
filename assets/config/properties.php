@@ -22,8 +22,9 @@ $bgfixed = $prop['bgfixed'];
 /* Download link for client */
 $client = $prop['client'];
 $server = $prop['server'];
-/* Server Version */
+/* Server Version and Type*/
 $version = (float)$prop['version'];
+$servertype = $prop['type'];
 /* Forum url*/
 $forumurl = $prop['forumurl'];
 /* Server Rates */

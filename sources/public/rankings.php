@@ -108,9 +108,11 @@ echo "
 			<th>Rank</th>
 			<th class=\"hidden-sm hidden-xs\">Picture</th>
 			<th>Name</th>
-			<th>Job</th>
-			<th>Rebirths</th>
-			<th>Level</th>
+			<th>Job</th>";
+			if($servertype == 1){
+				echo "<th>Rebirths</th>";
+			}
+echo "		<th>Level</th>
 		</tr>
 	</thead>
 <tbody>";
@@ -270,9 +272,10 @@ while($row = $result->fetch_assoc()) {
 				if ($row['job']=="2112")
 					echo "Aran 3";
 		
-	echo "</td>
-			<td>".$row['reborns']."</td>";						
-					
+	if($servertype == 1){
+		echo "</td>
+			<td>".$row['reborns']."</td>";
+	}			
 	echo "
 			<td>".$row['level']."</td>
 		</tr>";				

@@ -22,10 +22,12 @@ if(isset($_GET['n'])) {
 				<hr/>
 				<img src=\"".$siteurl."assets/img/GD/Characters/".$cachechar['hash'].".png\" alt=\"".$cachechar['name']."\" class=\"avatar img-responsive\" style=\"margin: 0 auto;\">
 				<hr/>
-				<b>Job:</b> " . $c['job'] . "<br/>
-				<b>Level:</b> " . $c['level'] . "<br/>
+				<b>Job:</b> " . $c['job'] . "<br/>";
+				if($servertype == 1) {
+					echo "<b>Rebirths:</b> " . $c['reborns'] . "<br/>";
+				}
+		echo "	<b>Level:</b> " . $c['level'] . "<br/>
 				<b>EXP:</b> " . $c['exp'] . "<br/>
-				<b>Rebirths:</b> Coming Soon
 			</div>
 		</div>
 		</div>";
