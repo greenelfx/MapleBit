@@ -6,6 +6,7 @@ if(isset($_GET["do"])){
 }
 
 if($_SESSION['admin']){
+	if($servertype == 1) { $rebirths = "selected"; $levels = "";} else {$levels = "selected"; $rebirths = "";}
 	if($do == "submit"){
 		$sservername = $mysqli->real_escape_string(stripslashes($_POST['servername']));
 		$sclient = $mysqli->real_escape_string(stripslashes($_POST['client']));
@@ -20,6 +21,7 @@ if($_SESSION['admin']){
 		$floodi = $mysqli->real_escape_string(stripslashes($_POST['floodi']));
 		$sgmlevel = $mysqli->real_escape_string(stripslashes($_POST['gmlevel']));
 		$sversion = $mysqli->real_escape_string(stripslashes($_POST['version']));
+		$sservertype = $mysqli->real_escape_string(stripslashes($_POST['servertype']));
 		
 		$stop = "false";
 		if(empty($sservername)){
@@ -103,7 +105,7 @@ if($_SESSION['admin']){
 			}
 		}
 		if($stop == "false"){
-			$mquery = "UPDATE ".$prefix."properties SET name='$sservername', client='$sclient', server = '$sserver', forumurl='$sforumurl', siteurl = '$ssiteurl', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', version='$sversion', flood='$floodp', floodint='$floodi', pcap='$spcap', gmlevel='$sgmlevel'";
+			$mquery = "UPDATE ".$prefix."properties SET name='$sservername', type = '$sservertype', client='$sclient', server = '$sserver', forumurl='$sforumurl', siteurl = '$ssiteurl', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', version='$sversion', flood='$floodp', floodint='$floodi', pcap='$spcap', gmlevel='$sgmlevel'";
 			$exec = $mysqli->query($mquery);
 			echo "<h2 class=\"text-left\">Success</h2><hr/><div class=\"alert alert-success\">Configuration Updated</div>";
 			redirect_wait5("?base=admin&page=properties");
@@ -177,6 +179,13 @@ $('#myTab a').click(function (e) {
 	<div class=\"form-group\">
 	<label for=\"serverVersion\">Server Version</label>
 		<input name=\"version\" type=\"text\" maxlength=\"6\" class='form-control' id=\"serverVersion\" value=\"".$version."\" required/>
+	</div>
+	<div class=\"form-group\">
+		<label for=\"serverType\">Server Type</label>
+			<select name=\"servertype\" class=\"form-control\">
+				<option value=\"1\" ".$rebirths.">Rebirth</option>
+				<option value=\"0\" ".$levels.">Level</option>
+			</select>
 	</div>
 	<div class=\"form-group\">
 		<label for=\"expRate\">Experience Rate</label>
