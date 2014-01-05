@@ -29,9 +29,7 @@ if(@$_GET['name']){
 		$m = $gmc->fetch_assoc();
 		if($m['name'] == "") {
 			$m['name'] = "Not set";
-			$stats = "";
 		}
-		else {$stats = "View Stats";}
 		if(empty($p['realname'])){$p['realname'] = "Not Set";}
 		if(empty($p['country'])){$p['country'] = "Not Set";}
 		if(empty($p['motto'])){$p['motto'] = "Not Set";}
@@ -42,7 +40,7 @@ if(@$_GET['name']){
 			<legend>".$name."'s Profile (".$p['realname'].")</legend>
 			Game :".$status."<br/>
 			Site :".onlineCheck(getInfo('accid', $name, 'profilename'))."<br/><br/>
-			<b>Main Character:</b> ".$m['name']. "&nbsp;" .$stats ."<br/><br/>
+			<b>Main Character:</b> ".$m['name']. "<br/><br/>
 			<b>Motto:</b> ".$p['motto']."<br/><br/>
 			<b>Age:</b> ".$p['age']."<br/><br/>
 			<b>Country: </b>".$p['country']."<br/><br/>
