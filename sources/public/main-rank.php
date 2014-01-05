@@ -34,7 +34,7 @@ echo "
 				echo "
 				<tr>
 					<td>
-						<a href=\"#".$player['name']."\" onmouseover=\"roll('top5', 'assets/img/GD/Characters/".$cachechar['hash'].".png')\">".$player['name']."</a>
+						<a href=\"?base=main&page=character&n=".$player['name']."\" onmouseover=\"roll('top5', 'assets/img/GD/Characters/".$cachechar['hash'].".png')\">".$player['name']."</a>
 					</td>
 					<td>".$player[$first]."</td>
 				</tr>";
