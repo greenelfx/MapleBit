@@ -35,6 +35,8 @@ if(isset($_GET['page'])){
 			include('sources/public/register.php');
 		}elseif($main == "vote"){
 			include('sources/public/vote.php');
+		}elseif($main == "character"){
+			include('sources/public/character.php');
 		}
 		else {
 			redirect("?base=main");

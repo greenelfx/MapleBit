@@ -49,10 +49,9 @@ if($banner != ""){echo "<img src=\"".$banner."\" alt=\"banner\" class=\"img-resp
 		<ul class="nav navbar-nav">
               <li><a href="?base=main">Home</a></li>
 			<?php
-				if(isset($_SESSION['id'])){
-					echo "";
+				if(!isset($_SESSION['id'])){
+					echo "<li><a href=\"?base=main&amp;page=register\">Register</a></li>";
 				}
-				else{echo "<li><a href=\"?base=main&amp;page=register\">Register</a></li>";}
 			?>
               <li><a href="?base=main&amp;page=download">Download</a></li>
 			  <li><a href="?base=main&amp;page=rankings">Rankings</a></li>
