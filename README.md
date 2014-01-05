@@ -7,7 +7,7 @@ Installation
 To install the CMS, you need to upload the entire .zip to your web server. Then, extract the .zip, and open your browser. Navigate to the location in which you extracted the .zip. You'll be presented with a web based installer. Next, enter in your database connection details, and configure your website. Once you've done this, the installer will lock itself and redirect you to your website.
 
 Features
-------------
+============
 Some features of MapleBit include:
 
  - **Automatic and Flexible Installer.** All you have to do is have your database connection information handy, and put them in the web based installer. You can also use a custom database prefix to have multiple installations of MapleBit in one database.
