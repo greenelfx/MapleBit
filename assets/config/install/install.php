@@ -135,7 +135,7 @@ echo '
 mysqli_multi_query($mysqli, "DROP TABLE IF EXISTS `".$prefix."properties`;
 CREATE TABLE `".$prefix."properties` (
   `name` text,
-  `title` text,
+  `type` TINYINT(1) NOT NULL DEFAULT '1',
   `client` text,
   `server` text,
   `version` int(11) NOT NULL DEFAULT '0',
@@ -365,7 +365,8 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				$sgmlevel = $mysqli->real_escape_string(stripslashes($_POST['gmlevel']));
 				$ssiteurl = $mysqli->real_escape_string(stripslashes($_POST['sitepath']));		
 				$sversion = $mysqli->real_escape_string(stripslashes($_POST['version']));
-			
+				$sservertype = $mysqli->real_escape_string($_POST['servertype']);
+				
 				$stop = "false";
 				if(empty($sservername)){
 					echo '<div class="alert alert-danger">Your server doesn&apos;t have a name?</div>';
@@ -443,7 +444,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 					}
 				}
 				if($stop == "false"){
-					$mysqli->query("UPDATE ".$prefix."properties SET name='$sservername', client='$sclient', server = '$sserver', version='$sversion', forumurl='$sforumurl', siteurl='$ssiteurl', vote='$svote', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', gmlevel = '$sgmlevel', flood='1', floodint='5', theme='cerulean', nav='0', pcap='100'");
+					$mysqli->query("UPDATE ".$prefix."properties SET name='$sservername', type = '$sservertype', client='$sclient', server = '$sserver', version='$sversion', forumurl='$sforumurl', siteurl='$ssiteurl', vote='$svote', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', gmlevel = '$sgmlevel', flood='1', floodint='5', theme='cerulean', nav='0', pcap='100'");
 					echo "Working...";
 					echo "<meta http-equiv=\"refresh\" content=\"1; url=?install=5\" />";
 				}
@@ -458,6 +459,13 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				<div class=\"form-group\">
 					<label for=\"serverName\">Server Name</label>
 					<input name=\"servername\" type=\"text\" maxlength=\"100\" value='MapleBit' class='form-control' id=\"serverName\" required/>
+				</div>
+				<div class=\"form-group\">
+					<label for=\"serverType\">Server Type</label>
+					<select name=\"servertype\" class=\"form-control\">
+						<option value=\"1\">Rebirth</option>
+						<option value=\"0\">Level</option>
+					</select>
 				</div>
 				<div class=\"form-group\">
 					<label for=\"clientDL\">Client Link</label>
