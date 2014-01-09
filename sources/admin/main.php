@@ -20,7 +20,7 @@ if($_SESSION['id']){
 </div>
 <div class="col-md-4">
 	<div class="well">
-		Welcome Alpha Testers!<br/>Thanks for trying out CypeReboot! Please report any bugs and quirks to greenelf!
+		Welcome to the MapleBit Administration Panel.<br/>Thanks for trying out MapleBit! Please report any bugs and quirks to greenelf!
 	</div>
 </div>
 </div>
