@@ -8,6 +8,12 @@
 	} else {
 		require_once 'assets/config/HTMLPurifier.standalone.php';
 		$config = HTMLPurifier_Config::createDefault();
+		$config->set('HTML.SafeIframe', true);
+		$config->set('HTML.TargetBlank', true);
+		$config->set('HTML.SafeObject', true);
+		$config->set('Output.FlashCompat', true);
+		$config->set('HTML.SafeEmbed', true);
+		$config->set('URI.SafeIframeRegexp', '%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/|player\.vimeo\.com/video/)%'); //allow YouTube and Vimeo
 		$purifier = new HTMLPurifier($config);
 		$clean_html = $purifier->purify($p['content']);
 		echo "<h2 class=\"text-left\">".$p['title']."</h2>
