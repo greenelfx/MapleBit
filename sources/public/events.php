@@ -53,7 +53,7 @@ if(@$_GET['id']){
 			echo "<div class=\"alert alert-danger\">You have been muted. Please contact an administrator</div>";
 		}elseif($e['locked'] == "1"){
 			echo "<div class=\"alert alert-danger\">This article has been locked.</div>";
-		}elseif($_SESSION['pname'] === "checkpname"){
+		}elseif($_SESSION['pname'] == "checkpname"){
 			echo "<div class=\"alert alert-danger\">You must assign a profile name before you can comment news articles.</div>";
 		}elseif($baseflood > 0 && (time() - $seconds) < $fetchg['dateadded']) {
 			echo "<div class=\"alert alert-danger\">You may only post every ".$basefloodint." minutes to prevent spam.</div>";
