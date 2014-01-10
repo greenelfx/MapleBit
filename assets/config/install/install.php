@@ -172,12 +172,12 @@ INSERT INTO ".$prefix."properties (version, theme, nav, colnx, colvp, vlink) VAL
 DROP TABLE IF EXISTS `".$prefix."pages`;
 CREATE TABLE `".$prefix."pages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` text NOT NULL,
-  `dir` text NOT NULL,
-  `header` text NOT NULL,
-  `footer` text NOT NULL,
+  `title` text NOT NULL,
+  `slug` text NOT NULL,
+  `author` text NOT NULL,
+  `content` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `".$prefix."mail`;
 CREATE TABLE  `".$prefix."mail` (

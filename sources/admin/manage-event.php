@@ -104,14 +104,14 @@ if(isset($_SESSION['id'])){
 					$status = $mysqli->real_escape_string($_POST['status']);
 					$content = $mysqli->real_escape_string($_POST['content']);
 					if($title == ""){
-						echo "You must enter a title.";
+						echo "<div class=\"alert alert-danger\">You must enter a title.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}elseif(empty($cat)){
-						echo "You must select a category.";
+						echo "<div class=\"alert alert-danger\">You must select a category.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}elseif($content == ""){
-						echo "You must enter some content.";
+						echo "<div class=\"alert alert-danger\">You must enter some content.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}else{
 						$u = $mysqli->query("UPDATE ".$prefix."events SET title='".$title."', type='".$cat."', status='".$status."', content='".$content."' WHERE id='".$id."'") or die();
-						echo "The event has been edited.";
+						echo "<div class=\"alert alert-success\"><b>".stripslashes($e['title'])."</b> has been updated.</div><hr/><a href=\"?base=admin\" class=\"btn btn-primary\">&laquo; Go Back</a>";
 					}
 				}
 			}else{

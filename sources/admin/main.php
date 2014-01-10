@@ -41,8 +41,9 @@ if($_SESSION['id']){
   </div>
   <div class="col-md-3">
   	<div class="well">
-	<a href="?base=admin&amp;page=muteuser">Mute User</a><br/>
-	<a href="?base=admin&amp;page=unmuteuser">Unmute User</a><br/>
+		<a href="?base=admin&amp;page=pages&amp;action=add"><b>Add Page &raquo;</b></a><br/>
+		<a href="?base=admin&amp;page=pages&amp;action=edit">Edit Page</a><br/>
+		<a href="?base=admin&amp;page=pages&amp;action=del">Delete Page</a>
 	</div>
   </div>
   <div class="col-md-3">
@@ -68,7 +69,9 @@ if($_SESSION['id']){
   </div>
   <div class="col-md-3">
   	<div class="well">
-		<a href="?base=admin&amp;page=ticket">Manage Tickets</a>
+	<a href="?base=admin&amp;page=muteuser">Mute User</a><br/>
+	<a href="?base=admin&amp;page=unmuteuser">Unmute User</a><br/>
+	<a href="?base=admin&amp;page=ticket">Manage Tickets</a>
 	</div>
   </div>
   <div class="col-md-3">
@@ -106,6 +109,8 @@ if($_SESSION['id']){
 				include('sources/admin/background.php');
 			}elseif($admin == "ticket"){
 				include('sources/admin/ticket.php');
+			}elseif($admin == "pages"){
+				include('sources/admin/pages.php');
 			}
 			else{header("Location: ?base=admin");}
 			if($admin!=""){
