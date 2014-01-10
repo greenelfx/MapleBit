@@ -1,7 +1,4 @@
-<script src="assets/js/nicEdit.js" type="text/javascript"></script>
-<script type="text/javascript">
-	bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
-</script>
+<script src="assets/libs/ckeditor/ckeditor.js"></script>
 <?php 
 if(isset($_SESSION['id'])){
 	if(isset($_SESSION['admin'])){
@@ -41,7 +38,7 @@ if(isset($_SESSION['id'])){
 					<option value=\"Standby\">Standby</option>
 				</select>
 			</div>
-			<textarea name=\"content\" style=\"height:300px;width:100%;\" class=\"form-control\"></textarea><br/>
+			<textarea name=\"content\" style=\"height:300px;\" class=\"form-control\" id=\"content\"></textarea><br/>
 			<input type=\"submit\" name=\"add\" class=\"btn btn-primary\" value=\"Add News Article &raquo;\" />
 		</form>";
 				}else{
@@ -95,7 +92,7 @@ if(isset($_SESSION['id'])){
 					<option value=\"Standby\">Standby</option>
 				</select>
 			</div>
-			<textarea name=\"content\" style=\"height:300px;width:100%;\">".stripslashes($e['content'])."</textarea><br/>
+			<textarea name=\"content\" style=\"height:300px;\" id=\"content\">".stripslashes($e['content'])."</textarea><br/>
 			<input type=\"submit\" name=\"edit\" class=\"btn btn-primary\" value=\"Edit Event &raquo;\" />
 			</form>";
 				}else{
@@ -247,3 +244,6 @@ if(isset($_SESSION['id'])){
 	redirect("?base");
 }
 ?>
+<script>
+	CKEDITOR.replace( 'content' );
+</script>

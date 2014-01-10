@@ -176,6 +176,7 @@ CREATE TABLE `".$prefix."pages` (
   `slug` text NOT NULL,
   `author` text NOT NULL,
   `content` text NOT NULL,
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
 

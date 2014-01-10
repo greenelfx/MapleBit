@@ -1,7 +1,7 @@
 <?php 
 echo "
 <div class=\"col-md-6\">
-<a href='?cype=main&amp;page=gmblog'><h4>GM Blog &raquo;</h4></a><hr/>
+<a href='?base=main&amp;page=gmblog'><h4>GM Blog &raquo;</h4></a><hr/>
 ";
 	$i = 0;
 	$gn = $mysqli->query("SELECT * FROM ".$prefix."gmblog ORDER BY id DESC LIMIT 4") or die();
@@ -9,7 +9,7 @@ echo "
 		$title = $n['title'];
 		$maxlength = 33;
 		echo "
-		[".$n['date']."]	<a href=\"?cype=main&amp;page=gmblog&amp;id=".$n['id']."\">";
+		[".$n['date']."]	<a href=\"?base=main&amp;page=gmblog&amp;id=".$n['id']."\">";
 		if(strlen($title) > $maxlength){
 			echo stripslashes(shortTitle($title));
 		}else{
