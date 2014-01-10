@@ -1,7 +1,4 @@
-<script src="assets/js/nicEdit.js" type="text/javascript"></script>
-<script type="text/javascript">
-	bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
-</script>
+<script src="assets/libs/ckeditor/ckeditor.js"></script>
 <?php 
 if(isset($_SESSION['id'])){
 	if(isset($_SESSION['admin'])){
@@ -31,10 +28,15 @@ if(isset($_SESSION['id'])){
 				<span class=\"help-block\">URL friendly name (one word is required, you may use <b>only</b> numbers and letters)</span>
 			</div>
 			<b>Author:</b> ".$_SESSION['pname']."<br/>
+			<div class=\"checkbox\">
+				<label>
+					<input type=\"checkbox\" name=\"visible\" checked> Show Page on Navigation Bar
+				</label>
+			</div>
 			<hr/>
 			<b>Page Content:</b> <small>Note that the page header is automatically added.</small>
-			<textarea name=\"content\" style=\"height:300px;width:100%;\" class=\"form-control\"></textarea><br/>
-			<input type=\"submit\" name=\"add\" class=\"btn btn-primary\" value=\"Add News Article &raquo;\" />
+			<textarea name=\"content\" style=\"height:300px;\" class=\"form-control\" id=\"content\"></textarea><br/>
+			<input type=\"submit\" name=\"add\" class=\"btn btn-primary\" value=\"Add Page &raquo;\" />
 		</form>";
 				}else{
 					$title = $mysqli->real_escape_string($_POST['title']);
@@ -42,6 +44,11 @@ if(isset($_SESSION['id'])){
 					$slug = preg_replace('/\s+/', '_', $gslug);
 					$author = $_SESSION['pname'];
 					$content = $mysqli->real_escape_string($_POST['content']);
+					if(isset($_POST['visible'])) {
+						$visible = 1;
+					} else {
+						$visible = 0;
+					}
 					if($title == ""){
 						echo "<div class=\"alert alert-danger\">You must enter a title.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}elseif($content == ""){
@@ -49,7 +56,7 @@ if(isset($_SESSION['id'])){
 					}elseif($slug == ""){
 						echo "<div class=\"alert alert-danger\">You must enter a slug.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}else{
-						$i = $mysqli->query("INSERT INTO ".$prefix."pages (title, slug, author, content) VALUES ('".$title."','".$slug."','".$_SESSION['pname']."','".$content."')") or die();
+						$i = $mysqli->query("INSERT INTO ".$prefix."pages (title, slug, author, content, visible) VALUES ('".$title."','".$slug."','".$_SESSION['pname']."','".$content."', '".$visible."')") or die();
 						echo "<div class=\"alert alert-success\">Your pages has been created. You may access it at <a href=\"".$siteurl."\?base=main&page=".$slug."\">here</a></div><hr/><a href=\"?base=admin\" class=\"btn btn-primary\">&laquo; Go Back</a>";
 					}
 				}
@@ -63,6 +70,11 @@ if(isset($_SESSION['id'])){
 				$id = $mysqli->real_escape_string($_GET['id']);
 				$gp = $mysqli->query("SELECT * FROM ".$prefix."pages WHERE id='".$id."'") or die();
 				$p = $gp->fetch_assoc();
+				if($p['visible'] == 1) {
+					$checked = "checked";
+				} else {
+					$checked = "";
+				}
 				if(!isset($_POST['edit'])){
 					echo "
 			<form method=\"post\" action=''>
@@ -76,7 +88,12 @@ if(isset($_SESSION['id'])){
 				<span class=\"help-block\">URL friendly name (one word is required, you may use <b>only</b> numbers and letters)</span>
 			</div>
 			<b>Author:</b> ".$p['author']."<br/>
-			<textarea name=\"content\" style=\"height:300px;width:100%;\">".stripslashes($p['content'])."</textarea><br/>
+			<div class=\"checkbox\">
+				<label>
+					<input type=\"checkbox\" name=\"visible\" ".$checked."> Show Page on Navigation Bar
+				</label>
+			</div>
+			<textarea name=\"content\" style=\"height:300px;\" id=\"content\">".stripslashes($p['content'])."</textarea><br/>
 			<input type=\"submit\" name=\"edit\" class=\"btn btn-primary\" value=\"Edit Page &raquo;\" />
 			</form>";
 				}else{
@@ -84,6 +101,11 @@ if(isset($_SESSION['id'])){
 					$content = $mysqli->real_escape_string($_POST['content']);
 					$gslug = $mysqli->real_escape_string($_POST['slug']);
 					$slug = preg_replace('/\s+/', '_', $gslug);
+					if(isset($_POST['visible'])) {
+						$visible = 1;
+					} else {
+						$visible = 0;
+					}
 					if($title == ""){
 						echo "<div class=\"alert alert-danger\">You must enter a title.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}elseif($content == ""){
@@ -91,7 +113,7 @@ if(isset($_SESSION['id'])){
 					}elseif($slug == ""){
 						echo "<div class=\"alert alert-danger\">You must enter a slug.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}else{
-						$u = $mysqli->query("UPDATE ".$prefix."pages SET title='".$title."', slug = '".$slug."', content='".$content."' WHERE id='".$id."'") or die();
+						$u = $mysqli->query("UPDATE ".$prefix."pages SET title='".$title."', slug = '".$slug."', content='".$content."', visible = '".$visible."' WHERE id='".$id."'") or die();
 						echo "<div class=\"alert alert-success\">Page Updated. You may access it <a href=\"".$siteurl."\?base=main&page=".$slug."\">here</a></div><hr/><a href=\"?base=admin&page=pages\" class=\"btn btn-primary\">&laquo; Go Back</a>";
 					}
 				}
@@ -145,3 +167,6 @@ if(isset($_SESSION['id'])){
 	redirect("?base");
 }
 ?>
+<script>
+	CKEDITOR.replace( 'content' );
+</script>
