@@ -3,10 +3,20 @@ if(isset($_GET['id'])){
 	$id = $mysqli->real_escape_string($_GET['id']);
 	$gn = $mysqli->query("SELECT * FROM ".$prefix."news WHERE id='".$id."'") or die();
 	$n = $gn->fetch_assoc();
+	require_once 'assets/libs/HTMLPurifier.standalone.php';
+		$config = HTMLPurifier_Config::createDefault();
+		$config->set('HTML.SafeIframe', true);
+		$config->set('HTML.TargetBlank', true);
+		$config->set('HTML.SafeObject', true);
+		$config->set('Output.FlashCompat', true);
+		$config->set('HTML.SafeEmbed', true);
+		$config->set('URI.SafeIframeRegexp', '%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/|player\.vimeo\.com/video/)%'); //allow YouTube and Vimeo
+		$purifier = new HTMLPurifier($config);
+		$clean_html = $purifier->purify($n['content']);
 	echo "
 		<h2 class=\"text-left\">".stripslashes($n['title'])." | Posted by <a href=\"?base=main&amp;page=members&amp;name=".$n['author']."\">".$n['author']."</a> on ".$n['date']."</h2><hr/>
 		";
-	echo nl2br(stripslashes($n['content']))."
+	echo $clean_html."
 	<br /><br />
 	";
 	$gc = $mysqli->query("SELECT ".$prefix."ncomments.*, accounts.email, accounts.id As id1, ".$prefix."profile.accountid, ".$prefix."profile.name FROM ".$prefix."ncomments INNER JOIN ".$prefix."profile ON ".$prefix."ncomments.author = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE ".$prefix."ncomments.nid= '".$id."'") or die();

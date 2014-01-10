@@ -1,7 +1,4 @@
-<script src="assets/js/nicEdit.js" type="text/javascript"></script>
-<script type="text/javascript">
-	bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
-</script>
+<script src="assets/libs/ckeditor/ckeditor.js"></script>
 <?php 
 if($_SESSION['id']){
 	if($_SESSION['gm']){
@@ -28,7 +25,7 @@ if($_SESSION['id']){
 				}else{
 					$title = $mysqli->real_escape_string($_POST['title']);
 					$date = date("m.d");
-					$content = sanitize_space($_POST['content']);
+					$content = $mysqli->real_escape_string($_POST['content']);
 					if($title == ""){
 						echo "<div class=\"alert alert-danger\">You must enter a title.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}elseif($content == ""){
@@ -59,8 +56,8 @@ if($_SESSION['id']){
 					<input type=\"submit\" name=\"edit\" value=\"Edit Blog Entry\" class=\"btn btn-primary\"/>
 				</form>";
 						}else{
-							$title = sanitize_space($_POST['title']);
-							$content = sanitize_space($_POST['content']);
+							$title = $mysqli->real_escape_string($_POST['title']);
+							$content = $mysqli->real_escape_string($_POST['content']);
 							if($title == ""){
 								echo "<div class=\"alert alert-danger\">You must enter a title.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 							}elseif($content == ""){
@@ -224,9 +221,12 @@ if($_SESSION['id']){
 		}
 	}
 	}else{
-		include('sources/public/accessdenied.php');
+		redirect("?base");
 	}
 }else{
-	echo "Please log in to use this feature.";
+	redirect("?base");
 }
 ?>
+<script>
+	CKEDITOR.replace( 'content' );
+</script>

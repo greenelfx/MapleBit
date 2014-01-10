@@ -6,7 +6,7 @@
 		echo "<div class=\"alert alert-danger\">I couldn't make that page for you.</div>";
 		redirect_wait5("?base=main");
 	} else {
-		require_once 'assets/config/HTMLPurifier.standalone.php';
+		require_once 'assets/libs/HTMLPurifier.standalone.php';
 		$config = HTMLPurifier_Config::createDefault();
 		$config->set('HTML.SafeIframe', true);
 		$config->set('HTML.TargetBlank', true);
