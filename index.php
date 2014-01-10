@@ -22,6 +22,9 @@ if(!file_exists('assets/config/install/installdone.txt')){
 			header('Location: ?base=main');
 			break;
 		case "main":
+			$getslug = $mysqli->query("SELECT slug from bit_pages");
+			$fetchslug = $getslug->fetch_assoc();
+			$slugarray[] = $fetchslug['slug'];
 			include("sources/structure/header.php");
 			include("sources/public/main.php");
 			include("sources/structure/footer.php");

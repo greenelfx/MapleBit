@@ -56,9 +56,14 @@ if($banner != ""){echo "<img src=\"".$banner."\" alt=\"banner\" class=\"img-resp
               <li><a href="?base=main&amp;page=download">Download</a></li>
 			  <li><a href="?base=main&amp;page=rankings">Rankings</a></li>
 			  <li><a href="?base=main&amp;page=vote">Vote</a></li>
-			  <li><a href="?base=main&amp;page=chat">Chat</a></li>
-			  <li><a href="?base=main&amp;page=donate">Donate</a></li>
-			  <li><a href="<?php echo $forumurl; ?>">Forums</a></li>			  
+			  <li><a href="<?php echo $forumurl; ?>">Forums</a></li>
+			<?php
+			$getpages = $mysqli->query("SELECT * from ".$prefix."pages");
+			while ($fetchpages = $getpages->fetch_assoc()){ 
+				echo "<li><a href=\"?base=main&amp;page=".$fetchpages['slug']."\">" . $fetchpages['title'] . "</a>";
+			}
+			?>
+			
             </ul>
 		<?php	
 			if(isset($_SESSION['id'])){

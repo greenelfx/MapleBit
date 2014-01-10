@@ -1,4 +1,4 @@
-<?php 
+<?php
 if(isset($_GET['page'])){
 	$main = $_GET['page'];
 }else{
@@ -37,6 +37,8 @@ if(isset($_GET['page'])){
 			include('sources/public/vote.php');
 		}elseif($main == "character"){
 			include('sources/public/character.php');
+		}elseif(in_array($main, $slugarray)) {
+			include('sources/public/pages.php');
 		}
 		else {
 			redirect("?base=main");
