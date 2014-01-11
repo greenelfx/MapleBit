@@ -1,15 +1,17 @@
 <?php 
 echo "
 <div class=\"col-md-6\">
-<a href='?base=main&amp;page=gmblog'><h4>GM Blog &raquo;</h4></a><hr/>
-";
+<a href='?base=main&amp;page=news'><h4>GM Blogs &raquo;</h4></a><hr/>";
 	$i = 0;
-	$gn = $mysqli->query("SELECT * FROM ".$prefix."gmblog ORDER BY id DESC LIMIT 4") or die();
-	while($n = $gn->fetch_assoc()){
-		$title = $n['title'];
+	$gb = $mysqli->query("SELECT * FROM ".$prefix."gmblog ORDER BY id DESC LIMIT 4") or die();
+	while($b = $gb->fetch_assoc()){
+		$gc =$mysqli->query("SELECT * FROM ".$prefix."bcomments WHERE id='".$b['id']."' ORDER BY id ASC") or die();
+		$cc = $gc->num_rows;
+		$title = $b['title'];
 		$maxlength = 33;
 		echo "
-		[".$n['date']."]	<a href=\"?base=main&amp;page=gmblog&amp;id=".$n['id']."\">";
+			[".$b['date']."]
+			<a href=\"?base=main&amp;page=gmblog&amp;id=".$b['id']."\">";
 		if(strlen($title) > $maxlength){
 			echo stripslashes(shortTitle($title));
 		}else{
@@ -17,10 +19,11 @@ echo "
 		}
 		echo "<span class=\"badge pull-right\">".$cc."</span></a><br/>";
 		$i++;
-	}
-	if($i == 0) {
-		echo "Oops! No blogs to display right now!";
-	}
-echo "
-<hr/></div>";
+}
+
+		if($i == 0) {
+			echo "No blogs to display right now!";
+		}
+
+echo "<hr/></div>";
 ?>

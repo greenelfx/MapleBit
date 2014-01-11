@@ -245,7 +245,6 @@ DROP TABLE IF EXISTS `".$prefix."ncomments`;
 `feedback` INT( 1 ) NOT NULL ,
 `date` VARCHAR( 32 ) NOT NULL ,
 `comment` TEXT NOT NULL ,
-`dateadded` VARCHAR(30) NOT NULL DEFAULT 0 ,
 PRIMARY KEY ( `id` )
 ) ENGINE = MYISAM ;
 
@@ -257,7 +256,6 @@ DROP TABLE IF EXISTS `".$prefix."ecomments`;
 `feedback` INT( 1 ) NOT NULL ,
 `date` VARCHAR( 32 ) NOT NULL ,
 `comment` TEXT NOT NULL ,
-`dateadded` VARCHAR(30) NOT NULL DEFAULT 0 ,
 PRIMARY KEY ( `id` )
 ) ENGINE = MYISAM ;
 
@@ -269,7 +267,6 @@ DROP TABLE IF EXISTS `".$prefix."bcomments`;
 `feedback` INT( 1 ) NOT NULL ,
 `date` VARCHAR( 32 ) NOT NULL ,
 `comment` TEXT NOT NULL ,
-`dateadded` VARCHAR(30) NOT NULL DEFAULT 0 ,
 PRIMARY KEY ( `id` )
 ) ENGINE = MYISAM ;
 

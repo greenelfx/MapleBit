@@ -18,9 +18,11 @@ echo "
 	echo "
 <table class=\"table table-condensed\">
 	<thead>
-		<th>Avatar</th>
-		<th>Name</th>
-		<th>".ucfirst($first)."</th>
+		<tr>
+			<th>Avatar</th>
+			<th>Name</th>
+			<th>".ucfirst($first)."</th>
+		</tr>
 	</thead>
 	<tbody>
 		<tr>
@@ -40,12 +42,13 @@ echo "
 				echo "
 				<tr>
 					<td>
-						<a href=\"?base=main&page=character&n=".$player['name']."\" onmouseover=\"roll('top5', 'assets/img/GD/Characters/".$cachechar['hash'].".png')\">".$player['name']."</a>
+						<a href=\"?base=main&amp;page=character&amp;n=".$player['name']."\" onmouseover=\"roll('top5', 'assets/img/GD/Characters/".$cachechar['hash'].".png')\">".$player['name']."</a>
 					</td>
 					<td>".$player[$first]."</td>
-				</tr>";
+				</tr>
+			";
 	}
 ?>
-
+</tbody>
 </table>
 </div>
