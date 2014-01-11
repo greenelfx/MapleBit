@@ -1,7 +1,10 @@
 <script src="assets/libs/cksimple/ckeditor.js"></script>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <?php
 =======
+=======
+>>>>>>> d8d63e563222dd115e0d789b53caf944f7325e64
 <?php 
 >>>>>>> d8d63e563222dd115e0d789b53caf944f7325e64
 if(@$_GET['id']){
@@ -102,7 +105,11 @@ if(@$_GET['id']){
 	}else{
 		$commentconfig = HTMLPurifier_Config::createDefault();
 <<<<<<< HEAD
+<<<<<<< HEAD
 		$commentconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong'); 
+=======
+		$commentconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong, blockquote'); 
+>>>>>>> d8d63e563222dd115e0d789b53caf944f7325e64
 =======
 		$commentconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong, blockquote'); 
 >>>>>>> d8d63e563222dd115e0d789b53caf944f7325e64
