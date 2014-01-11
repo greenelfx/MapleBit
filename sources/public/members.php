@@ -12,9 +12,7 @@ if($real < 1){
 	}
 }
 
-if(@$_GET['name']){
-	// Display profile
-	if(@$_GET['p']==""){
+if(isset($_GET['name'])){	
 		$ga = $mysqli->query("SELECT * FROM `accounts` WHERE `id`='".getInfo('accid', $name, 'profilename')."'") or die();
 		$a = $ga->fetch_assoc();
 		if($a['loggedin'] == "0"){
@@ -27,32 +25,46 @@ if(@$_GET['name']){
 		$mc = $p['mainchar'];
 		$gmc = $mysqli->query("SELECT * FROM `characters` WHERE `id`='".$mc."'") or die();
 		$m = $gmc->fetch_assoc();
-		if($m['name'] == "") {
-			$m['name'] = "Not set";
+	require_once 'assets/libs/HTMLPurifier.standalone.php';
+		$config = HTMLPurifier_Config::createDefault();
+		$config->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong'); 
+		$purifier = new HTMLPurifier($config);
+		$clean_html = $purifier->purify($p['text']);
+		if(empty($p['realname'])){
+			$p['realname'] = "";
+		} else {
+			$p['realname'] = "(" . $p['realname'] . ")";
 		}
-		if(empty($p['realname'])){$p['realname'] = "Not Set";}
-		if(empty($p['country'])){$p['country'] = "Not Set";}
-		if(empty($p['motto'])){$p['motto'] = "Not Set";}
-		if(empty($p['age'])){$p['age'] = "Not Set";}
-		if(empty($p['favjob'])){$p['favjob'] = "Not Set";}
-		if(empty($p['text'])){$p['text'] = "Not Set";}
+		echo "<h2 class=\"text-left\">".$name." ".$p['realname']."</h2><hr/>";
 		echo "
-			<legend>".$name."'s Profile (".$p['realname'].")</legend>
 			Game :".$status."<br/>
-			Site :".onlineCheck(getInfo('accid', $name, 'profilename'))."<br/><br/>
-			<b>Main Character:</b> ".$m['name']. "<br/><br/>
-			<b>Motto:</b> ".$p['motto']."<br/><br/>
-			<b>Age:</b> ".$p['age']."<br/><br/>
-			<b>Country: </b>".$p['country']."<br/><br/>
-			<b>Favorite Job: </b>".$p['favjob']."<br/><hr/>
-			";
-		echo "	
-			<b>About Me:</b>
-			".nl2br(stripslashes($p['text']))."<br/>
-			<hr/>
-			<a href=\"?base=ucp&amp;page=mail&amp;uc=$name\">Send me Mail!</a>
-			";
-}
+			Site :".onlineCheck(getInfo('accid', $name, 'profilename'))."<br/><br/>";
+		if(!$m['name'] == "") {
+			echo "<b>Main Character:</b> ".$m['name']. "<br/><br/>";
+		}
+		if(!empty($p['country'])) {
+			echo "<b>Country: </b>".$p['country']."<br/><br/>";
+		} 
+		if(!empty($p['motto'])) {
+			echo "<b>Motto:</b> ".$p['motto']."<br/><br/>";
+		}
+		if(!empty($p['age'])) {
+			echo "<b>Age:</b> ".$p['age']."<br/><br/>";
+		}
+		if(!empty($p['favjob'])) {
+			echo "<b>Favorite Job: </b>".$p['favjob']."<br/><hr/>";
+		}
+		if(!empty($p['text'])) {
+			echo "	
+				<b>About Me:</b>
+				".$clean_html."<br/>
+				<hr/>
+				<a href=\"?base=ucp&amp;page=mail&amp;uc=$name\">Send me Mail &raquo;</a>";
+		}
+		if($_GET['name'] == $_SESSION['name']) {
+			echo "<hr/><a href=\"?base=ucp&page=profedit\">Edit Profile &raquo;</a>";
+		}
+
 }elseif(@$_GET['action']=="search"){
 	if($_POST['search']){
 		$name = $mysqli->real_escape_string($_POST['name']);
@@ -68,9 +80,7 @@ if(@$_GET['name']){
 	}
 }else{
 	echo "
-		<legend>
-			<b>Members List</b>
-		</legend>";
+		<h2 class=\"text-left\">Members List</h2><hr/>";
 	echo "
 		Here's the full list of the members of the <b>".$servername."</b> community. 
 		You can select one to visit their profile or you can search for an user.<hr />

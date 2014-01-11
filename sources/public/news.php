@@ -1,3 +1,10 @@
+<script src="assets/libs/cksimple/ckeditor.js"></script>
+<style>
+blockquote {
+	margin: 0px;
+	
+}
+</style>
 <?php
 if(isset($_GET['id'])){
 	$id = $mysqli->real_escape_string($_GET['id']);
@@ -37,7 +44,7 @@ if(isset($_GET['id'])){
 			<hr />";
 	}
 	if(isset($_SESSION['id'])){
-	$flood = $mysqli->query("SELECT * FROM `".$prefix."ncomments` WHERE `nid`='".$id."' && `author`='".$_SESSION['pname']."' ORDER BY `dateadded` DESC LIMIT 1") or die();
+	$flood = $mysqli->query("SELECT * FROM `".$prefix."ncomments` WHERE `nid`='".$id."' && `author`='".$_SESSION['pname']."' ORDER BY `date` DESC LIMIT 1") or die();
 	$fetchg = $flood->fetch_assoc();
 	$seconds = 60*$basefloodint;
 		if($_SESSION['mute'] == 1){
@@ -45,13 +52,13 @@ if(isset($_GET['id'])){
 		}
 		elseif($n['locked'] == "1"){
 			echo "<div class=\"alert alert-danger\">This article has been locked.</div>";
-		}elseif(isset($_SESSION['pname']) == "checkpname"){
+		}elseif($_SESSION['pname'] == "checkpname"){
 			echo "<div class=\"alert alert-danger\">You must assign a profile name before you can comment news articles.</div>";
-		}elseif($baseflood > 0 && (time() - $seconds) < $fetchg['dateadded']) {
+		}elseif($baseflood > 0 && (time() - $seconds) < $fetchg['date']) {
 			echo "<div class=\"alert alert-danger\">You may only post every ".$basefloodint." minutes to prevent spam.</div>";
 		}else{
 			echo "
-			<form method=\"post\">
+			<form method=\"post\" id=\"commentBox\">
 				 <div class=\"form-group\">
 					<label for=\"inputMood\">Mood</label>
 						<select name=\"feedback\" class=\"form-control\" id=\"inputMood\">
@@ -74,13 +81,12 @@ if(isset($_GET['id'])){
 	}
 	if(isset($_POST['comment'])){
 		$feedback = $mysqli->real_escape_string($_POST['feedback']);
-		$date = date("m-d-y g:i A");
-		$comment = htmlspecialchars($mysqli->real_escape_string($_POST['text']));
+		$comment = $mysqli->real_escape_string($_POST['text']);
 		if($comment == ""){
 			echo "<br/><div class=\"alert alert-danger\">You cannot leave the comment field blank!</div>";
 		}else{
-			$timestamp = time();
-			$i = $mysqli->query("INSERT INTO ".$prefix."ncomments (nid, author, feedback, date, comment, dateadded) VALUES ('".$id."','".$_SESSION['pname']."','".$feedback."','".$date."','".$comment."','".$timestamp."')") or die();
+			$date = time();
+			$i = $mysqli->query("INSERT INTO ".$prefix."ncomments (nid, author, feedback, date, comment) VALUES ('".$id."','".$_SESSION['pname']."','".$feedback."','".$date."','".$comment."')") or die();
 			echo "<meta http-equiv=refresh content=\"0; url=?base=main&amp;page=news&amp;id=".$id."\" />";
 		}
 	}
@@ -89,7 +95,11 @@ if(isset($_GET['id'])){
 	if($cgc = $gc->num_rows <= 0 && $n['locked'] == 0){
 		echo "<div class=\"alert alert-info\">There are no comments for this article yet. Be the first to comment!</div>";
 	}else{
+		$commentconfig = HTMLPurifier_Config::createDefault();
+		$commentconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong, blockquote'); 
+		$commentpurifier = new HTMLPurifier($commentconfig);
 		while($c = $gc->fetch_assoc()){
+		$clean_comment = $commentpurifier->purify($c['comment']);
 			if($c['feedback'] == "0"){
 				$feedback = "<font color=\"green\">Positive</font>";
 			}elseif($c['feedback'] == "1"){
@@ -99,13 +109,18 @@ if(isset($_GET['id'])){
 			}
 			$modify = "";
 			if(isset($_SESSION['admin'])){
-				$modify = "<a href=\"?base=admin&amp;page=mannews&amp;action=pdel&amp;id=".$c['id']."\" class=\"btn btn-default text-right\">Delete</a>";
+				$modify = "<a href=\"?base=admin&amp;page=mannews&amp;action=pdel&amp;id=".$c['id']."\" class=\"btn btn-default text-right btn-sm\">Delete</a>";
+			}
+			$quote = "";
+			if(isset($_SESSION['id'])){
+				$quote = "<a href=\"#comment-".$c['id']."\" class=\"btn btn-primary text-right btn-sm quote\">Quote</a>";
 			}
 			echo "
 			<div class=\"well\"><img src=\"" . get_gravatar($c['email']) . "\" alt=\"".$c['author']."\" class=\"img-responsive\" style=\"float:left;padding-right:10px;\"/>
-			<h4><b>".$c['author']."</b> - Posted on ".$c['date']." ".$modify."</h4>
-					<b>Feedback:</b> ".$feedback."<hr />
-					".stripslashes($c['comment'])."
+			<h4 style=\"margin:0px;\">".$c['author']."</h4>
+				<b>Feedback:</b> ".$feedback."<br/>
+				<small>Posted on ". date('m/d/Y', $c['date'])." ".$modify." ".$quote."</small><hr/>
+				<div id=\"comment-".$c['id']."\">".$clean_comment."</div>
 				</div>";
 		}
 	}
@@ -138,3 +153,21 @@ if(isset($_GET['id'])){
 }
 }
 ?>
+<script>
+	CKEDITOR.replace( 'inputComment' );
+$(function() {
+for ( var i in CKEDITOR.instances ){
+   var currentInstance = i;
+   break;
+}
+var oEditor = CKEDITOR.instances[currentInstance];
+  $('.quote').click(function(e) {
+    var comment_id = $(this).attr('href').replace(/[^0-9]+/, '');
+    var comment = '<blockquote><p>' + $("#comment-"+ comment_id).text() + '</p></blockquote><p>';
+	oEditor.insertHtml(comment);
+      $("body, html").animate({
+		scrollTop: $('#commentBox').offset().top+10 
+	}, 300);
+  });
+});
+</script>

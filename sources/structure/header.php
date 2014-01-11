@@ -22,8 +22,8 @@ body{
 <script type="text/javascript" src="<?php echo $siteurl; ?>assets/js/bootstrap.js"></script>
 <script type="text/javascript" src="<?php echo $siteurl; ?>assets/js/login.js"></script>
 <script>
-function roll(img_name1, img_src1) {document[img_name1].src = img_src1;}
-function goBack() {window.history.back()}
+	function roll(img_name1, img_src1) {document[img_name1].src = img_src1;}
+	function goBack() {window.history.back()}
 </script>
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
@@ -32,6 +32,25 @@ function goBack() {window.history.back()}
 <![endif]-->
 </head>
 <body>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Vote for <?php echo $servername; ?></h4>
+      </div>
+      <div class="modal-body">
+        <?php
+			include("sources/public/vote.php");
+		?>
+      </div>
+      <div class="modal-footer">
+        <a id="hide" class="btn btn-default" data-dismiss="modal">Don't show again</a>
+		<a class="btn btn-primary" data-dismiss="modal">Close</a>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="container">
 <?php
 if($banner != ""){echo "<img src=\"".$banner."\" alt=\"banner\" class=\"img-responsive\" style=\"margin: 0 auto;margin-top:20px;\">";} 
