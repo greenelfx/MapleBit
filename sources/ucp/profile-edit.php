@@ -1,3 +1,4 @@
+<script src="assets/libs/cksimple/ckeditor.js"></script>
 <?php 
 if($_SESSION['id']){
 	if($_SESSION['pname'] == "checkpname"){
@@ -400,3 +401,6 @@ if($_SESSION['id']){
 		redirect("?base=main");
 }
 ?>
+<script>
+	CKEDITOR.replace( 'textCount' );
+</script>
