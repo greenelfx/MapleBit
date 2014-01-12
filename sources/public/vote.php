@@ -9,16 +9,16 @@
 
 	if ($account == '' && isset($_POST['submit'])) {$funct_error = 'You need to put in a username!';} 
     elseif(isset($_POST['submit'])) { 
-        $result = $mysqli->query("SELECT *, SUM(times) as amount FROM votingrecords WHERE NOT account='' AND NOT account='0' AND account='".$account."' OR ip='".$ipaddress."'") or die('Error - Could not look up vote record!');  
+        $result = $mysqli->query("SELECT *, SUM(times) as amount FROM ".$prefix."votingrecords WHERE NOT account='' AND NOT account='0' AND account='".$account."' OR ip='".$ipaddress."'") or die('Error - Could not look up vote record!');  
         $row = $result->fetch_assoc();
         $timecalc = $time - $row['date']; 
 
         if ($row['amount'] == '' || $timecalc > $vtime) { 
             if($row['amount'] == '') { 
-                $result = $mysqli->query("INSERT INTO votingrecords (ip, account, date, times) VALUES ('".$ipaddress."', '".$account."', '".$time."', '1')") or die ('Error - Could not update vote records!'); 
+                $result = $mysqli->query("INSERT INTO ".$prefix."votingrecords (ip, account, date, times) VALUES ('".$ipaddress."', '".$account."', '".$time."', '1')") or die ('Error - Could not update vote records!'); 
             } 
             else { 
-                $result = $mysqli->query("UPDATE votingrecords SET ip='".$ipaddress."', account='".$account."', date='".$time."', times='1' WHERE ip='".$ipaddress."' OR account='".$account."'") or die ('Error - Could not update vote records!'); 
+                $result = $mysqli->query("UPDATE ".$prefix."votingrecords SET ip='".$ipaddress."', account='".$account."', date='".$time."', times='1' WHERE ip='".$ipaddress."' OR account='".$account."'") or die ('Error - Could not update vote records!'); 
             } 
             $earnedpoints = true;  
             if ($earnedpoints == true) { 
