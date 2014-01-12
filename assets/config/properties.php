@@ -17,8 +17,11 @@ $banner = $prop['banner'];
 $background = $prop['background'];
 $bgcolor = $prop['bgcolor'];
 $bgrepeat = $prop['bgrepeat'];
-$bgcenter = $prop['bgcenter'];
+if($prop['bgcenter'] == 1) {
+	$bgcenter = "center";
+}
 $bgfixed = $prop['bgfixed'];
+$bgcover = $prop['bgcover'];
 /* Download link for client */
 $client = $prop['client'];
 $server = $prop['server'];

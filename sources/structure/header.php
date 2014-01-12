@@ -11,8 +11,13 @@
 <style>
 body{
 	background: #<?php echo $bgcolor; ?> url(<?php echo $background; ?>) <?php echo $bgrepeat . " " . $bgcenter; ?>;
-	<?php if($bgfixed != "") {
-	echo "background-attachment: " . $bgfixed . ";";
+	<?php
+	if($bgfixed == 1) {
+	echo "background-attachment: fixed;";
+	}
+	if($bgcover == 1) {
+	echo "
+	background-size: cover;";
 	}
 	?>
 	
