@@ -2,8 +2,9 @@
 <?php 
 if($_SESSION['admin']){
 	if(!isset($_POST['url'])) {
-	if($bgfixed = "fixed"){$bgfixedcheck = "checked";}
-	if($bgcenter = "center"){$bgcentercheck = "checked";}
+	if($bgfixed == 1){$bgfixedcheck = "checked";} else {$bgfixedcheck = "";}
+	if($bgcenter == "center"){$bgcentercheck = "checked";} else {$bgcentercheck = "";}
+	if($bgcover == 1){$bgcovercheck = "checked";} else {$bgcovercheck = "";}
 		echo "<h2 class=\"text-left\">Site Background</h2><hr/>
 		<p>Many sites have a background to make the website more personalized. There is not a default image size, but you may want to play around with some sizes to see what you like.</p>
 		<p>To upload an image, please go to <a href=\"http://www.imgur.com\">imgur.com</a>, and then enter in the image url below. The URL will look like this: i.imgur.com/abcdefghi.jpg. Of course, you may use any other website to host your image.</p><hr/>
@@ -27,18 +28,24 @@ if($_SESSION['admin']){
 				</select>
 				<span class=\"help-block\">Background images can repeat horizontally, vertically, both, or none.</span>
 			</div>
-			 <div class=\"checkbox\">
+			<div class=\"checkbox\">
 				<label>
-					<input type=\"checkbox\" name=\"bgcenter\" value=\"center\" $bgcentercheck>Center Background (Yes)
+					<input type=\"checkbox\" name=\"bgcenter\" value=\"1\" $bgcentercheck>Center Background (Yes)
 				</label>
 			</div>
 			<span class=\"help-block\">Background images can be centered.</span>
-			 <div class=\"checkbox\">
+			<div class=\"checkbox\">
 				<label>
-					<input type=\"checkbox\" name=\"bgfixed\" value=\"fixed\" $bgfixedcheck>Fixed Background (Yes)
+					<input type=\"checkbox\" name=\"bgfixed\" value=\"1\" $bgfixedcheck>Fixed Background (Yes)
 				</label>
 			</div>				
 			<span class=\"help-block\">Background images can be fixed (won&#39;t scroll).</span>
+			<div class=\"checkbox\">
+				<label>
+					<input type=\"checkbox\" name=\"bgcover\" value=\"1\" $bgcovercheck>Fit Background to Screen (Yes)
+				</label>
+			</div>				
+			<span class=\"help-block\">Background images can be resized to fit the browser window.</span>
 			<hr/>
 			<button type=\"submit\" class=\"btn btn-primary\" required>Submit &raquo;</button>
 		</form>
@@ -48,9 +55,10 @@ if($_SESSION['admin']){
 		$url = mysql_escape($_POST["url"]);
 		$bgcolor = mysql_escape($_POST["bgcolor"]);
 		$bgrepeat = mysql_escape($_POST["bgrepeat"]);
-		if(mysql_escape(isset($_POST["bgcenter"])) == 1){ $bgcenter = "center"; } else { $bgcenter = ""; }
-		if(mysql_escape(isset($_POST["bgfixed"])) == 1){ $bgfixed = "fixed"; } else { $bgfixed = ""; }
-		$mysqli->query("UPDATE ".$prefix."properties SET background = '$url', bgcolor = '$bgcolor', bgrepeat = '$bgrepeat', bgcenter = '$bgcenter', bgfixed = '$bgfixed'");
+		$bgcenter = mysql_escape(isset($_POST["bgcenter"]));
+		$bgfixed = mysql_escape(isset($_POST["bgfixed"]));
+		$bgcover = mysql_escape(isset($_POST["bgcover"]));
+		$mysqli->query("UPDATE ".$prefix."properties SET background = '$url', bgcolor = '$bgcolor', bgrepeat = '$bgrepeat', bgcenter = '$bgcenter', bgfixed = '$bgfixed', bgcover = '$bgcover'");
 		echo "<div class=\"alert alert-success\">Successfully updated background.</div>";
 		redirect_wait5("?base=admin&page=background");
 	}
