@@ -132,6 +132,24 @@ echo '
 			
 		case 3:
 			include '../database.php';
+$queryaccounts = $mysqli->query("SELECT * FROM `accounts`"); 
+$rowa = $queryaccounts->fetch_assoc(); 
+if(!isset($rowa['sitelogged'])) {
+	$mysqli->query("ALTER TABLE accounts ADD `sitelogged` TEXT;");
+	echo "Added sitelogged<br/>";
+}
+if(!isset($rowa['webadmin'])) {
+	$mysqli->query("ALTER TABLE accounts ADD `webadmin` int(1) DEFAULT 0;");
+	echo "Added webadmin<br/>";
+}
+if(!isset($rowa['nick'])) {
+	$mysqli->query("ALTER TABLE accounts ADD `nick` varchar(20);");
+	echo "Added nick<br/>";
+}
+if(!isset($rowa['mute'])) {
+	$mysqli->query("ALTER TABLE accounts ADD `mute` int(1) DEFAULT 0;");
+	echo "Added mute<br/>";
+}
 mysqli_multi_query($mysqli, "DROP TABLE IF EXISTS `".$prefix."properties`;
 CREATE TABLE `".$prefix."properties` (
   `name` text,
@@ -341,13 +359,7 @@ CREATE TABLE `votingrecords` (
   `date` int(11) NOT NULL DEFAULT '0', 
   `times` bigint(20) unsigned NOT NULL DEFAULT '0', 
   PRIMARY KEY (`ip`) 
-) ENGINE=MYISAM;
-
-ALTER TABLE accounts ADD `nick` varchar(20);
-ALTER TABLE accounts ADD `sitelogged` TEXT;
-ALTER TABLE accounts ADD `webadmin` int(1) DEFAULT 0;
-ALTER TABLE accounts ADD `mute` int(1) DEFAULT 0;
-");
+) ENGINE=MYISAM;");
 echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 		break;
 		case 4:
