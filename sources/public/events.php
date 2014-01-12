@@ -1,4 +1,13 @@
 <script src="assets/libs/cksimple/ckeditor.js"></script>
+<style>
+blockquote {
+	margin: 0px;
+	
+}
+.permalinkshow {
+	display: none;
+}
+</style>
 <?php
 if(@$_GET['id']){
 	$id = $mysqli->real_escape_string($_GET['id']);
@@ -113,17 +122,20 @@ if(@$_GET['id']){
 			}
 			$modify = "";
 			if(isset($_SESSION['admin'])){
-				$modify = "<a href=\"?base=admin&amp;page=mannews&amp;action=pdel&amp;id=".$c['id']."\" class=\"btn btn-default text-right btn-sm\">Delete</a>";
+				$modify = "<a href=\"?base=admin&amp;page=manevent&amp;action=pdel&amp;id=".$c['id']."\">Delete</a> | ";
 			}
 			$quote = "";
+			$pm = "";
 			if(isset($_SESSION['id'])){
-				$quote = "<a href=\"#comment-".$c['id']."\" class=\"btn btn-primary text-right btn-sm quote\">Quote</a>";
+				$quote = "<a href=\"#comment-".$c['id']."\" class=\"quote\">Quote</a> | ";
+				$pm = " | <a href=\"?base=ucp&page=mail&uc=".$c['author']."\">PM</a>";
 			}
 			echo "
 			<div class=\"well\"><img src=\"" . get_gravatar($c['email']) . "\" alt=\"".$c['author']."\" class=\"img-responsive\" style=\"float:left;padding-right:10px;\"/>
 			<h4 style=\"margin:0px;\">".$c['author']."</h4>
 				<b>Feedback:</b> ".$feedback."<br/>
-				<small>Posted on ". date('m/d/Y', $c['date'])." ".$modify." ".$quote."</small><hr/>
+				<small>". date('D M j, Y \a\t g:i A', $c['date'])."</small><br/>
+				<small>".$modify . $quote."<a href=\"#comment-link-".$c['id']."\" class=\"permalink\">Permalink</a><a href=\"?base=main&page=events&id=".$id."#comment-".$c['id']."\" class=\"permalinkshow linkid-".$c['id']."\">?base=main&page=events&id=".$id."#comment-".$c['id']."</a>".$pm."</small><hr/>
 				<div id=\"comment-".$c['id']."\">".$clean_comment."</div>
 				</div>";
 		}
@@ -158,7 +170,10 @@ if(@$_GET['id']){
 }
 ?>
 <script>
-	CKEDITOR.replace( 'inputComment' );
+<?php
+	if(isset($_SESSION['id'])){
+?>
+CKEDITOR.replace( 'inputComment' );
 $(function() {
 for ( var i in CKEDITOR.instances ){
    var currentInstance = i;
@@ -171,7 +186,17 @@ var oEditor = CKEDITOR.instances[currentInstance];
 	oEditor.insertHtml(comment);
       $("body, html").animate({
 		scrollTop: $('#commentBox').offset().top+10 
-	}, 300);
+	}, 200);
   });
+});
+<?php 
+	}
+?>
+$(function(){
+  $(".permalink").click(function(){
+	 var comment_id = $(this).attr('href').replace(/[^0-9]+/, '');
+    $(".linkid-" + comment_id).fadeToggle();
+	$(this).hide();
+  });  
 });
 </script>
