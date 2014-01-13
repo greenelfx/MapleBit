@@ -172,7 +172,6 @@ CREATE TABLE `".$prefix."properties` (
   `bgcover` tinyint(1) DEFAULT NULL,
   `flood` tinyint(4) NOT NULL DEFAULT '1',
   `floodint` int(11) DEFAULT NULL,
-  `cypedir` text,
   `pcap` text,
   `maxaccounts` tinyint(4) NOT NULL DEFAULT '3',
   `gmlevel` int(11) NOT NULL DEFAULT '1',
@@ -516,9 +515,9 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 					<span class=\"help-block\">What level GM should be allowed to access the GM panel?</span>
 				</div>
 				<div class=\"form-group\">
-					<label for=\"siteInput\">Site Path <span class=\"label label-danger\">IMPORTANT. NEED TRAILING SLASH</span></label>
+					<label for=\"siteInput\">Site Path <span class=\"label label-success\">AUTODETECTED</span> <span class=\"label label-danger\">IMPORTANT. NEED TRAILING SLASH</span></label>
 					<input name=\"sitepath\" type=\"text\" maxlength=\"10\" class='form-control' id=\"siteInput\" placeholder=\"/\" value=\"".$url."\" required/>
-					<span class=\"help-block\">/ indicates the root directory. /cype/ indicates that Cype has been installed in a folder called cype. You <b>must</b> use a trailing slash</span>
+					<span class=\"help-block\">/ indicates the root directory. /bit/ indicates that MapleBit has been installed in a folder called bit. You <b>must</b> use a trailing slash</span>
 				</div>
 				</div>
 				<hr/>
