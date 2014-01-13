@@ -73,10 +73,12 @@ if($banner != ""){echo "<img src=\"".$banner."\" alt=\"banner\" class=\"img-resp
 		<?php	
 			if(isset($_SESSION['id'])){
 			$name = $_SESSION['name'];
+			$getemail = $mysqli->query("SELECT ".$prefix."profile.id, accounts.email FROM ".$prefix."profile INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE accounts.id = '".$_SESSION['id']."'");
+			$fetchemail = $getemail->fetch_assoc();
 		?>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $name; ?><b class="caret"></b></a>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo get_small_gravatar($fetchemail['email']); ?>" alt="gravatar" class="img-responsive" style="float:left;margin-top: -10px;padding-right: 5px;"><?php echo $name; ?><b class="caret"></b></a>
 					<ul class="dropdown-menu">
 					<?php
 						if($_SESSION['pname'] == "checkpname") {
