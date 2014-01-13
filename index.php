@@ -36,9 +36,7 @@ if(!file_exists('assets/config/install/installdone.txt')){
 			include("sources/structure/footer.php");
 			break;
 		case "admin":
-		    //include("sources/structure/header.php");
 			include("sources/admin/main.php");
-			//include("sources/structure/footer.php");
 			break;
 		case "gmcp":
 			include("sources/structure/header.php");

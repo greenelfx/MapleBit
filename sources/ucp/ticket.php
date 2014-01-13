@@ -1,5 +1,11 @@
+<script src="assets/libs/cksimple/ckeditor.js"></script>
 <?php
-if(isset($_SESSION['pname']) && $_SESSION['pname'] != ""){
+	require_once 'assets/libs/HTMLPurifier.standalone.php';
+	$ticketconfig = HTMLPurifier_Config::createDefault();
+	$ticketconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong, blockquote, small, hr'); 
+	$ticketpurifier = new HTMLPurifier($ticketconfig);
+if(isset($_SESSION['id'])){
+	if(isset($_SESSION['pname']) && $_SESSION['pname'] != "checkpname"){
 	if(!isset($_GET['ticket'])){
 	$pname = $_SESSION['pname'];
 	echo "
@@ -57,8 +63,6 @@ if(isset($_SESSION['pname']) && $_SESSION['pname'] != ""){
 				</div>
 				<div class=\"form-group\">
 					<label for=\"typeTicket\">Select Type</label>";
-							//You can add more here if you like. However, make sure everything has a value.
-							//More options will come along as we progress.
 							echo "
 									<select name=\"support\" id=\"typeTicket\" class=\"form-control\">
 										<option selected=\"selected\">&middot; Ticket Subgroup &middot;</option>
@@ -90,7 +94,7 @@ if(isset($_SESSION['pname']) && $_SESSION['pname'] != ""){
 				if(isset($_POST['ticket'])){
 					$type = mysql_escape($_POST['type']);
 					$support = mysql_escape($_POST['support']);
-					$title = sanitize_space($_POST['title']);
+					$title = mysql_escape($_POST['title']);
 					$details = mysql_escape($_POST['details']);
 					
 					if($type == ""){
@@ -136,25 +140,32 @@ if(isset($_SESSION['pname']) && $_SESSION['pname'] != ""){
 			<hr/>
 				<b>Created By:</b> $viewTicket[name]<br/>
 				<b>Date:</b> $viewTicket[date]<br/>
-				<hr/>
 				<b>Ticket Details:</b><br/> 
-				$viewTicket[details]<br/><br/>";
+				$viewTicket[details]<hr/>";
 				while($c = $getResponse->fetch_assoc()){
-					echo "<pre>";
-					echo $c['user'] . " posted on " . $c['date_com'] . "<br/><br/> " . stripslashes($c['content']) . "<p></p></pre><hr/>";
+				$clean_ticket = $ticketpurifier->purify($c['content']);
+				// Get webadmin status
+				$queryadmin = $mysqli->query("SELECT ".$prefix."tcomments.user, ".$prefix."profile.name, ".$prefix."profile.accountid, accounts.webadmin FROM ".$prefix."tcomments INNER JOIN ".$prefix."profile ON ".$prefix."tcomments.user = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE ".$prefix."tcomments.user = '".$c['user']."'");
+				$adminstatus = $queryadmin->fetch_assoc();
+				if($adminstatus['webadmin'] > 0){
+					echo "<div class=\"well well2\">";
+				} else {
+					echo "<div class=\"well\">";
+				}
+					echo $c['user'] . " posted on " . $c['date_com'] . "<br/><br/> " . $clean_ticket . "</div><hr/>";
 				}
 				/*if($countTicket < 1){
 					echo "There is currently no responces to this ticket yet. If you need to add more details, go ahead and add one more!";
 				}*/
 				if($viewTicket['status'] == "Closed"){
-					echo "<div class=\"alert alert-info\">This ticket is closed. If your solution is not here, please open another ticket.</DIV>";
+					echo "<div class=\"alert alert-info\">This ticket is closed. If your solution is not here, please open another ticket.</div>";
 				}
 				else {
 				echo "
 					<form method=\"post\">
 					 <div class=\"form-group\">
-						<label for=\"respondTicket\">Response:</label>
-						<textarea name=\"comment\" style=\"height:150px;\" class=\"form-control\" id=\"respondTicket\"></textarea>
+						<label for=\"ticketDetails\">Response:</label>
+						<textarea name=\"comment\" style=\"height:150px;\" class=\"form-control\" id=\"ticketDetails\"></textarea>
 						<hr/>
 						<input type=\"submit\" name=\"subcomment\" value=\"Submit Response\" class=\"btn btn-primary\"/>
 					</div>
@@ -162,22 +173,21 @@ if(isset($_SESSION['pname']) && $_SESSION['pname'] != ""){
 				";
 				}
 				if(isset($_POST['subcomment'])){
-					$postComment = sanitize_space($_POST['comment']);
-						
-					if(strlen($postComment) < 25){
+					$postComment = $mysqli->real_escape_string($_POST['comment']);
+					if(strlen($postComment) < 10){
 						echo "Please provide more information.";
 					}
 					else{
-						$insertComment = $mysqli->query("INSERT INTO `base_tcomments` (ticketid, user, content, date_com)
+						$insertComment = $mysqli->query("INSERT INTO `".$prefix."tcomments` (ticketid, user, content, date_com)
 							VALUES "."('".sql_sanitize($_GET['a'])."', '".$_SESSION['pname']."', '".$postComment."', '".date('F d - g:i A')."')") or die(mysql_error());
 						
-						$insertComment = $mysqli->query("UPDATE `base_tickets` SET `date` = '".date('F d - g:i A')."' WHERE `ticketid` = '".sql_sanitize($_GET['a'])."'");
+						$insertComment = $mysqli->query("UPDATE `".$prefix."tickets` SET `date` = '".date('F d - g:i A')."' WHERE `ticketid` = '".sql_sanitize($_GET['a'])."'");
 							
 						if($insertComment){
 							echo "<meta http-equiv=\"refresh\" content=\"0; url=\"/>";
 						}
 						else{
-							echo "There was an error processing your update. Please notify the admin.";
+							echo "<div class=\"alert alert-danger\">There was an error processing your update. Please notify the admin.</div>";
 						}
 					}
 				}
@@ -235,6 +245,27 @@ if(isset($_SESSION['pname']) && $_SESSION['pname'] != ""){
 		}
 	}
 } else {
+	echo "<div class=\"alert alert-danger\">You must assign a profile name before you can submit tickets.</div>";
+}
+}else {
 	header('Location:?base=ucp');
 }
 ?>
+<script>
+<?php
+	if(isset($_SESSION['id'])){
+?>
+CKEDITOR.replace( 'ticketDetails', {
+    allowedContent: 'b i u li ol ul blockquote anchor hr small'
+});
+$(function() {
+for ( var i in CKEDITOR.instances ){
+   var currentInstance = i;
+   break;
+}
+var oEditor = CKEDITOR.instances[currentInstance];
+});
+<?php
+	}
+?>
+</script>

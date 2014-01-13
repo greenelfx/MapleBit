@@ -97,7 +97,7 @@ if(@$_GET['id']){
 		echo "<div class=\"alert alert-info\">There are no comments for this blog yet. Be the first to comment!</div>";
 	}else{
 		$commentconfig = HTMLPurifier_Config::createDefault();
-		$commentconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong, blockquote'); 
+		$commentconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong, blockquote, hr, small'); 
 		$commentpurifier = new HTMLPurifier($commentconfig);
 		while($c = $gc->fetch_assoc()){
 		$clean_comment = $commentpurifier->purify($c['comment']);
@@ -118,7 +118,7 @@ if(@$_GET['id']){
 			$quote = "";
 			$pm = "";
 			if(isset($_SESSION['id'])){
-				$quote = "<a href=\"#comment-".$c['id']."\" class=\"quote\">Quote</a> | ";
+				$quote = "<a href=\"#comment-".$c['id']."-".$c['author']."\" class=\"quote\">Quote</a> | ";
 				$pm = " | <a href=\"?base=ucp&page=mail&uc=".$c['author']."\">PM</a>";
 			}
 			echo "
@@ -166,7 +166,9 @@ if(@$_GET['id']){
 <?php
 	if(isset($_SESSION['id'])){
 ?>
-CKEDITOR.replace( 'inputComment' );
+CKEDITOR.replace( 'inputComment', {
+    allowedContent: 'b i u li ol ul blockquote anchor hr small'
+});
 $(function() {
 for ( var i in CKEDITOR.instances ){
    var currentInstance = i;
@@ -174,15 +176,20 @@ for ( var i in CKEDITOR.instances ){
 }
 var oEditor = CKEDITOR.instances[currentInstance];
   $('.quote').click(function(e) {
-    var comment_id = $(this).attr('href').replace(/[^0-9]+/, '');
-    var comment = '<blockquote><p>' + $("#comment-"+ comment_id).text() + '</p></blockquote><p>';
+    var getcomment_id = $(this).attr('href');
+	var commentarr = getcomment_id.split("-");
+	var comment_id = commentarr[1];
+	var author = commentarr[2];
+	console.log(comment_id);
+	console.log(author);
+    var comment = '<blockquote><p>' + $("#comment-"+ comment_id).text() + '</p><small>' + author + '</small></blockquote><hr><p>';
 	oEditor.insertHtml(comment);
       $("body, html").animate({
 		scrollTop: $('#commentBox').offset().top+10 
 	}, 200);
   });
 });
-<?php 
+<?php
 	}
 ?>
 $(function(){

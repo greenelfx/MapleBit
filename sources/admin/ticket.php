@@ -1,4 +1,9 @@
-<?php 
+<script src="assets/libs/cksimple/ckeditor.js"></script>
+<?php
+	require_once 'assets/libs/HTMLPurifier.standalone.php';
+	$ticketconfig = HTMLPurifier_Config::createDefault();
+	$ticketconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong, blockquote, small, hr'); 
+	$ticketpurifier = new HTMLPurifier($ticketconfig);
 if(isset($_SESSION['admin'])){
 	if(!isset($_GET['ticket']) || isset($_GET['ticket']) == ""){
 	$gettickets = $mysqli->query("SELECT * FROM ".$prefix."tickets WHERE status = 1 ORDER BY `ticketid` ASC")or die(mysql_error());
@@ -49,33 +54,37 @@ if(isset($_SESSION['admin'])){
 		$content = stripslashes($viewTicket['details']);
 		echo "
 			<h2 class=\"text-left\">Viewing Ticket</h2><hr/>
-				Created By: $viewTicket[name]<br/>
-				Date: $viewTicket[date]
-				<hr/>
-				Ticket Content:<br/> 
-				$content <br/><br/>
-				<hr/>
-				Responses:
-				";
+				<b>Created By:</b> $viewTicket[name]<br/>
+				<b>Date:</b> $viewTicket[date]<br/>
+				<b>Ticket Details:</b><br/> 
+				$content";
 				while($c = $getResponse->fetch_assoc()){
-					echo "<pre>";
-					echo $c['user'] . " posted on " . $c['date_com'] . "<br/><br/> " . $mysqli->real_escape_string($c['content']) . "</pre><hr/>";
+				$clean_ticket = $ticketpurifier->purify($c['content']);
+				// Get webadmin status
+				$queryadmin = $mysqli->query("SELECT ".$prefix."tcomments.user, ".$prefix."profile.name, ".$prefix."profile.accountid, accounts.webadmin FROM ".$prefix."tcomments INNER JOIN ".$prefix."profile ON ".$prefix."tcomments.user = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE ".$prefix."tcomments.user = '".$c['user']."'");
+				$adminstatus = $queryadmin->fetch_assoc();
+				if($adminstatus['webadmin'] > 0){
+					echo "<hr/><div class=\"well well2\">";
+				} else {
+					echo "<hr/><div class=\"well\">";
+				}
+				echo "<b>" . $c['user'] . "</b> posted on " . $c['date_com'] . "<br/><br/> " . $clean_ticket . "</div><hr/>";
 				}
 				if($countTicket < 1){
-					echo "<hr/>Please make a response to this ticket.<hr/>";
+					echo "<hr/><div class=\"alert alert-info\">Please make a response to this ticket.</div><hr/>";
 				}
 				echo "
 					Make a comment to this ticket:<br/>
 					<form method=\"post\" action\"\">
-						<textarea name=\"comment\" style=\"height:150px;\" class=\"form-control\"/></textarea><hr/>
+						<textarea name=\"comment\" style=\"height:150px;\" class=\"form-control\" id=\"ticketDetails\"/></textarea><hr/>
 							<input type=\"submit\" name=\"subcomment\" value=\"Submit Response\" class=\"btn btn-primary\"/>
 							<input type=\"submit\" name=\"close\" value=\"Close Ticket\" class=\"btn btn-default\"/>
 					</form>
 				";
 				if(isset($_POST['subcomment'])){
-					$postComment = sanitize_space($_POST['comment']);
+					$postComment = $mysqli->real_escape_string($_POST['comment']);
 						
-					if(strlen($postComment) < 25){
+					if(strlen($postComment) < 10){
 						echo "Please provide more information.";
 					}
 					else{
@@ -102,3 +111,21 @@ if(isset($_SESSION['admin'])){
 	redirect("?base");
 }
 ?>
+<script>
+<?php
+	if(isset($_SESSION['id'])){
+?>
+CKEDITOR.replace( 'ticketDetails', {
+    allowedContent: 'b i u li ol ul blockquote anchor hr small'
+});
+$(function() {
+for ( var i in CKEDITOR.instances ){
+   var currentInstance = i;
+   break;
+}
+var oEditor = CKEDITOR.instances[currentInstance];
+});
+<?php
+	}
+?>
+</script>
