@@ -19,6 +19,8 @@ $bgcolor = $prop['bgcolor'];
 $bgrepeat = $prop['bgrepeat'];
 if($prop['bgcenter'] == 1) {
 	$bgcenter = "center";
+} else {
+	$bgcenter = "";
 }
 $bgfixed = $prop['bgfixed'];
 $bgcover = $prop['bgcover'];
