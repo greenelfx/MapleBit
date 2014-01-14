@@ -159,7 +159,6 @@ CREATE TABLE `".$prefix."properties` (
   `version` int(11) NOT NULL DEFAULT '0',
   `forumurl` text,
   `siteurl` text,
-  `vote` text,
   `exprate` text,
   `mesorate` text,
   `droprate` text,
@@ -454,7 +453,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 					}
 				}
 				if($stop == "false"){
-					$mysqli->query("UPDATE ".$prefix."properties SET name='$sservername', type = '$sservertype', client='$sclient', server = '$sserver', version='$sversion', forumurl='$sforumurl', siteurl='$ssiteurl', vote='$svote', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', gmlevel = '$sgmlevel', flood='1', floodint='5', theme='cerulean', nav='0', pcap='100'");
+					$mysqli->query("UPDATE ".$prefix."properties SET name='$sservername', type = '$sservertype', client='$sclient', server = '$sserver', version='$sversion', forumurl='$sforumurl', siteurl='$ssiteurl', vlink='$svote', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', gmlevel = '$sgmlevel', flood='1', floodint='5', theme='cerulean', nav='0', pcap='100'");
 					echo "Working...";
 					echo "<meta http-equiv=\"refresh\" content=\"1; url=?install=5\" />";
 				}
