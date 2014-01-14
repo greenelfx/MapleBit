@@ -31,7 +31,7 @@ if($_SESSION['id']){
 		</div>
 		<div class=\"form-group\">
 			<label for=\"realName\">Real Name:</label>
-			<input type=\"text\" class=\"form-control\" name=\"realname\" value=\"".$p['realname']."\" required id=\"realName\"/>
+			<input type=\"text\" class=\"form-control\" name=\"realname\" value=\"".$p['realname']."\" id=\"realName\"/>
 		</div>
 		<div class=\"form-group\">
 			<label for=\"myAge\">Age: </label>
@@ -385,7 +385,11 @@ if($_SESSION['id']){
 			</script>";
 		}else{
 			$pname = mysql_escape(isset($_POST['pname']));
-			$mainchar = mysql_escape($_POST['mainchar']);
+			if(isset($_POST['mainchar'])) {
+				$mainchar = mysql_escape($_POST['mainchar']);
+			} else {
+				$mainchar = "";
+			}
 			$realname = mysql_escape($_POST['realname']);
 			$age = mysql_escape($_POST['age']);
 			$country = mysql_escape($_POST['country']);
