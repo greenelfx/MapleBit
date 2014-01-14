@@ -357,7 +357,8 @@ CREATE TABLE `".$prefix."votingrecords` (
   `date` int(11) NOT NULL DEFAULT '0', 
   `times` bigint(20) unsigned NOT NULL DEFAULT '0', 
   PRIMARY KEY (`ip`) 
-) ENGINE=MYISAM;");
+) ENGINE=MYISAM;"
+);
 echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 		break;
 		case 4:
