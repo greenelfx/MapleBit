@@ -61,7 +61,7 @@ if(isset($_GET['name'])){
 				<hr/>";				
 		}
 		echo "<a href=\"?base=ucp&amp;page=mail&amp;uc=$name\">Send me Mail &raquo;</a>";
-		if($_GET['name'] == $_SESSION['name']) {
+		if(isset($_SESSION['pname']) && $_GET['name'] == $_SESSION['pname']) {
 			echo "<hr/><a href=\"?base=ucp&page=profedit\">Edit Profile &raquo;</a>";
 		}
 
