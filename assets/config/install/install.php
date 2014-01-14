@@ -352,7 +352,7 @@ CREATE TABLE ".$prefix."gdcache (
 ) ENGINE = MYISAM ;
 
 DROP TABLE IF EXISTS `".$prefix."votingrecords`;
-CREATE TABLE `votingrecords` ( 
+CREATE TABLE `".$prefix."votingrecords` ( 
   `ip` varchar(30) NOT NULL DEFAULT '0', 
   `account` varchar(13) NOT NULL DEFAULT '0', 
   `date` int(11) NOT NULL DEFAULT '0', 
