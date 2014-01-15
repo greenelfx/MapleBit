@@ -10,7 +10,30 @@ if($_SESSION['id']){
 		if($getbase == "admin"){
 			if($admin == ""){
 			include("sources/structure/admin_header.php");
-	
+			$opts = array(
+				'http'=>array(
+				'method'=>"GET",
+				'header'=>"User-Agent: maplebit"
+				)
+			);
+			$context = stream_context_create($opts);
+			$current_commits = file_get_contents("https://api.github.com/repos/greenelf/maplebit/commits", false, $context);
+			if ($current_commits !== false) {
+				$commits = json_decode($current_commits);
+				$ref_commit = "7350dcac3e5d3bb7fede63e4e5cfff3852bcc9df";
+				$current_commit_minus1 = $commits[1]->sha;
+				$commit_message = $commits[0]->commit->message;
+				if (!strcmp($current_commit_minus1, $ref_commit)) {
+					$alert_class = "succss";
+					$version_message = "<b>MapleBit is up to date.<b/>";
+				} else {
+					$alert_class = "info";
+					$version_message = "<a href=\"https://github.com/greenelf/MapleBit\" class=\"alert-link\">Update Available &raquo;</a><br/>".$commit_message."";
+				}
+			} else {
+					$alert_class = "danger";
+					$version_message = "Can't get MapleBit update status;";
+			}	
 ?>
 <div class="col-md-8">
 	<div class="jumbotron">
@@ -20,7 +43,11 @@ if($_SESSION['id']){
 </div>
 <div class="col-md-4">
 	<div class="well">
-		Welcome to the MapleBit Administration Panel.<br/>Thanks for trying out MapleBit! Please report any bugs and quirks to greenelf!
+		Welcome to the MapleBit Administration Panel.<br/>Please report any bugs and quirks to greenelf!
+	</div>
+	<div class="alert alert-<?php echo $alert_class; ?>">
+		<h2 style="margin: 0px;">MapleBit Status</h2><hr/>
+		<?php echo $version_message; ?>
 	</div>
 </div>
 </div>
@@ -111,6 +138,8 @@ if($_SESSION['id']){
 				include('sources/admin/ticket.php');
 			}elseif($admin == "pages"){
 				include('sources/admin/pages.php');
+			}elseif($admin == "update"){
+				include('sources/admin/update.php');
 			}
 			else{header("Location: ?base=admin");}
 			if($admin!=""){
