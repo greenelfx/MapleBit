@@ -9,35 +9,40 @@ if($_SESSION['id']){
 	if($_SESSION['admin']){
 		if($getbase == "admin"){
 			if($admin == ""){
-			include("sources/structure/admin_header.php");
-			$opts = array(
-				'http'=>array(
-				'method'=>"GET",
-				'header'=>"User-Agent: maplebit"
-				)
-			);
-			$context = stream_context_create($opts);
-			#$current_commits = file_get_contents("https://api.github.com/repos/greenelf/maplebit/commits", false, $context);
-			$current_tags = file_get_contents("https://api.github.com/repos/greenelf/maplebit/tags", false, $context);
-			if ($current_tags !== false) {
-				#$commits = json_decode($current_commits);
-				$tags = json_decode($current_tags);
-				#$ref_commit = "7350dcac3e5d3bb7fede63e4e5cfff3852bcc9df";
-				$ref_tag = "v1.02";
-				#$current_commit_minus1 = $commits[1]->sha;
-				$current_tag = $tags[0]->name;
-				#$commit_message = $commits[0]->commit->message;
-				if ($current_tag == $ref_tag) {
-					$alert_class = "success";
-					$version_message = "<b>MapleBit is up to date.<b/>";
+				include("sources/structure/admin_header.php");
+				if (extension_loaded('openssl')) {
+					$opts = array(
+						'http'=>array(
+						'method'=>"GET",
+						'header'=>"User-Agent: maplebit"
+						)
+					);
+					$context = stream_context_create($opts);
+					#$current_commits = file_get_contents("https://api.github.com/repos/greenelf/maplebit/commits", false, $context);
+					$current_tags = file_get_contents("https://api.github.com/repos/greenelf/maplebit/tags", false, $context);
+					if ($current_tags !== false) {
+						#$commits = json_decode($current_commits);
+						$tags = json_decode($current_tags);
+						#$ref_commit = "7350dcac3e5d3bb7fede63e4e5cfff3852bcc9df";
+						$ref_tag = "v1.02";
+						#$current_commit_minus1 = $commits[1]->sha;
+						$current_tag = $tags[0]->name;
+						#$commit_message = $commits[0]->commit->message;
+						if ($current_tag == $ref_tag) {
+							$alert_class = "success";
+							$version_message = "<b>MapleBit is up to date.</b>";
+						} else {
+							$alert_class = "info";
+							$version_message = "<a href=\"https://github.com/greenelf/MapleBit\" class=\"alert-link\">Update Available &raquo;</a>";
+						}
+					} else {
+							$alert_class = "danger";
+							$version_message = "Can't get MapleBit update status.";
+					}
 				} else {
-					$alert_class = "info";
-					$version_message = "<a href=\"https://github.com/greenelf/MapleBit\" class=\"alert-link\">Update Available &raquo;</a>";
-				}
-			} else {
 					$alert_class = "danger";
-					$version_message = "Can't get MapleBit update status;";
-			}	
+					$version_message = "Enable openssl by right clicking wamp, then PHP, and then scroll down to php_openssl";
+				}
 ?>
 <div class="col-md-8">
 	<div class="jumbotron">
