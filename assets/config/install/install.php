@@ -182,6 +182,7 @@ CREATE TABLE `".$prefix."properties` (
   `colvp` TEXT NOT NULL,
   `vtime` INT(11) UNSIGNED NOT NULL DEFAULT 21600,
   `vlink` TEXT NOT NULL,
+  `homecontent` text,
   PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 INSERT INTO ".$prefix."properties (version, theme, nav, colnx, colvp, vlink) VALUES (83, 'cerulean', 0, 'paypalNX', 'votepoints', 'http://www.gtop100.com/maplestory');
