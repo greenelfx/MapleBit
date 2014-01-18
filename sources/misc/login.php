@@ -1,8 +1,7 @@
 <?php
-include_once('assets/config/database.php');
 $is_ajax = $_REQUEST['is_ajax'];
 if(isset($is_ajax) && $is_ajax) {
-
+	include_once('assets/config/database.php');
     $u = $mysqli->real_escape_string($_REQUEST['username']);
     $p = $mysqli->real_escape_string($_REQUEST['password']);
 	$s = $mysqli->query("SELECT * FROM `accounts` WHERE `name`='".$u."'") or die();

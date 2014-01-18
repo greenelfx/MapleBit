@@ -11,6 +11,8 @@ if($getbase == "misc"){
 		include('sources/misc/login.php');
 	}elseif($script == "logout"){
 		include('sources/misc/logout.php');
+	}elseif($script == "home"){
+		include('sources/misc/home.php');
 	}else{
 		redirect("?base=main");
 	}
