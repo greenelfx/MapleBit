@@ -12,17 +12,16 @@ $(document).ready(function() {
             on: {
                 blur: function( event ) {
                     var data = event.editor.getData();
-                    var request = jQuery.ajax({
-                        url: "?base=misc&script=home",
+					$.ajax({
                         type: "POST",
+						url: "?base=misc&script=home",
                         data: {
                             content : data,
                             content_id : content_id,
 							admin_id : <?php echo $_SESSION['admin']; ?>,
+							is_ajax: '1',
                         },
-                        dataType: "html"
                     });
-					var admin_id = <?php echo $_SESSION['admin']; ?>;
                 }
             }
         });
