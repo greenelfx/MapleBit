@@ -24,7 +24,7 @@ if($_SESSION['id']){
 						#$commits = json_decode($current_commits);
 						$tags = json_decode($current_tags);
 						#$ref_commit = "7350dcac3e5d3bb7fede63e4e5cfff3852bcc9df";
-						$ref_tag = "v1.02";
+						$ref_tag = "v1.03";
 						#$current_commit_minus1 = $commits[1]->sha;
 						$current_tag = $tags[0]->name;
 						#$commit_message = $commits[0]->commit->message;
