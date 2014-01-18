@@ -185,7 +185,7 @@ CREATE TABLE `".$prefix."properties` (
   `homecontent` text,
   PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-INSERT INTO ".$prefix."properties (version, theme, nav, colnx, colvp, vlink) VALUES (83, 'cerulean', 0, 'paypalNX', 'votepoints', 'http://www.gtop100.com/maplestory');
+INSERT INTO ".$prefix."properties (version, theme, nav, colnx, colvp, vlink, homecontent) VALUES (83, 'cerulean', 0, 'paypalNX', 'votepoints', 'http://www.gtop100.com/maplestory', 'Admins: Click here to edit');
 
 DROP TABLE IF EXISTS `".$prefix."pages`;
 CREATE TABLE `".$prefix."pages` (
