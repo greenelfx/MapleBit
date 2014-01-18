@@ -132,15 +132,14 @@ $('#myTab a').click(function (e) {
 })
 </script>
 <h2 class=\"text-left\">Site Configuration</h2><hr/>
- <ul id=\"myTab\" class=\"nav nav-tabs\">
-              <li class=\"active\"><a href=\"#mainconfig\" data-toggle=\"tab\">Main Configuration</a></li>
-              <li><a href=\"#links\" data-toggle=\"tab\">Links</a></li>
-              <li><a href=\"#info\" data-toggle=\"tab\">Game Info</a></li>
-				<li><a href=\"#comment\" data-toggle=\"tab\">Comment Configuration</a></li>
-            </ul>
-			
-		<form method='post' action='?base=admin&amp;page=properties&amp;do=submit'>
-            <div id=\"myTabContent\" class=\"tab-content\">
+<ul id=\"myTab\" class=\"nav nav-tabs\">
+	<li class=\"active\"><a href=\"#mainconfig\" data-toggle=\"tab\">Site</a></li>
+	<li><a href=\"#links\" data-toggle=\"tab\">Links</a></li>
+	<li><a href=\"#info\" data-toggle=\"tab\">Game Info</a></li>
+	<li><a href=\"#comment\" data-toggle=\"tab\">Comments</a></li>
+</ul>
+<form method='post' action='?base=admin&amp;page=properties&amp;do=submit'>
+<div id=\"myTabContent\" class=\"tab-content\">
 <div class=\"tab-pane fade in active\" id=\"mainconfig\">
 <br/>
 	<div class=\"form-group\">

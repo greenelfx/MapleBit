@@ -60,7 +60,9 @@ if(isset($_GET['name'])){
 				".$clean_html."<br/>
 				<hr/>";				
 		}
-		echo "<a href=\"?base=ucp&amp;page=mail&amp;uc=$name\">Send me Mail &raquo;</a>";
+		if(isset($_SESSION['pname'])) {
+			echo "<a href=\"?base=ucp&amp;page=mail&amp;uc=$name\">Send me Mail &raquo;</a>";
+		}
 		if(isset($_SESSION['pname']) && $_GET['name'] == $_SESSION['pname']) {
 			echo "<hr/><a href=\"?base=ucp&page=profedit\">Edit Profile &raquo;</a>";
 		}
