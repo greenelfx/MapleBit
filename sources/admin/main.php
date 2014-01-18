@@ -84,16 +84,16 @@ if($_SESSION['id']){
   </div>
   <div class="col-md-3">
   	<div class="well">
-	<a href="?base=admin&amp;page=voteconfig">Edit Vote Configuration</a><br/>
-	<a href="?base=admin&amp;page=nxpacks">Add NX Packages</a>
+		<a href="?base=admin&amp;page=homeconfig"><b>Edit Home Content &raquo;</b></a><br/>
 	</div>
   </div>
 </div>
 <div class="row">
   <div class="col-md-3">
 	<div class="well">
-	<a href="?base=admin&amp;page=properties">Edit Site Configuration</a><br/>
-	Changes your rates, server name, and more!
+		<a href="?base=admin&amp;page=properties">Edit Site Configuration</a><br/>
+		<a href="?base=admin&amp;page=voteconfig">Edit Vote Configuration</a><br/>
+		<a href="?base=admin&amp;page=nxpacks">Add NX Packages</a>
 	</div>
   </div>
   <div class="col-md-3 ">
@@ -149,6 +149,8 @@ if($_SESSION['id']){
 				include('sources/admin/pages.php');
 			}elseif($admin == "update"){
 				include('sources/admin/update.php');
+			}elseif($admin == "homeconfig"){
+				include('sources/admin/homeconfig.php');
 			}
 			else{header("Location: ?base=admin");}
 			if($admin!=""){

@@ -6,6 +6,8 @@ if(isset($_GET['page'])){
 }
 	if($getbase == "main"){
 		if($main == ""){
+			$queryhome = $mysqli->query("SELECT homecontent FROM ".$prefix."properties");
+			$gethome = $queryhome->fetch_assoc();
 			echo "<div class=\"row\">";
 			include ("sources/public/main-news.php");
 			include ("sources/public/main-events.php");
