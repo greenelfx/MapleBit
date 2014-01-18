@@ -78,7 +78,7 @@ if($banner != ""){echo "<img src=\"".$banner."\" alt=\"banner\" class=\"img-resp
 		?>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo get_small_gravatar($fetchemail['email']); ?>" alt="gravatar" class="img-responsive" style="float:left;margin-top: -10px;padding-right: 5px;"><?php echo $name; ?><b class="caret"></b></a>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo get_small_gravatar($fetchemail['email']);?>" alt="gravatar" class="img-responsive" style="float:left;margin-top: -10px;padding-right: 5px;"><?php echo $name; ?><b class="caret"></b></a>
 					<ul class="dropdown-menu">
 					<?php
 						if($_SESSION['pname'] == "checkpname") {
