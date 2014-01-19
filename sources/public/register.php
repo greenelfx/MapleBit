@@ -50,7 +50,7 @@ if (@$_POST["register"] != "1") {
 	$username = preg_replace("/[^A-Za-z0-9 ]/", '', $getusername); # Escape and Strip
 	$password = $mysqli->real_escape_string($_POST["mpass"]); # Get Password
 	$confirm_password = $mysqli->real_escape_string($_POST["mpwcheck"]); # Get Confirm Password
-	$email = mysql_escape($_POST["memail"]);
+	$email = $mysqli->real_escape_string($_POST["memail"]);
 	$birth = "1990-01-01";
 	$ip = getRealIpAddr();
 	

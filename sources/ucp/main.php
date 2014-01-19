@@ -26,9 +26,24 @@ Welcome Back, ".getInfo('accname', 'base_session', 'accid')."</h2>
  <div id=\"myTabContent\" class=\"tab-content\">
 <div class=\"tab-pane fade in active\" id=\"account\">
 	<br/>
-	<a href=\"?base=ucp&amp;page=accset\"><b>Account Settings</b></a><br/>
-	<a href=\"?base=ucp&amp;page=charfix\">Character Fixes</a><br/><br/>
-</div>";
+	<a href=\"?base=ucp&amp;page=accset\">Account Settings</a><br/>
+	<a href=\"?base=ucp&amp;page=charfix\">Character Fixes</a><br/><hr/>";
+if(!isset($_SESSION['pname'])){
+	echo "
+	<div class=\"alert alert-danger\">
+	  <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>
+	  <h4>Whoa there!</h4>
+	<a href=\"?base=ucp&amp;page=profname\">You need set up a profile name &raquo;</a>
+	</div>";
+}else{
+	echo "
+	<div class=\"alert alert-info\"><a href=\"?base=ucp&amp;page=profedit\" class=\"alert-link\">Edit Public Profile</a></div>
+	<div class=\"alert alert-success\">
+		<a href=\"http://gravatar.com\" class=\"alert-link\">Change Gravatar</a><br/>
+		You will be redirected to <a href=\"http://gravatar.com\" class=\"alert-link\">http://gravatar.com.</a> Please sign up using the same email address you used to sign up for your game account. Your username and password can be whatever you want.
+	</div>";
+}
+echo "</div>";
 echo "
 <div class=\"tab-pane fade\" id=\"community\">
     <br/>
@@ -38,22 +53,6 @@ echo "
 	<a href=\"?base=main&amp;page=guildlist\">Guild List</a><br/><br/>
 </div></div>
 ";
-if(!isset($_SESSION['pname'])){
-echo "
-<div class=\"alert alert-danger\">
-  <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>
-  <h4>Whoa there!</h4>
-<a href=\"?base=ucp&amp;page=profname\">You need set up a profile name &raquo;</a>
-</div>";
-}else{
-echo "
-<div class=\"well\"><a href=\"?base=ucp&amp;page=profedit\">Edit Public Profile</a></div>
-<div class=\"well\">
-	<a href=\"http://gravatar.com\">Change Gravatar</a><br/>
-	You will be redirected to <a href=\"http://gravatar.com\">http://gravatar.com.</a> Please sign up using the same email address you used to sign up for your game account. Your username and password can be whatever you want.
-</div>";
-}
-
 			}elseif($ucp == "accset"){
 				include('sources/ucp/account-settings.php');
 			}elseif($ucp == "buynx"){

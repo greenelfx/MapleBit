@@ -18,7 +18,7 @@ if($_SESSION['id']){
 					</script>
 					<ul id=\"myTab\" class=\"nav nav-tabs\">
 						<li class=\"active\"><a href=\"#blog\" data-toggle=\"tab\">Manage Blogs</a></li>
-						<li><a href=\"#ticket\" data-toggle=\"tab\">Tickets</a></li>
+						<li><a href=\"#banned\" data-toggle=\"tab\">Banned Users</a></li>
 					</ul>
 
 					<div id=\"myTabContent\" class=\"tab-content\">
@@ -31,15 +31,15 @@ if($_SESSION['id']){
 					  <a href=\"?base=gmcp&amp;page=manblog&amp;action=del\" class=\"btn btn-default\">Delete</a>
 					<hr/>
 					</div>
-					<div class=\"tab-pane fade\" id=\"ticket\">
+					<div class=\"tab-pane fade\" id=\"banned\">
 					<br/>
-					".unSolved("ticket")."
+					<a href=\"?base=gmcp&page=banned\" class=\"btn btn-primary\">Continue &raquo;</a>
 					</div>
 					</div>";
 			}elseif($gmcp == "manblog"){
 				include('sources/gmcp/manage-blog.php');
-			}elseif($gmcp == "ticket"){
-				include('sources/gmcp/ticket.php');
+			}elseif($gmcp == "banned"){
+				include('sources/gmcp/banned.php');
 			}
 		}else{
 			header("Location: ?base=gmcp");
