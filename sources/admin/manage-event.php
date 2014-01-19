@@ -39,7 +39,7 @@ if(isset($_SESSION['id'])){
 				</select>
 			</div>
 			<textarea name=\"content\" style=\"height:300px;\" class=\"form-control\" id=\"content\"></textarea><br/>
-			<input type=\"submit\" name=\"add\" class=\"btn btn-primary\" value=\"Add News Article &raquo;\" />
+			<input type=\"submit\" name=\"add\" class=\"btn btn-primary\" value=\"Add Event &raquo;\" />
 		</form>";
 				}else{
 					$title = $mysqli->real_escape_string($_POST['title']);

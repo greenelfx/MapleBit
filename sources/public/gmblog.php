@@ -23,13 +23,45 @@ if(@$_GET['id']){
 		$config->set('URI.SafeIframeRegexp', '%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/|player\.vimeo\.com/video/)%'); //allow YouTube and Vimeo
 		$purifier = new HTMLPurifier($config);
 		$clean_html = $purifier->purify($b['content']);
+		$positive = 0;
+		$negative = 0;
+		$neutral = 0;
+		$gc = $mysqli->query("SELECT ".$prefix."bcomments.*, accounts.email, accounts.id As id1, ".$prefix."profile.accountid, ".$prefix."profile.name FROM ".$prefix."bcomments INNER JOIN ".$prefix."profile ON ".$prefix."bcomments.author = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE ".$prefix."bcomments.bid= '".$id."'") or die();
+		$cc = $gc->num_rows;
+		$getfeedback = $mysqli->query("SELECT feedback FROM ".$prefix."bcomments");
+		$countgetfeedback = $getfeedback->num_rows;
+		if($countgetfeedback > 0) {
+			while($afeed = $getfeedback->fetch_assoc()) {
+				if($afeed['feedback'] == 0){ 
+					$positive++;
+				}
+				elseif ($afeed['feedback'] == 1) {
+					$neutral++;
+				}
+				elseif($afeed['feedback'] == 2){
+					$negative++;
+				}
+			}
+			$positive = ($positive/$cc)*100;
+			$negative = ($negative/$cc)*100;
+			$neutral = ($neutral/$cc)*100;
+		}
 	echo "
 		<h2 class=\"text-left\">".$b['title']." | Posted by <a href=\"?base=main&amp;page=members&amp;name=".$b['author']."\">".$b['author']."</a> on ".$b['date']."</h2><hr/>";
 	echo $clean_html."<hr/>";
-	$gc = $mysqli->query("SELECT ".$prefix."bcomments.*, accounts.email, accounts.id As id1, ".$prefix."profile.accountid, ".$prefix."profile.name FROM ".$prefix."bcomments INNER JOIN ".$prefix."profile ON ".$prefix."bcomments.author = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE ".$prefix."bcomments.bid= '".$id."'") or die();
-	$cc = $gc->num_rows;
 	echo "
-		<b>".$b['views']."</b> Views and <b>".$cc."</b> Responses<hr/>";
+		<b>".$b['views']."</b> Views and <b>".$cc."</b> Responses<hr/>
+		<div class=\"progress\">
+		<div class=\"progress-bar progress-bar-success\" style=\"width: ".$positive."%\">
+			<span class=\"sr-only\">".$positive."% (positive)</span>
+		</div>
+		<div class=\"progress-bar progress-bar-danger\" style=\"width: ".$negative."%\">
+			<span class=\"sr-only\">".$negative."% (negative)</span>
+		</div>
+		<div class=\"progress-bar progress-bar-default\" style=\"width: ".$neutral."%\">
+			<span class=\"sr-only\">".$neutral." (neutral)</span>
+		</div>
+	</div>";
 
 	$av = $mysqli->query("UPDATE ".$prefix."gmblog SET views = views + 1 WHERE id='".$id."'") or die();
 	if(isset($_SESSION['admin']) || isset($_SESSION['gm'])){
