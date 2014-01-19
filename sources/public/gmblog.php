@@ -134,14 +134,11 @@ if(@$_GET['id']){
 		while($c = $gc->fetch_assoc()){
 		$clean_comment = $commentpurifier->purify($c['comment']);
 			if($c['feedback'] == "0"){
-				$feedback = "
-				<font color=\"green\">Positive</font>";
+				$feedback = "<span class=\"positive_comment\">Positive</span>";
 			}elseif($c['feedback'] == "1"){
-				$feedback = "
-				<font color=\"gray\">Neutral</font>";
+				$feedback = "<span class=\"neutral_comment\">Neutral</span>";
 			}elseif($c['feedback'] == "2"){
-				$feedback = "
-				<font color=\"red\">Negative</font>";
+				$feedback = "<span class=\"negative_comment\">Negative</span>";
 			}
 			$modify = "";
 			if(isset($_SESSION['admin'])){
