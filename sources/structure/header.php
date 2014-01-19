@@ -72,8 +72,8 @@ if($banner != ""){echo "<img src=\"".$banner."\" alt=\"banner\" class=\"img-resp
             </ul>
 		<?php	
 			if(isset($_SESSION['id'])){
-			$name = $_SESSION['name'];
-			$getemail = $mysqli->query("SELECT ".$prefix."profile.id, accounts.email FROM ".$prefix."profile INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE accounts.id = '".$_SESSION['id']."'");
+			$name = $_SESSION['name']; // Probably unneeded
+			$getemail = $mysqli->query("SELECT email, name FROM accounts WHERE name = '". $_SESSION['name']."'");
 			$fetchemail = $getemail->fetch_assoc();
 		?>
 			<ul class="nav navbar-nav navbar-right">

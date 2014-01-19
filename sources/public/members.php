@@ -16,9 +16,9 @@ if(isset($_GET['name'])){
 		$ga = $mysqli->query("SELECT * FROM `accounts` WHERE `id`='".getInfo('accid', $name, 'profilename')."'") or die();
 		$a = $ga->fetch_assoc();
 		if($a['loggedin'] == "0"){
-			$status = "<img src='assets/img/offline.png' alt='Offline' />";
+			$status = "<span class=\"label label-danger\">Offline</span>";
 		}else{
-			$status = "<img src='assets/img/online.png' alt='Offline' />";
+			$status = "<span class=\"label label-success\">Online</span>";
 		}
 		$gp = $mysqli->query("SELECT * FROM `".$prefix."profile` WHERE `name`='".$name."'") or die();
 		$p = $gp->fetch_assoc();
@@ -37,27 +37,27 @@ if(isset($_GET['name'])){
 		}
 		echo "<h2 class=\"text-left\">".$name." ".$p['realname']."</h2><hr/>";
 		echo "
-			Game :".$status."<br/>
-			Site :".onlineCheck(getInfo('accid', $name, 'profilename'))."<br/><br/>";
+			Game Status: ".$status."<br/>
+			Site Status: ".onlineCheck(getInfo('accid', $name, 'profilename'))."<br/>";
 		if(!$m['name'] == "") {
-			echo "<b>Main Character:</b> ".$m['name']. "<br/><br/>";
+			echo "<b>Main Character:</b> ".$m['name']. "<br/>";
 		}
 		if(!empty($p['country'])) {
-			echo "<b>Country: </b>".$p['country']."<br/><br/>";
+			echo "<b>Country: </b>".$p['country']."<br/>";
 		} 
 		if(!empty($p['motto'])) {
-			echo "<b>Motto:</b> ".$p['motto']."<br/><br/>";
+			echo "<b>Motto:</b> ".$p['motto']."<br/>";
 		}
 		if(!empty($p['age'])) {
-			echo "<b>Age:</b> ".$p['age']."<br/><br/>";
+			echo "<b>Age:</b> ".$p['age']."<br/>";
 		}
 		if(!empty($p['favjob'])) {
-			echo "<b>Favorite Job: </b>".$p['favjob']."<br/><hr/>";
+			echo "<b>Favorite Job: </b>".$p['favjob']."<hr/>";
 		}
 		if(!empty($p['text'])) {
 			echo "	
 				<b>About Me:</b>
-				".$clean_html."<br/>
+				".$clean_html."
 				<hr/>";				
 		}
 		if(isset($_SESSION['pname'])) {
@@ -106,7 +106,7 @@ if(isset($_GET['name'])){
 		<table class=\"table table-bordered\">
 	<thead>
 		<tr>
-			<th style=\"width:50px\">Status</th>
+			<th style=\"width:100px\">Site Status</th>
 			<th>Name</th>
 		</tr>
 	</thead>
