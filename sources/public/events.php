@@ -23,6 +23,29 @@ if(@$_GET['id']){
 		$config->set('URI.SafeIframeRegexp', '%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/|player\.vimeo\.com/video/)%'); //allow YouTube and Vimeo
 		$purifier = new HTMLPurifier($config);
 		$clean_html = $purifier->purify($e['content']);
+		$positive = 0;
+		$negative = 0;
+		$neutral = 0;
+		$gc = $mysqli->query("SELECT ".$prefix."ecomments.*, accounts.email, accounts.id As id1, ".$prefix."profile.accountid, ".$prefix."profile.name FROM ".$prefix."ecomments INNER JOIN ".$prefix."profile ON ".$prefix."ecomments.author = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE ".$prefix."ecomments.eid= '".$id."'") or die();
+		$cc = $gc->num_rows;
+		$getfeedback = $mysqli->query("SELECT feedback FROM ".$prefix."ecomments");
+		$countgetfeedback = $getfeedback->num_rows;
+		if($countgetfeedback > 0) {
+			while($afeed = $getfeedback->fetch_assoc()) {
+				if($afeed['feedback'] == 0){ 
+					$positive++;
+				}
+				elseif ($afeed['feedback'] == 1) {
+					$neutral++;
+				}
+				elseif($afeed['feedback'] == 2){
+					$negative++;
+				}
+			}
+			$positive = ($positive/$cc)*100;
+			$negative = ($negative/$cc)*100;
+			$neutral = ($neutral/$cc)*100;
+		}
 	echo "
 		<h2 class=\"text-left\">".stripslashes($e['title'])." | Posted by <a href=\"?base=main&amp;page=members&amp;name=".$e['author']."\">".$e['author']."</a> on ".$e['date']."</h2><hr/>
 	";
@@ -38,10 +61,18 @@ if(@$_GET['id']){
 	echo " ".$status."";
 	echo $clean_html."
 	<br /><br />";
-	$gc = $mysqli->query("SELECT ".$prefix."ecomments.*, accounts.email, accounts.id As id1, ".$prefix."profile.accountid, ".$prefix."profile.name FROM ".$prefix."ecomments INNER JOIN ".$prefix."profile ON ".$prefix."ecomments.author = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE ".$prefix."ecomments.eid= '".$id."'") or die();
-	$cc = $gc->num_rows;
-	echo "<b>".$e['views']."</b> Views and <b>".$cc."</b> Reponses";
-	echo "<hr />";
+	echo "<b>".$e['views']."</b> Views and <b>".$cc."</b> Reponses<hr/>
+		<div class=\"progress\">
+		<div class=\"progress-bar progress-bar-success\" style=\"width: ".$positive."%\">
+			<span class=\"sr-only\">".$positive."% (positive)</span>
+		</div>
+		<div class=\"progress-bar progress-bar-danger\" style=\"width: ".$negative."%\">
+			<span class=\"sr-only\">".$negative."% (negative)</span>
+		</div>
+		<div class=\"progress-bar progress-bar-default\" style=\"width: ".$neutral."%\">
+			<span class=\"sr-only\">".$neutral." (neutral)</span>
+		</div>
+	</div>";
 	$av = $mysqli->query("UPDATE ".$prefix."events SET views = views + 1 WHERE id='".sql_sanitize($id)."'") or die();
 	if(isset($_SESSION['admin'])){
 		if($e['locked'] == "1"){

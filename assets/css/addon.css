@@ -1,2 +1,11 @@
 .commentbubble{float: right;}
 .text-center,.text-left {margin:0px;}
+.positive_comment {
+	color: #5cb85c;
+}
+.negative_comment {
+	color: #d9534f;
+}
+.neutral_comment {
+	color: #428bca;
+}

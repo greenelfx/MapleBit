@@ -23,16 +23,45 @@ if(isset($_GET['id'])){
 		$config->set('URI.SafeIframeRegexp', '%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/|player\.vimeo\.com/video/)%'); //allow YouTube and Vimeo
 		$purifier = new HTMLPurifier($config);
 		$clean_html = $purifier->purify($n['content']);
+		$positive = 0;
+		$negative = 0;
+		$neutral = 0;
+		$gc = $mysqli->query("SELECT ".$prefix."ncomments.*, accounts.email, accounts.id As id1, ".$prefix."profile.accountid, ".$prefix."profile.name FROM ".$prefix."ncomments INNER JOIN ".$prefix."profile ON ".$prefix."ncomments.author = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE ".$prefix."ncomments.nid= '".$id."'") or die();
+		$cc = $gc->num_rows;
+		$getfeedback = $mysqli->query("SELECT feedback FROM ".$prefix."ncomments");		
+		while($afeed = $getfeedback->fetch_assoc()) {
+			if($afeed['feedback'] == 0){ 
+				$positive++;
+			}
+			elseif ($afeed['feedback'] == 1) {
+				$neutral++;
+			}
+			elseif($afeed['feedback'] == 2){
+				$negative++;
+			}
+		}
+		$positive = ($positive/$cc)*100;
+		$negative = ($negative/$cc)*100;
+		$neutral = ($neutral/$cc)*100;
 	echo "
 		<h2 class=\"text-left\">".stripslashes($n['title'])." | Posted by <a href=\"?base=main&amp;page=members&amp;name=".$n['author']."\">".$n['author']."</a> on ".$n['date']."</h2><hr/>
 		";
 	echo $clean_html."
 	<br /><br />
 	";
-	$gc = $mysqli->query("SELECT ".$prefix."ncomments.*, accounts.email, accounts.id As id1, ".$prefix."profile.accountid, ".$prefix."profile.name FROM ".$prefix."ncomments INNER JOIN ".$prefix."profile ON ".$prefix."ncomments.author = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE ".$prefix."ncomments.nid= '".$id."'") or die();
-	$cc = $gc->num_rows;
 	echo "
-	<b>".$n['views']."</b> Views and <b>".$cc."</b> Responses<hr />";
+	<b>".$n['views']."</b> Views and <b>".$cc."</b> Responses<hr />
+	<div class=\"progress\">
+		<div class=\"progress-bar progress-bar-success\" style=\"width: ".$positive."%\">
+			<span class=\"sr-only\">".$positive."% (positive)</span>
+		</div>
+		<div class=\"progress-bar progress-bar-danger\" style=\"width: ".$negative."%\">
+			<span class=\"sr-only\">".$negative."% (negative)</span>
+		</div>
+		<div class=\"progress-bar progress-bar-default\" style=\"width: ".$neutral."%\">
+			<span class=\"sr-only\">".$neutral." (neutral)</span>
+		</div>
+	</div>";
 	$av = $mysqli->query("UPDATE `".$prefix."news` SET `views` = views + 1 WHERE `id`='".$id."'") or die();
 	if(isset($_SESSION['admin'])){
 		if($n['locked'] == "1"){
@@ -80,7 +109,7 @@ if(isset($_GET['id'])){
 		}
 	}else{
 		echo "
-			<br/><div class=\"alert alert-danger\">Please log in to comment.</div>";
+			<div class=\"alert alert-danger\">Please log in to comment.</div>";
 	}
 	if(isset($_POST['comment'])){
 		$feedback = $mysqli->real_escape_string($_POST['feedback']);
@@ -104,11 +133,11 @@ if(isset($_GET['id'])){
 		while($c = $gc->fetch_assoc()){
 		$clean_comment = $commentpurifier->purify($c['comment']);
 			if($c['feedback'] == "0"){
-				$feedback = "<font color=\"green\">Positive</font>";
+				$feedback = "<span class=\"positive_comment\">Positive</span>";
 			}elseif($c['feedback'] == "1"){
-				$feedback = "<font color=\"gray\">Neutral</font>";
+				$feedback = "<span class=\"neutral_comment\">Neutral</span>";
 			}elseif($c['feedback'] == "2"){
-				$feedback = "<font color=\"red\">Negative</font>";
+				$feedback = "<span class=\"negative_comment\">Negative</span>";
 			}
 			$modify = "";
 			if(isset($_SESSION['admin'])){
