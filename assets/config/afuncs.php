@@ -48,9 +48,9 @@ function onlineCheck($string){
 	$a = $mysqli->query("SELECT * FROM `accounts` WHERE `sitelogged` >= '".$loggedtime."' AND `id`='".$string."'") or die();
 	$b = $a->fetch_assoc();
 	if($b['sitelogged'] >= $loggedtime){
-		$check = "<img src=\"assets/img/online.png\" alt=\"online\" />";
+		$check = "<span class=\"label label-success\">Online</span>";
 	}else{
-		$check = "<img src=\"assets/img/offline.png\" alt=\"offline\" />";
+		$check = "<span class=\"label label-danger\">Offline</span>";
 	}
 	return $check;
 }
@@ -394,7 +394,7 @@ function unSolved($type){
 			$tickquant = "are";
 			$tickplural = "s";
 		}
-		return "There ".$tickquant." <a href=\"?cype=admin&amp;page=ticket\"><u><b>".$counttick." unsolved ticket".$tickplural."</b></u></a>.";
+		return "There ".$tickquant." <a href=\"?base=admin&amp;page=ticket\"><u><b>".$counttick." unsolved ticket".$tickplural."</b></u></a>.";
 	}
 	elseif($type == "mail"){
 		$GrabReportedpm = $mysqli->query("SELECT * FROM `".$prefix."mail` WHERE `status` = '10'");

@@ -133,21 +133,33 @@ echo '
 		case 3:
 			include '../database.php';
 $queryaccounts = $mysqli->query("SELECT * FROM `accounts`"); 
-$rowa = $queryaccounts->fetch_assoc(); 
-if(!isset($rowa['sitelogged'])) {
+$getcolumns = $queryaccounts->fetch_assoc(); 
+if(!isset($getcolumns['sitelogged'])) {
 	$mysqli->query("ALTER TABLE accounts ADD `sitelogged` TEXT;");
 	echo "Added sitelogged<br/>";
 }
-if(!isset($rowa['webadmin'])) {
+if(!isset($getcolumns['webadmin'])) {
 	$mysqli->query("ALTER TABLE accounts ADD `webadmin` int(1) DEFAULT 0;");
 	echo "Added webadmin<br/>";
 }
-if(!isset($rowa['nick'])) {
+if(!isset($getcolumns['nick'])) {
 	$mysqli->query("ALTER TABLE accounts ADD `nick` varchar(20);");
 	echo "Added nick<br/>";
 }
-if(!isset($rowa['mute'])) {
+if(!isset($getcolumns['mute'])) {
 	$mysqli->query("ALTER TABLE accounts ADD `mute` int(1) DEFAULT 0;");
+	echo "Added mute<br/>";
+}
+if(!isset($getcolumns['email'])) {
+	$mysqli->query("ALTER TABLE accounts ADD `email` VARCHAR(45) DEFAULT NULL;");
+	echo "Added mute<br/>";
+}
+if(!isset($getcolumns['ip'])) {
+	$mysqli->query("ALTER TABLE accounts ADD `ip` text;");
+	echo "Added mute<br/>";
+}
+if(!isset($getcolumns['birthday'])) {
+	$mysqli->query("ALTER TABLE accounts ADD `birthday` DATE;");
 	echo "Added mute<br/>";
 }
 mysqli_multi_query($mysqli, "DROP TABLE IF EXISTS `".$prefix."properties`;
