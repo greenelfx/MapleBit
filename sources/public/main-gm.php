@@ -1,7 +1,7 @@
 <?php 
 echo "
 <div class=\"col-md-6\">
-<a href='?base=main&amp;page=news'><h4>GM Blogs &raquo;</h4></a><hr/>";
+<a href='?base=main&amp;page=gmblog'><h4>GM Blogs &raquo;</h4></a><hr/>";
 	$i = 0;
 	$gb = $mysqli->query("SELECT * FROM ".$prefix."gmblog ORDER BY id DESC LIMIT 4") or die();
 	while($b = $gb->fetch_assoc()){
