@@ -19,6 +19,7 @@ Welcome Back, ".getInfo('accname', 'base_session', 'accid')."</h2>
 <hr/>
 <ul id=\"myTab\" class=\"nav nav-tabs\">
 	<li class=\"active\"><a href=\"#account\" data-toggle=\"tab\">Account</a></li>
+	<li><a href=\"?base=ucp&amp;page=characters\">Characters</a></li>
 	<li><a href=\"#community\" data-toggle=\"tab\">Community</a></li>
 	<li><a href=\"?base=ucp&amp;page=buynx\">Cash Shop</a></li>
 	<li><a href=\"?base=ucp&amp;page=ticket\">Tickets</a></li>
@@ -67,6 +68,10 @@ echo "
 				include('sources/ucp/ticket.php');
 			}elseif($ucp == "mail"){
 				include('sources/ucp/mail.php');
+			}elseif($ucp == "characters"){
+				include('sources/ucp/characters.php');
+			}else{
+			redirect("?base=main");
 			}
 		}else{
 			redirect("?base=main");
