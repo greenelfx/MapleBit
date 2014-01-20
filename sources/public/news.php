@@ -26,7 +26,7 @@ if(isset($_GET['id'])){
 		$positive = 0;
 		$negative = 0;
 		$neutral = 0;
-		$gc = $mysqli->query("SELECT ".$prefix."ncomments.*, accounts.email, accounts.id As id1, ".$prefix."profile.accountid, ".$prefix."profile.name FROM ".$prefix."ncomments INNER JOIN ".$prefix."profile ON ".$prefix."ncomments.author = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE ".$prefix."ncomments.nid= '".$id."'") or die();
+		$gc = $mysqli->query("SELECT ".$prefix."ncomments.*, accounts.email, accounts.id As id1, ".$prefix."profile.accountid, ".$prefix."profile.name FROM ".$prefix."ncomments INNER JOIN ".$prefix."profile ON ".$prefix."ncomments.author = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE ".$prefix."ncomments.nid= '".$id."' ORDER BY date DESC") or die();
 		$cc = $gc->num_rows;
 		$getfeedback = $mysqli->query("SELECT feedback FROM ".$prefix."ncomments");		
 		while($afeed = $getfeedback->fetch_assoc()) {
@@ -153,7 +153,7 @@ if(isset($_GET['id'])){
 			<div class=\"well\"><img src=\"" . get_gravatar($c['email']) . "\" alt=\"".$c['author']."\" class=\"img-responsive\" style=\"float:left;padding-right:10px;\"/>
 			<h4 style=\"margin:0px;\">".$c['author']."</h4>
 				<b>Feedback:</b> ".$feedback."<br/>
-				<small>". date('D M j, Y \a\t g:i A', $c['date'])."</small><br/>
+				<small>Posted ".ago($c['date']).", on ". date('M j, Y', $c['date'])."</small><br/>
 				<small>".$modify . $quote."<a href=\"#comment-link-".$c['id']."\" class=\"permalink\">Permalink</a><a href=\"?base=main&page=news&id=".$id."#comment-".$c['id']."\" class=\"permalinkshow linkid-".$c['id']."\">?base=main&page=news&id=".$id."#comment-".$c['id']."</a>".$pm."</a></small><hr/>
 				<div id=\"comment-".$c['id']."\">".$clean_comment."</div>
 				</div>";

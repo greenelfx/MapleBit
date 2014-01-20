@@ -21,6 +21,7 @@ if(isset($_SESSION['id'])){
 			<div class=\"form-group\">
 				<label for=\"title\">Title</label>
 				<input type=\"text\" name=\"title\" class=\"form-control\" id=\"title\" placeholder=\"Title\" required/>
+				<span class=\"help-block\"You may use <b>only</b> numbers, letters, and spaces)</span>
 			</div>
 			<div class=\"form-group\">
 				<label for=\"slug\">Slug</label>
@@ -39,9 +40,11 @@ if(isset($_SESSION['id'])){
 			<input type=\"submit\" name=\"add\" class=\"btn btn-primary\" value=\"Add Page &raquo;\" />
 		</form>";
 				}else{
-					$title = $mysqli->real_escape_string($_POST['title']);
+					$gettitle = $mysqli->real_escape_string($_POST['title']);
+					$title = preg_replace("/[^0-9a-zA-Z ]/", "", $gettitle); # Escape and Strip all but alphanumeric and space
 					$gslug = $mysqli->real_escape_string($_POST['slug']);
-					$slug = preg_replace('/\s+/', '_', $gslug);
+					$removespaceslug = preg_replace('/\s+/', '_', $gslug);
+					$slug = preg_replace("/[^A-Za-z0-9 ]/", '', $removespaceslug); # Escape and Strip
 					$author = $_SESSION['pname'];
 					$content = $mysqli->real_escape_string($_POST['content']);
 					if(isset($_POST['visible'])) {
