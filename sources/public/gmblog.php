@@ -29,8 +29,7 @@ if(@$_GET['id']){
 		$gc = $mysqli->query("SELECT ".$prefix."bcomments.*, accounts.email, accounts.id As id1, ".$prefix."profile.accountid, ".$prefix."profile.name FROM ".$prefix."bcomments INNER JOIN ".$prefix."profile ON ".$prefix."bcomments.author = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE ".$prefix."bcomments.bid= '".$id."' ORDER BY date DESC") or die();
 		$cc = $gc->num_rows;
 		$getfeedback = $mysqli->query("SELECT feedback FROM ".$prefix."bcomments");
-		$countgetfeedback = $getfeedback->num_rows;
-		if($countgetfeedback > 0) {
+		if($cc > 0) {
 			while($afeed = $getfeedback->fetch_assoc()) {
 				if($afeed['feedback'] == 0){ 
 					$positive++;

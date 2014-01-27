@@ -65,7 +65,7 @@ if($_SESSION['id']){
 			$u = $mysqli->query("UPDATE `accounts` SET `email`='".$email."',`birthday`='".$birth."' WHERE `name`='".$userz['name']."'") or die();
 			echo "<div class=\"alert alert-success\">Your changes have successfully been saved.</div>";
 		}
-	};
+	}
 }else{
 	redirect("?base=main");
 }
