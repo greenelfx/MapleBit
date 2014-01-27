@@ -29,20 +29,22 @@ if(isset($_GET['id'])){
 		$gc = $mysqli->query("SELECT ".$prefix."ncomments.*, accounts.email, accounts.id As id1, ".$prefix."profile.accountid, ".$prefix."profile.name FROM ".$prefix."ncomments INNER JOIN ".$prefix."profile ON ".$prefix."ncomments.author = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE ".$prefix."ncomments.nid= '".$id."' ORDER BY date DESC") or die();
 		$cc = $gc->num_rows;
 		$getfeedback = $mysqli->query("SELECT feedback FROM ".$prefix."ncomments");		
-		while($afeed = $getfeedback->fetch_assoc()) {
-			if($afeed['feedback'] == 0){ 
-				$positive++;
+		if($cc > 0) {
+			while($afeed = $getfeedback->fetch_assoc()) {
+				if($afeed['feedback'] == 0){ 
+					$positive++;
+				}
+				elseif ($afeed['feedback'] == 1) {
+					$neutral++;
+				}
+				elseif($afeed['feedback'] == 2){
+					$negative++;
+				}
 			}
-			elseif ($afeed['feedback'] == 1) {
-				$neutral++;
-			}
-			elseif($afeed['feedback'] == 2){
-				$negative++;
-			}
+			$positive = ($positive/$cc)*100;
+			$negative = ($negative/$cc)*100;
+			$neutral = ($neutral/$cc)*100;
 		}
-		$positive = ($positive/$cc)*100;
-		$negative = ($negative/$cc)*100;
-		$neutral = ($neutral/$cc)*100;
 	echo "
 		<h2 class=\"text-left\">".stripslashes($n['title'])." | Posted by <a href=\"?base=main&amp;page=members&amp;name=".$n['author']."\">".$n['author']."</a> on ".$n['date']."</h2><hr/>
 		";
