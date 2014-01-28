@@ -22,7 +22,7 @@ if(!file_exists('assets/config/install/installdone.txt')){
 			header('Location: ?base=main');
 			break;
 		case "main":
-			$getslug = $mysqli->query("SELECT slug from bit_pages");
+			$getslug = $mysqli->query("SELECT slug from ".$prefix."pages");
 			while($fetchslug = $getslug->fetch_assoc()) {
 				$slugarray[] = $fetchslug['slug'];
 			}
