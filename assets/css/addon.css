@@ -9,3 +9,6 @@
 .neutral_comment {
 	color: #428bca;
 }
+.breakword {  
+    word-wrap: break-word;  
+}  

@@ -48,9 +48,7 @@ if(isset($_GET['id'])){
 	echo "
 		<h2 class=\"text-left\">".stripslashes($n['title'])." | Posted by <a href=\"?base=main&amp;page=members&amp;name=".$n['author']."\">".$n['author']."</a> on ".$n['date']."</h2><hr/>
 		";
-	echo $clean_html."
-	<br /><br />
-	";
+	echo "<div class=\"breakword\">" . $clean_html."</div><hr/>";
 	echo "
 	<b>".$n['views']."</b> Views and <b>".$cc."</b> Responses<hr />
 	<div class=\"progress\">
