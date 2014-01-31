@@ -47,7 +47,7 @@ if(@$_GET['id']){
 		}
 	echo "
 		<h2 class=\"text-left\">".$b['title']." | Posted by <a href=\"?base=main&amp;page=members&amp;name=".$b['author']."\">".$b['author']."</a> on ".$b['date']."</h2><hr/>";
-	echo $clean_html."<hr/>";
+	echo "<div class=\"breakword\">" . $clean_html."</div><hr/>";
 	echo "
 		<b>".$b['views']."</b> Views and <b>".$cc."</b> Responses<hr/>
 		<div class=\"progress\">

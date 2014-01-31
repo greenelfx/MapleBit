@@ -57,7 +57,7 @@ if(isset($_GET['name'])){
 		if(!empty($p['text'])) {
 			echo "	
 				<b>About Me:</b>
-				".$clean_html."
+				<div class=\"breakword\">" . $clean_html."</div>
 				<hr/>";				
 		}
 		if(isset($_SESSION['pname'])) {

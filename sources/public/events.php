@@ -58,8 +58,7 @@ if(@$_GET['id']){
 		$status = "<div class=\"alert alert-danger\">This event has ended</div>";
 	}
 	echo " ".$status."";
-	echo $clean_html."
-	<br /><br />";
+	echo "<div class=\"breakword\">" . $clean_html."</div><hr/>";
 	echo "<b>".$e['views']."</b> Views and <b>".$cc."</b> Reponses<hr/>
 		<div class=\"progress\">
 		<div class=\"progress-bar progress-bar-success\" style=\"width: ".$positive."%\">
