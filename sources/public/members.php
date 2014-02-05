@@ -25,7 +25,7 @@ if(isset($_GET['name'])){
 		$mc = $p['mainchar'];
 		$gmc = $mysqli->query("SELECT * FROM `characters` WHERE `id`='".$mc."'") or die();
 		$m = $gmc->fetch_assoc();
-	require_once 'assets/libs/HTMLPurifier.standalone.php';
+		require_once 'assets/libs/HTMLPurifier.standalone.php';
 		$config = HTMLPurifier_Config::createDefault();
 		$config->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong'); 
 		$purifier = new HTMLPurifier($config);
@@ -35,10 +35,10 @@ if(isset($_GET['name'])){
 		} else {
 			$p['realname'] = "(" . $p['realname'] . ")";
 		}
-		echo "<h2 class=\"text-left\">".$name." ".$p['realname']."</h2><hr/>";
-		echo "
-			Game Status: ".$status."<br/>
-			Site Status: ".onlineCheck(getInfo('accid', $name, 'profilename'))."<br/>";
+		echo "<h2 class=\"text-left\"><img src=\"".get_gravatar($a['email'])."\" class=\"img-circle\">&nbsp;".$name." ".$p['realname']."</h2>
+		<hr/>
+		".$status." in game and ".onlineCheck(getInfo('accid', $name, 'profilename'))." on the site
+		<hr/>";
 		if(!$m['name'] == "") {
 			echo "<b>Main Character:</b> ".$m['name']. "<br/>";
 		}
@@ -52,7 +52,7 @@ if(isset($_GET['name'])){
 			echo "<b>Age:</b> ".$p['age']."<br/>";
 		}
 		if(!empty($p['favjob'])) {
-			echo "<b>Favorite Job: </b>".$p['favjob']."<hr/>";
+			echo "<b>Favorite Job: </b>".$p['favjob']."<br/><br/>";
 		}
 		if(!empty($p['text'])) {
 			echo "	
@@ -64,7 +64,7 @@ if(isset($_GET['name'])){
 			echo "<a href=\"?base=ucp&amp;page=mail&amp;uc=$name\">Send me Mail &raquo;</a>";
 		}
 		if(isset($_SESSION['pname']) && $_GET['name'] == $_SESSION['pname']) {
-			echo "<hr/><a href=\"?base=ucp&page=profedit\">Edit Profile &raquo;</a>";
+			echo "<hr/><a href=\"?base=ucp&page=profedit\">Edit Profile &raquo;</a><hr/>";
 		}
 
 }elseif(@$_GET['action']=="search"){
