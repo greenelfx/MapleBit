@@ -3,7 +3,14 @@ if(isset($_SESSION['id'])){
 	if(@$_GET['fix'] == "unstuck"){
 		echo "<h2 class=\"text-left\">Move Character</h2><hr/>";
 		if(!isset($_POST['unstuck'])){
-			$s = $mysqli->query("SELECT * FROM characters WHERE accountid='".$_SESSION['id']."' ORDER BY id ASC") or die();
+			$seekmaps = $mysqli->query("SELECT jailmaps FROM ".$prefix."properties");
+			$getmaps = $seekmaps->fetch_assoc(); // Get array
+			if($getmaps['jailmaps'] == "") {
+				$s = $mysqli->query("SELECT * FROM characters WHERE accountid='".$_SESSION['id']."' ORDER BY id ASC") or die();
+			} else {
+				$mapid = explode("," , $getmaps['jailmaps']); // Convert array to string, exploding by comma.
+				$s = $mysqli->query("SELECT * FROM characters WHERE accountid='".$_SESSION['id']."' AND map NOT IN (".implode(",", $mapid).") ORDER BY id ASC") or die();
+			}
 			$counts = $s->num_rows;
 			if($counts >= 1) {
 				echo "

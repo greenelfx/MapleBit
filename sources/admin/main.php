@@ -113,8 +113,15 @@ if($_SESSION['id']){
   <div class="col-md-3">
   	<div class="well">
 	<a href="?base=main&amp;page=guildlist">View Guilds<br/>
-	<a href="?base=admin&amp;page=banned">View Banned Members</a><br/>
 	<a href="?base=admin&amp;page=gmlog">View GM Log</a>
+	</div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-3">
+  	<div class="well">
+		<a href="?base=admin&amp;page=banned">View Banned Members</a><br/>
+		<a href="?base=admin&page=bannedmaps">Edit Jailed Maps</a>
 	</div>
   </div>
 </div>
@@ -151,6 +158,8 @@ if($_SESSION['id']){
 				include('sources/admin/update.php');
 			}elseif($admin == "homeconfig"){
 				include('sources/admin/homeconfig.php');
+			}elseif($admin == "bannedmaps"){
+				include('sources/admin/bannedmaps.php');
 			}
 			else{header("Location: ?base=admin");}
 			if($admin!=""){
