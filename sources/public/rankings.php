@@ -2,10 +2,12 @@
 <hr/>
 <?php
 error_reporting(-1);
-$egetjob = $mysqli->real_escape_string(@$_GET['job']);
-$getjob = preg_replace("/[^A-Za-z0-9 ]/", '', $egetjob); # Escape and Strip
+if(isset($_GET['job'])) {
+	$egetjob = $mysqli->real_escape_string(@$_GET['job']);
+	$getjob = preg_replace("/[^A-Za-z0-9 ]/", '', $egetjob); # Escape and Strip
+}
 $dir = "/";
-if(@$getjob != NULL && ctype_alpha($getjob)) {
+if(isset($getjob) && $getjob != NULL) {
 	if($getjob == "beginner"){
 		$show = "AND c.job = 000";
 	}
@@ -39,24 +41,17 @@ if(@$getjob != NULL && ctype_alpha($getjob)) {
 }
 $estart = $mysqli->real_escape_string(@$_GET['start']);
 $start = intval(+preg_replace("/[^A-Za-z0-9 ]/", '', $estart)); # Escape and Strip and ensure it's a number
-
 $esearch = $mysqli->real_escape_string(@$_GET['search']);
 $search = preg_replace("/[^A-Za-z0-9 ]/", '', $esearch); # Escape and Strip
 if(isset($search)) {
-$esearch = $mysqli->real_escape_string(@$_POST['search']);
-$search = preg_replace("/[^A-Za-z0-9 ]/", '', $esearch); # Escape and Strip
+	$esearch = $mysqli->real_escape_string(@$_POST['search']);
+	$search = preg_replace("/[^A-Za-z0-9 ]/", '', $esearch); # Escape and Strip
 	$csearch = " AND c.name LIKE '".$search."%'";
 } else {
 	$csearch = "";
 }
-$order = $mysqli->real_escape_string(@$_GET['order']);
-if(@$order) {
-	$order = $order." DESC,";
-} else {
-		$order = "";
-		$result2 = $mysqli->query("SELECT c.name , c.job , c.level, c.reborns, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE c.gm < '$gmlevel' ".$show."".$csearch." GROUP BY c.id DESC ORDER BY reborns DESC, level DESC LIMIT $start, 15") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
-		$num_players = $result2->num_rows;
-}
+$result2 = $mysqli->query("SELECT c.name , c.job , c.level, c.reborns, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE c.gm < '$gmlevel' ".$show."".$csearch." GROUP BY c.id DESC ORDER BY reborns DESC, level DESC LIMIT $start, 15") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
+$num_players = $result2->num_rows;
 if(isset($search)){
 	$row_number = 0;
 	$int = 0;
@@ -86,7 +81,7 @@ echo "
 	</div>
 </div>
 <div class=\"col-md-5 col-md-offset-1\">
-	<form id='search_form' method='post' action='?base=main&page=rankings&amp;order=".isset($_POST['order'])."&amp;search'>
+	<form id='search_form' method='post' action='?base=main&page=rankings'>
 			<div style=\"float:right;\">
 			<div class=\"well well2\" style=\"margin-bottom:0px;\">
 				<div class=\"input-group\">			
