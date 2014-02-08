@@ -162,7 +162,7 @@ if(@$_GET['id']){
 				<b>Feedback:</b> ".$feedback."<br/>
 				<small>Posted ".ago($c['date']).", on ". date('M j, Y', $c['date'])."</small><br/>
 				<small>".$modify . $quote."<a href=\"#comment-link-".$c['id']."\" class=\"permalink\">Permalink</a><a href=\"?base=main&page=events&id=".$id."#comment-".$c['id']."\" class=\"permalinkshow linkid-".$c['id']."\">?base=main&page=events&id=".$id."#comment-".$c['id']."</a>".$pm."</small><hr/>
-				<div id=\"comment-".$c['id']."\">".$clean_comment."</div>
+				<div class=\"breakword\" id=\"comment-".$c['id']."\">".$clean_comment."</div>
 				</div>";
 		}
 	}
