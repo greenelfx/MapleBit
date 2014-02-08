@@ -1,3 +1,13 @@
+<?php
+if(isset($_GET['page'])){
+	$admin = $_GET['page'];
+}else{
+	$admin = "";
+}
+$settings = array("properties", "voteconfig", "nxpacks", "bannedmaps", "theme", "banner", "background");
+$content = array("homeconfig", "mannews", "manevent", "pages");
+$users = array("ticket", "banned", "muteuser", "unmuteuser");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -87,26 +97,26 @@ function goBack() {window.history.back()}
                 <ul class="nav nav-pills nav-stacked">
 					<li>
 						<a href="#" data-toggle="collapse" data-target="#menu1">
-						Site Settings <i class="fa fa-chevron-right"></i>
+						Site Settings <i class="fa fa-chevron-<?php echo (in_array($admin, $settings)) ? 'down' : 'right'; ?>"></i>
                         </a>
 					</li>
-					<ul class="nav nav-pills nav-stacked collapse" id="menu1">
-						<li><a href="?base=admin&amp;page=properties"><i class="fa fa-cogs"></i> Site Configuration</a></li>
-						<li><a href="?base=admin&amp;page=voteconfig"><i class="fa fa-arrow-circle-o-up"></i> Vote Configuration</a></li>
-						<li><a href="?base=admin&amp;page=nxpacks"><i class="fa fa-shopping-cart"></i> NX Packs</a></li>
-						<li><a href="?base=admin&page=bannedmaps"><i class="fa fa-ban"></i> Jailed Maps</a></li>
-						<li><a href="?base=admin&amp;page=theme"><i class="fa fa-eye"></i> Theme</a></li>
-						<li><a href="?base=admin&amp;page=banner"><i class="fa fa-eye"></i> Banner</a></li>
-						<li><a href="?base=admin&amp;page=background"><i class="fa fa-eye"></i> Background</a></li>
+					<ul class="nav nav-pills nav-stacked collapse <?php echo (in_array($admin, $settings)) ? 'in' : ''; ?>" id="menu1">
+						<li <?php echo ($admin == "properties") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=properties"><i class="fa fa-cogs"></i> Site Configuration</a></li>
+						<li <?php echo ($admin == "voteconfig") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=voteconfig"><i class="fa fa-arrow-circle-o-up"></i> Vote Configuration</a></li>
+						<li <?php echo ($admin == "nxpacks") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=nxpacks"><i class="fa fa-shopping-cart"></i> NX Packs</a></li>
+						<li <?php echo ($admin == "bannedmaps") ? 'class="active"' : ''; ?>><a href="?base=admin&page=bannedmaps"><i class="fa fa-ban"></i> Jailed Maps</a></li>
+						<li <?php echo ($admin == "theme") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=theme"><i class="fa fa-eye"></i> Theme</a></li>
+						<li <?php echo ($admin == "banner") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=banner"><i class="fa fa-eye"></i> Banner</a></li>
+						<li <?php echo ($admin == "background") ? 'class = "active"' : ''; ?>><a href="?base=admin&amp;page=background"><i class="fa fa-eye"></i> Background</a></li>
 					</ul>
 					<li>
 						<a href="#" data-toggle="collapse" data-target="#menu2">
-							Manage Content <i class="fa fa-chevron-right"></i>
+							Manage Content <i class="fa fa-chevron-<?php echo (in_array($admin, $content)) ? 'down' : 'right'; ?>"></i>
 						</a>
 					</li>
-					<ul class="nav nav-pills nav-stacked collapse" id="menu2">
-						<li><a href="?base=admin&amp;page=homeconfig"><i class="fa fa-home"></i> Home Content</a></li>
-						<li class="dropdown">
+					<ul class="nav nav-pills nav-stacked collapse <?php echo (in_array($admin, $content)) ? 'in' : ''; ?>" id="menu2">
+						<li <?php echo ($admin == "homeconfig") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=homeconfig"><i class="fa fa-home"></i> Home Content</a></li>
+						<li class="dropdown <?php echo ($admin == "mannews") ? 'active' : ''; ?>">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-pencil"></i> News <span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li><a href="?base=admin&amp;page=mannews&amp;action=add">Add News</a></li>
@@ -114,7 +124,7 @@ function goBack() {window.history.back()}
 								<li><a href="?base=admin&amp;page=mannews&amp;action=del">Delete News</a></li>
 							</ul>
 						</li>
-						<li class="dropdown">
+						<li class="dropdown <?php echo ($admin == "manevent") ? 'active' : ''; ?>">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-pencil"></i> Events <span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li><a href="?base=admin&amp;page=manevent&amp;action=add">Add Event</a></li>
@@ -123,7 +133,7 @@ function goBack() {window.history.back()}
 							</ul>
 						</li>
 						<li><a href="?base=gmcp"><i class="fa fa-pencil"></i> GM Blogs</a> </li>
-						<li class="dropdown">
+						<li class="dropdown <?php echo ($admin == "pages") ? 'active' : ''; ?>">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-file-text"></i> Pages <span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li><a href="?base=admin&amp;page=pages&amp;action=add">Add Page</a></li>
@@ -134,14 +144,14 @@ function goBack() {window.history.back()}
 					</ul>
 					<li>
 						<a href="#" data-toggle="collapse" data-target="#menu3">
-							Manage Users <i class="fa fa-chevron-right"></i>
+							Manage Users <i class="fa fa-chevron-<?php echo (in_array($admin, $users)) ? 'down' : 'right'; ?>"></i>
 						</a>
 					</li>
-					<ul class="nav nav-pills nav-stacked collapse" id="menu3">
-						<li><a href="?base=admin&amp;page=ticket"><i class="fa fa-ticket"></i> View Tickets</a></li>
-						<li><a href="?base=admin&amp;page=banned"><i class="fa fa-ban"></i> Banned Users</a></li>
-						<li><a href="?base=admin&amp;page=muteuser"><i class="fa fa-microphone-slash"></i> Mute User</a></li>
-						<li><a href="?base=admin&amp;page=unmuteuser"><i class="fa fa-microphone"></i> Unmute User</a></li>
+					<ul class="nav nav-pills nav-stacked collapse <?php echo (in_array($admin, $users)) ? 'in' : ''; ?> " id="menu3">
+						<li <?php echo ($admin == "ticket") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=ticket"><i class="fa fa-ticket"></i> View Tickets</a></li>
+						<li <?php echo ($admin == "banned") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=banned"><i class="fa fa-ban"></i> Banned Users</a></li>
+						<li <?php echo ($admin == "muteuser") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=muteuser"><i class="fa fa-microphone-slash"></i> Mute User</a></li>
+						<li <?php echo ($admin == "unmuteuser") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=unmuteuser"><i class="fa fa-microphone"></i> Unmute User</a></li>
 					</ul>
                 </ul>
 				<hr/>

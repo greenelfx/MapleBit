@@ -1,9 +1,4 @@
 <?php 
-if(isset($_GET['page'])){
-	$admin = $_GET['page'];
-}else{
-	$admin = "";
-}
 if($_SESSION['id']){
 	if($_SESSION['admin']){
 		if($getbase == "admin"){
