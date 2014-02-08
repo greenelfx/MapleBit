@@ -1,7 +1,6 @@
 <?php 
 if(isset($_GET['page'])){
 	$admin = $_GET['page'];
-	include("sources/structure/header.php");
 }else{
 	$admin = "";
 }
@@ -9,121 +8,111 @@ if($_SESSION['id']){
 	if($_SESSION['admin']){
 		if($getbase == "admin"){
 			if($admin == ""){
-				include("sources/structure/admin_header.php");
-				if (extension_loaded('openssl')) {
-					$opts = array(
-						'http'=>array(
-						'method'=>"GET",
-						'header'=>"User-Agent: maplebit"
-						)
-					);
-					$context = stream_context_create($opts);
-					#$current_commits = file_get_contents("https://api.github.com/repos/greenelf/maplebit/commits", false, $context);
-					$current_tags = file_get_contents("https://api.github.com/repos/greenelf/maplebit/tags", false, $context);
-					if ($current_tags !== false) {
-						#$commits = json_decode($current_commits);
-						$tags = json_decode($current_tags);
-						#$ref_commit = "7350dcac3e5d3bb7fede63e4e5cfff3852bcc9df";
-						$ref_tag = "v1.03";
-						#$current_commit_minus1 = $commits[1]->sha;
-						$current_tag = $tags[0]->name;
-						#$commit_message = $commits[0]->commit->message;
-						if ($current_tag == $ref_tag) {
-							$alert_class = "success";
-							$version_message = "<b>MapleBit is up to date.</b>";
+				$getcomments = $mysqli->query("SELECT * FROM ".$prefix."ncomments, ".$prefix."bcomments, ".$prefix."ecomments LIMIT 10"); // not actually latest
+				$gettime = $mysqli->query("SELECT githubapi FROM ".$prefix."properties")->fetch_assoc();
+				$time = time();
+				if($gettime['githubapi'] == "" || $gettime['githubapi'] >= $time+21600) {
+					$time = $time + 21600;
+					if (extension_loaded('openssl')) {
+						$opts = array(
+							'http'=>array(
+							'method'=>"GET",
+							'header'=>"User-Agent: maplebit"
+							)
+						);
+						$context = stream_context_create($opts);
+						$current_tags = file_get_contents("https://api.github.com/repos/greenelf/maplebit/tags", false, $context);
+						if ($current_tags !== false) {
+							$tags = json_decode($current_tags);
+							$ref_tag = "v1.03";
+							$current_tag = $tags[0]->name;
+							if ($current_tag == $ref_tag) {
+								$alert_class = "success";
+								$version_message = "<b>MapleBit is up to date.</b>";
+								$status = 0;
+							} else {
+								$alert_class = "info";
+								$version_message = "<a href=\"https://github.com/greenelf/MapleBit\" class=\"alert-link\">Update Available &raquo;</a>";
+								$status = 1;
+							}
 						} else {
-							$alert_class = "info";
-							$version_message = "<a href=\"https://github.com/greenelf/MapleBit\" class=\"alert-link\">Update Available &raquo;</a>";
-						}
-					} else {
 							$alert_class = "danger";
 							$version_message = "Can't get MapleBit update status.";
+							$status = 2;
+						}
+					} else {
+						$alert_class = "danger";
+						$version_message = "Enable openssl by right clicking wamp, then PHP, and then scroll down to php_openssl";
+						$status = 2;
 					}
+					$mysqli->query("UPDATE ".$prefix."properties SET status = '".$status."', githubapi = '". $time ."'");
 				} else {
-					$alert_class = "danger";
-					$version_message = "Enable openssl by right clicking wamp, then PHP, and then scroll down to php_openssl";
+					$getstatus = $mysqli->query("SELECT status FROM ".$prefix."properties")->fetch_assoc();
+					if($getstatus['status'] == 0) {
+						$alert_class = "success";
+						$version_message = "<b>MapleBit is up to date.</b>";
+					}
+					elseif($getstatus['status'] == 1){
+						$alert_class = "info";
+						$version_message = "<a href=\"https://github.com/greenelf/MapleBit\" class=\"alert-link\">Update Available &raquo;</a>";
+					}
+					elseif($getstatus['status'] == 2){
+						$alert_class = "danger";
+						$version_message = "Can't get MapleBit update status.";
+					}
+					else {
+						$alert_class = "danger";
+						$version_message = "Enable openssl by right clicking wamp, then PHP, and then scroll down to php_openssl";
+					}
+				
 				}
+				require_once 'assets/libs/HTMLPurifier.standalone.php';
+				$commentconfig = HTMLPurifier_Config::createDefault();
+				$commentconfig->set('HTML.Allowed', 'b, u, s, i'); 
+				$commentpurifier = new HTMLPurifier($commentconfig);
 ?>
-<div class="col-md-8">
-	<div class="jumbotron">
-			<h1>Welcome Back!</h1>
-			<p>Hey there, <?php echo $name; ?>! You can use the links below to manage your website configuration, users, reports, and more!</p>
+
+	<h2 class="text-left">Admin Home</h2>
+	<hr>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="jumbotron">
+					<h1>Welcome Back!</h1>
+					<p>Hey there, <?php echo $name; ?>! You can use the links below to manage your website configuration, users, reports, and more!</p>
+			</div>
+			<hr/>
+			<h2 class="text-left">Recent Comments</h2><br/>
+			<ul class="list-group">
+			<?php
+			while($comments = $getcomments->fetch_assoc()) {
+			$clean_comment = $commentpurifier->purify($comments['comment']);
+			if($comments['feedback'] == 0){
+				$icon = "smile"; 
+			}
+			elseif($comments['feedback'] == 1){
+				$icon = "frown"; 
+			}
+			if($comments['feedback'] == 2){
+				$icon = "meh"; 
+			}
+				echo "<li class=\"list-group-item\"><i class=\"fa fa-".$icon."-o\"></i>&nbsp;<a href=\"#\">" . $comments['author'] . ": ".substr($clean_comment, 0, 50)."</a></li>";
+			}
+			?>
+			</ul>
+			<hr/>
+		</div>
+		<div class="col-md-6">
+			<div class="well">
+				Welcome to the MapleBit Administration Panel.<br/>Please report any bugs and quirks to greenelf!
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="alert alert-<?php echo $alert_class; ?>">
+				<h2 style="margin: 0px;">MapleBit Status</h2><hr/>
+				<?php echo $version_message; ?>
+			</div>
+		</div>
 	</div>
-</div>
-<div class="col-md-4">
-	<div class="well">
-		Welcome to the MapleBit Administration Panel.<br/>Please report any bugs and quirks to greenelf!
-	</div>
-	<div class="alert alert-<?php echo $alert_class; ?>">
-		<h2 style="margin: 0px;">MapleBit Status</h2><hr/>
-		<?php echo $version_message; ?>
-	</div>
-</div>
-</div>
-<div class="row">
-  <div class="col-md-3">
-	<div class="well">
-		<a href="?base=admin&page=mannews&amp;action=add"><b>Add News &raquo;</b></a><br/>
-		<a href="?base=admin&page=mannews&amp;action=edit">Edit News</a><br/>
-		<a href="?base=admin&page=mannews&amp;action=del">Delete News</a>
-	</div>
-  </div>
-  <div class="col-md-3 ">
-	<div class="well">
-		<a href="?base=admin&amp;page=manevent&amp;action=add"><b>Add Event &raquo;</b></a><br/>
-        <a href="?base=admin&amp;page=manevent&amp;action=edit">Edit Event</a><br/>
-        <a href="?base=admin&amp;page=manevent&amp;action=del">Delete Event</a>
-	</div>
-  </div>
-  <div class="col-md-3">
-  	<div class="well">
-		<a href="?base=admin&amp;page=pages&amp;action=add"><b>Add Page &raquo;</b></a><br/>
-		<a href="?base=admin&amp;page=pages&amp;action=edit">Edit Page</a><br/>
-		<a href="?base=admin&amp;page=pages&amp;action=del">Delete Page</a>
-	</div>
-  </div>
-  <div class="col-md-3">
-  	<div class="well">
-		<a href="?base=admin&amp;page=homeconfig"><b>Edit Home Content &raquo;</b></a><br/>
-	</div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-3">
-	<div class="well">
-		<a href="?base=admin&amp;page=properties">Edit Site Configuration</a><br/>
-		<a href="?base=admin&amp;page=voteconfig">Edit Vote Configuration</a><br/>
-		<a href="?base=admin&amp;page=nxpacks">Add NX Packages</a>
-	</div>
-  </div>
-  <div class="col-md-3 ">
-	<div class="well">
-	<a href="?base=admin&amp;page=theme">Edit Theme</a><br/>
-	<a href="?base=admin&amp;page=banner">Add Banner</a><br/>
-	<a href="?base=admin&amp;page=background">Add Background</a>
-	</div>
-  </div>
-  <div class="col-md-3">
-  	<div class="well">
-	<a href="?base=admin&amp;page=muteuser">Mute User</a><br/>
-	<a href="?base=admin&amp;page=unmuteuser">Unmute User</a><br/>
-	<a href="?base=admin&amp;page=ticket">Manage Tickets</a>
-	</div>
-  </div>
-  <div class="col-md-3">
-  	<div class="well">
-	<a href="?base=main&amp;page=guildlist">View Guilds<br/>
-	<a href="?base=admin&amp;page=gmlog">View GM Log</a>
-	</div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-3">
-  	<div class="well">
-		<a href="?base=admin&amp;page=banned">View Banned Members</a><br/>
-		<a href="?base=admin&page=bannedmaps">Edit Jailed Maps</a>
-	</div>
-  </div>
 </div>
 <?php
 			}elseif($admin == "voteconfig"){
@@ -163,6 +152,7 @@ if($_SESSION['id']){
 			}
 			else{header("Location: ?base=admin");}
 			if($admin!=""){
+			echo "<hr/>";
 			include("sources/structure/footer.php");
 			}
 		}else{
