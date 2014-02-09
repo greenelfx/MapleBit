@@ -3,7 +3,7 @@ if($_SESSION['id']){
 	if($_SESSION['admin']){
 		if($getbase == "admin"){
 			if($admin == ""){
-				$getcomments = $mysqli->query("SELECT * FROM ".$prefix."ncomments, ".$prefix."bcomments, ".$prefix."ecomments LIMIT 10"); // not actually latest
+				$getcomments = $mysqli->query("SELECT author, feedback, date, comment FROM ".$prefix."bcomments UNION ALL SELECT author, feedback, date, comment FROM ".$prefix."ncomments UNION ALL SELECT author, feedback, date, comment FROM ".$prefix."ecomments");
 				$gettime = $mysqli->query("SELECT githubapi FROM ".$prefix."properties")->fetch_assoc();
 				$time = time();
 				if($gettime['githubapi'] == "" || $gettime['githubapi'] >= $time+21600) {
@@ -82,15 +82,18 @@ if($_SESSION['id']){
 			while($comments = $getcomments->fetch_assoc()) {
 			$clean_comment = $commentpurifier->purify($comments['comment']);
 			if($comments['feedback'] == 0){
-				$icon = "smile"; 
+				$feedback = "<span class=\"positive_comment\">Positive</span>";
 			}
 			elseif($comments['feedback'] == 1){
-				$icon = "frown"; 
+				$feedback = "<span class=\"neutral_comment\">Neutral</span>";
 			}
 			if($comments['feedback'] == 2){
-				$icon = "meh"; 
+				$feedback = "<span class=\"negative_comment\">Negative</span>";
 			}
-				echo "<li class=\"list-group-item\"><i class=\"fa fa-".$icon."-o\"></i>&nbsp;<a href=\"#\">" . $comments['author'] . ": ".substr($clean_comment, 0, 50)."</a></li>";
+				echo "<li class=\"list-group-item\">
+					<a href=\"?base=main&page=members&name=" . $comments['author'] . "\">" . $comments['author'] . "</a> - ".$feedback." - Posted ".ago($comments['date']).".<br/>
+					".$clean_comment."
+					</li>";
 			}
 			?>
 			</ul>
