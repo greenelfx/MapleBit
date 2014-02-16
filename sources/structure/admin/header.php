@@ -6,7 +6,7 @@ if(isset($_GET['page'])){
 }
 $settings = array("properties", "voteconfig", "nxpacks", "bannedmaps", "theme", "banner", "background");
 $content = array("homeconfig", "mannews", "manevent", "pages");
-$users = array("ticket", "banned", "muteuser", "unmuteuser");
+$users = array("manageaccounts", "ticket", "banned");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -144,14 +144,13 @@ function goBack() {window.history.back()}
 					</ul>
 					<li>
 						<a href="#" data-toggle="collapse" data-target="#menu3">
-							Manage Users <i class="fa fa-chevron-<?php echo (in_array($admin, $users)) ? 'down' : 'right'; ?>"></i>
+							Manage Community <i class="fa fa-chevron-<?php echo (in_array($admin, $users)) ? 'down' : 'right'; ?>"></i>
 						</a>
 					</li>
 					<ul class="nav nav-pills nav-stacked collapse <?php echo (in_array($admin, $users)) ? 'in' : ''; ?> " id="menu3">
+						<li <?php echo ($admin == "manageaccounts") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=manageaccounts"><i class="fa fa-user"></i> Manage Accounts</a></li>
 						<li <?php echo ($admin == "ticket") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=ticket"><i class="fa fa-ticket"></i> View Tickets</a></li>
 						<li <?php echo ($admin == "banned") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=banned"><i class="fa fa-ban"></i> Banned Users</a></li>
-						<li <?php echo ($admin == "muteuser") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=muteuser"><i class="fa fa-microphone-slash"></i> Mute User</a></li>
-						<li <?php echo ($admin == "unmuteuser") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=unmuteuser"><i class="fa fa-microphone"></i> Unmute User</a></li>
 					</ul>
                 </ul>
 				<hr/>
