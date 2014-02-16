@@ -147,8 +147,8 @@ if($_SESSION['id']){
 				include('sources/admin/homeconfig.php');
 			}elseif($admin == "bannedmaps"){
 				include('sources/admin/bannedmaps.php');
-			}elseif($admin == "manuser"){
-				include('sources/admin/manage-user.php');
+			}elseif($admin == "manageaccounts"){
+				include('sources/admin/manage-accounts.php');
 			}
 			else{header("Location: ?base=admin");}
 			if($admin!=""){
