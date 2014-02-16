@@ -1,4 +1,5 @@
-<?php 
+<?php
+session_start();
 echo '
 <!DOCTYPE html>
 <html lang="en">
@@ -559,7 +560,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 			}
 		}
 		elseif(isset($_POST['myself'])) {
-			echo "<meta http-equiv=\"refresh\" content=\"0; url=?install=done\" />";
+			echo "<meta http-equiv=\"refresh\" content=\"0; url=?install=6\" />";
 		}
 		else {
 		echo "For the rankings to work, you need the GD archive to be extracted. This can take some time. Go to assets/img/GD and extract the .zip archive.
@@ -569,8 +570,40 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 		</form>";
 		}
 		break;
+		case 6:
+		include('../database.php');
+		echo "
+		<h4>Create Administrator Account</h4>
+		<hr/>";
+		if(!isset($_POST['submit'])){
+		echo "
+			<form method=\"post\" action=\"\" role=\"form\">
+			<div class=\"form-group\">
+				<label for=\"accName\">Your Account Name</label>
+				<input name=\"accname\" type=\"text\" class=\"form-control\" id=\"accName\" placeholder=\"Username\" required/>
+			</div>
+			<input name=\"submit\" type=\"submit\" value=\"Submit &raquo;\" class=\"btn btn-primary btn-lg\" style=\"float:right\"/>
+			<br/><br/>
+			</form>
+			";
+		} else {
+			$name = $mysqli->real_escape_string($_POST['accname']);
+			$getaccount = $mysqli->query("SELECT * from accounts WHERE name = '".$name."'");
+			$count = $getaccount->num_rows;
+			if($count == 1) {
+				$mysqli->query("UPDATE accounts SET webadmin = 1 WHERE name = '".$name."'");
+				echo "<meta http-equiv=\"refresh\" content=\"0; url=?install=done\" />";
+				$_SESSION['flash'] = "<div class=\"alert alert-success\">".$name." is now a web administrator</div>";
+			}
+			else {
+				echo "<div class=\"alert alert-danger\">Invalid account.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+			}
+		
+		}
+		break;
 		case "done":
 			echo "<h4>Woohoo! You're done installing MapleBit!</h4>
+			".$_SESSION['flash']."
 			<hr/>
 				<form action=\"../../../?cype=main\" method=\"post\">
 					<input type=\"submit\" class=\"btn btn-success btn-lg\" value=\"Ok, let's go! &raquo;\" style=\"float:right;\"/><br/><br/>
@@ -579,6 +612,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 			$fp = fopen("installdone.txt","wb");
 			fwrite($fp,$content);
 			fclose($fp);
+			session_destroy();
 			break;
 	}
 }
