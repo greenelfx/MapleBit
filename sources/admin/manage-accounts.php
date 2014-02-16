@@ -22,7 +22,7 @@ if(isset($_SESSION['id'])){
 				$page = $mysqli->real_escape_string($_GET['p']);
 			}
 			else {
-				redirect("?base=admin&page=manuser&p=1");
+				redirect("?base=admin&page=manageaccounts&p=1");
 			}
 			$start = ($page - 1) * $per_page;
 
@@ -41,7 +41,7 @@ if(isset($_SESSION['id'])){
 				$status = "<span class=\"label label-warning\">Unknown</span>";
 			}
 				echo "<tr>
-					<td><a href=\"?base=admin&amp;page=manuser&amp;action=view&amp;user=".$row['name']."\">".$row['name']."</td>
+					<td><a href=\"?base=admin&amp;page=manageaccounts&amp;action=view&amp;user=".$row['name']."\">".$row['name']."</td>
 					<td>".$row['email']."</td>
 					<td>".$row['gm']."</td>
 					<td>".$row[$colnx]."</td>
@@ -67,7 +67,7 @@ if(isset($_SESSION['id'])){
 				} else{
 					echo "<li>";
 				}
-				echo "<a href=\"?base=admin&amp;page=manuser&amp;p=".$x."\">".$x."</a></li>";
+				echo "<a href=\"?base=admin&amp;page=manageaccounts&amp;p=".$x."\">".$x."</a></li>";
 			  }
 			}
 			echo "</ul>
@@ -93,9 +93,14 @@ if(isset($_SESSION['id'])){
 					}
 					
 					if($row['webadmin'] == 1) {
-						$checked = "checked";
+						$webchecked = "checked";
 					} else {
-						$checked = "";
+						$webchecked = "";
+					}
+					if($row['mute'] > 0) {
+						$mutechecked = "checked";
+					} else {
+						$mutechecked = "";
 					}
 					echo "<h2 class=\"text-left\">Viewing ".$user."</h2><hr/>";
 					if(!isset($_POST['submit'])) {
@@ -127,33 +132,73 @@ if(isset($_SESSION['id'])){
 							<div class=\"form-group\">
 								<div class=\"checkbox\">
 									<label>
-										<input type=\"checkbox\" name=\"webadmin\" ".$checked." value=\"1\"> Web Administrator
+										<input type=\"checkbox\" name=\"webadmin\" ".$webchecked."> Web Administrator
+									</label>
+								</div>
+							</div>
+							<div class=\"form-group\">
+								<div class=\"checkbox\">
+									<label>
+										<input type=\"checkbox\" name=\"mute\" ".$mutechecked."> Muted
 									</label>
 								</div>
 							</div>
 							<button class=\"btn btn-primary\" name=\"submit\" type=\"submit\">Edit User &raquo;</button>
 						</form>";
 					} else {
-						$email = $mysqli->real_escape_string(strip_tags($_POST["email"]));
+						if(empty($_POST["email"])) {
+							echo "<div class=\"alert alert-danger\">You must enter an email!</div>";
+							$err = 1;
+						}
+						else {
+							$email = $mysqli->real_escape_string(strip_tags($_POST["email"]));
+						}
+						if(empty($_POST["nx"]) || !is_numeric($_POST["nx"])) {
+							echo "<div class=\"alert alert-danger\">You must enter an integer for NX!</div>";
+							$err = 1;
+						}
+						else {
+							$nx = $mysqli->real_escape_string(strip_tags($_POST["nx"]));
+						}
+						if(empty($_POST["vp"]) || !is_numeric($_POST["vp"])) {
+							echo "<div class=\"alert alert-danger\">You must enter an integer for Vote Points!</div>";
+							$err = 1;
+						}
+						else {
+							$vp = $mysqli->real_escape_string(strip_tags($_POST["vp"]));
+						}
+						if(!is_numeric($_POST["gm"])) {
+							echo "<div class=\"alert alert-danger\">You must enter an integer for the GM Level</div>";
+							$err = 1;
+						}
+						else {
+							$gm = $mysqli->real_escape_string(strip_tags($_POST["gm"]));
+						}
 						$password = $mysqli->real_escape_string(strip_tags($_POST["password"]));
-						$nx = $mysqli->real_escape_string(strip_tags($_POST["nx"]));
-						$vp = $mysqli->real_escape_string(strip_tags($_POST["vp"]));
-						$gm = $mysqli->real_escape_string(strip_tags($_POST["gm"]));
 						if(isset($_POST['webadmin'])){
 							$webadmin = 1;
 						}
 						else {
 							$webadmin = 0;
 						}
-						if($_POST['password'] == "") {
-							$mysqli->query("UPDATE accounts SET email = '".$email."', ".$colnx." = '".$nx."', ".$colvp." = '".$vp."', gm = '".$gm."', webadmin = '".$webadmin."' WHERE name = '".$user."'");
-							echo "<div class=\"alert alert-success\">".$user." successfully edited</div>";
-							redirect_wait5("?base=admin&page=manuser&action=view&user=".$user."");
+						if(isset($_POST['mute'])){
+							$muted = 1;
 						}
 						else {
-							$mysqli->query("UPDATE accounts SET password = '".$password."', email = '".$email."', ".$colnx." = '".$nx."', ".$colvp." = '".$vp."', gm = '".$gm."', webadmin = '".$webadmin."' WHERE name = '".$user."'");
+							$muted = 0;
+						}
+						if(isset($err)){
+							echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+						}
+						if($_POST['password'] == "" && !isset($err)) {
+							$mysqli->query("UPDATE accounts SET email = '".$email."', ".$colnx." = '".$nx."', ".$colvp." = '".$vp."', gm = '".$gm."', webadmin = '".$webadmin."', mute = '".$muted."' WHERE name = '".$user."'");
 							echo "<div class=\"alert alert-success\">".$user." successfully edited</div>";
-							redirect_wait5("?base=admin&page=manuser&action=view&user=".$user."");
+							redirect_wait5("?base=admin&page=manageaccounts&action=view&user=".$user."");
+						}
+						elseif(!isset($err)) {
+							$mysqli->query("UPDATE accounts SET password = '".$password."', email = '".$email."', ".$colnx." = '".$nx."', ".$colvp." = '".$vp."', gm = '".$gm."', webadmin = '".$webadmin."', mute = '".$muted."' WHERE name = '".$user."'");
+							echo "<div class=\"alert alert-success\">".$user." successfully edited</div>";
+							redirect_wait5("?base=admin&page=manageaccounts&action=view&user=".$user."");
 						}					
 					}
 				}
@@ -161,14 +206,14 @@ if(isset($_SESSION['id'])){
 					echo "
 					<h2 class=\"text-left\">Error</h2><hr/>
 					<div class=\"alert alert-danger\">This user doesn't exist!</div>";
-					redirect_wait5("?base=admin&page=manuser");
+					redirect_wait5("?base=admin&page=manageaccounts");
 				}
 			}
 		} else {
-			redirect("?base");
+			redirect("?base=admin");
 		}
 	}
 }else{
-	redirect("?base");
+	redirect("?base=main");
 }
 ?>
