@@ -576,12 +576,15 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 		<h4>Create Administrator Account</h4>
 		<hr/>";
 		if(!isset($_POST['submit'])){
+		$_SESSION['flash'] = "";
 		echo "
 			<form method=\"post\" action=\"\" role=\"form\">
 			<div class=\"form-group\">
 				<label for=\"accName\">Your Account Name</label>
 				<input name=\"accname\" type=\"text\" class=\"form-control\" id=\"accName\" placeholder=\"Username\" required/>
 			</div>
+			<hr/>
+			<a href=\"?install=done\" class=\"btn btn-lg btn-info\" style=\"float:left\">Skip &raquo;</a>
 			<input name=\"submit\" type=\"submit\" value=\"Submit &raquo;\" class=\"btn btn-primary btn-lg\" style=\"float:right\"/>
 			<br/><br/>
 			</form>
