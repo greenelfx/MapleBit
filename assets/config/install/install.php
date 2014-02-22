@@ -189,19 +189,15 @@ CREATE TABLE `".$prefix."properties` (
   `gmlevel` int(11) NOT NULL DEFAULT '1',
   `theme` text NOT NULL,
   `nav` text NOT NULL,
-  `gnx` INT(11) UNSIGNED NOT NULL DEFAULT 10,
-  `gvp` INT(11) UNSIGNED NOT NULL DEFAULT 1,
   `colnx` TEXT NOT NULL,
   `colvp` TEXT NOT NULL,
-  `vtime` INT(11) UNSIGNED NOT NULL DEFAULT 21600,
-  `vlink` TEXT NOT NULL,
   `homecontent` text,
   `jailmaps` text,
   `githubapi` INT(12) DEFAULT NULL,
   `status` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-INSERT INTO ".$prefix."properties (version, theme, nav, colnx, colvp, vlink, homecontent) VALUES (83, 'cerulean', 0, 'paypalNX', 'votepoints', 'http://www.gtop100.com/maplestory', 'Admins: Click here to edit');
+INSERT INTO ".$prefix."properties (version, theme, nav, colnx, colvp, homecontent) VALUES (83, 'cerulean', 0, 'paypalNX', 'votepoints', 'Admins: Double click here to edit');
 
 DROP TABLE IF EXISTS `".$prefix."pages`;
 CREATE TABLE `".$prefix."pages` (
@@ -260,14 +256,14 @@ CREATE TABLE `".$prefix."buynx` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
-DROP TABLE IF EXISTS `".$prefix."pcomments`;
- CREATE TABLE `".$prefix."pcomments` (
+DROP TABLE IF EXISTS `".$prefix."vote`;
+CREATE TABLE `".$prefix."vote` (
 `id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
-`accountid` INT( 10 ) NOT NULL ,
-`commenter` VARCHAR( 16 ) NOT NULL ,
-`feedback` INT( 1 ) NOT NULL ,
-`date` VARCHAR( 32 ) NOT NULL ,
-`comment` TEXT NOT NULL ,
+`name` VARCHAR(45) NOT NULL,
+`link` TEXT NOT NULL ,
+`gnx` INT(11) UNSIGNED NOT NULL DEFAULT 10,
+`gvp` INT(11) UNSIGNED NOT NULL DEFAULT 1,
+`waittime` INT(11) UNSIGNED NOT NULL DEFAULT 21600,
 PRIMARY KEY ( `id` )
 ) ENGINE = MYISAM ;
 
@@ -369,11 +365,13 @@ CREATE TABLE ".$prefix."gdcache (
 
 DROP TABLE IF EXISTS `".$prefix."votingrecords`;
 CREATE TABLE `".$prefix."votingrecords` ( 
-  `ip` varchar(30) NOT NULL DEFAULT '0', 
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(30) NOT NULL DEFAULT '0',
+  `siteid` int(11) DEFAULT NULL,
   `account` varchar(13) NOT NULL DEFAULT '0', 
   `date` int(11) NOT NULL DEFAULT '0', 
   `times` bigint(20) unsigned NOT NULL DEFAULT '0', 
-  PRIMARY KEY (`ip`) 
+  PRIMARY KEY (`id`) 
 ) ENGINE=MYISAM;"
 );
 echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
@@ -385,7 +383,6 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				$sclient = $mysqli->real_escape_string(stripslashes($_POST['client']));
 				$sserver = $mysqli->real_escape_string(stripslashes($_POST['setup']));
 				$sforumurl = $mysqli->real_escape_string(stripslashes($_POST['forumurl']));
-				$svote = $mysqli->real_escape_string(stripslashes($_POST['vote']));
 				$sexp = $mysqli->real_escape_string(stripslashes($_POST['exprate']));
 				$smeso = $mysqli->real_escape_string(stripslashes($_POST['mesorate']));
 				$sdrop = $mysqli->real_escape_string(stripslashes($_POST['droprate']));
@@ -417,13 +414,6 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				if($stop == "false"){
 					if(empty($sforumurl)){
 						echo '<div class="alert alert-danger">You need to enter a forum URL. If you don&apos; have one, just put a &apos;#&apos; in the text box.</div>';
-						$stop = "true";
-						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
-					}
-				}
-				if($stop == "false"){
-					if(empty($svote)){
-						echo '<div class="alert alert-danger">Enter a voting link. If you are unsure, put a &apos;#&apos; in the text box.</div>';
 						$stop = "true";
 						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}
@@ -471,7 +461,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 					}
 				}
 				if($stop == "false"){
-					$mysqli->query("UPDATE ".$prefix."properties SET name='$sservername', type = '$sservertype', client='$sclient', server = '$sserver', version='$sversion', forumurl='$sforumurl', siteurl='$ssiteurl', vlink='$svote', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', gmlevel = '$sgmlevel', flood='1', floodint='5', theme='cerulean', nav='0', pcap='100'");
+					$mysqli->query("UPDATE ".$prefix."properties SET name='$sservername', type = '$sservertype', client='$sclient', server = '$sserver', version='$sversion', forumurl='$sforumurl', siteurl='$ssiteurl', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', gmlevel = '$sgmlevel', flood='1', floodint='5', theme='cerulean', nav='0', pcap='100'");
 					echo "Working...";
 					echo "<meta http-equiv=\"refresh\" content=\"1; url=?install=5\" />";
 				}
@@ -509,10 +499,6 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				<div class=\"form-group\">
 					<label for=\"forum\">Forum URL</label>
 					<input name=\"forumurl\" type=\"text\" maxlength=\"100\" class='form-control' id=\"forum\" placeholder=\"/forums\" required/>
-				</div>
-				<div class=\"form-group\">
-					<label for=\"vote\">Vote URL</label>
-					<input name=\"vote\" type=\"text\" maxlength=\"100\" class='form-control' id=\"vote\" placeholder=\"http://www.gtop100.com/maplestory\" required/>
 				</div>
 				<div class=\"form-group\">
 					<label for=\"expRate\">Experience Rate</label>

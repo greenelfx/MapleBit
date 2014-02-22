@@ -18,7 +18,7 @@ if($_SESSION['admin'] == 1) {
 					 <label class="radio"><input type="radio" name="theme" value="amelia" />Amelia <a href="http://www.bootswatch.com/amelia/" target="_blank"><i class="fa fa-external-link"></i></a></label>
 					 <label class="radio"><input type="radio" name="theme" value="cerulean" />Cerulean <a href="http://bootswatch.com/cerulean/" target="_blank"><i class="fa fa-external-link"></i></a></label>
 					 <label class="radio"><input type="radio" name="theme" value="cosmo" />Cosmo <a href="http://bootswatch.com/cosmo/" target="_blank"><i class="fa fa-external-link"></i></a></label>
-					 <label class="radio"><input type="radio" name="theme" value="cyborg" />Cyborg <a href="http://bootswatch.com/cybord/" target="_blank"><i class="fa fa-external-link"></i></a></label>
+					 <label class="radio"><input type="radio" name="theme" value="cyborg" />Cyborg <a href="http://bootswatch.com/cyborg/" target="_blank"><i class="fa fa-external-link"></i></a></label>
 					 <label class="radio"><input type="radio" name="theme" value="flatly" />Flatly <a href="http://bootswatch.com/flatly/" target="_blank"><i class="fa fa-external-link"></i></a></label>
 					 <label class="radio"><input type="radio" name="theme" value="journal" />Journal <a href="http://bootswatch.com/journal/" target="_blank"><i class="fa fa-external-link"></i></a></label>
 					 <label class="radio"><input type="radio" name="theme" value="readable" />Readable <a href="http://bootswatch.com/readable/" target="_blank"><i class="fa fa-external-link"></i></a></label>

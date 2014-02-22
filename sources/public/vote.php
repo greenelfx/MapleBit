@@ -2,35 +2,41 @@
 <?php
     $earnedpoints = false;
 	$insertnew = false; 
-    $time = $mysqli->real_escape_string(time());  
+    $time = time();  
 	$redirect = "";
-    $getaccount = $mysqli->real_escape_string(@$_POST['name']);  
-	$account = preg_replace("/[^A-Za-z0-9 ]/", '', $getaccount);
+	$account = $mysqli->real_escape_string(preg_replace("/[^A-Za-z0-9 ]/", '', @$_POST['name']));
+	$siteid = $mysqli->real_escape_string(@$_POST['votingsite']);
 	$checkacc = $mysqli->query("SELECT * FROM accounts WHERE name = '$account'");
 	$countcheckacc = $checkacc->num_rows;
 	if($countcheckacc == 0 && isset($_POST['submit'])) { $funct_error =  "This account doesn't exist!"; }
 	elseif ($account == '' && isset($_POST['submit'])) {$funct_error = 'You need to put in a username!';} 
+	elseif(empty($_POST['votingsite']) && isset($_POST['submit'])){
+		$funct_error = "Please select a voting site";
+	}
     elseif(isset($_POST['submit'])) { 
-        $result = $mysqli->query("SELECT *, SUM(times) as amount FROM ".$prefix."votingrecords WHERE NOT account='' AND NOT account='0' AND account='".$account."' OR ip='".$ipaddress."'") or die('Error - Could not look up vote record!');  
+        $result = $mysqli->query("SELECT *, SUM(times) as amount FROM ".$prefix."votingrecords WHERE NOT account='' AND NOT account='0' AND account='".$account."' AND siteid = '".$siteid."'") or die('Error - Could not look up vote record!');
         $row = $result->fetch_assoc();
-        $timecalc = $time - $row['date']; 
-
-        if ($row['amount'] == '' || $timecalc > $vtime) { 
+		$sitequery = $mysqli->query("SELECT * FROM ".$prefix."vote WHERE id = '".$siteid."'");
+		$vsite = $sitequery->fetch_assoc();
+		$gvp = $vsite['gvp'];
+		$gnx = $vsite['gnx'];
+        $timecalc = $time - $row['date'];
+        if ($row['amount'] == '' || $timecalc > $vsite['waittime']) { 
             if($row['amount'] == '') { 
-                $result = $mysqli->query("INSERT INTO ".$prefix."votingrecords (ip, account, date, times) VALUES ('".$ipaddress."', '".$account."', '".$time."', '1')") or die ('Error - Could not update vote records!'); 
+                $result = $mysqli->query("INSERT INTO ".$prefix."votingrecords (siteid, ip, account, date, times) VALUES ('".$siteid."', '".$ipaddress."', '".$account."', '".$time."', '1')") or die ('Error - Could not insert vote records!'); 
             } 
             else { 
-                $result = $mysqli->query("UPDATE ".$prefix."votingrecords SET ip='".$ipaddress."', account='".$account."', date='".$time."', times='1' WHERE ip='".$ipaddress."' OR account='".$account."'") or die ('Error - Could not update vote records!'); 
+                $result = $mysqli->query("UPDATE ".$prefix."votingrecords SET siteid = '".$siteid."', ip='".$ipaddress."', account='".$account."', date='".$time."', times='1' WHERE account='".$account."' AND siteid = '".$siteid."'") or die ('Error - Could not update vote records!');
             } 
             $earnedpoints = true;  
             if ($earnedpoints == true) { 
-                if ($account != '') {$result = $mysqli->query("UPDATE accounts SET $colvp = $colvp + $gvp, $colnx = $colnx + $gnx WHERE name='".$account."'") or die ('Error - Could not update vote points!');} 
-				$funct_msg = '<meta http-equiv="refresh" content="0; url='.$vlink.'">'; 
+                if ($account != '') {$result = $mysqli->query("UPDATE accounts SET $colvp = $colvp + $gvp, $colnx = $colnx + $gnx WHERE name='".$account."'") or die ('Error - Could not update account!');} 
+				$funct_msg = '<meta http-equiv="refresh" content="0; url='.$vsite['link'].'">'; 
                 $redirect = true; 
             } 
         } 
-        elseif($timecalc < $vtime && $row['amount'] != '') { 
-            $funct_msg = 'You\'ve already voted within the last '.round($vtime/3600).' hours!'; 
+        elseif($timecalc < $vsite['waittime'] && $row['amount'] != '') { 
+            $funct_msg = 'You\'ve already voted for '.$vsite['name'].' within the last '.round($vsite['waittime']/3600).' hours!'; 
             $funct_msg .= '<br />Vote time: '. date('M d\, h:i A', $row['date']); 
         } 
         else { 
@@ -42,15 +48,28 @@
     } 
      
     else { ?> 
-<div class="alert alert-info">You can vote 1 time every <?php echo round($vtime/3600) . " hours for " . $gvp . " votepoints and " . round($gnx/1000) . "k NX. Make sure to be logged off while voting!</div>"; ?>
 <form method="post">  
 	<?php  
 		if(isset($funct_msg)) {echo '<div class="alert alert-danger">'.$funct_msg.'</div>';}  
 		if(isset($funct_error)) {echo '<div class="alert alert-danger">'.$funct_error.'</div>';}
+		$query = $mysqli->query("SELECT * from ".$prefix."vote");
+		if($query->num_rows == 0){
+			echo "<div class=\"alert alert-danger\">Your administrator has not added any voting sites yet!</div>";
+		}
+		echo "
+		<div class=\"form-group\">
+		<label for=\"voteSite\">Select Site:</label>
+		<select name=\"votingsite\" class=\"form-control\" id=\"voteSite\" required>
+		<option value=\"\" disabled selected>Select Site...</option>";
+		while($row = $query->fetch_assoc()){
+			echo "<option value=\"".$row['id']."\">".$row['name']."</option>";
+		}
+		echo "</select>
+		</div>";
 		if(!isset($_SESSION['id'])) {
 			echo "<input type=\"text\" name=\"name\" maxlength=\"15\" class=\"form-control\" placeholder=\"Username\" required autocomplete=\"off\"/><br/>";
 		} else {
-			echo "<input type=\"text\" name=\"name\" maxlength=\"15\" class=\"form-control\" placeholder=\"".$_SESSION['name']."\" value=\"".$_SESSION['name']."\"required autocomplete=\"off\" readonly=\"readonly\"/><br/>";
+			echo "<input type=\"text\" name=\"name\" maxlength=\"15\" class=\"form-control\" placeholder=\"".$_SESSION['name']."\" value=\"".$_SESSION['name']."\"required autocomplete=\"off\"/><br/>";
 		}
 	?>
 	
