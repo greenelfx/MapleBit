@@ -3,7 +3,7 @@ if($_SESSION['admin']){
 	if(!isset($_GET['action']) && isset($_GET['action']) != "add" && isset($_GET['action']) != "edit"){
 		$query = $mysqli->query("SELECT * from ".$prefix."vote");
 		$count = $query->num_rows;
-		echo "<h2 class=\"text-left\">Vote Configuration</h2><hr/>";
+		echo "<h2 class=\"text-left\">Vote Link Configuration</h2><hr/>";
 		if($count == 0){
 			echo "<div class=\"alert alert-danger\">You don't have any vote links added yet!<hr/><a href=\"?base=admin&amp;page=voteconfig&amp;action=add\" class=\"alert-link\">Add a Vote Site &raquo;</a></div>";
 		}
@@ -34,6 +34,44 @@ if($_SESSION['admin']){
 			echo "
 				</table>
 			</div>";
+		}
+		if(!isset($_POST['submit'])){
+			echo "
+			<hr/>
+			<h2 class=\"text-left\">Vote Column Configuration</h2><hr/>
+			<form method=\"post\">
+				<div class=\"form-group\">
+					<label for=\"colNX\">NX Column</label><small> What column in the accounts table holds the NX value?</small>
+					<input name=\"colnx\" type=\"text\" maxlength=\"100\" class='form-control' id=\"colNX\" value=\"".$colnx."\" required/>
+				</div>
+				<div class=\"form-group\">
+					<label for=\"colVP\">Vote Points Column</label><small> What column in the accounts table holds the Vote Points value?</small>
+					<input name=\"colvp\" type=\"text\" maxlength=\"100\" class='form-control' id=\"colVP\" value=\"".$colvp."\" required/>
+				</div>
+				<input type=\"submit\" name=\"submit\" value=\"Submit &raquo;\" class=\"btn btn-primary\">
+			</form>
+			";
+		}
+		else {
+			$error = false;
+			if(empty($_POST['colnx'])){
+				echo "<div class=\"alert alert-danger\">Please enter a value for the NX column.</div>";
+				$error = true;
+			}
+			else {
+				$colnx = $mysqli->real_escape_string(strip_tags($_POST['colnx']));
+			}
+			if(empty($_POST['colvp'])){
+				echo "<div class=\"alert alert-danger\">Please enter a value for the Vote Points column.</div>";
+				$error = true;
+			}
+			else {
+				$colvp = $mysqli->real_escape_string(strip_tags($_POST['colvp']));
+			}
+			if(!$error){
+				$mysqli->query("UPDATE ".$prefix."properties SET colnx = '$colnx', colvp = '$colvp'");
+				echo "<div class=\"alert alert-success\">Successfully updated vote configuration.</div>";
+			}
 		}
 	}
 	elseif(isset($_GET['action']) && $_GET['action'] == "add") {
