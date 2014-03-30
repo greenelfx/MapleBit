@@ -27,7 +27,7 @@ if($_SESSION['id']){
 								$status = 0;
 							} else {
 								$alert_class = "info";
-								$version_message = "<a href=\"https://github.com/greenelf/MapleBit\" class=\"alert-link\">Update Available &raquo;</a>";
+								$version_message = "<a href=\"https://github.com/greenelfx/MapleBit\" class=\"alert-link\">Update Available &raquo;</a>";
 								$status = 1;
 							}
 						} else {
