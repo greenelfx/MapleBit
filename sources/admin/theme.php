@@ -1,4 +1,7 @@
 <?php 
+if(basename($_SERVER["PHP_SELF"]) == "theme.php"){
+    die("403 - Access Forbidden");
+}
 if($_SESSION['admin'] == 1) {
 	$do = isset($_GET['do']) ? $_GET['do'] : '';
 	echo "<h2 class=\"text-left\">Configure Theme</h2><hr/>";
