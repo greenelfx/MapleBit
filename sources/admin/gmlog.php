@@ -1,4 +1,7 @@
 <?php 
+if(basename($_SERVER["PHP_SELF"]) == "gmlog.php"){
+    die("403 - Access Forbidden");
+}
 if($_SESSION['gm'] || $_SESSION['admin']){
 	if(isset($_POST['search'])){$search = $mysqli->real_escape_string($_POST['search']);} else {$search = "";}
 	$query = $mysqli->query("SELECT characters.id AS cid, characters.name AS cname, gmlog.cid AS cid, gmlog.command AS command, gmlog.when AS 'when' FROM characters,gmlog WHERE characters.id = gmlog.cid ORDER BY gmlog.when DESC LIMIT 200");
