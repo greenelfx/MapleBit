@@ -1,4 +1,7 @@
 <?php 
+if(basename($_SERVER["PHP_SELF"]) == "banner.php"){
+    die("403 - Access Forbidden");
+}
 if($_SESSION['admin']){
 	if(!isset($_POST['url'])) {
 		echo "<h2 class=\"text-left\">Site Banner</h2><hr/>

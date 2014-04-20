@@ -1,4 +1,7 @@
-<?php 
+<?php
+if(basename($_SERVER["PHP_SELF"]) == "voteconfig.php"){
+    die("403 - Access Forbidden");
+}
 if($_SESSION['admin']){
 	if(!isset($_GET['action']) && isset($_GET['action']) != "add" && isset($_GET['action']) != "edit"){
 		$query = $mysqli->query("SELECT * from ".$prefix."vote");

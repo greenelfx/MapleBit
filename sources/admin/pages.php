@@ -1,3 +1,8 @@
+<?php
+if(basename($_SERVER["PHP_SELF"]) == "pages.php"){
+    die("403 - Access Forbidden");
+}
+?>
 <script src="assets/libs/ckeditor/ckeditor.js"></script>
 <?php 
 if(isset($_SESSION['id'])){

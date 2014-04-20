@@ -1,4 +1,7 @@
 <?php 
+if(basename($_SERVER["PHP_SELF"]) == "nxpacks.php"){
+    die("403 - Access Forbidden");
+}
 if($_SESSION['admin'] == 1) {
 	$do = isset($_GET['do']) ? $_GET['do'] : '';
 	$id = isset($_GET['id']) ? $_GET['id'] : '';
