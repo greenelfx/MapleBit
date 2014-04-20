@@ -1,3 +1,8 @@
+<?php
+if(basename($_SERVER["PHP_SELF"]) == "footer.php"){
+    die("403 - Access Forbidden");
+}
+?>
 	</div>
 		<br/>
 	</div></div>
