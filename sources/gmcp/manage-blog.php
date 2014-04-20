@@ -1,3 +1,8 @@
+<?php
+if(basename($_SERVER["PHP_SELF"]) == "manage-blog.php"){
+    die("403 - Access Forbidden");
+}
+?>
 <script src="assets/libs/ckeditor/ckeditor.js"></script>
 <?php 
 if($_SESSION['id']){
