@@ -1,3 +1,8 @@
+<?php
+if(basename($_SERVER["PHP_SELF"]) == "background.php"){
+    die("403 - Access Forbidden");
+}
+?>
 <script type="text/javascript" src="<?php echo $siteurl; ?>assets/js/jscolor.js"></script>
 <?php 
 if($_SESSION['admin']){
