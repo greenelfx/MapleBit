@@ -1,4 +1,7 @@
 <?php
+if(basename($_SERVER["PHP_SELF"]) == "buynx.php"){
+    die("403 - Access Forbidden");
+}
 if(isset($_SESSION['id'])){
 if(!isset($_POST['buyNX'])) {
 	echo "<form name=\"buynx\" method=\"post\">
