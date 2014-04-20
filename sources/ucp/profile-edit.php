@@ -1,3 +1,8 @@
+<?php
+if(basename($_SERVER["PHP_SELF"]) == "profile-edit.php"){
+    die("403 - Access Forbidden");
+}
+?>
 <script src="assets/libs/cksimple/ckeditor.js"></script>
 <?php 
 if($_SESSION['id']){
