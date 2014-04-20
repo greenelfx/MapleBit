@@ -1,4 +1,7 @@
 <?php
+if(basename($_SERVER["PHP_SELF"]) == "forgotpass.php"){
+    die("403 - Access Forbidden");
+}
 	echo "<h2 class=\"text-left\">Reset Password</h2>
 	<hr/>";
 	if(!isset($_POST['submit'])) {
