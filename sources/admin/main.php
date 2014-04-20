@@ -19,10 +19,10 @@ if($_SESSION['id']){
 							)
 						);
 						$context = stream_context_create($opts);
-						$current_tags = file_get_contents("https://api.github.com/repos/greenelf/maplebit/tags", false, $context);
+						$current_tags = file_get_contents("https://api.github.com/repos/greenelfx/maplebit/tags", false, $context);
 						if ($current_tags !== false) {
 							$tags = json_decode($current_tags);
-							$ref_tag = "v1.03";
+							$ref_tag = "v1.04";
 							$current_tag = $tags[0]->name;
 							if ($current_tag == $ref_tag) {
 								$alert_class = "success";
