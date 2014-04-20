@@ -1,4 +1,7 @@
 <?php 
+if(basename($_SERVER["PHP_SELF"]) == "account-settings.php"){
+    die("403 - Access Forbidden");
+}
 if($_SESSION['id']){
 	echo "
 		<h2 class=\"text-left\">Account Settings</h2><hr/>";
