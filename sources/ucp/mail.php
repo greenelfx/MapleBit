@@ -1,4 +1,7 @@
 <?php 
+if(basename($_SERVER["PHP_SELF"]) == "mail.php"){
+    die("403 - Access Forbidden");
+}
 if(basename($_SERVER["PHP_SELF"]) != "mail.php" && $_SESSION['id'] && $_SESSION['pname'] != NULL) {
 ignore_user_abort(true);	# Prevent User Abort
 #1 = Anything

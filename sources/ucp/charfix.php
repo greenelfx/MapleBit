@@ -1,4 +1,7 @@
 <?php 
+if(basename($_SERVER["PHP_SELF"]) == "charfix.php"){
+    die("403 - Access Forbidden");
+}
 if(isset($_SESSION['id'])){
 	if(@$_GET['fix'] == "unstuck"){
 		echo "<h2 class=\"text-left\">Move Character</h2><hr/>";
