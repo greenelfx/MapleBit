@@ -1,4 +1,7 @@
 <?php 
+if(basename($_SERVER["PHP_SELF"]) == "properties.php"){
+    die("403 - Access Forbidden");
+}
 if(isset($_GET["do"])){
 	$do = $_GET["do"];
 }else {

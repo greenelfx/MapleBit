@@ -1,3 +1,8 @@
+<?php
+if(basename($_SERVER["PHP_SELF"]) == "ticket.php"){
+    die("403 - Access Forbidden");
+}
+?>
 <script src="assets/libs/cksimple/ckeditor.js"></script>
 <?php
 	require_once 'assets/libs/HTMLPurifier.standalone.php';

@@ -1,4 +1,7 @@
 <?php 
+if(basename($_SERVER["PHP_SELF"]) == "bannedmaps.php"){
+    die("403 - Access Forbidden");
+}
 if($_SESSION['admin']){
 	echo "<h2 class=\"text-left\">Edit Banned Maps</h2>
 	<hr/>";
