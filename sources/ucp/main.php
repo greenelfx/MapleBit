@@ -1,4 +1,7 @@
 <?php 
+if(basename($_SERVER["PHP_SELF"]) == "main.php"){
+    die("403 - Access Forbidden");
+}
 if(isset($_GET['page'])){
 	$ucp = $_GET['page'];
 }else{

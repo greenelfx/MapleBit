@@ -1,4 +1,7 @@
 <?php
+if(basename($_SERVER["PHP_SELF"]) == "characters.php"){
+    die("403 - Access Forbidden");
+}
 if(isset($_SESSION['id'])){
 	$checkchar = $mysqli->query("SELECT * from characters WHERE accountid = '".$_SESSION['id']."'");
 	$countchar = $checkchar->num_rows;
