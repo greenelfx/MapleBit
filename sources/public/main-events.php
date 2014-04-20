@@ -1,4 +1,7 @@
 <?php 
+if(basename($_SERVER["PHP_SELF"]) == "main-events.php"){
+    die("403 - Access Forbidden");
+}
 echo "<div class=\"col-md-6\">
 <a href='?base=main&amp;page=events'><h4>Events &raquo;</h4></a><hr/>";
 	$i = 0;
