@@ -1,3 +1,8 @@
+<?php
+if(basename($_SERVER["PHP_SELF"]) == "events.php"){
+    die("403 - Access Forbidden");
+}
+?>
 <script src="assets/libs/cksimple/ckeditor.js"></script>
 <style>
 blockquote {

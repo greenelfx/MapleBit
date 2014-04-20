@@ -1,3 +1,8 @@
+<?php
+if(basename($_SERVER["PHP_SELF"]) == "rankings.php"){
+    die("403 - Access Forbidden");
+}
+?>
 <h2 class="text-left">Rankings</h2>
 <hr/>
 <?php
