@@ -1,3 +1,8 @@
+<?php
+if(basename($_SERVER["PHP_SELF"]) == "header.php"){
+    die("403 - Access Forbidden");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
