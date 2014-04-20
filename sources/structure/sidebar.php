@@ -1,3 +1,8 @@
+<?php
+if(basename($_SERVER["PHP_SELF"]) == "sidebar.php"){
+    die("403 - Access Forbidden");
+}
+?>
 <div class="well well2">
 <?php
 if(isset($_SESSION['id'])){
