@@ -1,4 +1,7 @@
 <?php
+if(basename($_SERVER["PHP_SELF"]) == "header.php"){
+    die("403 - Access Forbidden");
+}
 if(isset($_GET['page'])){
 	$admin = $_GET['page'];
 }else{
