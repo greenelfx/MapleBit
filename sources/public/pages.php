@@ -1,4 +1,7 @@
 <?php
+if(basename($_SERVER["PHP_SELF"]) == "pages.php"){
+    die("403 - Access Forbidden");
+}
 	$querypage = $mysqli->query("SELECT * FROM ".$prefix."pages WHERE slug = '".$main."'");
 	$nquerypage = $querypage->num_rows;
 	$p = $querypage->fetch_assoc();
