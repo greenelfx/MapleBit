@@ -1,3 +1,8 @@
+<?php
+if(basename($_SERVER["PHP_SELF"]) == "vote.php"){
+    die("403 - Access Forbidden");
+}
+?>
 <h2 class="text-left">Vote</h2><hr/>
 <?php
     $earnedpoints = false;

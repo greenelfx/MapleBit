@@ -1,4 +1,7 @@
 <?php 
+if(basename($_SERVER["PHP_SELF"]) == "main-gm.php"){
+    die("403 - Access Forbidden");
+}
 echo "
 <div class=\"col-md-6\">
 <a href='?base=main&amp;page=gmblog'><h4>GM Blogs &raquo;</h4></a><hr/>";
