@@ -16,6 +16,7 @@ if(basename($_SERVER["PHP_SELF"]) == "pages.php"){
 		$config->set('HTML.SafeObject', true);
 		$config->set('Output.FlashCompat', true);
 		$config->set('HTML.SafeEmbed', true);
+		$config->set('HTML', 'Trusted', true);
 		$config->set('URI.SafeIframeRegexp', '%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/|player\.vimeo\.com/video/)%'); //allow YouTube and Vimeo
 		$purifier = new HTMLPurifier($config);
 		$clean_html = $purifier->purify($p['content']);
