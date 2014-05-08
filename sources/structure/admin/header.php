@@ -111,6 +111,7 @@ function goBack() {window.history.back()}
 						<li <?php echo ($admin == "theme") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=theme"><i class="fa fa-eye"></i> Theme</a></li>
 						<li <?php echo ($admin == "banner") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=banner"><i class="fa fa-eye"></i> Banner</a></li>
 						<li <?php echo ($admin == "background") ? 'class = "active"' : ''; ?>><a href="?base=admin&amp;page=background"><i class="fa fa-eye"></i> Background</a></li>
+						<li <?php echo ($admin == "debug") ? 'class = "active"' : ''; ?>><a href="?base=admin&amp;page=debug"><i class="fa fa-bug"></i> Debug Mode</a></li>
 					</ul>
 					<li>
 						<a href="#" data-toggle="collapse" data-target="#menu2">

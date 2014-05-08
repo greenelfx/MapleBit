@@ -390,6 +390,8 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				$ssiteurl = $mysqli->real_escape_string(stripslashes($_POST['sitepath']));		
 				$sversion = $mysqli->real_escape_string(stripslashes($_POST['version']));
 				$sservertype = $mysqli->real_escape_string($_POST['servertype']);
+				$scolnx = $mysqli->real_escape_string(stripslashes($_POST['colnx']));
+				$scolvp = $mysqli->real_escape_string(stripslashes($_POST['colvp']));
 				
 				$stop = "false";
 				if(empty($sservername)){
@@ -461,7 +463,21 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 					}
 				}
 				if($stop == "false"){
-					$mysqli->query("UPDATE ".$prefix."properties SET name='$sservername', type = '$sservertype', client='$sclient', server = '$sserver', version='$sversion', forumurl='$sforumurl', siteurl='$ssiteurl', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', gmlevel = '$sgmlevel', flood='1', floodint='5', theme='cerulean', nav='0', pcap='100'");
+					if(empty($scolnx)){
+						echo '<div class="alert alert-danger">Please enter your NX column name.</div>';
+						$stop = "true";
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+					}
+				}
+				if($stop == "false"){
+					if(empty($scolvp)){
+						echo '<div class="alert alert-danger">Please enter your VP column name.</div>';
+						$stop = "true";
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+					}
+				}
+				if($stop == "false"){
+					$mysqli->query("UPDATE ".$prefix."properties SET name='$sservername', type = '$sservertype', client='$sclient', server = '$sserver', version='$sversion', forumurl='$sforumurl', siteurl='$ssiteurl', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', gmlevel = '$sgmlevel', flood='1', floodint='5', theme='cerulean', nav='0', pcap='100', colnx = '$scolnx', colvp = '$scolvp'");
 					echo "Working...";
 					echo "<meta http-equiv=\"refresh\" content=\"1; url=?install=5\" />";
 				}
@@ -512,15 +528,28 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 					<label for=\"dropRate\">Drop Rate</label>
 					<input name=\"droprate\" type=\"text\" maxlength=\"10\" class='form-control' id=\"dropRate\" placeholder=\"100x\" required/>
 				</div>
+				<hr/>
+				<div class=\"form-group\">
+					<label for=\"nxCol\">NX Column</label>
+					<input name=\"colnx\" type=\"text\" maxlength=\"30\" class='form-control' id=\"nxCol\" placeholder=\"paypalNX\" required/>
+					<span class=\"help-block\">What column in the accounts table holds the NX value?</span>
+				</div>
+				<div class=\"form-group\">
+					<label for=\"vpCol\">Vote Point Column</label>
+					<input name=\"colvp\" type=\"text\" maxlength=\"30\" class='form-control' id=\"vpCol\" placeholder=\"votepoints\" required/>
+					<span class=\"help-block\">What column in the accounts table holds the Vote Points value?</span>
+				</div>
+				<hr/>
 				<div class=\"form-group\">
 					<label for=\"gmAccess\">GM Access</label>
 					<input name=\"gmlevel\" type=\"text\" maxlength=\"10\" class='form-control' id=\"gmAccess\" placeholder=\"3\" value=\"3\" required/>
 					<span class=\"help-block\">What level GM should be allowed to access the GM panel?</span>
 				</div>
 				<div class=\"form-group\">
-					<label for=\"siteInput\">Site Path <span class=\"label label-success\">AUTODETECTED</span> <span class=\"label label-danger\">IMPORTANT. NEED TRAILING SLASH</span></label>
-					<input name=\"sitepath\" type=\"text\" maxlength=\"10\" class='form-control' id=\"siteInput\" placeholder=\"/\" value=\"".$url."\" required/>
-					<span class=\"help-block\">/ indicates the root directory. /bit/ indicates that MapleBit has been installed in a folder called bit. You <b>must</b> use a trailing slash</span>
+					<label for=\"siteInput\">Site Path <span class=\"label label-success\"><span class=\"glyphicon glyphicon-ok\"></span> AUTODETECTED</span></label>
+					<input type=\"text\" class='form-control' id=\"siteInput\" placeholder=\"/\" value=\"".$url."\" disabled/>
+					<input name=\"sitepath\" type=\"text\" maxlength=\"10\" class='form-control hidden' id=\"siteInput\" placeholder=\"/\" value=\"".$url."\"/>
+					<span class=\"help-block\">This is used to access the MapleBit files correctly.</span>
 				</div>
 				</div>
 				<hr/>
@@ -534,18 +563,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 		echo "
 		<h4>Extract GD Images</h4>
 		<hr/>";
-		if(isset($_POST['auto'])){ // ZIP Extraction, not used right now
-			echo "<b>Extracting archive. This may take some time.</b><hr/>";
-			$zip = new ZipArchive;
-			if ($zip->open('../../img/GD/GD.zip') === TRUE) {
-			  $zip->extractTo('../../img/GD/');
-			  $zip->close();
-			  echo "<div class=\"alert alert-success\">Success. Please click the button below to proceed.</div><hr/><a href=\"?install=done\" class=\"btn btn-primary btn-lg\" style=\"float:right;\">Finish Installation &raquo;</a><br/><br/>";
-			} else {
-			  echo "<div class=\"alert alert-warning\">Failed.</div><hr/>";
-			}
-		}
-		elseif(isset($_POST['myself'])) {
+		if(isset($_POST['myself'])) {
 			echo "<meta http-equiv=\"refresh\" content=\"0; url=?install=6\" />";
 		}
 		else {
