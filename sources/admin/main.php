@@ -152,6 +152,8 @@ if($_SESSION['id']){
 				include('sources/admin/bannedmaps.php');
 			}elseif($admin == "manageaccounts"){
 				include('sources/admin/manage-accounts.php');
+			}elseif($admin == "debug"){
+				include('sources/admin/debug.php');
 			}
 			else{header("Location: ?base=admin");}
 			if($admin!=""){

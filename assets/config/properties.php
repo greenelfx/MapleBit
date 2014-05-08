@@ -56,6 +56,9 @@ if (in_array($theme, $getdarkhemes)) {
 /*Get Vote Config*/
 $colnx = $prop['colnx'];
 $colvp = $prop['colvp'];
+
+/* Debug */
+$debug = $prop['debug'];
 	
 $censored = array("fuck","dick","fail","suck","cock","bitch","ass","cunt","vagina","penis","cunt");
 ?>
