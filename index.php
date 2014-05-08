@@ -13,7 +13,10 @@ if(!file_exists('assets/config/install/installdone.txt')){
 	# Import Essential Files
 	require_once("assets/config/properties.php");
 	require_once("assets/config/afuncs.php");
-
+	if($prop['debug'] == 1 && isset($_SESSION['admin'])){
+		require( 'assets/libs/php_error.php' );
+		\php_error\reportErrors();
+	}
 	# Define $getbase variable
 	$getbase = isset($_GET['base']) ? $_GET['base'] : "";
 
