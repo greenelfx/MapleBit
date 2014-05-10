@@ -5,10 +5,15 @@ if(basename($_SERVER["PHP_SELF"]) == "debug.php"){
 if($_SESSION['admin']){
 		$query = $mysqli->query("SELECT * from ".$prefix."vote");
 		$count = $query->num_rows;
-		echo "<h2 class=\"text-left\">Debug Mode</h2><hr/>";
+		echo "<h2 class=\"text-left\">Maintenance and Debug Mode</h2><hr/>";
 		if(!isset($_POST['submit'])){
+			if($prop['debug'] == 1) {
+				$checked = "checked";
+			} else {
+				$checked = "";
+			}
 			echo "
-			MapleBit is an advanced CMS, built on PHP. From time to time, you may notice some PHP errors which are fairly useless. If you enable debugging mode, you will be able to edit the files that create these errors. <b>This will put your website in maintenance mode!</b><hr/>
+			MapleBit is an advanced CMS, built on PHP. From time to time, you may notice some PHP errors which are fairly useless. If you enable debugging mode, you will be able to edit the files that create these errors. <b>This will put your website in maintenance mode! This means that only administrators will be able to login!</b><hr/>
 			<form method=\"post\">
 				<div class=\"form-group\">
 					<label for=\"pass\">Account Password</label><small> Please verify your account password</small>
@@ -16,7 +21,7 @@ if($_SESSION['admin']){
 				</div>
 				<div class=\"checkbox\">
 					<label>
-						<input type=\"checkbox\" name=\"toggle\"> Debug Mode
+						<input type=\"checkbox\" name=\"toggle\" ".$checked."> Maintenance and Debug Mode
 					</label>
 				</div>
 				<input type=\"submit\" name=\"submit\" value=\"Submit &raquo;\" class=\"btn btn-primary\">
@@ -44,6 +49,7 @@ if($_SESSION['admin']){
 			}
 			else {
 				echo "<hr/><div class=\"alert alert-danger\">Error</div>";
+				echo $error . $verify . $_POST['toggle'];
 			}
 		}
 } else {
