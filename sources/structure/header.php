@@ -44,6 +44,7 @@ body{
 <body>
 <div class="container">
 <?php
+if($prop['debug'] == 1){echo "<hr/><div class=\"alert alert-info\">Your site is currently in maintenance mode! Only administrators can use the website.</div><hr/>";}
 if($banner != ""){echo "<img src=\"".$banner."\" alt=\"banner\" class=\"img-responsive\" style=\"margin: 0 auto;margin-top:20px;\">";} 
 ?>
 <nav class="<?php echo getNav();?>" role="navigation" style="bottom:-22px;">
