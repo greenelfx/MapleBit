@@ -133,8 +133,16 @@ echo '
 			
 		case 3:
 			include '../database.php';
+			function shutDownFunction() { 
+   				$error = error_get_last();
+    			if ($error['type'] == 1) {
+        	     echo "<hr/><div class=\"alert alert-danger\">You need to have a MapleStory database installed before installing MapleBit!</div><hr/><a href=\"?install=1\" class=\"btn btn-danger btn-lg\" value=\"Continue &raquo;\" style=\"float:right\">&laquo; Go Back</a><br/><br/>";
+    			} 
+			}
+register_shutdown_function('shutdownFunction');
 $queryaccounts = $mysqli->query("SELECT * FROM `accounts`"); 
 $getcolumns = $queryaccounts->fetch_assoc(); 
+
 if(!isset($getcolumns['sitelogged'])) {
 	$mysqli->query("ALTER TABLE accounts ADD `sitelogged` TEXT;");
 	echo "Added sitelogged<br/>";

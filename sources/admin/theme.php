@@ -31,7 +31,7 @@ if($_SESSION['admin'] == 1) {
 					 <label class="radio"><input type="radio" name="theme" value="yeti" />Yeti <a href="http://bootswatch.com/yeti/" target="_blank"><i class="fa fa-external-link"></i></a></label>
 					 <label class="radio"><input type="radio" name="theme" value="lumen" />Lumen <a href="http://bootswatch.com/lumen/" target="_blank"><i class="fa fa-external-link"></i></a></label>
 					 <label class="radio"><input type="radio" name="theme" value="superhero" />Superhero <a href="http://bootswatch.com/superhero/" target="_blank"><i class="fa fa-external-link"></i></a></label>
-					 <label class="radio"><input type="radio" name="theme" value="cupid" />Cupid <a href="http://bootswatch.com/cupid/" target="_blank"><i class="fa fa-external-link"></i></a></label>
+					 <label class="radio"><input type="radio" name="theme" value="darkly" />Darkly <a href="http://bootswatch.com/darkly/" target="_blank"><i class="fa fa-external-link"></i></a></label>
 					 <hr/>
 					 <label class="radio"><input type="radio" name="nav" value="0" checked/>Normal Navigation Bar</label>
 					 <label class="radio"><input type="radio" name="nav" value="1" />Inverse Navigation Bar</label>

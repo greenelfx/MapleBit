@@ -47,7 +47,7 @@ $gmlevel = $prop['gmlevel'];
 $MaxAcc = $prop['maxaccounts'];
 /* Get Theme */
 $theme = $prop['theme'];
-$getdarkhemes = array("cyborg", "slate", "amelia", "superhero");
+$getdarkhemes = array("cyborg", "slate", "amelia", "superhero", "darkly");
 if (in_array($theme, $getdarkhemes)) {
     $themetype = "dark";
 } else{
