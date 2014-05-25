@@ -40,7 +40,7 @@ if(isset($_SESSION['id'])){
 				</label>
 			</div>
 			<hr/>
-			<b>Page Content:</b> <small>Note that the page header is automatically added.</small>
+			<b>Page Content:</b> <small>Note that the page header is automatically added. If you're adding a donate or chat page, press &#34;Source&#34;</small>
 			<textarea name=\"content\" style=\"height:300px;\" class=\"form-control\" id=\"content\"></textarea><br/>
 			<input type=\"submit\" name=\"add\" class=\"btn btn-primary\" value=\"Add Page &raquo;\" />
 		</form>";
