@@ -30,28 +30,32 @@ if(isset($_SESSION['id'])){
 			$start = ($page - 1) * $per_page;
 
 			$query = $mysqli->query("SELECT * FROM accounts ORDER BY name ASC LIMIT $start, $per_page");
-			while ($row = $query->fetch_assoc()) {
-			if($row['loggedin'] > 0) {
-				$status = "<span class=\"label label-success\">Online</span>";
-			}
-			elseif($row['loggedin'] == 0 && $row['banned'] > 0){
-				$status = "<span class=\"label label-danger\">Banned</span>";
-			}
-			elseif($row['loggedin'] == 0){
-				$status = "<span class=\"label label-default\">Ofline</span>";
-			}
-			else {
-				$status = "<span class=\"label label-warning\">Unknown</span>";
-			}
-				echo "<tr>
-					<td><a href=\"?base=admin&amp;page=manageaccounts&amp;action=view&amp;user=".$row['name']."\">".$row['name']."</td>
-					<td>".$row['email']."</td>
-					<td>".$row['gm']."</td>
-					<td>".$row[$colnx]."</td>
-					<td>".$row[$colvp]."</td>
-					<td>".$status."</td>
-					</tr>";
-			}
+			//if (array_key_exists($colnx, $query)) {
+				while ($row = $query->fetch_assoc()) {
+				if($row['loggedin'] > 0) {
+					$status = "<span class=\"label label-success\">Online</span>";
+				}
+				elseif($row['loggedin'] == 0 && $row['banned'] > 0){
+					$status = "<span class=\"label label-danger\">Banned</span>";
+				}
+				elseif($row['loggedin'] == 0){
+					$status = "<span class=\"label label-default\">Ofline</span>";
+				}
+				else {
+					$status = "<span class=\"label label-warning\">Unknown</span>";
+				}
+					echo "<tr>
+						<td><a href=\"?base=admin&amp;page=manageaccounts&amp;action=view&amp;user=".$row['name']."\">".$row['name']."</td>
+						<td>".$row['email']."</td>
+						<td>".$row['gm']."</td>
+						<td>".$row[$colnx]."</td>
+						<td>".$row[$colvp]."</td>
+						<td>".$status."</td>
+						</tr>";
+				}
+			//} else {
+			//	echo "<div class=\"alert alert-danger\">Vote Configuration is incorrect. <a href=\"?base=admin&page=voteconfig\" class=\"alert-link\">Resolve &raquo;</a></div>";
+			// 	}
 			$minus1 = $page - 1;
 			echo "</tbody>
 			</table>

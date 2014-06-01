@@ -51,7 +51,7 @@ else {
 		$fetchCharId = $mysqli->query("SELECT * FROM `characters` WHERE `id` = '".$selChar."'") or die();
 		$getCharId = $fetchCharId->fetch_assoc();
 		$mysqli->query("UPDATE `characters` SET `meso` = meso - ".$selPack." WHERE `id` = ".$selChar."") or die();
-		$mysqli->query("UPDATE `accounts` SET `paypalNX` = paypalNX + ".$selNX['nx']." WHERE `id` = ".$getCharId['accountid']."") or die();
+		$mysqli->query("UPDATE `accounts` SET $colnx = $colnx + ".$selNX['nx']." WHERE `id` = ".$getCharId['accountid']."") or die();
 		echo "<div class=\"alert alert-success\">You have purchased <b>".number_format($selNX['nx'])." NX</b> for <b>".number_format($selPack)." Mesos</b>. The mesos have been taken from <b>".$getCharId['name']."</b>.<hr/>Thank you for your purchase!</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 	}
 }
