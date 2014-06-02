@@ -36,7 +36,7 @@ if(isset($_SESSION['id'])){
 		";
 		} else {
 ?>
-    <form name="loginform" id="loginform" method="post" action="?base=misc&script=login" autocomplete="off">	
+    <form name="loginform" id="loginform" autocomplete="off">	
 		<div class="form-group">
 			<label for="username">Username</label>
 			<input type="text" name="username" maxlength="12" class="form-control" placeholder="Username" id="username" required/>
@@ -45,7 +45,7 @@ if(isset($_SESSION['id'])){
 			<label for="password">Password</label>
 			<input type="password" name="password" maxlength="12" class="form-control" placeholder="Password" id="password" required/>
 		</div>
-		<a id="login" class="btn btn-primary btn-block">Login</a>
+		<input id="login" type="submit" class="btn btn-primary btn-block" value="Login"/>
 		<a href="?base=main&page=register" class="btn btn-info btn-block">Register</a>
 		<!--<a href="?base=main&page=forgotpass" class="btn btn-default btn-block">Forgot Password</a>-->
     </form>
