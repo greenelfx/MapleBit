@@ -2,14 +2,17 @@ $(function () {
     var action = '';
     var form_data = '';
     $('#login').click(function () {
-        event.preventDefault();
         action = $("#loginform").attr("action");
         form_data = {
             username: $("#username").val(),
             password: $("#password").val(),
             is_ajax: '1'
         };
-
+        $('#login').keypress(function (e) {
+            if (e.which == 13) { //Enter key pressed
+                $('#login').click();
+            }
+        });
         $.ajax({
             type: 'POST',
             url: '?base=misc&script=login',
