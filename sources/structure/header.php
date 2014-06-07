@@ -28,7 +28,7 @@ body{
 	
 }
 </style>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="<?php echo $siteurl; ?>assets/js/bootstrap.js"></script>
 <script type="text/javascript" src="<?php echo $siteurl; ?>assets/js/login.js"></script>
 <script>
