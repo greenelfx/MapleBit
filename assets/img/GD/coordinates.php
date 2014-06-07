@@ -1,770 +1,449 @@
 <?php
-#+----------------------------------------------------------+
-#|                   Made by HoltHelper                   	|
-#|                                                        	|
-#| Please give proper credits when using this code since  	|
-#| It took me over a couple of months to finish this code 	|
-#|                                                        	|
-#| Updated by Basis: 										|
-#| + Fixed Dual Bow Gun display (Basis)						|
-#| + Fixed Knuckler display	(Limecat)						|
-#| + Added caching of character image (Limecat)				|
-#+----------------------------------------------------------+
-class Image {
+/*
+	+--------------------------------------------------------+
+	|                   Made by HoltHelper					 |
+	|			 Edited by LittleClgt@RaGEZONE.Com			 |
+	|                                                        |
+	| Please give proper credits when using this code since  |
+	| It took me over a couple of months to finish this code |
+	|                                                        |
+	+--------------------------------------------------------+
+
+	Added Ian edits
+*/
+class Character extends DOMDocument {
+	
 	//Image Coord Variables
-	public $mainX = 44;
-	public $mainY = 34;
-	public $neckY = 65;
-	public $rootfolder;
+	const mainX = 44;
+	const mainY = 34;
+	const neckY = 65;
+	
+	//Default Gender Clothes
+	public $default = array(
+		0 => array( "coat" => 1040036, "pants" => 1060026),
+		1 => array( "coat" => 1041046, "pants" => 1061039)
+	);
 	
 	function __construct() {
-		//header('Content-type: image/png');
+		header('Pragma: public');
+		header('Cache-Control: max-age=86400');
+		header('Expires: '. gmdate('D, d M Y H:i:s \G\M\T', time() + 86400));
+		header('Content-Type: image/png');
 		$this->image = ImageCreateTrueColor(96, 96);
 		ImageSaveAlpha($this->image, true);
-		$trans = ImageColorAllocateAlpha($this->image, 0, 0, 0, 127);
-		ImageFill($this->image, 0, 0, $trans);
-	}
-	public function setName($type) {
-		return $this->name=$type;
-	}
-	public function setBG($bg) {
-		return $this->bg=$bg;
-	}	
-	public function setSkin($type) {
-		return $this->skin=$type;
+		ImageFill($this->image, 0, 0, ImageColorAllocateAlpha($this->image, 0, 0, 0, 127));
 	}
 	
-	public function setStand($type) {
-		return $this->stand=$type;
-	}
-	
-	public function setWepNum($type) {
-		return $this->wepNum=$type;
-	}
-	
-	public function setFace($face) {
-		$location = $this->rootfolder."assets/img/GD/Face/000{$face}.img/index.txt";
-		if(file_exists($location)) {
-			$faceArray = $this->txt_parse($location);
-			$faceX = (-$faceArray[default_face_origin_x]) - $faceArray[default_face_map_brow_x];
-			$faceY = (-$faceArray[default_face_origin_y]) - $faceArray[default_face_map_brow_y];
+	public function setVaribles($array) {
+		foreach( $array as $key => $value ) {
+			switch($key) {
+				case "Hair":
+				case "Face": $value = "00".$value; break;
+			}
+			$this->$key = array(
+				"ID"  => $value,
+				"xml" => self::XMLoader($key."/0".$value.".img/")
+			);
 		}
-		$location = $this->rootfolder."assets/img/GD/Face/000{$face}.img/default.face.png";
-		if(file_exists($location)){
-			$implace = ImageCreateFromPNG($location);
-			ImageCopy($this->image, $implace, $this->mainX + $faceX, $this->mainY + $faceY, 0, 0, imagesx($implace), imagesy($implace));
+	}
+	
+	public function setWepInfo($weapon) {
+		$Location = "Weapon/0".$weapon.".img/";
+		if(self::exists($Location."coord.xml")) {
+			$xml = self::XMLoader($Location);
+			switch($weapon) {
+				case ($weapon < 1700000):
+					$this->stand = $xml->_info->stand->value;
+					break;
+			}
+		} else {
+			$this->stand = 1;
+		}
+	}
+	
+	public function setFace() {
+		if(isset($this->Face['ID'])) {
+			if (!strpos($this->vSlot, 'Fc')){
+				$faceX = self::mainX + $this->Face['xml']->_face->x;
+				$faceY = self::mainY + $this->Face['xml']->_face->y;
+				
+				self::useImage("Face/0".$this->Face['ID'].".img/default.face.png", $faceX, $faceY);
+			}
 		}
     }
 	
-	public function setHair($hair,$type) {
-		$location = $this->rootfolder."assets/img/GD/Hair/000{$hair}.img/index.txt";
-		if(file_exists($location)) {
-			$this->hair=$hair;
-			$hairShade=$this->skin-2000;
-			$hairArray = $this->txt_parse($location);
-			$hairX = (-$hairArray[default_hair_origin_x]) - $hairArray[default_hair_map_brow_x];
-			$hairY = (-$hairArray[default_hair_origin_y]) - $hairArray[default_hair_map_brow_y];
-			$this->overHairX = (-$hairArray[default_hairOverHead_origin_x]) - $hairArray[default_hairOverHead_map_brow_x];
-			$this->overHairY = (-$hairArray[default_hairOverHead_origin_y]) - $hairArray[default_hairOverHead_map_brow_y];
-			$this->backHairX = (-$hairArray[default_hairBelowBody_origin_x]) - $hairArray[default_hairBelowBody_map_brow_x];
-			$this->backHairY = (-$hairArray[default_hairBelowBody_origin_y]) - $hairArray[default_hairBelowBody_map_brow_y];
-			$shadeHairX = (-$hairArray[default_hairShade_0_origin_x]) - $hairArray[default_hairShade_0_map_brow_x];
-			$shadeHairY = (-$hairArray[default_hairShade_0_origin_y]) - $hairArray[default_hairShade_0_map_brow_y];
-		}
-		switch($type) {
+	public function setHair($z) {
+		switch($z) {
 			case "hair":
-				if(substr_count($this->vSlot, 'H1H2H3H4H5H6') == 1){
-					return NULL;
-				} else {
-					if(file_exists($this->rootfolder."assets/img/GD/Hair/000{$hair}.img/default.hair.png")) {
-						$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Hair/000{$hair}.img/default.hair.png");
-						ImageCopy($this->image, $implace, $this->mainX + $hairX, $this->mainY + $hairY, 0, 0, imagesx($implace), imagesy($implace));
-					}
-				}
-			break;
+				if (!strpos($this->vSlot, 'H3'))
+					self::setAHair($z);
+				break;
+			case "hairBelowBody":
+				if (!strpos($this->vSlot, 'H4'))
+					self::setAHair($z);
+				break;
+			case "hairBelowHead": //H2 or H6 - idk. Need to figure this out
+				if (!strpos($this->vSlot, 'H2'))
+					self::setAHair($z);
+				break;
+			case "hairOverHead":
+				if (!strpos($this->vSlot, 'H5'))
+					self::setAHair($z);
+				break;
 			case "hairShade":
-				if(substr_count($this->vSlot, 'H1H2H3H4H5H6') == 1){
-					return NULL;
-				} else {
-					$location = $this->rootfolder."assets/img/GD/Hair/000{$hair}.img/default.hairShade.{$hairShade}.png";
-					if(file_exists($location)) {
-						$implace = ImageCreateFromPNG($location);
-						ImageCopy($this->image, $implace, $this->mainX + $shadeHairX, $this->mainY + $shadeHairY, 0, 0, imagesx($implace), imagesy($implace));
-					}
-				}
-			break;
-		}
+				if (!strpos($this->vSlot, 'H1'))
+					self::setAHair($z);
+				break;
+			default: //Hf Hs Hb. Wat is dis!!??
+				break;
+			}
 	}
 	
-	public function setAccessory($accessory,$type) {
-		$location = $this->rootfolder."assets/img/GD/Accessory/0{$accessory}.img/index.txt";
-		if(file_exists($location)) {
-			$maskArray = $this->txt_parse($location);
-			$accessoryX = (-$maskArray[default_default_origin_x]) - $maskArray[default_default_map_brow_x];
-			$accessoryY = (-$maskArray[default_default_origin_y]) - $maskArray[default_default_map_brow_y];
-			$accessoryZ = $maskArray[default_default_z];
-		}
-		switch($type) {
-			case "accessory":
-				if(file_exists($this->rootfolder."assets/img/GD/Accessory/0{$accessory}.img/default.default.png")) {
-					$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Accessory/0{$accessory}.img/default.default.png");
-					ImageCopy($this->image, $implace, $this->mainX + $accessoryX, $this->mainY + $accessoryY, 0, 0, imagesx($implace), imagesy($implace));
-				}
-			break;
-			case "mask":
-				if($accessoryZ == "accessoryFaceBelowFace") {
-					$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Accessory/0{$accessory}.img/default.default.png");
-					ImageCopy($this->image, $implace, $this->mainX + $accessoryX, $this->mainY + $accessoryY, 0, 0, imagesx($implace), imagesy($implace));
-				} elseif($accessoryZ == "accessoryFace") {
-					if(file_exists($this->rootfolder."assets/img/GD/Accessory/0{$accessory}.img/default.0.png") && $accessory == "1012008") {
-						$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Accessory/0{$accessory}.img/default.0.png");
-						ImageCopy($this->image, $implace, $this->mainX + $accessoryX, $this->mainY + $accessoryY, 0, 0, imagesx($implace), imagesy($implace));
-					} else {
-						$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Accessory/0{$accessory}.img/default.default.png");
-						ImageCopy($this->image, $implace, $this->mainX + $accessoryX, $this->mainY + $accessoryY, 0, 0, imagesx($implace), imagesy($implace));
-					}
-				}
-			break;
-		}
-	}
-	
-	public function setHat($hat,$type) {
-		$location = $this->rootfolder."assets/img/GD/Cap/0{$hat}.img/index.txt";
-		if(file_exists($location)){
-			$hatArray = $this->txt_parse($location);
-			$hatX = (-$hatArray[default_default_origin_x]) - $hatArray[default_default_map_brow_x];
-			$hatY = (-$hatArray[default_default_origin_y]) - $hatArray[default_default_map_brow_y];
-			$acHatX = (-$hatArray[default_defaultAc_origin_x]) - $hatArray[default_defaultAc_map_brow_x];
-			$acHatY = (-$hatArray[default_defaultAc_origin_y]) - $hatArray[default_defaultAc_map_brow_y];
-			$this->vSlot = $hatArray[info_vslot];
-		}
-		switch($type) {
-			case "acHat":
-				$location = $this->rootfolder."assets/img/GD/Cap/0{$hat}.img/default.defaultAc.png";
-				if(file_exists($location)) {
-					$implace = ImageCreateFromPNG($location);
-					ImageCopy($this->image, $implace, $this->mainX + $acHatX, $this->mainY + $acHatY, 0, 0, imagesx($implace), imagesy($implace));
-				}
-			break;
-			case "regular":
-				if($hat) {
-					if($this->vSlot == "CpH5"){
-						if(file_exists($this->rootfolder."assets/img/GD/Hair/000{$this->hair}.img/default.hairOverHead.png")) {
-							$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Hair/000{$this->hair}.img/default.hairOverHead.png");
-							ImageCopy($this->image, $implace, $this->mainX + $this->overHairX, $this->mainY + $this->overHairY, 0, 0, imagesx($implace), imagesy($implace));
+	public function setAHair($z) {
+		$zArray = array( // Updated
+			"hair"							=> array( "hair" ),
+			"hairBelowBody"					=> array( "hairBelowBody", "hairBelowHead" ),
+			"hairOverHead"					=> array( "hairOverHead" ),
+			//"hairShade"						=> array( "hairShade" ), // manual handle this
+			"hairBelowHead"					=> array( "hairBelowHead" )
+		);
+		
+		if(isset($this->Hair['ID'])) {
+			$hair = "_".$z;
+			$hairX = self::mainX + $this->Hair['xml']->$hair->_stand1->x;
+			$hairY = self::mainY + $this->Hair['xml']->$hair->_stand1->y;
+			$vSlotArray = str_split($this->vSlot, 2);
+			
+			switch($z) {
+				case "hair": //H3
+				case "hairBelowBody": //H4
+				case "hairBelowHead": //H2 or H6
+				case "hairOverHead": //H5
+					foreach( $zArray[$z] as $type ) {
+						$hair = "_".$type;
+						if (property_exists ($this->Hair['xml'] , $hair )) {
+							if ($this->Hair['xml']->$hair->_stand1->z == $z) {
+								$hairX = self::mainX + $this->Hair['xml']->$hair->_stand1->x;
+								$hairY = self::mainY + $this->Hair['xml']->$hair->_stand1->y;
+								self::useImage("Hair/0".$this->Hair['ID'].".img/default.".$z.".png", $hairX, $hairY);
+							}
 						}
 					}
-					if(file_exists($this->rootfolder."assets/img/GD/Cap/0{$hat}.img/stand{$this->stand}.0.png")) {
-						$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Cap/0{$hat}.img/stand{$this->stand}.0.png");
-						ImageCopy($this->image, $implace, $this->mainX + $hatX, $this->mainY + $hatY, 0, 0, imagesx($implace), imagesy($implace));
-					} elseif(file_exists($this->rootfolder."assets/img/GD/Cap/0{$hat}.img/default.default.png")) {
-						$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Cap/0{$hat}.img/default.default.png");
-						ImageCopy($this->image, $implace, $this->mainX + $hatX, $this->mainY + $hatY, 0, 0, imagesx($implace), imagesy($implace));
+					break;
+				case "hairShade": //H1
+					$sType	= "_".$this->Skin['ID'];
+					$sK 	= $this->Skin['ID'];
+					if (!property_exists ($this->Hair['xml']->$hair , $sType)) {
+						$sType  = "_0";
+						$sK 	= 0;
 					}
-				} else {
-					if(file_exists($this->rootfolder."assets/img/GD/Hair/000{$this->hair}.img/default.hairOverHead.png")) {
-						$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Hair/000{$this->hair}.img/default.hairOverHead.png");
-						ImageCopy($this->image, $implace, $this->mainX + $this->overHairX, $this->mainY + $this->overHairY, 0, 0, imagesx($implace), imagesy($implace));
-					}
-				}
-			break;
+					$shadeHairX = self::mainX + $this->Hair['xml']->$hair->$sType->x;
+					$shadeHairY = self::mainY + $this->Hair['xml']->$hair->$sType->y;
+					self::useImage("Hair/0".$this->Hair['ID'].".img/default.hairShade.".$sK.".png", $shadeHairX, $shadeHairY);
+					break;
+			}
 		}
 	}
 	
-	public function setCape($cape,$type) {
-		$location = $this->rootfolder."assets/img/GD/Cape/0{$cape}.img/index.txt";
-		if(file_exists($location)) {
-			$capeArray = $this->txt_parse($location);
-			$capeX = (-$capeArray[stand1_0_cape_origin_x]) - $capeArray[stand1_0_cape_map_navel_x];
-			$capeY = (-$capeArray[stand1_0_cape_origin_y]) - $capeArray[stand1_0_cape_map_navel_y];
-			$capeArmX = (-$capeArray[stand1_0_capeArm_origin_x]) - $capeArray[stand1_0_capeArm_map_navel_x];
-			$capeArmY = (-$capeArray[stand1_0_capeArm_origin_y]) - $capeArray[stand1_0_capeArm_map_navel_y];
-			$capeZ = $capeArray[stand1_0_cape_z];
-		}
-		switch($type) {
-			case "cape":
-				if($capeZ == 'capeBelowBody') {
-					if(substr_count($this->vSlot, 'H1H2H3H4H5H6') == 1){
-						return NULL;
-					} else {
-						$location = $this->rootfolder."assets/img/GD/Hair/000{$this->hair}.img/default.hairBelowBody.png";
-						if(file_exists($location)) {
-							$implace = ImageCreateFromPNG($location);
-							ImageCopy($this->image, $implace, $this->mainX + $this->backHairX, $this->mainY + $this->backHairY, 0, 0, imagesx($implace), imagesy($implace));
-						}
-					}
-					if(file_exists($this->rootfolder."assets/img/GD/Cape/0{$cape}.img/stand2.0.cape.png") && $this->stand == 2) {
-						$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Cape/0{$cape}.img/stand2.0.cape.png");
-						ImageCopy($this->image, $implace, $this->mainX + $capeX, $this->neckY + $capeY, 0, 0, imagesx($implace), imagesy($implace));
-					} elseif(file_exists($this->rootfolder."assets/img/GD/Cape/0{$cape}.img/stand1.0.cape.png")) {
-						$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Cape/0{$cape}.img/stand1.0.cape.png");
-						ImageCopy($this->image, $implace, $this->mainX + $capeX, $this->neckY + $capeY, 0, 0, imagesx($implace), imagesy($implace));
-					}
-				} else {
-					if(file_exists($this->rootfolder."assets/img/GD/Cape/0{$cape}.img/stand2.0.cape.png") && $this->stand == 2) {
-						$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Cape/0{$cape}.img/stand2.0.cape.png");
-						ImageCopy($this->image, $implace, $this->mainX + $capeX, $this->neckY + $capeY, 0, 0, imagesx($implace), imagesy($implace));
-					} elseif(file_exists($this->rootfolder."assets/img/GD/Cape/0{$cape}.img/stand1.0.cape.png")) {
-						$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Cape/0{$cape}.img/stand1.0.cape.png");
-						ImageCopy($this->image, $implace, $this->mainX + $capeX, $this->neckY + $capeY, 0, 0, imagesx($implace), imagesy($implace));
-					}
-					if(substr_count($this->vSlot, 'H1H2H3H4H5H6') == 1){
-						return NULL;
-					} else {
-						$location = $this->rootfolder."assets/img/GD/Hair/000{$this->hair}.img/default.hairBelowBody.png";
-						if(file_exists($location)) {
-							$implace = ImageCreateFromPNG($location);
-							ImageCopy($this->image, $implace, $this->mainX + $this->backHairX, $this->mainY + $this->backHairY, 0, 0, imagesx($implace), imagesy($implace));
+	public function setAccessory($aType, $z) {
+		$zArray = array( // Updated
+			"accessoryEye"						=> array( "default" ),
+			"accessoryEyeBelowFace"				=> array( "default" ),
+			"accessoryEyeOverCap"				=> array( "default" ),
+			"accessoryFace"						=> array( "default", "0" ),
+			"accessoryFaceBelowFace"			=> array( "default" ),
+			"accessoryFaceOverFaceBelowCap"		=> array( "default" ),
+			"accessoryEar"						=> array( "default" ),
+			"accessoryEarOverHair"				=> array( "default" ),
+			"capOverHair"						=> array( "default" ),
+			"hairOverHead"						=> array( "default" ),
+			"accessoryOverHair"					=> array( "default" ),
+			"capeOverHead"						=> array( "default" )
+		);
+		
+		//$vArray = array("Pe", "Ae", "Me", "Af", "Si", "Be", "Sh", "Po", "Ba", "Ay");// Updated
+		
+		$aType = $this->$aType;
+		$Location = "Accessory/0".$aType['ID'].".img/";
+		if(self::exists($Location."coord.xml")) {
+			$xml = self::XMLoader($Location);
+			if (!strpos($this->vSlot, $xml->_info->vslot))
+				foreach( $zArray[$z] as $type ) {
+					$accessory = "_".$type;
+					if (property_exists ($xml , $accessory )) {
+						if ($xml->$accessory->_stand1->z == $z) {
+							$accessoryX = self::mainX + $xml->$accessory->_stand1->x;
+							$accessoryY = self::mainY + $xml->$accessory->_stand1->y;
+							self::useImage("Accessory/0".$aType['ID'].".img/default.".$type.".png", $accessoryX, $accessoryY);
 						}
 					}
 				}
-			break;
-			case "capeArm":
-				if(file_exists($this->rootfolder."assets/img/GD/Cape/0{$cape}.img/stand2.0.capeArm.png") && $this->stand == 2) {
-					$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Cape/0{$cape}.img/stand2.0.capeArm.png");
-					ImageCopy($this->image, $implace, $this->mainX + $capeArmX, $this->neckY + $capeArmY, 0, 0, imagesx($implace), imagesy($implace));
-				} elseif(file_exists($this->rootfolder."assets/img/GD/Cape/0{$cape}.img/stand1.0.capeArm.png")) {
-					$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Cape/0{$cape}.img/stand1.0.capeArm.png");
-					ImageCopy($this->image, $implace, $this->mainX + $capeArmX, $this->neckY + $capeArmY, 0, 0, imagesx($implace), imagesy($implace));
-				}
-			break;
 		}
 	}
 	
-	public function setShield($shield) {
-		$location = $this->rootfolder."assets/img/GD/Shield/0{$shield}.img/index.txt";
-		if(file_exists($location)) {
-			$shieldArray = $this->txt_parse($location);
-			$shieldX = (-$shieldArray[stand1_0_shield_origin_x]) - $shieldArray[stand1_0_shield_map_navel_x];
-			$shieldY = (-$shieldArray[stand1_0_shield_origin_y]) - $shieldArray[stand1_0_shield_map_navel_y];
-		}
-		$location = $this->rootfolder."assets/img/GD/Shield/0{$shield}.img/stand1.0.shield.png";
-		if(file_exists($location)) {
-			$implace = ImageCreateFromPNG($location);
-			ImageCopy($this->image, $implace, $this->mainX + $shieldX, $this->neckY + $shieldY, 0, 0, imagesx($implace), imagesy($implace));
+	public function setCap($z) {
+		$zArray = array( // Updated
+			"cap"						=> array( "default", "default1", "default3", "defaultTail", "0" ),
+			"body"						=> array( "default" ),
+			"capBelowBody"				=> array( "default", "defaultAc" ),
+			"accessoryEyeOverCap"		=> array( "default" ),
+			"capBelowAccessory"			=> array( "default" ),
+			"backHairOverCape"			=> array( "default", "defaultBack" ),
+			"capAccessoryBelowAccFace"	=> array( "default", "defaultAc" ),
+			"backCap"					=> array( "default", "default1", "default2", "default4", "defaultTail", "defaultBelowBody", "defaultAc", "defaultback", "acc" ),
+			"capAccessoryBelowBody"		=> array( "default", "defaultAC", "defaultAc", "defaultBelowBody" ),
+			"backHair"					=> array( "default", "defaultAc" ),
+			"capBelowHead"				=> array( "default", "defaultBack" ),
+			"accessoryEar"				=> array( "default", "defaultB" ), //only 01003108
+			"capOverHair"				=> array( "default", "default2", "effect", "0" ),
+			"capeBelowBody"				=> array( "default", "defaultacc", "acc" ),
+			"0"							=> array( "default" )
+		);
+		
+		if (isset($this->Cap['xml'])) {
+			$this->vSlot = $this->Cap['xml']->_info->vslot;
+			foreach( $zArray[$z] as $type ) {
+				$cap = "_".$type;
+				if (property_exists ($this->Cap['xml'] , $cap )) {
+					if ($this->Cap['xml']->$cap->stand1->z == $z) {
+						
+						$capX = self::mainX + $this->Cap['xml']->$cap->stand1->x;
+						$capY = self::mainY + $this->Cap['xml']->$cap->stand1->y;
+						if(self::exists("Cap/0".$this->Cap['ID'].".img/default.".$type.".png"))
+							self::useImage("Cap/0".$this->Cap['ID'].".img/default.".$type.".png", $capX, $capY);
+						 else if(self::exists("Cap/0".$this->Cap['ID'].".img/stand1.0.".$type.".png"))
+							 self::useImage("Cap/0".$this->Cap['ID'].".img/stand1.0.".$type.".png", $capX, $capY);
+					}
+				}
+			}
 		}
 	}
 	
-	public function setShoes($shoes) {
-		$location = $this->rootfolder."assets/img/GD/Shoes/0{$shoes}.img/index.txt";
-		if(file_exists($location)) {
-			$shoesArray = $this->txt_parse($location);
-			$shoesX = (-$shoesArray[stand1_0_shoes_origin_x]) - $shoesArray[stand1_0_shoes_map_navel_x];
-			$shoesY = (-$shoesArray[stand1_0_shoes_origin_y]) - $shoesArray[stand1_0_shoes_map_navel_y];
-		}
-		$location = $this->rootfolder."assets/img/GD/Shoes/0{$shoes}.img/stand1.0.shoes.png";
-		if(file_exists($location)) {
-			$implace = ImageCreateFromPNG($location);
-			ImageCopy($this->image, $implace, $this->mainX + $shoesX, $this->neckY + $shoesY, 0, 0, imagesx($implace), imagesy($implace));
+	public function setCape($z) {
+	$zArray = array( // Updated
+			"cape"			=> array( "cape", "capeArm", "capeOverHead", "capeOverArm" ),
+			"backWing"		=> array( "cape"),
+			"capeBelowBody"	=> array( "cape", "capeOverArm" ),
+			"capOverHair"	=> array( "cape"),
+			"capeOverHead"	=> array( "cape", "capeArm", "capeOverHead", "cape3" )
+		);
+		
+		if (isset($this->Cape['xml'])) {
+			foreach( $zArray[$z] as $type ) {
+				$cape = "_".$type;
+				
+				if (property_exists ($this->Cape['xml'] , $cape )) {
+					if ($this->Cape['xml']->$cape->stand1->z == $z) {
+						$capeX = self::mainX + $this->Cape['xml']->$cape->stand1->x;
+						$capeY = self::neckY + $this->Cape['xml']->$cape->stand1->y;
+						self::useImage("Cape/0".$this->Cape['ID'].".img/stand1.0.".$type.".png", $capeX, $capeY);
+					}
+				}
+			}
 		}
 	}
 	
-	public function setGlove($glove,$type) {
-		$location = $this->rootfolder."assets/img/GD/Glove/0{$glove}.img/index.txt";
-		if(file_exists($location)) {
-			$gloveArray = $this->txt_parse($location);
-			$LgloveX = (-$gloveArray['stand'.$this->stand.'_0_lGlove_origin_x']) - $gloveArray['stand'.$this->stand.'_0_lGlove_map_navel_x'];
-			$LgloveY = (-$gloveArray['stand'.$this->stand.'_0_lGlove_origin_y']) - $gloveArray['stand'.$this->stand.'_0_lGlove_map_navel_y'];
-			$RgloveX = (-$gloveArray['stand'.$this->stand.'_0_rGlove_origin_x']) - $gloveArray['stand'.$this->stand.'_0_rGlove_map_navel_x'];
-			$RgloveY = (-$gloveArray['stand'.$this->stand.'_0_rGlove_origin_y']) - $gloveArray['stand'.$this->stand.'_0_rGlove_map_navel_y'];
-			$LGloveX = (-$gloveArray[stand1_0_gloveOverBody_origin_x]) - $gloveArray[stand1_0_gloveOverBody_map_navel_x];
-			$LGloveY = (-$gloveArray[stand1_0_gloveOverBody_origin_y]) - $gloveArray[stand1_0_gloveOverBody_map_navel_y];
-			$RGloveX = (-$gloveArray[stand1_0_gloveOverHead_origin_x]) - $gloveArray[stand1_0_gloveOverHead_map_navel_x];
-			$RGloveY = (-$gloveArray[stand1_0_gloveOverHead_origin_y]) - $gloveArray[stand1_0_gloveOverHead_map_navel_y];
-			$MgloveX = (-$gloveArray[stand2_0_gloveOverHand_origin_x]) - $gloveArray[stand2_0_gloveOverHand_map_navel_x];
-			$MgloveY = (-$gloveArray[stand2_0_gloveOverHand_origin_y]) - $gloveArray[stand2_0_gloveOverHand_map_navel_y];
-		}
-		switch($type) {
-			case "leftGlove":
-				if(file_exists($this->rootfolder."assets/img/GD/Glove/0{$glove}.img/stand{$this->stand}.0.gloveOverBody.png")) {
-					$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Glove/0{$glove}.img/stand{$this->stand}.0.gloveOverBody.png");
-					ImageCopy($this->image, $implace, $this->mainX + $LGloveX, $this->neckY + $LGloveY, 0, 0, imagesx($implace), imagesy($implace));
-				} elseif(file_exists($this->rootfolder."assets/img/GD/Glove/0{$glove}.img/stand{$this->stand}.0.lGlove.png")) {
-					$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Glove/0{$glove}.img/stand{$this->stand}.0.lGlove.png");
-					ImageCopy($this->image, $implace, $this->mainX + $LgloveX, $this->neckY + $LgloveY, 0, 0, imagesx($implace), imagesy($implace));
-				}
-			break;
-			case "rightGlove":
-				if(file_exists($this->rootfolder."assets/img/GD/Glove/0{$glove}.img/stand{$this->stand}.0.gloveOverHead.png")) {
-					$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Glove/0{$glove}.img/stand{$this->stand}.0.gloveOverHead.png");
-					ImageCopy($this->image, $implace, $this->mainX + $RGloveX, $this->neckY + $RGloveY, 0, 0, imagesx($implace), imagesy($implace));
-				} elseif(file_exists($this->rootfolder."assets/img/GD/Glove/0{$glove}.img/stand{$this->stand}.0.rGlove.png")) {
-					$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Glove/0{$glove}.img/stand{$this->stand}.0.rGlove.png");
-					ImageCopy($this->image, $implace, $this->mainX + $RgloveX, $this->neckY + $RgloveY, 0, 0, imagesx($implace), imagesy($implace));
-				}
-			break;
-			case "middleGlove":
-				$location = $this->rootfolder."assets/img/GD/Glove/0{$glove}.img/stand{$this->stand}.0.gloveOverHand.png";
-				if(file_exists($location)) {
-					$implace = ImageCreateFromPNG($location);
-					ImageCopy($this->image, $implace, $this->mainX + $MgloveX, $this->neckY + $MgloveY, 0, 0, imagesx($implace), imagesy($implace));
-				}
-			break;
+	public function setShield($z = NULL) {
+		if($this->Shield['ID'] < 1090000) {
+			self::setWeapon("weaponOverArmBelowHead");
+		} else if ($this->Shield['ID'] > 1340000 && $this->Shield['ID'] < 1360000) { // Secondary weapon
+			// not handle secondary weaps by this way anymore
+		} else if(isset($this->Shield['xml']) && $z == null) {
+			$shieldX = self::mainX + $this->Shield['xml']->_shield->stand1->x;
+			$shieldY = self::neckY + $this->Shield['xml']->_shield->stand1->y;
+			
+			self::useImage("Shield/0".$this->Shield['ID'].".img/stand1.0.shield.png", $shieldX, $shieldY);
 		}
 	}
 	
-	public function setPants($pants) {
-		$location = $this->rootfolder."assets/img/GD/Pants/0{$pants}.img/index.txt";
-		if(file_exists($location)) {
-			$pantsArray = $this->txt_parse($location);
-			$pantsX = (-$pantsArray[stand1_0_pants_origin_x]) - $pantsArray[stand1_0_pants_map_navel_x];
-			$pantsY = (-$pantsArray[stand1_0_pants_origin_y]) - $pantsArray[stand1_0_pants_map_navel_y];
-		}
-		if(!($pants || $this->overAll)) {
-			$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Pants/01060026.img/stand1.0.pants.png");
-			ImageCopy($this->image, $implace, $this->mainX - 3, $this->neckY + 1, 0, 0, imagesx($implace), imagesy($implace));
-		} elseif(file_exists($this->rootfolder."assets/img/GD/Pants/0{$pants}.img/stand2.0.pants.png") && $this->stand == 2) {
-			$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Pants/0{$pants}.img/stand2.0.pants.png");
-			ImageCopy($this->image, $implace, $this->mainX + $pantsX, $this->neckY + $pantsY, 0, 0, imagesx($implace), imagesy($implace));
-		} elseif(file_exists($this->rootfolder."assets/img/GD/Pants/0{$pants}.img/stand1.0.pants.png")) {
-			$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Pants/0{$pants}.img/stand1.0.pants.png");
-			ImageCopy($this->image, $implace, $this->mainX + $pantsX, $this->neckY + $pantsY, 0, 0, imagesx($implace), imagesy($implace));
+	public function setShoes($z) {
+		$zArray = array( // Updated
+			"shoes"						=> array( "shoes"),
+			"weaponOverBody"			=> array( "shoes"),
+			"shoesTop"					=> array( "shoes"),
+			"shoesOverPants"			=> array( "shoes"),
+			"pantsOverMailChest"		=> array( "shoes"),
+			"gloveWristBelowMailArm"	=> array( "shoes"),
+			"capAccessoryBelowBody"		=> array( "shoesBack" )
+		);
+		
+		if (isset($this->Shoes['xml'])) {
+			foreach( $zArray[$z] as $type ) {
+				$shoes = "_".$type;
+				if (property_exists ($this->Shoes['xml'] , $shoes )) {
+					if ($this->Shoes['xml']->$shoes->_stand1->z == $z) {
+						$shoesX = self::mainX + $this->Shoes['xml']->$shoes->_stand1->x;
+						$shoesY = self::neckY + $this->Shoes['xml']->$shoes->_stand1->y;
+						self::useImage("Shoes/0".$this->Shoes['ID'].".img/stand1.0.".$type.".png", $shoesX, $shoesY);
+					}
+				}
+			}
 		}
 	}
 	
-	public function setTop($top,$type) {
-		$location = $this->rootfolder."assets/img/GD/Coat/0{$top}.img/index.txt";
-		if(file_exists($location)) {
-			$mailArray = $this->txt_parse($location);
-			$mailX = (-$mailArray['stand'.$this->stand.'_0_mail_origin_x']) - $mailArray['stand'.$this->stand.'_0_mail_map_navel_x'];
-			$mailY = (-$mailArray['stand'.$this->stand.'_0_mail_origin_y']) - $mailArray['stand'.$this->stand.'_0_mail_map_navel_y'];
-			$mailArmX = (-$mailArray['stand'.$this->stand.'_0_mailArm_origin_x']) - $mailArray['stand'.$this->stand.'_0_mailArm_map_navel_x'];
-			$mailArmY = (-$mailArray['stand'.$this->stand.'_0_mailArm_origin_y']) - $mailArray['stand'.$this->stand.'_0_mailArm_map_navel_y'];
-		}
-		switch($type) {
-			case "top":
-				if(!($top || $this->overAll) && file_exists($this->rootfolder."assets/img/GD/Coat/01040036.img/stand1.0.mail.png")) {
-					$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Coat/01040036.img/stand1.0.mail.png");
-					ImageCopy($this->image, $implace, $this->mainX - 3, $this->neckY - 9, 0, 0, imagesx($implace), imagesy($implace));
-				} elseif(file_exists($this->rootfolder."assets/img/GD/Coat/0{$top}.img/stand2.0.mail.png") && $this->stand == 2) {
-					$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Coat/0{$top}.img/stand2.0.mail.png");
-					ImageCopy($this->image, $implace, $this->mainX + $mailX, $this->neckY + $mailY, 0, 0, imagesx($implace), imagesy($implace));
-				} elseif(file_exists($this->rootfolder."assets/img/GD/Coat/0{$top}.img/stand1.0.mail.png")) {
-					$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Coat/0{$top}.img/stand1.0.mail.png");
-					ImageCopy($this->image, $implace, $this->mainX + $mailX, $this->neckY + $mailY, 0, 0, imagesx($implace), imagesy($implace));
+	public function setGlove($pos, $stand = NULL) {
+		$canvasArray = array(
+			"r" => array( "stand1" => array( "rGlove", "rWrist", "gloveOverHead" ), "stand2" => array( "rGlove", "rWrist" ) ),
+			"l" => array( "stand1" => array( "lGlove", "lWrist", "gloveOverBody" ), "stand2" => array( "lGlove", "lWrist", "gloveOverHand", "lGlove2") )
+		);
+		if(isset($this->Glove['xml'])) {
+			$snd = "_stand".$this->stand;
+			$ss  = "stand".$this->stand;
+			if(!($pos == 'l' && $stand == 2 && $this->stand == 1)) { // Check for Stand2 Left Glove
+				foreach( $canvasArray[$pos][$ss] as $canvas ) {
+					if(self::exists("Glove/0".$this->Glove['ID'].".img/".$ss.".0.".$canvas.".png")) {
+						$type   = "_".$canvas;
+						$gloveX = self::mainX + $this->Glove['xml']->$type->$snd->x;
+						$gloveY = self::neckY + $this->Glove['xml']->$type->$snd->y;
+						
+						self::useImage("Glove/0".$this->Glove['ID'].".img/".$ss.".0.".$canvas.".png", $gloveX, $gloveY);
+					}
 				}
-			break;
-			case "topArm":
-				$location = $this->rootfolder."assets/img/GD/Coat/0{$top}.img/stand{$this->stand}.0.mailArm.png";
-				if(file_exists($location)) {
-					$implace = ImageCreateFromPNG($location);
-					ImageCopy($this->image, $implace, $this->mainX + $mailArmX, $this->neckY + $mailArmY, 0, 0, imagesx($implace), imagesy($implace));
-				}
-			break;
+			}
 		}
 	}
 	
-	public function setOverAll($overAll,$type) {
-		$location = $this->rootfolder."assets/img/GD/Longcoat/0{$overAll}.img/index.txt";
-		if(file_exists($location)) {
-			$mailArray = $this->txt_parse($location);
-			$mailX = (-$mailArray['stand'.$this->stand.'_0_mail_origin_x']) - $mailArray['stand'.$this->stand.'_0_mail_map_navel_x'];
-			$mailY = (-$mailArray['stand'.$this->stand.'_0_mail_origin_y']) - $mailArray['stand'.$this->stand.'_0_mail_map_navel_y'];
-			$mailArmX = (-$mailArray['stand'.$this->stand.'_0_mailArm_origin_x']) - $mailArray['stand'.$this->stand.'_0_mailArm_map_navel_x'];
-			$mailArmY = (-$mailArray['stand'.$this->stand.'_0_mailArm_origin_y']) - $mailArray['stand'.$this->stand.'_0_mailArm_map_navel_y'];
-		}
-		switch($type) {
-			case "overall":
-				if(file_exists($this->rootfolder."assets/img/GD/Longcoat/0{$overAll}.img/stand2.0.mail.png") && $this->stand == 2) {
-					$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Longcoat/0{$overAll}.img/stand2.0.mail.png");
-					ImageCopy($this->image, $implace, $this->mainX + $mailX, $this->neckY + $mailY, 0, 0, imagesx($implace), imagesy($implace));
-				} elseif(file_exists($this->rootfolder."assets/img/GD/Longcoat/0{$overAll}.img/stand1.0.mail.png")) {
-					$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Longcoat/0{$overAll}.img/stand1.0.mail.png");
-					ImageCopy($this->image, $implace, $this->mainX + $mailX, $this->neckY + $mailY, 0, 0, imagesx($implace), imagesy($implace));
-				}
-			break;
-			case "overallArm":
-				$location = $this->rootfolder."assets/img/GD/Longcoat/0{$overAll}.img/stand{$this->stand}.0.mailArm.png";
-				if(file_exists($location)) {
-					$implace = ImageCreateFromPNG($location);
-					ImageCopy($this->image, $implace, $this->mainX + $mailArmX, $this->neckY + $mailArmY, 0, 0, imagesx($implace), imagesy($implace));
-				}
-			break;
+	public function setPants() {
+		if(!isset($this->Pants['ID'])) {
+			self::useImage("Pants/0{$this->default[$this->Gender['ID']]['pants']}.img/stand1.0.pants.png", self::mainX - 3, self::neckY + 1);
+		} elseif($this->Coat['ID'] >= 1050000) {
+			return NULL;
+		} elseif(isset($this->Pants['xml'])) {
+			$snd    = "_stand".$this->stand;
+			$pantsX = self::mainX + $this->Pants['xml']->_pants->$snd->x;
+			$pantsY = self::neckY + $this->Pants['xml']->_pants->$snd->y;
+			imagettftext($this->image, 7, 0, 0, 90, $color, "C:\Windows\Fonts\Arial.ttf", $z);
+			if(self::exists("Pants/0".$this->Pants['ID'].".img/stand2.0.pants.png") && $this->stand == 2)
+				self::useImage("Pants/0".$this->Pants['ID'].".img/stand2.0.pants.png", $pantsX, $pantsY);
+			else
+				self::useImage("Pants/0".$this->Pants['ID'].".img/stand1.0.pants.png", $pantsX, $pantsY);
 		}
 	}
 	
-	public function setWeapon($weapon,$type) {
-		$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/index.txt";
-		if(file_exists($location)) {
-			$weaponArray = $this->txt_parse($location);
-			$wepX = $this->mainX + 12;
-			$wepY = $this->neckY + 6;
-			if($this->wepNum) {
-				if($weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weapon_map_hand_x'] != NULL) {
-					$position = 'hand';
-				} else {
-					$position = 'navel';
-					$wepX = $this->mainX;
-					$wepY = $this->neckY;
-				}
-				$weaponX = (-$weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weapon_origin_x']) - $weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weapon_map_'.$position.'_x'];
-				$weaponY = (-$weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weapon_origin_y']) - $weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weapon_map_'.$position.'_y'];
-				$weaponZ = $weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weapon_z'];
-			} else {
-				if($weaponArray['stand'.$this->stand.'_0_weapon_map_hand_x'] != NULL) {
-					$position = 'hand';
-				} else {
-					$position = 'navel';
-					$wepX = $this->mainX;
-					$wepY = $this->neckY;
-				}
-				$weaponX = (-$weaponArray['stand'.$this->stand.'_0_weapon_origin_x']) - $weaponArray['stand'.$this->stand.'_0_weapon_map_'.$position.'_x'];
-				$weaponY = (-$weaponArray['stand'.$this->stand.'_0_weapon_origin_y']) - $weaponArray['stand'.$this->stand.'_0_weapon_map_'.$position.'_y'];
-				$weaponZ = $weaponArray['stand'.$this->stand.'_0_weapon_z'];
-				$wristWepX = (-$weaponArray[stand1_0_weaponWrist_origin_x]) - $weaponArray[stand1_0_weaponWrist_map_hand_x];
-				$wristWepY = (-$weaponArray[stand1_0_weaponWrist_origin_y]) - $weaponArray[stand1_0_weaponWrist_map_hand_y];
+	public function setCoat($type) {
+		$Location = ($this->Coat['ID'] >= 1050000 ? "Longcoat" : "Coat")."/0".$this->Coat['ID'].".img/";
+		if(!isset($this->Coat['ID'])) {
+			self::useImage("Coat/0{$this->default[$this->Gender['ID']]['coat']}.img/stand1.0.mail.png", self::mainX - 3, self::neckY - 9);
+		} elseif(self::exists($Location."coord.xml")) {
+			$xml = self::XMLoader($Location);
+			$snd = "stand".$this->stand;
+			
+			switch($type) {
+				case "mail":
+					$mailX = self::mainX + $xml->_mail->$snd->x;
+					$mailY = self::neckY + $xml->_mail->$snd->y;
+					
+					if(self::exists($Location."stand2.0.mail.png") && $this->stand == 2)
+						self::useImage($Location."stand2.0.mail.png", $mailX, $mailY);
+					else
+						self::useImage($Location."stand1.0.mail.png", $mailX, $mailY);
+				break;
+				case "mailArm":
+					$mailArmX = self::mainX + $xml->_mailArm->$snd->x;
+					$mailArmY = self::neckY + $xml->_mailArm->$snd->y;
+					
+					self::useImage($Location."stand".$this->stand.".0.mailArm.png", $mailArmX, $mailArmY);
+				break;
 			}
-			if($this->stand == 2 && $position == 'hand') {
-				$wepX -= 7;
-				$wepY -= 7;
-			}
-		}
-		switch($type) {
-			case "weaponBelowBody":
-				if($weaponZ == 'weaponBelowBody') {
-					if($this->wepNum) {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/{$this->wepNum}.stand{$this->stand}.0.weapon.png";
-					} else {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/stand{$this->stand}.0.weapon.png";
-					}
-					if(file_exists($location)) {
-						$implace = ImageCreateFromPNG($location);
-						ImageCopy($this->image, $implace, $wepX + $weaponX, $wepY + $weaponY, 0, 0, imagesx($implace), imagesy($implace));
-					}
-				}
-			break;
-			case "weaponBelowArm":
-				if($weaponZ == 'weaponBelowArm') {
-					if($this->wepNum) {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/{$this->wepNum}.stand{$this->stand}.0.weapon.png";
-					} else {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/stand{$this->stand}.0.weapon.png";
-					}
-					if(file_exists($location)) {
-						$implace = ImageCreateFromPNG($location);
-						ImageCopy($this->image, $implace, $wepX + $weaponX, $wepY + $weaponY, 0, 0, imagesx($implace), imagesy($implace));
-					}
-				}
-			break;
-			case "armLOverMailChest":
-				if($weaponZ == 'armLOverMailChest') {
-					if($this->wepNum) {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/{$this->wepNum}.stand{$this->stand}.0.weapon.png";
-					} else {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/stand{$this->stand}.0.weapon.png";
-					}
-					if(file_exists($location)) {
-						$implace = ImageCreateFromPNG($location);
-						ImageCopy($this->image, $implace, $wepX + $weaponX, $wepY + $weaponY, 0, 0, imagesx($implace), imagesy($implace));
-					}
-				}
-			break;
-			case "weaponOverArm":
-				if($weaponZ == 'weaponOverArm') {
-					if($this->wepNum) {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/{$this->wepNum}.stand{$this->stand}.0.weapon.png";
-					} else {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/stand{$this->stand}.0.weapon.png";
-					}
-					if(file_exists($location)) {
-						$implace = ImageCreateFromPNG($location);
-						ImageCopy($this->image, $implace, $wepX + $weaponX, $wepY + $weaponY, 0, 0, imagesx($implace), imagesy($implace));
-					}
-				}
-			case "weaponOverBody":
-				if($weaponZ == 'weaponOverBody') {
-					if($this->wepNum) {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/{$this->wepNum}.stand{$this->stand}.0.weapon.png";
-					} else {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/stand{$this->stand}.0.weapon.png";
-					}
-					if(file_exists($location)) {
-						$implace = ImageCreateFromPNG($location);
-						ImageCopy($this->image, $implace, $wepX + $weaponX, $wepY + $weaponY, 0, 0, imagesx($implace), imagesy($implace));
-					}
-				}
-			break;
-			case "weapon":
-				if($weaponZ == 'weapon') {
-					if($this->wepNum) {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/{$this->wepNum}.stand{$this->stand}.0.weapon.png";
-					} else {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/stand{$this->stand}.0.weapon.png";
-					}
-					if(file_exists($location)) {
-						$implace = ImageCreateFromPNG($location);
-						ImageCopy($this->image, $implace, $wepX + $weaponX, $wepY + $weaponY, 0, 0, imagesx($implace), imagesy($implace));
-					}
-				}
-			break;
-			case "weaponOverGlove":
-				if($weaponZ == 'weaponOverGlove') {
-					if($this->wepNum) {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/{$this->wepNum}.stand{$this->stand}.0.weapon.png";
-					} else {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/stand{$this->stand}.0.weapon.png";
-					}
-					if(file_exists($location)) {
-						$implace = ImageCreateFromPNG($location);
-						ImageCopy($this->image, $implace, $wepX + $weaponX, $wepY + $weaponY, 0, 0, imagesx($implace), imagesy($implace));
-					}
-					if(isset($wristWepX) && isset($wristWepY)) {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/stand1.0.weaponWrist.png";
-						if(file_exists($location)) {
-							$implace = ImageCreateFromPNG($location);
-							ImageCopy($this->image, $implace, $wepX + $wristWepX, $this->neckY + $wristWepY, 0, 0, imagesx($implace), imagesy($implace));
-						}
-					}
-				}
-			break;
-			case "weaponOverHand":
-				if($weaponZ == 'weaponOverHand') {
-					if($this->wepNum) {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/{$this->wepNum}.stand{$this->stand}.0.weapon.png";
-					} else {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/stand{$this->stand}.0.weapon.png";
-					}
-					if(file_exists($location)) {
-						$implace = ImageCreateFromPNG($location);
-						ImageCopy($this->image, $implace, $wepX + $weaponX, $wepY + $weaponY, 0, 0, imagesx($implace), imagesy($implace));
-					}
-				}
-			break;
 		}
 	}
-	public function setKnuckler($weapon,$type) {
-		$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/index.txt";
-		if(file_exists($location)) {
-			$weaponArray = $this->txt_parse($location);
-			$wepX = $this->mainX + 12;
-			$wepY = $this->neckY + 6;
-			if($this->wepNum) {
-				if($weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponOverBody_map_hand_x'] != NULL) {
-					$positionOverBody = 'hand';
-				} else {
-					$positionOverBody = 'navel';
-					$wepXOverBody = $this->mainX;
-					$wepYOverBody = $this->neckY;
-				}
-				if($weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponOverArm_map_hand_x'] != NULL) {
-					$positionOverArm = 'hand';
-				} else {
-					$positionOverArm = 'navel';
-					$wepXOverArm = $this->mainX;
-					$wepYOverArm = $this->neckY;
-				}
-				$weaponOverBodyX = (-$weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponOverBody_origin_x']) - $weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponOverBody_map_'.$positionOverBody.'_x'];
-				$weaponOverBodyY = (-$weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponOverBody_origin_y']) - $weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponOverBody_map_'.$positionOverBody.'_y'];
-				$weaponOverBodyZ = $weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponOverBody_z'];
-				$weaponOverArmX = (-$weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponOverArm_origin_x']) - $weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponOverArm_map_'.$positionOverArm.'_x'];
-				$weaponOverArmY = (-$weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponOverArm_origin_y']) - $weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponOverArm_map_'.$positionOverArm.'_y'];
-				$weaponOverArmZ = $weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponOverArm_z'];
-			} else {
-				if($weaponArray['stand'.$this->stand.'_0_weaponOverBody_map_hand_x'] != NULL) {
-					$positionOverBody = 'hand';
-				} else {
-					$positionOverBody = 'navel';
-					$wepXOverBody = $this->mainX;
-					$wepYOverBody = $this->neckY;
-				}
-				if($weaponArray['stand'.$this->stand.'_0_weaponOverArm_map_hand_x'] != NULL) {
-					$positionOverArm = 'hand';
-				} else {
-					$positionOverArm = 'navel';
-					$wepXOverArm = $this->mainX;
-					$wepYOverArm = $this->neckY;
-				}
-				$weaponOverBodyX = (-$weaponArray['stand'.$this->stand.'_0_weaponOverBody_origin_x']) - $weaponArray['stand'.$this->stand.'_0_weaponOverBody_map_'.$positionOverBody.'_x'];
-				$weaponOverBodyY = (-$weaponArray['stand'.$this->stand.'_0_weaponOverBody_origin_y']) - $weaponArray['stand'.$this->stand.'_0_weaponOverBody_map_'.$positionOverBody.'_y'];
-				$weaponOverBodyZ = $weaponArray['stand'.$this->stand.'_0_weaponOverBody_z'];
-				$weaponOverArmX = (-$weaponArray['stand'.$this->stand.'_0_weaponOverArm_origin_x']) - $weaponArray['stand'.$this->stand.'_0_weaponOverArm_map_'.$positionOverArm.'_x'];
-				$weaponOverArmY = (-$weaponArray['stand'.$this->stand.'_0_weaponOverArm_origin_y']) - $weaponArray['stand'.$this->stand.'_0_weaponOverArm_map_'.$positionOverArm.'_y'];
-				$weaponOverArmZ = $weaponArray['stand'.$this->stand.'_0_weaponOverArm_z'];
-				$wristWepX = (-$weaponArray[stand1_0_weaponWrist_origin_x]) - $weaponArray[stand1_0_weaponWrist_map_hand_x];
-				$wristWepY = (-$weaponArray[stand1_0_weaponWrist_origin_y]) - $weaponArray[stand1_0_weaponWrist_map_hand_y];
+	
+	public function setWeapon($z) {
+		$wepArray = array( // Updated
+			"weapon"                    	=> array( "weapon", "effect", "weaponFront" ),
+			"weaponBelowArm"            	=> array( "weapon", "weaponBelowArm", "ex" ),
+			"weaponBelowBody"           	=> array( "weapon", "weaponBelowBody" ),
+			"weaponOverArm"             	=> array( "weapon", "weaponOverArm", "string", "weaponOverGlove", "weaponOverGlve" ),
+			"weaponOverArmBelowHead"    	=> array( "weapon", "weaponL" ),
+			"weaponOverBody"            	=> array( "weapon", "weaponOverBody", "weaponL" ),
+			"weaponOverGlove"           	=> array( "weapon", "belt" ),
+			"weaponOverHand"           		=> array( "weapon", "weaponOverHand" ),
+			"weaponWristOverGlove"     		=> array( "weapon", "weaponWrist" ),
+			"armBelowHeadOverMailChest"		=> array( "weapon" ),
+			"gloveWristBelowWeapon" 		=> array( "weapon" ),
+			"weaponOverGloveBelowMailArm"	=> array( "weapon" ),
+			"backWeapon" 					=> array( "weapon" ),
+			"handBelowWeapon" 				=> array( "weaponL" ),
+			"characterEnd" 					=> array( "effect" ),
+			"emotionOverBody" 				=> array( "effect" ),
+		);
+		if ($z == "weaponOverArmBelowHead" && ($this->Shield['ID'] > 1340000 && $this->Shield['ID'] < 1350000)) { //Katara, Dualbow
+			$Location = "Weapon/0".$this->Shield['ID'].".img/";
+			if(self::exists($Location."coord.xml")) {
+				$xml = self::XMLoader($Location);
+				$snd = "_stand".$xml->_info->stand->value;
+				$ss  = "stand".$xml->_info->stand->value; // I'm okay with this 'cause too lazy to recreate the whole GD folder to fix this.
+				$shieldX = self::mainX + $xml->_weapon->$snd->x;
+				$shieldY = self::neckY + $xml->_weapon->$snd->y;
+				self::useImage("Weapon/0".$this->Shield['ID'].".img/".$ss.".0.weapon.png", $shieldX, $shieldY);
 			}
-			if($this->stand == 2 && $positionOverBody == 'hand') {
-				$wepXOverBody -= 7;
-				$wepYOverBody -= 7;
-			}
-			if($this->stand == 2 && $positionOverArm == 'hand') {
-				$wepXOverArm -= 7;
-				$wepYOverArm -= 7;
+		} else if (isset($this->Weapon['xml'])) {
+			$snd = "_stand".$this->stand;
+			$ss  = "stand".$this->stand; // I'm okay with this 'cause too lazy to recreate the whole GD folder to fix this.
+			if($wepNUM = $this->Weapon['xml']->_info->$ss->NUM) 
+				$wepNUM .= ".";
+			foreach( $wepArray[$z] as $type ) {
+				$weap = "_".$type;
+				if (property_exists ($this->Weapon['xml'] , $weap )) {
+					if ($this->Weapon['xml']->$weap->$snd->z == $z) {
+						$wepX = self::mainX + $this->Weapon['xml']->$weap->$snd->x;
+						$wepY = self::neckY + $this->Weapon['xml']->$weap->$snd->y;
+						self::useImage("Weapon/0".$this->Weapon['ID'].".img/".$wepNUM.$ss.".0.".$type.".png", $wepX, $wepY);
+					}
+				}
 			}
 		}
-		switch($type) {
-			case "weaponOverBody":
-				if($weaponOverBodyZ == 'weaponOverBody') {
-					if($this->wepNum) {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/{$this->wepNum}.stand{$this->stand}.0.weaponOverBody.png";
-					} else {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/stand{$this->stand}.0.weaponOverBody.png";
-					}
-					if(file_exists($location)) {
-						$implace = ImageCreateFromPNG($location);
-						ImageCopy($this->image, $implace, $wepXOverBody + $weaponOverBodyX, $wepYOverBody + $weaponOverBodyY, 0, 0, imagesx($implace), imagesy($implace));
-					}
-				}
-			break;
-			case "weaponOverArm":
-				if($weaponOverArmZ == 'weaponOverArm') {
-					if($this->wepNum) {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/{$this->wepNum}.stand{$this->stand}.0.weaponOverArm.png";
-					} else {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/stand{$this->stand}.0.weaponOverArm.png";
-					}
-					if(file_exists($location)) {
-						$implace = ImageCreateFromPNG($location);
-						ImageCopy($this->image, $implace, $wepXOverArm + $weaponOverArmX, $wepYOverArm + $weaponOverArmY, 0, 0, imagesx($implace), imagesy($implace));
-					}
-				}
-			break;
-			}
 	}
-	public function setDualGun($weapon,$type) {
-		$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/index.txt";
-		if(file_exists($location)) {
-			$weaponArray = $this->txt_parse($location);
-			$wepX = $this->mainX + 12;
-			$wepY = $this->neckY + 6;
-			if($this->wepNum) {
-				if($weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponR_map_hand_x'] != NULL) {
-					$positionR = 'hand';
-				} else {
-					$positionR = 'navel';
-					$wepXR = $this->mainX;
-					$wepYR = $this->neckY;
-				}
-				if($weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponL_map_hand_x'] != NULL) {
-					$positionL = 'hand';
-				} else {
-					$positionL = 'navel';
-					$wepXL = $this->mainX;
-					$wepYL = $this->neckY;
-				}
-				$weaponRX = (-$weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponR_origin_x']) - $weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponR_map_'.$positionR.'_x'];
-				$weaponRY = (-$weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponR_origin_y']) - $weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponR_map_'.$positionR.'_y'];
-				$weaponRZ = $weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponR_z'];
-				$weaponLX = (-$weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponL_origin_x']) - $weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponL_map_'.$positionL.'_x'];
-				$weaponLY = (-$weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponL_origin_y']) - $weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponL_map_'.$positionL.'_y'];
-				$weaponLZ = $weaponArray[$this->wepNum.'_stand'.$this->stand.'_0_weaponL_z'];
-			} else {
-				if($weaponArray['stand'.$this->stand.'_0_weaponR_map_hand_x'] != NULL) {
-					$positionR = 'hand';
-				} else {
-					$positionR = 'navel';
-					$wepXR = $this->mainX;
-					$wepYR = $this->neckY;
-				}
-				if($weaponArray['stand'.$this->stand.'_0_weaponL_map_hand_x'] != NULL) {
-					$positionL = 'hand';
-				} else {
-					$positionL = 'navel';
-					$wepXL = $this->mainX;
-					$wepYL = $this->neckY;
-				}
-				$weaponRX = (-$weaponArray['stand'.$this->stand.'_0_weaponR_origin_x']) - $weaponArray['stand'.$this->stand.'_0_weaponR_map_'.$positionR.'_x'];
-				$weaponRY = (-$weaponArray['stand'.$this->stand.'_0_weaponR_origin_y']) - $weaponArray['stand'.$this->stand.'_0_weaponR_map_'.$positionR.'_y'];
-				$weaponRZ = $weaponArray['stand'.$this->stand.'_0_weaponR_z'];
-				$weaponLX = (-$weaponArray['stand'.$this->stand.'_0_weaponL_origin_x']) - $weaponArray['stand'.$this->stand.'_0_weaponL_map_'.$positionL.'_x'];
-				$weaponLY = (-$weaponArray['stand'.$this->stand.'_0_weaponL_origin_y']) - $weaponArray['stand'.$this->stand.'_0_weaponL_map_'.$positionL.'_y'];
-				$weaponLZ = $weaponArray['stand'.$this->stand.'_0_weaponL_z'];
-				$wristWepX = (-$weaponArray[stand1_0_weaponWrist_origin_x]) - $weaponArray[stand1_0_weaponWrist_map_hand_x];
-				$wristWepY = (-$weaponArray[stand1_0_weaponWrist_origin_y]) - $weaponArray[stand1_0_weaponWrist_map_hand_y];
-			}
-			if($this->stand == 2 && $positionR == 'hand') {
-				$wepXR -= 7;
-				$wepYR -= 7;
-			}
-			if($this->stand == 2 && $positionL == 'hand') {
-				$wepXL -= 7;
-				$wepYL -= 7;
-			}
-		}
-		switch($type) {
-			case "weaponR":
-				if($weaponRZ == 'weaponR') {
-					if($this->wepNum) {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/{$this->wepNum}.stand{$this->stand}.0.weapon.png";
-					} else {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/stand{$this->stand}.0.weapon.png";
-					}
-					if(file_exists($location)) {
-						$implace = ImageCreateFromPNG($location);
-						ImageCopy($this->image, $implace, $wepXR + $weaponRX, $wepYR + $weaponRY, 0, 0, imagesx($implace), imagesy($implace));
-					}
-				}
-			break;
-			case "weaponL":
-				if($weaponLZ == 'weaponL') {
-					if($this->wepNum) {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/{$this->wepNum}.stand{$this->stand}.0.weaponL.png";
-					} else {
-						$location = $this->rootfolder."assets/img/GD/Weapon/0{$weapon}.img/stand{$this->stand}.0.weaponL.png";
-					}
-					if(file_exists($location)) {
-						$implace = ImageCreateFromPNG($location);
-						ImageCopy($this->image, $implace, $wepXL + $weaponLX, $wepYL + $weaponLY, 0, 0, imagesx($implace), imagesy($implace));
-					}
-				}
-			break;
-			}
-	}
+	
 	public function createBody($type) {
+		$skin = 2000 + $this->Skin['ID'];
 		switch($type) {
 			case "head":
-				$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Skin/0000{$this->skin}.img/front.head.png");
-				return ImageCopy($this->image, $implace, $this->mainX - 15, $this->mainY - 12, 0, 0, imagesx($implace), imagesy($implace));
-			break;
-			case "mercedesEars":
-				$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Skin/0000{$this->skin}.img/front.ear.png");
-				return ImageCopy($this->image, $implace, $this->mainX - 19, $this->mainY + 6, 0, 0, imagesx($implace), imagesy($implace));
+				self::useImage("Skin/0000".$skin.".img/front.head.png", self::mainX - 15, self::mainY - 12);
 			break;
 			case "body":
-				$implace = ImageCreateFromPNG($this->rootfolder."assets/img/GD/Skin/0000{$this->skin}.img/stand{$this->stand}.0.body.png");
-				return ImageCopy($this->image, $implace, ($this->mainX + $this->stand) - 9, $this->mainY + 21, 0, 0, imagesx($implace), imagesy($implace));
+				self::useImage("Skin/0000".$skin.".img/stand{$this->stand}.0.body.png", (self::mainX + $this->stand) - 9, self::mainY + 21);
 			break;
 			case "arm":
-				$location = $this->rootfolder."assets/img/GD/Skin/0000{$this->skin}.img/stand{$this->stand}.0.arm.png";
-				if(file_exists($location)) {
-					$implace = ImageCreateFromPNG($location);
-					ImageCopy($this->image, $implace, $this->mainX + ($this->stand==2?4:8), $this->mainY + 23, 0, 0, imagesx($implace), imagesy($implace));
-				}
+				self::useImage("Skin/0000".$skin.".img/stand{$this->stand}.0.arm.png", self::mainX + ($this->stand==2?4:8), self::mainY + 23);
 			break;
 			case "hand":
-				$location = $this->rootfolder."assets/img/GD/Skin/0000{$this->skin}.img/stand2.0.hand.png";
-				if(file_exists($location)) {
-					$implace = ImageCreateFromPNG($location);
-					ImageCopy($this->image, $implace, $this->mainX - 10, $this->mainY + 26, 0, 0, imagesx($implace), imagesy($implace));
-				}
+				if($this->stand == 2)
+					self::useImage("Skin/0000".$skin.".img/stand2.0.hand.png", self::mainX - 10, self::mainY + 26);
 			break;
 		}
 	}
 	
-	# Thanks Darkmagic
-	public function txt_parse($file) {
-		$filehandle = fopen($file,"r");
-		$filecontent = fread($filehandle, filesize($file));
-		fclose($filehandle);
-		$filecontent = preg_replace("/ /","=",$filecontent);
-		$filecontent = preg_replace("/\./","_",$filecontent);
-		$filecontent = preg_replace("/\s/","&",$filecontent);
-		parse_str($filecontent,$filearray);
-		return $filearray;
+	public function charType($type,$name) {
+		switch($type) {
+			case 'create':ImagePNG($this->image, "Characters/".$name.".png");break;
+			case 'use':self::useImage("Characters/".$name.".png");break;
+		}
+	}
+	
+	private function useImage($location, $x = 0, $y = 0) {
+		if(self::exists($location)) {
+			$implace = ImageCreateFromPNG($location);
+			ImageCopy($this->image, $implace, $x, $y, 0, 0, imagesx($implace), imagesy($implace));
+		}
+	}
+	
+	public function XMLoader($path) {
+		if(self::exists($path)) {
+			$this->Load($path."coord.xml");
+			return simplexml_import_dom($this);
+		}
+	}
+	
+	public function exists($path) {
+		if(file_exists($path))
+			return true;
 	}
 	
 	function __destruct() {
-		//echo $this->rootfolder;
-		imagepng($this->image, $this->rootfolder."assets/img/GD/Characters/".$this->name.".png");
+		ImagePng($this->image);
 		ImageDestroy($this->image);
-	#	$image_1 = imagecreatefrompng('assets/img/rank/bg/bg'.$this->bg.'.png');
-	#	$image_2 = imagecreatefrompng('assets/img/GD/Characters/'.$this->name.'.png');
-	#	imagealphablending($image_1, true);
-	#	imagesavealpha($image_1, true);
-	#	imagecopy($image_1, $image_2, 33, 33, 0, 0, 96, 96);
-	#	imagepng($image_1, 'assets/img/GD/Characters/'.$this->name.'.png');
-		return true;
 	}
-
 }
+
 ?>

@@ -118,19 +118,14 @@ echo "		<th>Level</th>
 <tbody>";
 
 $ranking=$start;
-$backcolor="";
-$rootfolder = "";
-require_once("assets/img/GD/coordinates.php");
-require_once("assets/img/GD/cache_character.php");	
 while($row = $result->fetch_assoc()) {
 	$ranking++;
 	$name = $row['name'];
-	createChar($name, $rootfolder);
 	$cachechar = $mysqli->query("SELECT hash, name FROM ".$prefix."gdcache WHERE name='".$name."'")->fetch_assoc();
 	echo "
 		<tr>
 			<td><span class=\"badge\">$ranking</span></td>
-			<td class=\"hidden-sm hidden-xs\"><img src=\"".$siteurl."assets/img/GD/Characters/".$cachechar['hash'].".png\" alt=\"".$cachechar['name']."\" class=\"avatar img-responsive\" style=\"margin: 0 auto;\"></td>
+			<td class=\"hidden-sm hidden-xs\"><img src=\"".$siteurl."assets/img/GD/create.php?name=".$name."\" alt=\"".$cachechar['name']."\" class=\"avatar img-responsive\" style=\"margin: 0 auto;\"></td>
 			<td><a href=\"?base=main&page=character&n=".$row['name']."\">".$row['name']."</a></td>
 			<td>";
 				if ($row['job']=="000")

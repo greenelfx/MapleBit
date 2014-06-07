@@ -47,7 +47,6 @@ if(isset($_SESSION['id'])){
 		</div>
 		<input id="login" type="submit" class="btn btn-primary btn-block" value="Login"/>
 		<a href="?base=main&page=register" class="btn btn-info btn-block">Register</a>
-		<!--<a href="?base=main&page=forgotpass" class="btn btn-default btn-block">Forgot Password</a>-->
     </form>
 		<div id="message"></div>
 <?php
