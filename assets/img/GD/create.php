@@ -15,7 +15,8 @@ error_reporting(0);
 require_once('../../config/database.php');
 require_once('coordinates.php');
 if(!empty($_GET['name'])) {
-	$name = preg_replace("/[^a-zA-Z0-9]+/", "", $_GET['name']);
+	$name = $mysqli->real_escape_string($_GET['name']);
+	if($mysqli->query("SELECT name FROM characters WHERE name = '$name'")->num_rows == 1) {
 	$Image  = new Character;
 	$cache = "Characters/".$name.".png";
 
@@ -149,5 +150,6 @@ if(!empty($_GET['name'])) {
 		} else
 			$Image->charType('use', 'faek');
 	}
+}
 }
 ?>
