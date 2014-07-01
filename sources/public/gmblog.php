@@ -200,7 +200,7 @@ if(@$_GET['id']){
 	if(isset($_SESSION['id'])){
 ?>
 CKEDITOR.replace( 'inputComment', {
-    allowedContent: 'b i u li ol ul blockquote anchor hr small'
+    allowedContent: 'b i u li ol ul blockquote anchor hr small footer'
 });
 $(function() {
 for ( var i in CKEDITOR.instances ){
@@ -213,9 +213,7 @@ var oEditor = CKEDITOR.instances[currentInstance];
 	var commentarr = getcomment_id.split("-");
 	var comment_id = commentarr[1];
 	var author = commentarr[2];
-	console.log(comment_id);
-	console.log(author);
-    var comment = '<blockquote><p>' + $("#comment-"+ comment_id).text() + '</p><small>' + author + '</small></blockquote><hr><p>';
+    var comment = '<blockquote>' + $("#comment-"+ comment_id).html() + '<small>' + author + '</small></blockquote><hr><p>';
 	oEditor.insertHtml(comment);
       $("body, html").animate({
 		scrollTop: $('#commentBox').offset().top+10 
