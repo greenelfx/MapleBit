@@ -24,29 +24,6 @@ body
 	line-height: 1.6em;
 }
 
-blockquote
-{
-	font-style: italic;
-	font-family: Georgia, Times, "Times New Roman", serif;
-	padding: 2px 0;
-	border-style: solid;
-	border-color: #ccc;
-	border-width: 0;
-}
-
-.cke_contents_ltr blockquote
-{
-	padding-left: 20px;
-	padding-right: 8px;
-	border-left-width: 5px;
-}
-
-.cke_contents_rtl blockquote
-{
-	padding-left: 8px;
-	padding-right: 20px;
-	border-right-width: 5px;
-}
 
 a
 {
