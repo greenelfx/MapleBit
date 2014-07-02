@@ -5,10 +5,6 @@ if(basename($_SERVER["PHP_SELF"]) == "news.php"){
 ?>
 <script src="assets/libs/cksimple/ckeditor.js"></script>
 <style>
-blockquote {
-	margin: 0px;
-	
-}
 .permalinkshow {
 	display: none;
 }
@@ -133,7 +129,7 @@ if(isset($_GET['id'])){
 		echo "<div class=\"alert alert-info\">There are no comments for this article yet. Be the first to comment!</div>";
 	}else{
 		$commentconfig = HTMLPurifier_Config::createDefault();
-		$commentconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong, blockquote, small'); 
+		$commentconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong, blockquote, small, hr'); 
 		$commentpurifier = new HTMLPurifier($commentconfig);
 		while($c = $gc->fetch_assoc()){
 		$clean_comment = $commentpurifier->purify($c['comment']);
@@ -198,7 +194,7 @@ if(isset($_GET['id'])){
 	if(isset($_SESSION['id'])){
 ?>
 CKEDITOR.replace( 'inputComment', {
-    allowedContent: 'b i u li ol ul blockquote anchor hr small footer'
+    allowedContent: 'b i u li ol ul blockquote anchor hr small'
 });
 $(function() {
 for ( var i in CKEDITOR.instances ){
@@ -211,10 +207,10 @@ var oEditor = CKEDITOR.instances[currentInstance];
 	var commentarr = getcomment_id.split("-");
 	var comment_id = commentarr[1];
 	var author = commentarr[2];
-    var comment = '<blockquote>' + $("#comment-"+ comment_id).html() + '<small>' + author + '</small></blockquote><hr><p>';
+    var comment = ('<blockquote>' + $("#comment-"+ comment_id).html() + '<small>' + author + '</small></blockquote>').replace(new RegExp("<hr>", 'g'),"") + "<hr><p>";
 	oEditor.insertHtml(comment);
-      $("body, html").animate({
-		scrollTop: $('#commentBox').offset().top+10 
+    $("body, html").animate({
+		scrollTop: $('#commentBox').offset().top+10
 	}, 200);
   });
 });
@@ -223,7 +219,7 @@ var oEditor = CKEDITOR.instances[currentInstance];
 ?>
 $(function(){
   $(".permalink").click(function(){
-	 var comment_id = $(this).attr('href').replace(/[^0-9]+/, '');
+	var comment_id = $(this).attr('href').replace(/[^0-9]+/, '');
     $(".linkid-" + comment_id).fadeToggle();
 	$(this).hide();
   });  
