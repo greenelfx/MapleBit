@@ -111,7 +111,6 @@ function goBack() {window.history.back()}
 						<li <?php echo ($admin == "theme") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=theme"><i class="fa fa-eye"></i> Theme</a></li>
 						<li <?php echo ($admin == "banner") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=banner"><i class="fa fa-eye"></i> Banner</a></li>
 						<li <?php echo ($admin == "background") ? 'class = "active"' : ''; ?>><a href="?base=admin&amp;page=background"><i class="fa fa-eye"></i> Background</a></li>
-						<li <?php echo ($admin == "debug") ? 'class = "active"' : ''; ?>><a href="?base=admin&amp;page=debug"><i class="fa fa-bug"></i> Debug Mode</a></li>
 					</ul>
 					<li>
 						<a href="#" data-toggle="collapse" data-target="#menu2">
@@ -163,7 +162,7 @@ function goBack() {window.history.back()}
                 <ul class="nav nav-pills nav-stacked">
 					<li class="nav-header"></li>
 					<li><a href="?base=admin"><i class="fa fa-tachometer"></i>  Admin Dashboard</a></li>
-                    <li><a href="https://github.com/greenelf/MapleBit/"><i class="fa fa-github"></i> GitHub</a></li>
+                    <li><a href="https://github.com/greenelfx/MapleBit/"><i class="fa fa-github"></i> GitHub</a></li>
                     <li><a href="http://forum.ragezone.com/f690/beta-maplebitcms-977439/"><i class="fa fa-comment"></i> Ragezone Thread</a></li>
                 </ul>
                 <hr/>
