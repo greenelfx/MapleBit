@@ -22,7 +22,7 @@ if($_SESSION['id']){
 						$current_tags = file_get_contents("https://api.github.com/repos/greenelfx/maplebit/tags", false, $context);
 						if ($current_tags !== false) {
 							$tags = json_decode($current_tags);
-							$ref_tag = "v1.04";
+							$ref_tag = "v1.05";
 							$current_tag = $tags[0]->name;
 							if ($current_tag == $ref_tag) {
 								$alert_class = "success";
@@ -52,7 +52,7 @@ if($_SESSION['id']){
 					}
 					elseif($getstatus['status'] == 1){
 						$alert_class = "info";
-						$version_message = "<a href=\"https://github.com/greenelf/MapleBit\" class=\"alert-link\">Update Available &raquo;</a>";
+						$version_message = "<a href=\"https://github.com/greenelfx/MapleBit\" class=\"alert-link\">Update Available &raquo;</a>";
 					}
 					elseif($getstatus['status'] == 2){
 						$alert_class = "danger";
@@ -74,9 +74,19 @@ if($_SESSION['id']){
 	<hr>
 	<div class="row">
 		<div class="col-md-12">
-			<div class="jumbotron">
-					<h1>Welcome Back!</h1>
-					<p>Hey there, <?php echo $name; ?>! You can use the links below to manage your website configuration, users, reports, and more!</p>
+			<div class="row">
+				<div class="col-md-9">
+					<div class="jumbotron">
+							<h1>Welcome Back!</h1>
+							<p>Hey there, <?php echo $name; ?>! You can use the links below to manage your website configuration, users, reports, and more!</p>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="alert alert-<?php echo $alert_class; ?>">
+						<h2 style="margin: 0px;" class="text-center">Update</h2><hr/>
+						<?php echo $version_message; ?>
+					</div>
+				</div>
 			</div>
 			<hr/>
 			<h2 class="text-left">Recent Comments</h2><br/>
@@ -84,6 +94,7 @@ if($_SESSION['id']){
 			<?php
 			while($comments = $getcomments->fetch_assoc()) {
 			$clean_comment = $commentpurifier->purify($comments['comment']);
+			$clean_comment = (strlen($clean_comment) > 50) ? substr($clean_comment,0,50).'...' : $clean_comment;
 			if($comments['feedback'] == 0){
 				$feedback = "<span class=\"positive_comment\">Positive</span>";
 			}
@@ -101,17 +112,6 @@ if($_SESSION['id']){
 			?>
 			</ul>
 			<hr/>
-		</div>
-		<div class="col-md-6">
-			<div class="well">
-				Welcome to the MapleBit Administration Panel.<br/>Please report any bugs and quirks to greenelf!
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="alert alert-<?php echo $alert_class; ?>">
-				<h2 style="margin: 0px;">MapleBit Status</h2><hr/>
-				<?php echo $version_message; ?>
-			</div>
 		</div>
 	</div>
 </div>
@@ -152,8 +152,6 @@ if($_SESSION['id']){
 				include('sources/admin/bannedmaps.php');
 			}elseif($admin == "manageaccounts"){
 				include('sources/admin/manage-accounts.php');
-			}elseif($admin == "debug"){
-				include('sources/admin/debug.php');
 			}
 			else{header("Location: ?base=admin");}
 			if($admin!=""){
