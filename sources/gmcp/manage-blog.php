@@ -7,8 +7,8 @@ if(basename($_SERVER["PHP_SELF"]) == "manage-blog.php"){
 <?php 
 if($_SESSION['id']){
 	if($_SESSION['gm']){
-		if($_SESSION['pname'] == NULL){
-			echo "Hey there! You need to assign a profile name before you do this.";
+		if($_SESSION['pname'] == NULL || $_SESSION['pname'] == "checkpname"){
+			echo "<div class=\"alert alert-danger\"><b>Error:</b> You need to assign a profile name before you do this.<hr/><a href=\"?base=ucp&page=profname\" class=\"alert-link\">Set Profile Name &raquo;</a></div>";
 		}else{
 			if($_GET['action']=="add"){
 				if(!isset($_POST['add'])){
