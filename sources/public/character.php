@@ -9,13 +9,6 @@ if(isset($_GET['n'])) {
 	$countchar = $checkchar->num_rows;
 	if($countchar == 1) {
 		$c = $checkchar->fetch_assoc();
-		$backcolor="";
-		$rootfolder = "";
-		require_once("assets/img/GD/coordinates.php");
-		require_once("assets/img/GD/cache_character.php");	
-		createChar($c['name'], $rootfolder);
-		$cachechar = $mysqli->query("SELECT hash, name FROM ".$prefix."gdcache WHERE name='".$c['name']."'")->fetch_assoc();
-
 		echo "<h2 class=\"text-left\">Character Info</h2><hr/>";
 		echo "
 		<div class=\"row\">
@@ -23,7 +16,7 @@ if(isset($_GET['n'])) {
 			<div class=\"well\">
 				<h3 class=\"text-center\"> " . $c['name'] . "</h3>
 				<hr/>
-				<img src=\"".$siteurl."assets/img/GD/Characters/".$cachechar['hash'].".png\" alt=\"".$cachechar['name']."\" class=\"avatar img-responsive\" style=\"margin: 0 auto;\">
+				<img src=\"".$siteurl."assets/img/GD/create.php?name=".$c['name']."\" alt=\"".$c['name']."\" class=\"avatar img-responsive\" style=\"margin: 0 auto;\">
 				<hr/>
 				<b>Job:</b> " . $c['job'] . "<br/>";
 				if($servertype == 1) {
