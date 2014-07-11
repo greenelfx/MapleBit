@@ -121,11 +121,10 @@ $ranking=$start;
 while($row = $result->fetch_assoc()) {
 	$ranking++;
 	$name = $row['name'];
-	$cachechar = $mysqli->query("SELECT hash, name FROM ".$prefix."gdcache WHERE name='".$name."'")->fetch_assoc();
 	echo "
 		<tr>
 			<td><span class=\"badge\">$ranking</span></td>
-			<td class=\"hidden-sm hidden-xs\"><img src=\"".$siteurl."assets/img/GD/create.php?name=".$name."\" alt=\"".$cachechar['name']."\" class=\"avatar img-responsive\" style=\"margin: 0 auto;\"></td>
+			<td class=\"hidden-sm hidden-xs\"><img src=\"".$siteurl."assets/img/GD/create.php?name=".$name."\" alt=\"".$name."\" class=\"avatar img-responsive\" style=\"margin: 0 auto;\"></td>
 			<td><a href=\"?base=main&page=character&n=".$row['name']."\">".$row['name']."</a></td>
 			<td>";
 				if ($row['job']=="000")
