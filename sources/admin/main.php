@@ -19,7 +19,7 @@ if($_SESSION['id']){
 							)
 						);
 						$context = stream_context_create($opts);
-						$current_tags = file_get_contents("https://api.github.com/repos/kedarv/maplebit/tags", false, $context);
+						$current_tags = file_get_contents("https://api.github.com/repos/greenelfx/maplebit/tags", false, $context);
 						if ($current_tags !== false) {
 							$tags = json_decode($current_tags);
 							$ref_tag = "v1.05";
@@ -30,7 +30,7 @@ if($_SESSION['id']){
 								$status = 0;
 							} else {
 								$alert_class = "info";
-								$version_message = "<a href=\"https://github.com/kedarv/MapleBit\" class=\"alert-link\">Update Available &raquo;</a>";
+								$version_message = "<a href=\"https://github.com/greenelfx/MapleBit\" class=\"alert-link\">Update Available &raquo;</a>";
 								$status = 1;
 							}
 						} else {
@@ -52,7 +52,7 @@ if($_SESSION['id']){
 					}
 					elseif($getstatus['status'] == 1){
 						$alert_class = "info";
-						$version_message = "<a href=\"https://github.com/kedarv/MapleBit\" class=\"alert-link\">Update Available &raquo;</a>";
+						$version_message = "<a href=\"https://github.com/greenelfx/MapleBit\" class=\"alert-link\">Update Available &raquo;</a>";
 					}
 					elseif($getstatus['status'] == 2){
 						$alert_class = "danger";
