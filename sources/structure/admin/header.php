@@ -162,7 +162,7 @@ function goBack() {window.history.back()}
                 <ul class="nav nav-pills nav-stacked">
 					<li class="nav-header"></li>
 					<li><a href="?base=admin"><i class="fa fa-tachometer"></i>  Admin Dashboard</a></li>
-                    <li><a href="https://github.com/greenelfx/MapleBit/"><i class="fa fa-github"></i> GitHub</a></li>
+                    <li><a href="https://github.com/kedarv/MapleBit/"><i class="fa fa-github"></i> GitHub</a></li>
                     <li><a href="http://forum.ragezone.com/f690/beta-maplebitcms-977439/"><i class="fa fa-comment"></i> Ragezone Thread</a></li>
                 </ul>
                 <hr/>
