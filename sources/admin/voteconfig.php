@@ -22,6 +22,7 @@ if($_SESSION['admin']){
 							<th>Vote Points</th>
 							<th>Wait Time</th>
 							<th>Edit</th>
+							<th>Delete</th>
 						</tr>
 					</thead>
 					<tbody>";
@@ -31,7 +32,8 @@ if($_SESSION['admin']){
 						"<td>" . $row['gnx'] . "</td>" . 
 						"<td>" . $row['gvp'] . "</td>" . 
 						"<td>" . $row['waittime']/3600 . " hours</td>" .
-						"<td><a href=\"?base=admin&amp;page=voteconfig&amp;action=edit&amp;id=" . $row['id'] . "\">Edit &raquo;</td>" . 				
+						"<td><a href=\"?base=admin&amp;page=voteconfig&amp;action=edit&amp;id=" . $row['id'] . "\">Edit &raquo;</td>" . 	
+						"<td><a href=\"?base=admin&amp;page=voteconfig&amp;action=delete&amp;id=" . $row['id'] . "\">Delete &raquo;</td>" . 							
 					"</tr>";
 			}
 			echo "
@@ -251,6 +253,11 @@ if($_SESSION['admin']){
 		} else {
 			redirect ("?base=admin&page=voteconfig");
 		}
+	} 
+	elseif(isset($_GET['action']) && $_GET['action'] == "delete" && isset($_GET['id'])) {
+		$id = $mysqli->real_escape_string(strip_tags($_GET['id']));
+		$query = $mysqli->query("DELETE FROM ".$prefix."vote WHERE id = ".$id."");
+		redirect ("?base=admin&page=voteconfig");
 	}
 	else {
 		redirect ("?base=admin&page=voteconfig");
