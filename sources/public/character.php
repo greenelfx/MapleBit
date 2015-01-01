@@ -1,6 +1,6 @@
 <?php
 if(basename($_SERVER["PHP_SELF"]) == "character.php"){
-    die("403 - Access Forbidden");
+	die("403 - Access Forbidden");
 }
 if(isset($_GET['n'])) {
 	$getchar = $mysqli->real_escape_string($_GET['n']);
@@ -12,20 +12,20 @@ if(isset($_GET['n'])) {
 		echo "<h2 class=\"text-left\">Character Info</h2><hr/>";
 		echo "
 		<div class=\"row\">
-		<div class=\"col-md-6 col-md-offset-3\">
-			<div class=\"well\">
-				<h3 class=\"text-center\"> " . $c['name'] . "</h3>
-				<hr/>
-				<img src=\"".$siteurl."assets/img/GD/create.php?name=".$c['name']."\" alt=\"".$c['name']."\" class=\"avatar img-responsive\" style=\"margin: 0 auto;\">
-				<hr/>
-				<b>Job:</b> " . $c['job'] . "<br/>";
-				if($servertype == 1) {
-					echo "<b>Rebirths:</b> " . $c['reborns'] . "<br/>";
-				}
-		echo "	<b>Level:</b> " . $c['level'] . "<br/>
-				<b>EXP:</b> " . $c['exp'] . "<br/>
+			<div class=\"col-md-6 col-md-offset-3\">
+				<div class=\"well\">
+					<h3 class=\"text-center\"> " . $c['name'] . "</h3>
+					<hr/>
+					<img src=\"".$siteurl."assets/img/GD/create.php?name=".$c['name']."\" alt=\"".$c['name']."\" class=\"avatar img-responsive\" style=\"margin: 0 auto;\">
+					<hr/>
+					<b>Job:</b> " . $c['job'] . "<br/>";
+					if($servertype == 1) {
+						echo "<b>Rebirths:</b> " . $c['reborns'] . "<br/>";
+					}
+					echo "	<b>Level:</b> " . $c['level'] . "<br/>
+					<b>EXP:</b> " . $c['exp'] . "<br/>
+				</div>
 			</div>
-		</div>
 		</div>";
 	} else {
 		echo "<div class=\"alert alert-danger\">This character doesn't exist!</div>";
