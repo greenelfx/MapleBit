@@ -1,20 +1,21 @@
 <?php
 if(basename($_SERVER["PHP_SELF"]) == "characters.php"){
-    die("403 - Access Forbidden");
+	die("403 - Access Forbidden");
 }
 if(isset($_SESSION['id'])){
+	if($servertype == 1) { 
+		$first = "reborns";
+		$second = "level";
+	} else {
+		$first = "level";
+		$second = "exp";
+	}
 	$checkchar = $mysqli->query("SELECT * from characters WHERE accountid = '".$_SESSION['id']."'");
 	$countchar = $checkchar->num_rows;
 	if($countchar > 0) {
-		$backcolor="";
-		$rootfolder = "";
 		echo "<h2 class=\"text-left\">My Characters</h2><hr/>";
 		$i = 0;
 		while($c = $checkchar->fetch_assoc()) {
-			require_once("assets/img/GD/coordinates.php");
-			require_once("assets/img/GD/cache_character.php");	
-			createChar($c['name'], $rootfolder);
-			$cachechar = $mysqli->query("SELECT hash, name FROM ".$prefix."gdcache WHERE name='".$c['name']."'")->fetch_assoc();
 			if($i % 3 == 0) {
 				echo "<div class=\"row\">";
 			}
@@ -23,13 +24,13 @@ if(isset($_SESSION['id'])){
 				<div class=\"well\">
 					<h3 class=\"text-center\"> " . $c['name'] . "</h3>
 					<hr/>
-					<img src=\"".$siteurl."assets/img/GD/Characters/".$cachechar['hash'].".png\" alt=\"".$cachechar['name']."\" class=\"avatar img-responsive\" style=\"margin: 0 auto;\">
+					<img src=\"assets/img/GD/create.php?name=".$c['name']."\" alt='".$c['name']."' class=\"avatar img-responsive\" style=\"margin: 0 auto;\">
 					<hr/>
 					<b>Job:</b> " . $c['job'] . "<br/>";
 					if($servertype == 1) {
 						echo "<b>Rebirths:</b> " . $c['reborns'] . "<br/>";
 					}
-			echo "	<b>Level:</b> " . $c['level'] . "<br/>
+					echo "	<b>Level:</b> " . $c['level'] . "<br/>
 					<b>EXP:</b> " . $c['exp'] . "<br/>
 				</div>
 			</div>";
