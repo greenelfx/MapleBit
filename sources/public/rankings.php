@@ -1,6 +1,6 @@
 <?php
 if(basename($_SERVER["PHP_SELF"]) == "rankings.php"){
-    die("403 - Access Forbidden");
+	die("403 - Access Forbidden");
 }
 ?>
 <h2 class="text-left">Rankings</h2>
@@ -81,222 +81,222 @@ if($servertype == 1) {
 }
 echo "
 <div class=\"row\">
-<div class=\"col-md-6\">
-	<div class=\"well well2\" style=\"margin: 0 auto; display: inline-block;margin-bottom:0px;\">
-	<a href=\"?base=main&page=rankings&job=beginner\"><img src=\"".$siteurl."assets/img/rank/beginner.png\" data-toggle=\"tooltip\" title=\"Beginner\"/></a>
-	<a href=\"?base=main&page=rankings&job=warrior\"><img src=\"".$siteurl."assets/img/rank/warrior.png\" data-toggle=\"tooltip\" title=\"Warrior\"/></a>
-	<a href=\"?base=main&page=rankings&job=magician\"><img src=\"".$siteurl."assets/img/rank/magician.png\" data-toggle=\"tooltip\" title=\"Magician\"/></a>
-	<a href=\"?base=main&page=rankings&job=bowman\"><img src=\"".$siteurl."assets/img/rank/bowman.png\" data-toggle=\"tooltip\" title=\"Bowman\"/></a>
-	<a href=\"?base=main&page=rankings&job=thief\"><img src=\"".$siteurl."assets/img/rank/thief.png\" data-toggle=\"tooltip\" title=\"Thief\"/></a>
-	<a href=\"?base=main&page=rankings&job=pirate\"><img src=\"".$siteurl."assets/img/rank/pirate.png\" data-toggle=\"tooltip\" title=\"Pirate\"/></a>
-	<a href=\"?base=main&page=rankings&job=cygnus\"><img src=\"".$siteurl."assets/img/rank/cygnus.png\" data-toggle=\"tooltip\" title=\"Cygnus\"/></a>
-	<a href=\"?base=main&page=rankings&job=aran\"><img src=\"".$siteurl."assets/img/rank/aran.png\" data-toggle=\"tooltip\" title=\"Aran\"/></a>
+	<div class=\"col-md-6\">
+		<div class=\"well well2\" style=\"margin: 0 auto; display: inline-block;margin-bottom:0px;\">
+			<a href=\"?base=main&page=rankings&job=beginner\"><img src=\"".$siteurl."assets/img/rank/beginner.png\" data-toggle=\"tooltip\" title=\"Beginner\"/></a>
+			<a href=\"?base=main&page=rankings&job=warrior\"><img src=\"".$siteurl."assets/img/rank/warrior.png\" data-toggle=\"tooltip\" title=\"Warrior\"/></a>
+			<a href=\"?base=main&page=rankings&job=magician\"><img src=\"".$siteurl."assets/img/rank/magician.png\" data-toggle=\"tooltip\" title=\"Magician\"/></a>
+			<a href=\"?base=main&page=rankings&job=bowman\"><img src=\"".$siteurl."assets/img/rank/bowman.png\" data-toggle=\"tooltip\" title=\"Bowman\"/></a>
+			<a href=\"?base=main&page=rankings&job=thief\"><img src=\"".$siteurl."assets/img/rank/thief.png\" data-toggle=\"tooltip\" title=\"Thief\"/></a>
+			<a href=\"?base=main&page=rankings&job=pirate\"><img src=\"".$siteurl."assets/img/rank/pirate.png\" data-toggle=\"tooltip\" title=\"Pirate\"/></a>
+			<a href=\"?base=main&page=rankings&job=cygnus\"><img src=\"".$siteurl."assets/img/rank/cygnus.png\" data-toggle=\"tooltip\" title=\"Cygnus\"/></a>
+			<a href=\"?base=main&page=rankings&job=aran\"><img src=\"".$siteurl."assets/img/rank/aran.png\" data-toggle=\"tooltip\" title=\"Aran\"/></a>
+		</div>
 	</div>
-</div>
-<div class=\"col-md-5 col-md-offset-1\">
-	<form id='search_form' method='post' action='?base=main&page=rankings'>
+	<div class=\"col-md-5 col-md-offset-1\">
+		<form id='search_form' method='post' action='?base=main&page=rankings'>
 			<div style=\"float:right;\">
-			<div class=\"well well2\" style=\"margin-bottom:0px;\">
-				<div class=\"input-group\">			
-					<input type='text' name='search' id='s' class='form-control' placeholder='Character Name' required value='".$search."'/>
+				<div class=\"well well2\" style=\"margin-bottom:0px;\">
+					<div class=\"input-group\">			
+						<input type='text' name='search' id='s' class='form-control' placeholder='Character Name' required value='".$search."'/>
 						<span class=\"input-group-btn\">
 							<button class=\"btn btn-primary\" type=\"submit\"><i class=\"icon-search\"></i> Search</button>
 						</span>
+					</div>
 				</div>
 			</div>
-		</div>
-	</form>
+		</form>
 	</div>
 </div><hr/>";
 echo "
 <div class=\"table-responsive\">
-<table class=\"table table-striped table-hover center-table table-bordered\">
-	<thead>
-		<tr>
-			<th>Rank</th>
-			<th class=\"hidden-sm hidden-xs\">Picture</th>
-			<th>Name</th>
-			<th>Job</th>";
-			if($servertype == 1){
-				echo "<th>Rebirths</th>";
-			}
-echo "		<th>Level</th>
-		</tr>
-	</thead>
-<tbody>";
+	<table class=\"table table-striped table-hover center-table table-bordered\">
+		<thead>
+			<tr>
+				<th>Rank</th>
+				<th class=\"hidden-sm hidden-xs\">Picture</th>
+				<th>Name</th>
+				<th>Job</th>";
+				if($servertype == 1){
+					echo "<th>Rebirths</th>";
+				}
+				echo "		<th>Level</th>
+			</tr>
+		</thead>
+		<tbody>";
 
-$ranking=$start;
-while($row = $result->fetch_assoc()) {
-	$ranking++;
-	$name = $row['name'];
-	echo "
-		<tr>
-			<td><span class=\"badge\">$ranking</span></td>
-			<td class=\"hidden-sm hidden-xs\"><img src=\"".$siteurl."assets/img/GD/create.php?name=".$name."\" alt=\"".$name."\" class=\"avatar img-responsive\" style=\"margin: 0 auto;\"></td>
-			<td><a href=\"?base=main&page=character&n=".$row['name']."\">".$row['name']."</a></td>
-			<td>";
-				if ($row['job']=="000")
-					echo "Beginner";
-				if ($row['job']=="100")
-					echo "Warrior";
-				if ($row['job']=="110")
-					echo "Fighter";
-				if ($row['job']=="120")
-					echo "Page";
-				if ($row['job']=="130")
-					echo "Spearman";
-				if ($row['job']=="111")
-					echo "Crusader";
-				if ($row['job']=="121")
-					echo "White Knight";
-				if ($row['job']=="131")
-					echo "Dragon Knight";
-				if ($row['job']=="112")
-					echo "Hero";
-				if ($row['job']=="122")
-					echo "Paladin";
-				if ($row['job']=="132")
-					echo "Dark Knight";
-				if ($row['job']=="200")
-					echo "Magician";
-				if ($row['job']=="210")
-					echo "Wizard";
-				if ($row['job']=="220")
-					echo "Wizard";
-				if ($row['job']=="230")
-					echo "Cleric";
-				if ($row['job']=="211")
-					echo "Mage";
-				if ($row['job']=="221")
-					echo "Mage";
-				if ($row['job']=="231")
-					echo "Priest";
-				if ($row['job']=="212")
-					echo "Arch Mage";
-				if ($row['job']=="222")
-					echo "Arch Mage";
-				if ($row['job']=="232")
-					echo "Bishop";
-				if ($row['job']=="300")
-					echo "Bowman";
-				if ($row['job']=="310")
-					echo "Hunter";
-				if ($row['job']=="320")
-					echo "Crossbowman";
-				if ($row['job']=="311")
-					echo "Ranger";
-				if ($row['job']=="321")
-					echo "Sniper";
-				if ($row['job']=="312")
-					echo "Bow Master";
-				if ($row['job']=="322")
-					echo "Crossbow Master";
-				if ($row['job']=="400")
-					echo "Thief";
-				if ($row['job']=="410")
-					echo "Assassin";
-				if ($row['job']=="420")
-					echo "Bandit";
-				if ($row['job']=="411")
-					echo "Hermit";
-				if ($row['job']=="421")
-					echo "Chief Bandit";
-				if ($row['job']=="412")
-					echo "Night Lord";
-				if ($row['job']=="422")
-					echo "Shadower";
-				if ($row['job']=="500")
-					echo "Pirate";
-				if ($row['job']=="510")
-					echo "Brawler";
-				if ($row['job']=="520")
-					echo "Gunslinger";
-				if ($row['job']=="511")
-					echo "Marauder";
-				if ($row['job']=="521")
-					echo "Buccaneer";
-				if ($row['job']=="512")
-					echo "Outlaw";
-				if ($row['job']=="522")
-					echo "Corsair";
-				if ($row['job']=="900")
-					echo "GMs";
-				if ($row['job']=="910")
-					echo "SuperGM";
-				if ($row['job']=="1000")
-				echo "Noblesse";
-				if ($row['job']=="1100")
-					echo "Dawn Warrior";
-				if ($row['job']=="1110")
-					echo "Dawn Warrior 2";
-				if ($row['job']=="1111")
-					echo "Dawn Warrior 3";
-				if ($row['job']=="1112")
-					echo "Dawn Warrior 4";
-				if ($row['job']=="1200")
-					echo "Flame Wizard";
-				if ($row['job']=="1210")
-					echo "Flame Wizard 2";
-				if ($row['job']=="1211")
-					echo "Flame Wizard 3";
-				if ($row['job']=="1212")
-					echo "Flame Wizard 4";
-				if ($row['job']=="1300")
-					echo "Wind Archer";
-				if ($row['job']=="1310")
-					echo "Wind Archer 2";
-				if ($row['job']=="1311")
-					echo "Wind Archer 3";
-				if ($row['job']=="1312")
-					echo "Wind Archer 4";
-			if ($row['job']=="1400")
-					echo "Night Walker";
-				if ($row['job']=="1410")
-					echo "Night Walker 2";
-				if ($row['job']=="1411")
-					echo "Night Walker 3";
-				if ($row['job']=="1412")
-					echo "Night Walker 4";
-				if ($row['job']=="1500")
-					echo "Thunder Breaker";
-				if ($row['job']=="1510")
-					echo "Thunder Breaker 2";
-				if ($row['job']=="1511")
-					echo "Thunder Breaker 3";
-				if ($row['job']=="1512")
-					echo "Thunder Breaker 4";
-				if ($row['job']=="2000")
-					echo "Legend";
-				if ($row['job']=="2100")
-					echo "Aran";
-				if ($row['job']=="2111")
-					echo "Aran 2";
-				if ($row['job']=="2112")
-					echo "Aran 3";
-		
-	if($servertype == 1){
-		echo "</td>
-			<td>".$row['reborns']."</td>";
-	}			
-	echo "
-			<td>".$row['level']."</td>
-		</tr>";				
-	}
-echo "
-	</tbody>
-</table>
-</div>
-<ul class=\"pager\">
-	";
+			$ranking=$start;
+			while($row = $result->fetch_assoc()) {
+				$ranking++;
+				$name = $row['name'];
+				echo "
+				<tr>
+					<td><span class=\"badge\">$ranking</span></td>
+					<td class=\"hidden-sm hidden-xs\"><img src=\"".$siteurl."assets/img/GD/create.php?name=".$name."\" alt=\"".$name."\" class=\"avatar img-responsive\" style=\"margin: 0 auto;\"></td>
+					<td><a href=\"?base=main&page=character&n=".$row['name']."\">".$row['name']."</a></td>
+					<td>";
+						if ($row['job']=="000")
+							echo "Beginner";
+						if ($row['job']=="100")
+							echo "Warrior";
+						if ($row['job']=="110")
+							echo "Fighter";
+						if ($row['job']=="120")
+							echo "Page";
+						if ($row['job']=="130")
+							echo "Spearman";
+						if ($row['job']=="111")
+							echo "Crusader";
+						if ($row['job']=="121")
+							echo "White Knight";
+						if ($row['job']=="131")
+							echo "Dragon Knight";
+						if ($row['job']=="112")
+							echo "Hero";
+						if ($row['job']=="122")
+							echo "Paladin";
+						if ($row['job']=="132")
+							echo "Dark Knight";
+						if ($row['job']=="200")
+							echo "Magician";
+						if ($row['job']=="210")
+							echo "Wizard";
+						if ($row['job']=="220")
+							echo "Wizard";
+						if ($row['job']=="230")
+							echo "Cleric";
+						if ($row['job']=="211")
+							echo "Mage";
+						if ($row['job']=="221")
+							echo "Mage";
+						if ($row['job']=="231")
+							echo "Priest";
+						if ($row['job']=="212")
+							echo "Arch Mage";
+						if ($row['job']=="222")
+							echo "Arch Mage";
+						if ($row['job']=="232")
+							echo "Bishop";
+						if ($row['job']=="300")
+							echo "Bowman";
+						if ($row['job']=="310")
+							echo "Hunter";
+						if ($row['job']=="320")
+							echo "Crossbowman";
+						if ($row['job']=="311")
+							echo "Ranger";
+						if ($row['job']=="321")
+							echo "Sniper";
+						if ($row['job']=="312")
+							echo "Bow Master";
+						if ($row['job']=="322")
+							echo "Crossbow Master";
+						if ($row['job']=="400")
+							echo "Thief";
+						if ($row['job']=="410")
+							echo "Assassin";
+						if ($row['job']=="420")
+							echo "Bandit";
+						if ($row['job']=="411")
+							echo "Hermit";
+						if ($row['job']=="421")
+							echo "Chief Bandit";
+						if ($row['job']=="412")
+							echo "Night Lord";
+						if ($row['job']=="422")
+							echo "Shadower";
+						if ($row['job']=="500")
+							echo "Pirate";
+						if ($row['job']=="510")
+							echo "Brawler";
+						if ($row['job']=="520")
+							echo "Gunslinger";
+						if ($row['job']=="511")
+							echo "Marauder";
+						if ($row['job']=="521")
+							echo "Buccaneer";
+						if ($row['job']=="512")
+							echo "Outlaw";
+						if ($row['job']=="522")
+							echo "Corsair";
+						if ($row['job']=="900")
+							echo "GMs";
+						if ($row['job']=="910")
+							echo "SuperGM";
+						if ($row['job']=="1000")
+							echo "Noblesse";
+						if ($row['job']=="1100")
+							echo "Dawn Warrior";
+						if ($row['job']=="1110")
+							echo "Dawn Warrior 2";
+						if ($row['job']=="1111")
+							echo "Dawn Warrior 3";
+						if ($row['job']=="1112")
+							echo "Dawn Warrior 4";
+						if ($row['job']=="1200")
+							echo "Flame Wizard";
+						if ($row['job']=="1210")
+							echo "Flame Wizard 2";
+						if ($row['job']=="1211")
+							echo "Flame Wizard 3";
+						if ($row['job']=="1212")
+							echo "Flame Wizard 4";
+						if ($row['job']=="1300")
+							echo "Wind Archer";
+						if ($row['job']=="1310")
+							echo "Wind Archer 2";
+						if ($row['job']=="1311")
+							echo "Wind Archer 3";
+						if ($row['job']=="1312")
+							echo "Wind Archer 4";
+						if ($row['job']=="1400")
+							echo "Night Walker";
+						if ($row['job']=="1410")
+							echo "Night Walker 2";
+						if ($row['job']=="1411")
+							echo "Night Walker 3";
+						if ($row['job']=="1412")
+							echo "Night Walker 4";
+						if ($row['job']=="1500")
+							echo "Thunder Breaker";
+						if ($row['job']=="1510")
+							echo "Thunder Breaker 2";
+						if ($row['job']=="1511")
+							echo "Thunder Breaker 3";
+						if ($row['job']=="1512")
+							echo "Thunder Breaker 4";
+						if ($row['job']=="2000")
+							echo "Legend";
+						if ($row['job']=="2100")
+							echo "Aran";
+						if ($row['job']=="2111")
+							echo "Aran 2";
+						if ($row['job']=="2112")
+							echo "Aran 3";
+						
+						if($servertype == 1){
+							echo "</td>
+							<td>".$row['reborns']."</td>";
+						}			
+						echo "
+						<td>".$row['level']."</td>
+					</tr>";				
+				}
+				echo "
+			</tbody>
+		</table>
+	</div>
+	<ul class=\"pager\">
+		";
 
-if($start == 0 || $start<=15) {
-	echo "  <li class=\"previous\"><a href=\"?base=main&page=rankings&job=".$getjob."/\"><i class=\"icon-arrow-left\"></i> Previous</a></li>";
-}
-else{
-		echo "<li class=\"previous\"><a href=\"?base=main&page=rankings&job=".$getjob."&start=". abs($start - 15) ."\"><i class=\"icon-arrow-left\"></i> Previous</a></li>";
-}
-echo"
-	<li class=\"next\"><a href=\"?base=main&page=rankings&job=".$getjob."&start=". abs($start + 15) ."\">Next<i class=\"icon-arrow-right\"></i></a></li>";
-?>
+		if($start == 0 || $start<=15) {
+			echo "  <li class=\"previous\"><a href=\"?base=main&page=rankings&job=".$getjob."/\"><i class=\"icon-arrow-left\"></i> Previous</a></li>";
+		}
+		else{
+			echo "<li class=\"previous\"><a href=\"?base=main&page=rankings&job=".$getjob."&start=". abs($start - 15) ."\"><i class=\"icon-arrow-left\"></i> Previous</a></li>";
+		}
+		echo"
+		<li class=\"next\"><a href=\"?base=main&page=rankings&job=".$getjob."&start=". abs($start + 15) ."\">Next<i class=\"icon-arrow-right\"></i></a></li>";
+		?>
 
-</ul>
+	</ul>
