@@ -24,7 +24,7 @@ if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 			if($auser['webadmin'] == "1"){
 				$_SESSION['admin'] = $auser['webadmin'];
 			}
-			if($auser['gm'] >= 3){
+			if(isset($auser['gm']) && $auser['gm'] >= $gmlevel){ // Make sure that the gm column exists. If it does, check if gmLevel is above
 				$_SESSION['gm'] = $auser['gm'];
 			}
 			echo "success";

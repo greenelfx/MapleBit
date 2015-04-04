@@ -7,8 +7,8 @@ if(isset($_GET['page'])){
 }else{
 	$gmcp = "";
 }
-if($_SESSION['id']){
-	if($_SESSION['gm'] || $_SESSION['admin']){
+if(isset($_SESSION['id'])){
+	if(isset($_SESSION['gm']) || isset($_SESSION['admin'])){
 		if($getbase == "gmcp"){
 			if($gmcp == ""){
 				echo "<h2 class=\"text-left\">GameMaster Panel</h2><hr/>";

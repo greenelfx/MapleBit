@@ -2,8 +2,8 @@
 if(basename($_SERVER["PHP_SELF"]) == "main.php"){
     die("403 - Access Forbidden");
 }
-if($_SESSION['id']){
-	if($_SESSION['admin']){
+if(isset($_SESSION['id'])){
+	if(isset($_SESSION['admin'])){
 		if($getbase == "admin"){
 			if($admin == ""){
 				$getcomments = $mysqli->query("SELECT author, feedback, date, comment FROM ".$prefix."bcomments UNION ALL SELECT author, feedback, date, comment FROM ".$prefix."ncomments UNION ALL SELECT author, feedback, date, comment FROM ".$prefix."ecomments");
