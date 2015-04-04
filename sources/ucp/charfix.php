@@ -36,7 +36,7 @@ if(isset($_SESSION['id'])){
 				<input type=\"submit\" name=\"unstuck\" value=\"Unstuck &raquo;\" class=\"btn btn-info\"/>
 				</form><br/>";
 			} else {
-				echo "<div class=\"alert alert-danger\">You don't have any characters!";
+				echo "<div class=\"alert alert-danger\">You don't have any characters!</div>";
 			}
 		}else{
 			$char = $mysqli->real_escape_string($_POST['char']);
