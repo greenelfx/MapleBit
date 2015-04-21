@@ -14,6 +14,7 @@ echo "
 <div class=\"col-md-6\">
 	<a href='?base=main&amp;page=rankings'><h4>Rankings &raquo;</h4></a><hr/>";
 	$gc = $mysqli->query("SELECT c.$first , c.$second, c.name, c.accountid, a.banned AS banned FROM characters c LEFT JOIN accounts a ON c.accountid = a.id WHERE c.gm < '$gmlevel' AND banned = 0 GROUP BY c.id DESC ORDER BY $first DESC, $second DESC LIMIT 5");
+	if($gc) {
 	echo "
 	<table class=\"table table-condensed\">
 		<thead>
@@ -27,7 +28,7 @@ echo "
 			<tr>
 				<td rowspan=\"6\">";
 					$p = 0;
-					while($player = $gc->fetch_assoc() and $p <=5){
+					while($player = $gc->fetch_assoc() and $p <=5) {
 						$char = $player['accountid'];
 						$name = $player['name'];
 						$p++;
@@ -44,8 +45,13 @@ echo "
 						<td>".$player[$first]."</td>
 					</tr>
 					";
-				}
-				?>
-			</tbody>
-		</table>
-	</div>
+					}
+	echo "</tbody>
+	</table>";
+
+	}
+	else {
+		echo "<div class=\"alert alert-info\">Unable to get characters</div>";
+	}
+	?>
+</div>
