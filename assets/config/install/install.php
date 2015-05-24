@@ -18,87 +18,98 @@ function goBack() {window.history.back()}
 <div class="container">
 	<div class="form-install">
     <h2 class="form-install-heading">MapleBit Installation</h2>
-	';
-if(isset($_GET['install'])){
+';
+if(isset($_GET['install'])) {
 	$install = $_GET['install'];
-}else{
+} else{
 	$install = "";
 }
-if(file_exists('installdone.txt')){
+if(file_exists('installdone.txt')) {
 	echo "<div class=\"alert alert-info\">Oops! Looks like MapleBit has already been installed! If you'd like, you can delete everything in the install folder, except for installdone.txt</div>";
-}else{
+}
+else{
 	switch($install){
 		case NULL:
-			echo '<h4>Welcome to MapleBit.</h4>
-					<hr />
-					Welcome to MapleBit. Before you can use MapleBit, you need to give me your database information. Please make sure you have the following information handy:<br/><br/>
-					<ul><li>Database name</li><li>Database username</li><li>Database password</li><li>Database host (usually localhost)</li><li>Table Prefix</li></ul>
-					<hr/>
-					<form action="?install=1" method="post" style="float:right;">
-						<input type="submit" class="btn btn-primary btn-lg" value="Begin &raquo;" />
-					</form>
-					<br/><br/>';
+			echo '
+				<h4>Welcome to MapleBit.</h4>
+				<hr/>
+				Before you can use your new website, MapleBit must be installed. Please make sure you have the following information handy:<br/><br/>
+				<ul>
+					<li>Database name</li>
+					<li>Database username</li>
+					<li>Database password</li>
+					<li>Database host <small>(Usually localhost)</small></li>
+					<li>Table Prefix <small>(Optional)</small></li>
+				</ul>
+				<hr/>
+				<form action="?install=1" method="post" style="float:right;">
+					<input type="submit" class="btn btn-primary btn-lg" value="Begin &raquo;" />
+				</form>
+				<br/><br/>';
 			exit;
-			break;
+		break;
 		case 1:
-			echo '<h4>Configure your database settings</h4>
-					<hr />
-						<form action="?install=2" method="post" class="form-horizontal" role="form">
-						<div class="form-group">
-								<label for="inputHost" class="col-lg-4 control-label">MySQL Host</label>
-							<div class="col-lg-5">
-								<input type="text" class="form-control" id="inputHost" placeholder="localhost" name="host" required>
-							</div>
-						</div>
-						<div class="form-group">
-								<label for="inputDB" class="col-lg-4 control-label">Database Name</label>
-							<div class="col-lg-5">
-								<input type="text" class="form-control" id="inputDB" placeholder="Database Name" name="DB" required>
-							</div>
-						</div>
-						<div class="form-group">
-								<label for="inputDBU" class="col-lg-4 control-label">Database Username</label>
-							<div class="col-lg-5">
-								<input type="text" class="form-control" id="inputDBU" placeholder="Database Username" name="DBuser" required>
-							</div>
-						</div>
-						<div class="form-group">
-								<label for="inputDBPWD" class="col-lg-4 control-label">Database Password</label>
-							<div class="col-lg-5">
-								<input type="text" class="form-control" id="inputDBPWD" placeholder="Database Password" name="DBpass">
-							</div>
-						</div>
-						<div class="form-group">
-								<label for="inputPrefix" class="col-lg-4 control-label">Database Prefix</label>
-							<div class="col-lg-5">
-								<input type="text" class="form-control" id="inputPrefix" placeholder="Database Prefix" name="DBprefix" value="bit_">
-							</div>
-						</div>
-						<hr/>
-							<input type="submit" class="btn btn-default btn-lg" value="Continue &raquo;" style="float:right"/>
-						</form>
-						<br/><br/>';
-			break;
+			echo '
+				<h4>Configure your database settings</h4>
+				<hr/>
+				<form action="?install=2" method="post" class="form-horizontal" role="form">
+				<div class="form-group">
+						<label for="inputHost" class="col-lg-4 control-label">MySQL Host</label>
+					<div class="col-lg-5">
+						<input type="text" class="form-control" id="inputHost" placeholder="localhost" name="host" required>
+					</div>
+				</div>
+				<div class="form-group">
+						<label for="inputDB" class="col-lg-4 control-label">Database Name</label>
+					<div class="col-lg-5">
+						<input type="text" class="form-control" id="inputDB" placeholder="Database Name" name="DB" required>
+					</div>
+				</div>
+				<div class="form-group">
+						<label for="inputDBU" class="col-lg-4 control-label">Database Username</label>
+					<div class="col-lg-5">
+						<input type="text" class="form-control" id="inputDBU" placeholder="Database Username" name="DBuser" required>
+					</div>
+				</div>
+				<div class="form-group">
+						<label for="inputDBPWD" class="col-lg-4 control-label">Database Password</label>
+					<div class="col-lg-5">
+						<input type="text" class="form-control" id="inputDBPWD" placeholder="Database Password" name="DBpass">
+					</div>
+				</div>
+				<div class="form-group">
+						<label for="inputPrefix" class="col-lg-4 control-label">Database Prefix</label>
+					<div class="col-lg-5">
+						<input type="text" class="form-control" id="inputPrefix" placeholder="Database Prefix" name="DBprefix" value="bit_">
+					</div>
+				</div>
+				<hr/>
+					<input type="submit" class="btn btn-default btn-lg" value="Continue &raquo;" style="float:right"/>
+				</form>
+				<br/><br/>';
+		break;
 		case 2:
-	echo '<h4>SQL Connection</h4>
-			<hr/>';
-		error_reporting(0);
-		$host = $_POST["host"];
-		$db = $_POST["DB"];
-		$dbuser = $_POST["DBuser"];
-		$dbpass = $_POST["DBpass"];
-		$dbprefix = $_POST["DBprefix"];
-		$mysqli = new mysqli("$host", "$dbuser", "$dbpass", "$db");
-if ($mysqli->connect_errno) {
-    printf("<div class=\"alert alert-danger\">Connect failed: %s\n", $mysqli->connect_error);
-	echo "</div><hr/><a href=\"?install=1\" class=\"btn btn-danger btn-lg\" value=\"Continue &raquo;\" style=\"float:right\">&laquo; Go Back</a><br/><br/>";
-    exit();
-}
-if($host == "" || $db == "") {
-	echo"<div class=\"alert alert-danger\">Please enter the correct information</div>";
-	echo "<hr/><a href=\"?install=1\" class=\"btn btn-danger btn-lg\" value=\"Continue &raquo;\" style=\"float:right\">&laquo; Go Back</a><br/><br/>";
-	exit();
-}
+			echo '
+				<h4>SQL Connection</h4>
+				<hr/>
+			';
+			error_reporting(0);
+			$host = $_POST["host"];
+			$db = $_POST["DB"];
+			$dbuser = $_POST["DBuser"];
+			$dbpass = $_POST["DBpass"];
+			$dbprefix = $_POST["DBprefix"];
+			$mysqli = new mysqli("$host", "$dbuser", "$dbpass", "$db");
+			if ($mysqli->connect_errno) {
+			    printf("<div class=\"alert alert-danger\">Connect failed: %s\n", $mysqli->connect_error);
+				echo "</div><hr/><a href=\"?install=1\" class=\"btn btn-danger btn-lg\" value=\"Continue &raquo;\" style=\"float:right\">&laquo; Go Back</a><br/><br/>";
+			    exit();
+			}
+			if($host == "" || $db == "") {
+				echo"<div class=\"alert alert-danger\">Please enter the correct information</div>";
+				echo "<hr/><a href=\"?install=1\" class=\"btn btn-danger btn-lg\" value=\"Continue &raquo;\" style=\"float:right\">&laquo; Go Back</a><br/><br/>";
+				exit();
+			}
 file_put_contents('../database.php', '<?php
 if(basename($_SERVER["PHP_SELF"]) == "database.php"){
     die("403 - Access Forbidden");
@@ -121,26 +132,24 @@ $mysqli = new MySQLi($host[\'hostname\'],$host[\'user\'],$host[\'password\'],$ho
 
 ?>
 ');
-echo '
-				<div class="alert alert-success">Successfully connected to MySQL.</div>
-				<hr/>
-					<form action="?install=3" method="post" style="float:right">
-						<input type="submit" class="btn btn-default btn-lg" value="Execute SQL &raquo;" />
-					</form>
-					<br/><br/>';
-
-			break;
-			
+			echo '
+			<div class="alert alert-success">Successfully connected to MySQL.</div>
+			<hr/>
+			<form action="?install=3" method="post" style="float:right">
+				<input type="submit" class="btn btn-default btn-lg" value="Execute SQL &raquo;" />
+			</form>
+			<br/><br/>';
+		break;
 		case 3:
 			include '../database.php';
-    			if($mysqli->query("SHOW TABLES LIKE 'accounts'")->num_rows != 1) {
-					echo "<hr/><div class=\"alert alert-danger\">(1) You need to have a MapleStory database installed before installing MapleBit!</div><hr/><a href=\"?install=1\" class=\"btn btn-danger btn-lg\" value=\"Continue &raquo;\" style=\"float:right\">&laquo; Go Back</a><br/><br/>";
-					exit();
-    			}
-    			if($mysqli->query("SHOW TABLES LIKE 'characters'")->num_rows != 1) {
-					echo "<hr/><div class=\"alert alert-danger\">(2) You need to have a MapleStory database installed before installing MapleBit!</div><hr/><a href=\"?install=1\" class=\"btn btn-danger btn-lg\" value=\"Continue &raquo;\" style=\"float:right\">&laquo; Go Back</a><br/><br/>";
-					exit();
-    			}
+    		if($mysqli->query("SHOW TABLES LIKE 'accounts'")->num_rows != 1) {
+				echo "<hr/><div class=\"alert alert-danger\">(1) You need to have a MapleStory database installed before installing MapleBit!</div><hr/><a href=\"?install=1\" class=\"btn btn-danger btn-lg\" value=\"Continue &raquo;\" style=\"float:right\">&laquo; Go Back</a><br/><br/>";
+				exit();
+    		}
+    		if($mysqli->query("SHOW TABLES LIKE 'characters'")->num_rows != 1) {
+				echo "<hr/><div class=\"alert alert-danger\">(2) You need to have a MapleStory database installed before installing MapleBit!</div><hr/><a href=\"?install=1\" class=\"btn btn-danger btn-lg\" value=\"Continue &raquo;\" style=\"float:right\">&laquo; Go Back</a><br/><br/>";
+				exit();
+    		}
 $queryaccounts = $mysqli->query("SELECT * FROM `accounts`"); 
 $getcolumns = $queryaccounts->fetch_assoc(); 
 
@@ -491,7 +500,8 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 					echo "Working...";
 					echo "<meta http-equiv=\"refresh\" content=\"1; url=?install=5\" />";
 				}
-			}else{
+			}
+			else {
 				include('../properties.php');
 				$url = $_SERVER["REQUEST_URI"];
 				$url = str_replace('/assets/config/install/install.php?install=4','',$url) . "/";
@@ -568,55 +578,54 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				</form>
 				";
 			}
-			break;
-		case 5:
-		echo "
-		<h4>Extract GD Images</h4>
-		<hr/>";
-		if(isset($_POST['myself'])) {
-			echo "<meta http-equiv=\"refresh\" content=\"0; url=?install=6\" />";
-		}
-		else {
-		echo "For the rankings to work, you need the GD archive to be extracted. This can take some time. Go to assets/img/GD and extract the .zip archive.
-		<hr/>
-		<form method=\"post\">
-			<input type=\"submit\" name=\"myself\" class=\"btn btn-warning btn-lg\" value=\"OK, I&#39;ll do it! &raquo;\" style=\"float:right;\"/><br/><br/>
-		</form>";
-		}
 		break;
-		case 6:
-		include('../database.php');
-		echo "
-		<h4>Create Administrator Account</h4>
-		<hr/>";
-		if(!isset($_POST['submit'])){
-		$_SESSION['flash'] = "";
-		echo "
-			<form method=\"post\" action=\"\" role=\"form\">
-			<div class=\"form-group\">
-				<label for=\"accName\">Your Account Name</label>
-				<input name=\"accname\" type=\"text\" class=\"form-control\" id=\"accName\" placeholder=\"Username\" required/>
-			</div>
-			<hr/>
-			<a href=\"?install=done\" class=\"btn btn-lg btn-info\" style=\"float:left\">Skip &raquo;</a>
-			<input name=\"submit\" type=\"submit\" value=\"Submit &raquo;\" class=\"btn btn-primary btn-lg\" style=\"float:right\"/>
-			<br/><br/>
-			</form>
-			";
-		} else {
-			$name = $mysqli->real_escape_string($_POST['accname']);
-			$getaccount = $mysqli->query("SELECT * from accounts WHERE name = '".$name."'");
-			$count = $getaccount->num_rows;
-			if($count == 1) {
-				$mysqli->query("UPDATE accounts SET webadmin = 1 WHERE name = '".$name."'");
-				echo "<meta http-equiv=\"refresh\" content=\"0; url=?install=done\" />";
-				$_SESSION['flash'] = "<div class=\"alert alert-success\">".$name." is now a web administrator</div>";
+		case 5:
+			echo "
+			<h4>Extract GD Images</h4>
+			<hr/>";
+			if(isset($_POST['myself'])) {
+				echo "<meta http-equiv=\"refresh\" content=\"0; url=?install=6\" />";
 			}
 			else {
-				echo "<div class=\"alert alert-danger\">Invalid account.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+			echo "For the rankings to work, you need the GD archive to be extracted. This can take some time. Go to assets/img/GD and extract the .zip archive.
+			<hr/>
+			<form method=\"post\">
+				<input type=\"submit\" name=\"myself\" class=\"btn btn-warning btn-lg\" value=\"OK, I&#39;ll do it! &raquo;\" style=\"float:right;\"/><br/><br/>
+			</form>";
 			}
-		
-		}
+		break;
+		case 6:
+			include('../database.php');
+			echo "
+			<h4>Create Administrator Account</h4>
+			<hr/>";
+			if(!isset($_POST['submit'])){
+				$_SESSION['flash'] = "";
+				echo "
+				<form method=\"post\" action=\"\" role=\"form\">
+				<div class=\"form-group\">
+					<label for=\"accName\">Your Account Name</label>
+					<input name=\"accname\" type=\"text\" class=\"form-control\" id=\"accName\" placeholder=\"Username\" required/>
+				</div>
+				<hr/>
+				<a href=\"?install=done\" class=\"btn btn-lg btn-info\" style=\"float:left\">Skip &raquo;</a>
+				<input name=\"submit\" type=\"submit\" value=\"Submit &raquo;\" class=\"btn btn-primary btn-lg\" style=\"float:right\"/>
+				<br/><br/>
+				</form>
+				";
+			} else {
+				$name = $mysqli->real_escape_string($_POST['accname']);
+				$getaccount = $mysqli->query("SELECT * from accounts WHERE name = '".$name."'");
+				$count = $getaccount->num_rows;
+				if($count == 1) {
+					$mysqli->query("UPDATE accounts SET webadmin = 1 WHERE name = '".$name."'");
+					echo "<meta http-equiv=\"refresh\" content=\"0; url=?install=done\" />";
+					$_SESSION['flash'] = "<div class=\"alert alert-success\">".$name." is now a web administrator</div>";
+				}
+				else {
+					echo "<div class=\"alert alert-danger\">Invalid account.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+				}
+			}
 		break;
 		case "done":
 			echo "<h4>Woohoo! You're done installing MapleBit!</h4>
