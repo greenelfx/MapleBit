@@ -29,6 +29,12 @@ if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 			}
 			echo "success";
 		}
+		else {
+			// echo "bad password";
+		}
+	}
+	else {
+		// echo "not ajax";
 	}
 }
 ?>
