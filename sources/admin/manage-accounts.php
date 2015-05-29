@@ -181,7 +181,7 @@ if(isset($_SESSION['id'])){
 						else {
 							$gm = $mysqli->real_escape_string(strip_tags($_POST["gm"]));
 						}
-						$password = $mysqli->real_escape_string(strip_tags($_POST["password"]));
+						$password = $mysqli->real_escape_string(sha1($_POST["password"]));
 						if(isset($_POST['webadmin'])){
 							$webadmin = 1;
 						}
