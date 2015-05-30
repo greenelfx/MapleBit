@@ -4,7 +4,7 @@ if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 	if(isset($is_ajax) && $is_ajax) {
 		include_once('assets/config/database.php');
 		$u = $mysqli->real_escape_string($_REQUEST['username']);
-		$p = $mysqli->real_escape_string($_REQUEST['password']);
+		$p = $_REQUEST['password'];
 		$s = $mysqli->query("SELECT * FROM `accounts` WHERE `name`='".$u."'") or die();
 		$i = $s->fetch_assoc();
 		if($i['password'] == hash('sha512',$p.$i['salt']) || sha1($p) == $i['password']){
