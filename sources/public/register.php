@@ -51,8 +51,8 @@ if (@$_POST["register"] != "1") {
 	
 	$getusername = $mysqli->real_escape_string($_POST["musername"]); # Get Username
 	$username = preg_replace("/[^A-Za-z0-9 ]/", '', $getusername); # Escape and Strip
-	$password = $mysqli->real_escape_string($_POST["mpass"]); # Get Password
-	$confirm_password = $mysqli->real_escape_string($_POST["mpwcheck"]); # Get Confirm Password
+	$password = $_POST["mpass"]; # Get Password
+	$confirm_password =$_POST["mpwcheck"]; # Get Confirm Password
 	$email = $mysqli->real_escape_string($_POST["memail"]);
 	$birth = "1990-01-01";
 	$ip = getRealIpAddr();
@@ -91,7 +91,8 @@ if (@$_POST["register"] != "1") {
 			echo ("<div class=\"alert alert-danger\">You have filled in a wrong email address<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a>");
 		} else {
 			//All data is ok
-			$insert_user_query = "INSERT INTO accounts (`name`, `password`, `ip`, `email`, `birthday`) VALUES ('".$username."', '".hash("sha1", $password)."', '".$ip."', '".$email."', '".$birth."')";
+			$password = sha1($password);
+			$insert_user_query = "INSERT INTO accounts (`name`, `password`, `ip`, `email`, `birthday`) VALUES ('".$username."', '".$password)."', '".$ip."', '".$email."', '".$birth."')";
 			$mysqli->query($insert_user_query);
 		echo"
 			<br/><div class=\"alert alert-success\"><b>Success!</b> Please login, and head to the downloads page to get started!</div>
