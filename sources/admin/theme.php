@@ -25,6 +25,7 @@ if($_SESSION['admin'] == 1) {
 					 <label class="radio"><input type="radio" name="theme" value="flatly"/>Flatly <a href="http://bootswatch.com/flatly/" target="_blank"><i class="fa fa-external-link"></i></a></label>
 					 <label class="radio"><input type="radio" name="theme" value="journal"/>Journal <a href="http://bootswatch.com/journal/" target="_blank"><i class="fa fa-external-link"></i></a></label>
 					 <label class="radio"><input type="radio" name="theme" value="lumen"/>Lumen <a href="http://bootswatch.com/lumen/" target="_blank"><i class="fa fa-external-link"></i></a></label>
+					  <label class="radio"><input type="radio" name="theme" value="paper"/>Paper <a href="http://bootswatch.com/paper/" target="_blank"><i class="fa fa-external-link"></i></a></label>
 					 <label class="radio"><input type="radio" name="theme" value="readable"/>Readable <a href="http://bootswatch.com/readable/" target="_blank"><i class="fa fa-external-link"></i></a></label>
 					 <label class="radio"><input type="radio" name="theme" value="sandstone"/>Sandstone <a href="http://bootswatch.com/sandstone/" target="_blank"><i class="fa fa-external-link"></i></a></label>
 					 <label class="radio"><input type="radio" name="theme" value="slate"/>Slate <a href="http://bootswatch.com/slate/" target="_blank"><i class="fa fa-external-link"></i></a></label>
