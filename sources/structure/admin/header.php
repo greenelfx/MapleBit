@@ -108,7 +108,7 @@ function goBack() {window.history.back()}
 						<li <?php echo ($admin == "voteconfig") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=voteconfig"><i class="fa fa-arrow-circle-o-up"></i> Vote Configuration</a></li>
 						<li <?php echo ($admin == "nxpacks") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=nxpacks"><i class="fa fa-shopping-cart"></i> NX Packs</a></li>
 						<li <?php echo ($admin == "bannedmaps") ? 'class="active"' : ''; ?>><a href="?base=admin&page=bannedmaps"><i class="fa fa-ban"></i> Jailed Maps</a></li>
-						<li <?php echo ($admin == "theme") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=theme"><i class="fa fa-eye"></i> Theme</a></li>
+						<li <?php echo ($admin == "theme") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=theme"><i class="fa fa-magic"></i> Theme</a></li>
 						<li <?php echo ($admin == "banner") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=banner"><i class="fa fa-eye"></i> Banner</a></li>
 						<li <?php echo ($admin == "background") ? 'class = "active"' : ''; ?>><a href="?base=admin&amp;page=background"><i class="fa fa-eye"></i> Background</a></li>
 					</ul>
@@ -153,7 +153,7 @@ function goBack() {window.history.back()}
 					<ul class="nav nav-pills nav-stacked collapse <?php echo (in_array($admin, $users)) ? 'in' : ''; ?> " id="menu3">
 						<li <?php echo ($admin == "manageaccounts") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=manageaccounts"><i class="fa fa-user"></i> Manage Accounts</a></li>
 						<li <?php echo ($admin == "ticket") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=ticket"><i class="fa fa-ticket"></i> View Tickets</a></li>
-						<li <?php echo ($admin == "banned") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=banned"><i class="fa fa-ban"></i> Banned Users</a></li>
+						<li <?php echo ($admin == "banned") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=banned"><i class="fa fa-gavel"></i> Banned Users</a></li>
 					</ul>
                 </ul>
 				<hr/>
