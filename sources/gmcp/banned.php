@@ -2,24 +2,28 @@
 if(basename($_SERVER["PHP_SELF"]) == "banned.php"){
     die("403 - Access Forbidden");
 }
-if($_SESSION['gm']){
-	$result = $mysqli->query("SELECT name, banreason, ip FROM accounts WHERE banned >= 1") or die();
-		echo "
-	<h2 class=\"text-left\">Banned Members</h2>
-	<hr/>
-	<table class=\"table table-bordered table-hover table-striped\">
-	<thead>
-		<tr>
-			<th>Account ID</th>
-			<th>Reason</th>
-			<th>IP</th>
-		</tr>
-	</thead>
-	<tbody>";
-	while($row = $result->fetch_assoc()){
-	if($row['banreason'] == ""){$row['banreason'] = "None Given";}
-	if($row['ip'] == ""){$row['ip'] = "Not Recorded";}
-		echo "
+if(isset($_SESSION['gm']) || isset($_SESSION['admin'])){
+	try {
+		$result = $mysqli->query("SELECT name, banreason, ip FROM accounts WHERE banned >= 1");
+		if ($result === FALSE)
+	        throw new Exception($mysqli->error);
+			
+			echo "
+		<h2 class=\"text-left\">Banned Members</h2>
+		<hr/>
+		<table class=\"table table-bordered table-hover table-striped\">
+		<thead>
+			<tr>
+				<th>Account ID</th>
+				<th>Reason</th>
+				<th>IP</th>
+			</tr>
+		</thead>
+		<tbody>";
+		while($row = $result->fetch_assoc()){
+			if(!isset($row['banreason']) || $row['banreason'] == ""){$row['banreason'] = "Unknown";}
+			if(!isset($row['ip']) || $row['ip'] == ""){$row['ip'] = "Unknown";}
+			echo "
 				<tr>
 					<td>
 						".$row['name']."
@@ -31,10 +35,15 @@ if($_SESSION['gm']){
 						".$row['ip']."
 					</td>
 				</tr>";
+		}
+		echo "
+			</tbody>
+		</table>";
 	}
-	echo "</tbody>
-	</table>
-";
+	catch (Exception $e) {
+		echo "<h2 class=\"text-left\">Banned Members</h2><hr/>
+		<div class=\"alert alert-danger\">Could not look up banned records.</div>";
+	}
 } else{
 	redirect("?base");
 }
