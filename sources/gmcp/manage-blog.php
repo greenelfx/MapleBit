@@ -46,7 +46,7 @@ if($_SESSION['id']){
 					$id = sql_sanitize($_GET['id']);
 					$gb = $mysqli->query("SELECT * FROM ".$prefix."gmblog WHERE id='".$id."'") or die();
 					$b = $gb->fetch_assoc();
-					if($_SESSION['pname'] == $b['author'] || $_SESSION['admin']){
+					if($_SESSION['pname'] == $b['author'] || isset($_SESSION['admin'])){
 						if(!isset($_POST['edit'])){
 							echo "
 				<form method=\"post\">
@@ -76,25 +76,77 @@ if($_SESSION['id']){
 						echo "<div class=\"alert alert-error\">This blog entry does not belong to you.</div><hr/><a href=\"?base=gmcp\" class=\"btn btn-primary\">&laquo; Go Back</a>";
 					}
 				}else{
-					echo "Edit your blogs:<br/>";
-					if($_SESSION['gm']){
+					if(isset($_SESSION['gm']) || isset($_SESSION['admin'])){
 						$gb = $mysqli->query("SELECT * FROM ".$prefix."gmblog WHERE author='".$_SESSION['pname']."' ORDER BY id ASC") or die();
-						while($b = $gb->fetch_assoc()){
+						if($gb->num_rows > 0) {
+							$i = 1;
 							echo "
-						[".$b['date']."] <a href=\"?base=gmcp&amp;page=manblog&action=edit&id=".$b['id']."\">".stripslashes($b['title'])."</a><br/>";
+							<table class=\"table\">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Title</th>
+									<th>Date</th>
+									<th>Views</th>
+								</tr>
+							</thead>
+							<tbody>
+							";
+							while($b = $gb->fetch_assoc()){
+								echo "
+								<tr>
+									<th scope=\"row\">".$i++."</th>
+									<td><a href=\"?base=gmcp&amp;page=manblog&action=edit&id=".$b['id']."\">".stripslashes($b['title'])." &raquo;</a></td>
+									<td>".$b['date']."</td>
+									<td>".$b['views']."</td>
+								</tr>";
+							}
+							echo "
+							</tbody>
+							</table>
+							";
+						}
+						else {
+							echo "<div class=\"alert alert-info\">No blogs found!</div>";
 						}
 					}
 					if(isset($_SESSION['admin'])){
-						echo "
-						<hr/><b>Administrator Options<br/></b>
-						Select a blog entry to modify:<br/>";
+						echo "<hr/>
+						<h3>Edit all Blogs <small>(Administrators Only)</small></h3>";
 						$gab = $mysqli->query("SELECT * FROM ".$prefix."gmblog ORDER BY id ASC") or die();
-						while($ab = $gab->fetch_assoc()){
+						if($gab->num_rows > 0) {
+							$i = 1;
 							echo "
-								[".$ab['date']."] <a href=\"?base=gmcp&amp;page=manblog&amp;action=edit&id=".$ab['id']."\">".stripslashes($ab['title'])."</a> by <a href=\"?base=main&amp;page=members&name=".$ab['author']."\">".$ab['author']."</a><br/>
-								";
+							<table class=\"table\">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Title</th>
+									<th>Author</th>
+									<th>Date</th>
+									<th>Views</th>
+								</tr>
+							</thead>
+							<tbody>
+							";
+							while($b = $gab->fetch_assoc()){
+								echo "
+								<tr>
+									<th scope=\"row\">".$i++."</th>
+									<td><a href=\"?base=gmcp&amp;page=manblog&action=edit&id=".$b['id']."\">".stripslashes($b['title'])." &raquo;</a></td>
+									<td><a href=\"?base=main&amp;page=members&name=".$b['author']."\">".$b['author']." &raquo;</a></td>
+									<td>".$b['date']."</td>
+									<td>".$b['views']."</td>
+								</tr>";
+							}
+							echo "
+							</tbody>
+							</table>
+							";
 						}
-						echo "<hr/>";
+						else {
+							echo "<div class=\"alert alert-info\">No blogs found!</div>";
+						}
 					}
 				}
 
