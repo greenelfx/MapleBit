@@ -203,7 +203,6 @@ CREATE TABLE `".$prefix."properties` (
   `flood` tinyint(4) NOT NULL DEFAULT '1',
   `floodint` int(11) DEFAULT NULL,
   `pcap` text,
-  `maxaccounts` tinyint(4) NOT NULL DEFAULT '3',
   `gmlevel` int(11) NOT NULL DEFAULT '1',
   `theme` text NOT NULL,
   `nav` text NOT NULL,
@@ -213,7 +212,6 @@ CREATE TABLE `".$prefix."properties` (
   `jailmaps` text,
   `githubapi` INT(12) DEFAULT NULL,
   `status` tinyint(1) DEFAULT NULL,
-  `debug` TINYINT(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 INSERT INTO ".$prefix."properties (version, theme, nav, colnx, colvp, homecontent) VALUES (83, 'cerulean', 0, 'paypalNX', 'votepoints', 'Admins: Double click here to edit');

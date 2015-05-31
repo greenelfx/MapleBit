@@ -95,7 +95,7 @@ if (@$_POST["register"] != "1") {
 			$insert_user_query = "INSERT INTO accounts (`name`, `password`, `ip`, `email`, `birthday`) VALUES ('".$username."', '".$password."', '".$ip."', '".$email."', '".$birth."')";
 			$mysqli->query($insert_user_query);
 		echo"
-			<br/><div class=\"alert alert-success\"><b>Success!</b> Please login, and head to the downloads page to get started!</div>
+			<div class=\"alert alert-success\"><b>Success!</b> Please login, and head to the downloads page to get started!</div>
 		";
 			}
 		}

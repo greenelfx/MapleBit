@@ -8,7 +8,7 @@ if($_SESSION['admin'] == 1) {
 	switch($do)
 	{
 		case NULL:		
-			echo "Welcome to MapleBit's theming center! Instead of loading a whole bunch of files locally, MapleBit uses Bootswatch, a collection of Bootstrap CSS themes, to customize the feel of the website.";
+			echo "Welcome to MapleBit's theming center! MapleBit uses Bootswatch, a collection of Bootstrap CSS themes, to customize the feel of the website.";
 			echo "<br/>Please browse <a href=\"http://bootswatch.com\">Bootswatch.</a>";
 			echo '<hr/><a href="?base=admin&amp;page=theme&amp;do=apply" class="btn btn-primary">Configure Theme &raquo;</a>';
 			break;
