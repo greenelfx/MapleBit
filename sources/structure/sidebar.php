@@ -16,7 +16,7 @@ if(isset($_SESSION['id'])){
 		<a href=\"?base=admin\" class=\"btn btn-default btn-block\">Admin Panel</a>
 		";
 	}
-	if(isset($_SESSION['gm'])){
+	if(isset($_SESSION['gm']) || isset($_SESSION['admin'])){
 		echo "
 		<a href=\"?base=gmcp\" class=\"btn btn-default btn-block\">GM Panel</a>
 		";

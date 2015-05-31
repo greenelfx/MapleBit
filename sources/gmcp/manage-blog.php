@@ -6,7 +6,7 @@ if(basename($_SERVER["PHP_SELF"]) == "manage-blog.php"){
 <script src="assets/libs/ckeditor/ckeditor.js"></script>
 <?php 
 if($_SESSION['id']){
-	if($_SESSION['gm']){
+	if(isset($_SESSION['gm']) || isset($_SESSION['admin'])){
 		if($_SESSION['pname'] == NULL || $_SESSION['pname'] == "checkpname"){
 			echo "<div class=\"alert alert-danger\"><b>Error:</b> You need to assign a profile name before you do this.<hr/><a href=\"?base=ucp&page=profname\" class=\"alert-link\">Set Profile Name &raquo;</a></div>";
 		}else{
