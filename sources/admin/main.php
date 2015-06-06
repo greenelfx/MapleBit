@@ -22,7 +22,7 @@ if(isset($_SESSION['id'])){
 						$current_tags = file_get_contents("https://api.github.com/repos/greenelfx/maplebit/tags", false, $context);
 						if ($current_tags !== false) {
 							$tags = json_decode($current_tags);
-							$ref_tag = "v1.06";
+							$ref_tag = "v1.07";
 							$current_tag = $tags[0]->name;
 							if ($current_tag == $ref_tag) {
 								$alert_class = "success";
@@ -83,7 +83,7 @@ if(isset($_SESSION['id'])){
 				</div>
 				<div class="col-md-3">
 					<div class="alert alert-<?php echo $alert_class; ?>">
-						<h2 style="margin: 0px;" class="text-center">Update</h2><hr/>
+						<h2 style="margin: 0px;" class="text-center">Status</h2><hr/>
 						<?php echo $version_message; ?>
 					</div>
 				</div>
