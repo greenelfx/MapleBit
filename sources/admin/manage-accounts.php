@@ -47,7 +47,7 @@ if(isset($_SESSION['id'])){
 				echo "
 				<tr>
 					<td><a href=\"?base=admin&amp;page=manageaccounts&amp;action=view&amp;user=".$row['name']."\">".$row['name']."</td>";
-				if(array_key_exists('email', $row)) { echo "<td>".$row['email']."</td>"; } else { echo "<td>Unknown</td>";}					
+				if(array_key_exists('email', $row)) { echo "<td>".$row['email']."</td>"; } else { echo "<td>Unknown</td>";}			
 				if(array_key_exists('gm', $row)) { echo "<td>".$row['gm']."</td>"; } else { echo "<td>Unknown</td>";}
 				if(array_key_exists($colnx, $row)) { echo "<td>".$row[$colnx]."</td>"; } else { echo "<td>Unknown</td>";}
 				if(array_key_exists($colvp, $row)) { echo "<td>".$row[$colvp]."</td>"; } else { echo "<td>Unknown</td>";}

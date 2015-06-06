@@ -21,9 +21,9 @@ while ($row = $query->fetch_assoc()) {
 ?>
 	<tr>
 		<td><?php echo ++$n;?></td>
-		<td><?php echo $row['name'];?></td>
-		<td><?php echo $row['cname'];?></td>
-		<td><?php echo $row['GP'];?></td>
+		<td><?php if(array_key_exists('name', $row)) { echo $row['name']; } else { echo "Unknown";}?></td>
+		<td><?php if(array_key_exists('cname', $row)) { echo $row['cname']; } else { echo "Unknown";}?></td>
+		<td><?php if(array_key_exists('GP', $row)) { echo $row['GP']; } else { echo "Unknown";}?></td>
 	</tr>
 <?php  } ?>
 </tbody>
