@@ -49,10 +49,10 @@ if($_SESSION['admin'] == 1) {
 					elseif(empty($nx)) {
 						echo "<div class=\"alert alert-error\">You need to enter an NX amount.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}
-					elseif(!is_numeric($meso)) {
-						echo "<div class=\"alert alert-error\">You can only enter numbers.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+					elseif(!is_numeric($meso) || (is_numeric($meso) && $meso < 0)) {
+						echo "<div class=\"alert alert-error\">You can only enter positive numbers.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}
-					elseif(!is_numeric($nx)) {
+					elseif(!is_numeric($nx) || (is_numeric($nx) && $nx < 0)) {
 						echo "<div class=\"alert alert-error\">You can only enter numbers.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}
 					else {
@@ -99,11 +99,11 @@ if($_SESSION['admin'] == 1) {
 				elseif(empty($nx)) {
 					echo "<div class=\"alert alert-danger\">You need to have a value in nx.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 				}
-				elseif(!is_numeric($meso)) {
-					echo "<div class=\"alert alert-danger\">You can only use numbers.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+				elseif(!is_numeric($meso) || (is_numeric($meso) && $meso < 0)) {
+					echo "<div class=\"alert alert-danger\">You can only use positive numbers.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 				}
-				elseif(!is_numeric($nx)) {
-					echo '<div class="alert alert-danger">You can only use numbers. <a href="javascript:history.go(-1);">Go Back</a></div>';
+				elseif(!is_numeric($nx) || (is_numeric($nx) && $nx < 0)) {
+					echo '<div class="alert alert-danger">You can only use positive numbers. <a href="javascript:history.go(-1);">Go Back</a></div>';
 				}
 				else {
 					$mysqli->query("INSERT INTO ".$prefix."buynx (meso, nx) VALUES ('".$meso."', '".$nx."')") or die();

@@ -13,31 +13,30 @@ if($_SESSION['admin'] == 1) {
 			echo '<hr/><a href="?base=admin&amp;page=theme&amp;do=apply" class="btn btn-primary">Configure Theme &raquo;</a>';
 			break;
 		case 'apply':
-			if(!isset($_POST['apply']))
-			{
+			if(!isset($_POST['apply'])) {
 				echo '
 					<form name="applytheme" method="post">
-					<label class="radio"><input type="radio" name="theme" value="bootstrap" checked/>Default Bootstrap</label>
-					 <label class="radio"><input type="radio" name="theme" value="cerulean"/>Cerulean <a href="http://bootswatch.com/cerulean/" target="_blank"><i class="fa fa-external-link"></i></a></label>
-					 <label class="radio"><input type="radio" name="theme" value="cosmo"/>Cosmo <a href="http://bootswatch.com/cosmo/" target="_blank"><i class="fa fa-external-link"></i></a></label>
-					 <label class="radio"><input type="radio" name="theme" value="cyborg"/>Cyborg <a href="http://bootswatch.com/cyborg/" target="_blank"><i class="fa fa-external-link"></i></a></label>
-					 <label class="radio"><input type="radio" name="theme" value="darkly"/>Darkly <a href="http://bootswatch.com/darkly/" target="_blank"><i class="fa fa-external-link"></i></a></label>
-					 <label class="radio"><input type="radio" name="theme" value="flatly"/>Flatly <a href="http://bootswatch.com/flatly/" target="_blank"><i class="fa fa-external-link"></i></a></label>
-					 <label class="radio"><input type="radio" name="theme" value="journal"/>Journal <a href="http://bootswatch.com/journal/" target="_blank"><i class="fa fa-external-link"></i></a></label>
-					 <label class="radio"><input type="radio" name="theme" value="lumen"/>Lumen <a href="http://bootswatch.com/lumen/" target="_blank"><i class="fa fa-external-link"></i></a></label>
-					  <label class="radio"><input type="radio" name="theme" value="paper"/>Paper <a href="http://bootswatch.com/paper/" target="_blank"><i class="fa fa-external-link"></i></a></label>
-					 <label class="radio"><input type="radio" name="theme" value="readable"/>Readable <a href="http://bootswatch.com/readable/" target="_blank"><i class="fa fa-external-link"></i></a></label>
-					 <label class="radio"><input type="radio" name="theme" value="sandstone"/>Sandstone <a href="http://bootswatch.com/sandstone/" target="_blank"><i class="fa fa-external-link"></i></a></label>
-					 <label class="radio"><input type="radio" name="theme" value="slate"/>Slate <a href="http://bootswatch.com/slate/" target="_blank"><i class="fa fa-external-link"></i></a></label>
-					 <label class="radio"><input type="radio" name="theme" value="simplex"/>Simplex <a href="http://bootswatch.com/simplex/" target="_blank"><i class="fa fa-external-link"></i></a></label>
-					 <label class="radio"><input type="radio" name="theme" value="spacelab"/>Spacelab <a href="http://bootswatch.com/spacelab/" target="_blank"><i class="fa fa-external-link"></i></a></label>
-					 <label class="radio"><input type="radio" name="theme" value="superhero"/>Superhero <a href="http://bootswatch.com/superhero/" target="_blank"><i class="fa fa-external-link"></i></a></label>
-					 <label class="radio"><input type="radio" name="theme" value="united"/>United <a href="http://bootswatch.com/united/" target="_blank"><i class="fa fa-external-link"></i></a></label>
-					 <label class="radio"><input type="radio" name="theme" value="yeti"/>Yeti <a href="http://bootswatch.com/yeti/" target="_blank"><i class="fa fa-external-link"></i></a></label>
-					 <hr/>
-					 <label class="radio"><input type="radio" name="nav" value="0" checked/>Normal Navigation Bar</label>
-					 <label class="radio"><input type="radio" name="nav" value="1" />Inverse Navigation Bar</label>
-					 <hr/>
+					<div class="radio"><label class="radio"><input type="radio" name="theme" value="bootstrap" checked/>Default Bootstrap</label></div>
+					<div class="radio"><label class="radio"><input type="radio" name="theme" value="cerulean"/>Cerulean <a href="http://bootswatch.com/cerulean/" target="_blank"><i class="fa fa-external-link"></i></a></label></div>
+					<div class="radio"><label class="radio"><input type="radio" name="theme" value="cosmo"/>Cosmo <a href="http://bootswatch.com/cosmo/" target="_blank"><i class="fa fa-external-link"></i></a></label></div>
+					<div class="radio"><label class="radio"><input type="radio" name="theme" value="cyborg"/>Cyborg <a href="http://bootswatch.com/cyborg/" target="_blank"><i class="fa fa-external-link"></i></a></label></div>
+					<div class="radio"><label class="radio"><input type="radio" name="theme" value="darkly"/>Darkly <a href="http://bootswatch.com/darkly/" target="_blank"><i class="fa fa-external-link"></i></a></label></div>
+					<div class="radio"><label class="radio"><input type="radio" name="theme" value="flatly"/>Flatly <a href="http://bootswatch.com/flatly/" target="_blank"><i class="fa fa-external-link"></i></a></label></div>
+					<div class="radio"><label class="radio"><input type="radio" name="theme" value="journal"/>Journal <a href="http://bootswatch.com/journal/" target="_blank"><i class="fa fa-external-link"></i></a></label></div>
+					<div class="radio"><label class="radio"><input type="radio" name="theme" value="lumen"/>Lumen <a href="http://bootswatch.com/lumen/" target="_blank"><i class="fa fa-external-link"></i></a></label></div>
+					<div class="radio"><label class="radio"><input type="radio" name="theme" value="paper"/>Paper <a href="http://bootswatch.com/paper/" target="_blank"><i class="fa fa-external-link"></i></a></label></div>
+					<div class="radio"><label class="radio"><input type="radio" name="theme" value="readable"/>Readable <a href="http://bootswatch.com/readable/" target="_blank"><i class="fa fa-external-link"></i></a></label></div>
+					<div class="radio"><label class="radio"><input type="radio" name="theme" value="sandstone"/>Sandstone <a href="http://bootswatch.com/sandstone/" target="_blank"><i class="fa fa-external-link"></i></a></label></div>
+					<div class="radio"><label class="radio"><input type="radio" name="theme" value="slate"/>Slate <a href="http://bootswatch.com/slate/" target="_blank"><i class="fa fa-external-link"></i></a></label></div>
+					<div class="radio"><label class="radio"><input type="radio" name="theme" value="simplex"/>Simplex <a href="http://bootswatch.com/simplex/" target="_blank"><i class="fa fa-external-link"></i></a></label></div>
+					<div class="radio"><label class="radio"><input type="radio" name="theme" value="spacelab"/>Spacelab <a href="http://bootswatch.com/spacelab/" target="_blank"><i class="fa fa-external-link"></i></a></label></div>
+					<div class="radio"><label class="radio"><input type="radio" name="theme" value="superhero"/>Superhero <a href="http://bootswatch.com/superhero/" target="_blank"><i class="fa fa-external-link"></i></a></label></div>
+					<div class="radio"><label class="radio"><input type="radio" name="theme" value="united"/>United <a href="http://bootswatch.com/united/" target="_blank"><i class="fa fa-external-link"></i></a></label></div>
+					<div class="radio"><label class="radio"><input type="radio" name="theme" value="yeti"/>Yeti <a href="http://bootswatch.com/yeti/" target="_blank"><i class="fa fa-external-link"></i></a></label></div>
+					<hr/>
+					<div class="radio"><label class="radio"><input type="radio" name="nav" value="0" checked/>Normal Navigation Bar</label></div>
+					<div class="radio"><label class="radio"><input type="radio" name="nav" value="1" />Inverse Navigation Bar</label></div>
+					<hr/>
 					<input type="submit" name="apply" value="Apply Theme &raquo;" class="btn btn-primary"/>
 					</form>
 				';

@@ -21,8 +21,8 @@ if(isset($_SESSION['admin'])){
 		</thead>
 		<tbody>";
 		while($row = $result->fetch_assoc()){
-			if(!isset($row['banreason']) || $row['banreason'] == ""){$row['banreason'] = "Unknown";}
-			if(!isset($row['ip']) || $row['ip'] == ""){$row['ip'] = "Unknown";}
+			if(!array_key_exists('banreason', $row) || $row['banreason'] == ""){$row['banreason'] = "Unknown";}
+			if(!array_key_exists('ip', $row) || $row['ip'] == ""){$row['ip'] = "Unknown";}
 			echo "
 				<tr>
 					<td>
