@@ -6,7 +6,7 @@ if(isset($_SESSION['id'])){
 if(!isset($_POST['buyNX'])) {
 	echo "<form name=\"buynx\" method=\"post\">
 	<h2 class=\"text-left\">Buy NX</h2><hr/>
-	<h4>Select a Character</h4>";
+	<h4>Select a Character <small>(Must have enough mesos on this character)</small></h4>";
 	$fetchChar = $mysqli->query("SELECT * FROM `characters` WHERE `accountid` = '".$_SESSION['id']."'") or die();
 	$countChar = $fetchChar->num_rows;
 	if($countChar == 0) {
@@ -14,16 +14,26 @@ if(!isset($_POST['buyNX'])) {
 	}
 	else {
 	while($getChar = $fetchChar->fetch_assoc())	{
-		echo '<label class="radio"><input type="radio" name="selChar" value="'.$getChar['id'].'"/>'.$getChar['name'].'</label>';
+		echo '
+		<div class="radio">
+			<label class="radio">
+				<input type="radio" name="selChar" value="'.$getChar['id'].'">'.$getChar['name'].'
+			</label>
+		</div>';
 	}
-	echo "<h4>Select a Package</h4>";
+	echo "<hr/><h4>Select a Package</h4>";
 	$fetchPack = $mysqli->query("SELECT * FROM `".$prefix."buynx`");
 		if($fetchPack->num_rows == 0){
 			echo "<div class=\"alert alert-danger\">Oops! Looks like there's no NX packages available right now!</div></form>";
 		} 
 		else{
 			while($getPack = $fetchPack->fetch_assoc()) {
-				echo '<label class="radio"><input type="radio" name="selPack" value="'.$getPack['meso'].'">'.number_format($getPack['nx']).' NX for '.number_format($getPack['meso']).' Mesos</input></label>';
+				echo '
+				<div class="radio">
+					<label class="radio">
+						<input type="radio" name="selPack" value="'.$getPack['meso'].'">'.number_format($getPack['nx']).' NX for '.number_format($getPack['meso']).' Mesos
+					</label>
+				</div>';
 			}
 			echo "
 			<br/><input type=\"submit\" name=\"buyNX\" value=\"Buy NX &raquo\" class=\"btn btn-primary\"/>
