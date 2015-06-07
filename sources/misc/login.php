@@ -3,6 +3,26 @@ if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 	$is_ajax = $_REQUEST['is_ajax'];
 	if(isset($is_ajax) && $is_ajax) {
 		include_once('assets/config/database.php');
+		if(isset($_COOKIE["block"])) {
+			echo "wait";
+			return;
+		}
+		else {
+			if(!isset($_SESSION['attempts'])) {
+				$_SESSION['attempts'] = 1;
+			}
+			else {
+				if($_SESSION['attempts'] >= 3) {
+					setcookie("block", 1, time()+60);
+					$_SESSION['attempts'] = 1;
+					echo "wait";
+					return;
+				}
+				else {
+					$_SESSION['attempts']++;
+				}
+			}
+		}
 		$u = $mysqli->real_escape_string($_REQUEST['username']);
 		$p = $_REQUEST['password'];
 		$s = $mysqli->query("SELECT * FROM `accounts` WHERE `name`='".$u."'") or die();
