@@ -35,7 +35,7 @@ if(basename($_SERVER["PHP_SELF"]) == "vote.php"){
             } 
             $earnedpoints = true;  
             if ($earnedpoints == true) { 
-                if ($account != '') {$result = $mysqli->query("UPDATE accounts SET $colvp = $colvp + $gvp, $colnx = $colnx + $gnx WHERE name='".$account."'") or die ('Error - Could not update account!');} 
+                if ($account != '') {$result = $mysqli->query("UPDATE accounts SET $colvp = $colvp + $gvp, $colnx = $colnx + $gnx WHERE name='".$account."'") or die ('Error - Could not give rewards. Your site administrator needs to configure the NX and VP settings.');} 
 				$funct_msg = '<meta http-equiv="refresh" content="0; url='.$vsite['link'].'">'; 
                 $redirect = true; 
             } 
