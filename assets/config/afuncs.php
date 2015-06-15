@@ -15,20 +15,6 @@ if(isset($_SESSION['id'])){
 	$online = $retrieve->fetch_assoc();
 }
 
-# If logged in, fetch IP
-if(isset($_SESSION['id'])){
-	global $mysqli, $prefix;
-	$IP = $_SERVER['REMOTE_ADDR'];
-	$sesid = $_SESSION['id'];
-	$getn = $mysqli->query("SELECT * FROM accounts WHERE id=$sesid");
-	$getn2 = $getn->fetch_assoc();
-	$getname = $getn2['name'];
-	$mysqli->query("UPDATE accounts SET ip='$IP' WHERE name='$getname'") or die();
-	$q = $mysqli->query("SELECT * FROM accounts WHERE ip='$IP'");
-	$get = $q->fetch_assoc();
-	$id = $get['name'];
-}
-
 /* Functions for Cype */
 
 function getOnline(){
