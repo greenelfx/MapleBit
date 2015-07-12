@@ -14,28 +14,28 @@ if(isset($_GET['job'])) {
 $dir = "/";
 if(isset($getjob) && $getjob != NULL) {
 	if($getjob == "beginner"){
-		$show = "AND c.job = 000";
+		$show = "AND (c.job = 000)";
 	}
 	elseif($getjob == "warrior"){
-		$show = "AND c.job = 100 OR c.job = 110 OR c.job = 120 OR c.job = 130 OR c.job = 121 OR c.job = 112 OR c.job = 122 OR c.job = 132";
+		$show = "AND (c.job = 100 OR c.job = 110 OR c.job = 120 OR c.job = 130 OR c.job = 121 OR c.job = 112 OR c.job = 122 OR c.job = 132)";
 	}
 	elseif($getjob == "magician"){
-		$show = "AND c.job = 210 OR c.job = 220 OR c.job = 230 OR c.job = 211 OR c.job = 221 OR c.job = 231 OR c.job = 212 OR c.job = 222 OR c.job = 232";
+		$show = "AND (c.job = 210 OR c.job = 220 OR c.job = 230 OR c.job = 211 OR c.job = 221 OR c.job = 231 OR c.job = 212 OR c.job = 222 OR c.job = 232)";
 	}
 	elseif($getjob == "bowman"){
-		$show = "AND c.job = 300 OR c.job = 310 OR c.job = 320 OR c.job = 311 OR c.job = 321 OR c.job = 312 OR c.job = 322";
+		$show = "AND (c.job = 300 OR c.job = 310 OR c.job = 320 OR c.job = 311 OR c.job = 321 OR c.job = 312 OR c.job = 322)";
 	}
 	elseif($getjob == "thief"){
-		$show = "AND c.job = 400 OR c.job = 410 OR c.job = 420 OR c.job = 411 OR c.job = 421 OR c.job = 422";
+		$show = "AND (c.job = 400 OR c.job = 410 OR c.job = 420 OR c.job = 411 OR c.job = 421 OR c.job = 422)";
 	}	
 	elseif($getjob == "pirate"){
-		$show = "AND c.job = 500 OR c.job = 500 OR c.job = 510 OR c.job = 520 OR c.job = 511 OR c.job = 521 OR c.job = 512 OR c.job = 522";
+		$show = "AND (c.job = 500 OR c.job = 500 OR c.job = 510 OR c.job = 520 OR c.job = 511 OR c.job = 521 OR c.job = 512 OR c.job = 522)";
 	}
 	elseif($getjob == "cygnus"){
-		$show = "AND c.job = 1000 OR c.job = 1100 OR c.job = 1110 OR c.job = 1111 OR c.job = 1112 OR c.job = 1200 OR c.job = 1210 OR c.job = 1211 OR c.job = 1212 OR c.job = 1300 OR c.job = 1310 OR c.job = 1311 OR c.job = 1312 OR c.job = 1400 OR c.job = 1410 OR c.job = 4111 OR c.job = 1412 OR c.job = 1500 OR c.job = 1511 OR c.job = 1512";
+		$show = "AND (c.job = 1000 OR c.job = 1100 OR c.job = 1110 OR c.job = 1111 OR c.job = 1112 OR c.job = 1200 OR c.job = 1210 OR c.job = 1211 OR c.job = 1212 OR c.job = 1300 OR c.job = 1310 OR c.job = 1311 OR c.job = 1312 OR c.job = 1400 OR c.job = 1410 OR c.job = 4111 OR c.job = 1412 OR c.job = 1500 OR c.job = 1511 OR c.job = 1512)";
 	}	
 	elseif($getjob == "aran"){
-		$show = "AND c.job = 2000 OR c.job = 2100 OR c.job = 2110 OR c.job = 2111 OR c.job = 2112";
+		$show = "AND (c.job = 2000 OR c.job = 2100 OR c.job = 2110 OR c.job = 2111 OR c.job = 2112)";
 	}
 	elseif($getjob == "all"){
 		$show = "";
@@ -55,13 +55,12 @@ if(isset($search)) {
 } else {
 	$csearch = "";
 }
-if($servertype == 1) { 
-	$result2 = $mysqli->query("SELECT c.name , c.job , c.level, c.reborns, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE c.gm < '$gmlevel' ".$show."".$csearch." GROUP BY c.id DESC ORDER BY reborns DESC, level DESC LIMIT $start, 15") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
-} else {
-	$result2 = $mysqli->query("SELECT c.name , c.job , c.level, c.exp, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE c.gm < '$gmlevel' ".$show."".$csearch." GROUP BY c.id DESC ORDER BY level DESC, exp DESC LIMIT $start, 15") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
-}
-$num_players = $result2->num_rows;
 if(isset($search)){
+	if($servertype == 1) { 
+		$result2 = $mysqli->query("SELECT c.name , c.gm, c.job , c.level, c.reborns, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE c.gm < $gmlevel ".$show."".$csearch." GROUP BY c.id DESC ORDER BY reborns DESC, level DESC LIMIT $start, 15") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
+	} else {
+		$result2 = $mysqli->query("SELECT c.name , c.gm, c.job , c.level, c.exp, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE c.gm < $gmlevel ".$show."".$csearch." GROUP BY c.id DESC ORDER BY level DESC, exp DESC LIMIT $start, 15") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
+	}
 	$row_number = 0;
 	$int = 0;
 	while(($row = $result2->fetch_assoc()) && !$row_number){
@@ -75,9 +74,9 @@ if(isset($search)){
 	}
 }
 if($servertype == 1) { 
-	$result = $mysqli->query("SELECT c.name , c.job, c.level, c.reborns, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE c.gm < '$gmlevel' ".$show."".$csearch." GROUP BY c.id DESC ORDER BY reborns DESC, level DESC LIMIT $start, 15") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
+	$result = $mysqli->query("SELECT c.name , c.gm, c.job, c.level, c.reborns, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE (c.gm < '$gmlevel') ".$show."".$csearch." GROUP BY c.id DESC ORDER BY reborns DESC, level DESC LIMIT 10 OFFSET $start") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
 } else {
-	$result = $mysqli->query("SELECT c.name , c.job, c.level, c.exp, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE c.gm < '$gmlevel' ".$show."".$csearch." GROUP BY c.id DESC ORDER BY level DESC, exp DESC LIMIT $start, 15") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
+	$result = $mysqli->query("SELECT c.name , c.gm, c.job, c.level, c.exp, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE (c.gm < '$gmlevel') ".$show."".$csearch." GROUP BY c.id DESC ORDER BY level DESC, exp DESC LIMIT 10 OFFSET $start") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
 }
 echo "
 <div class=\"row\">
