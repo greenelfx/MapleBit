@@ -7,7 +7,6 @@ if(basename($_SERVER["PHP_SELF"]) == "events.php"){
 <style>
 blockquote {
 	margin: 0px;
-	
 }
 .permalinkshow {
 	display: none;
@@ -93,15 +92,15 @@ if(@$_GET['id']){
 		$flood = $mysqli->query("SELECT * FROM ".$prefix."ecomments WHERE eid='".$id."' && author='".$_SESSION['pname']."' ORDER BY date DESC LIMIT 1") or die();
 		$fetchg = $flood->fetch_assoc();
 		$seconds = 60*$basefloodint;
-		if($_SESSION['mute'] =="1"){
+		if($_SESSION['mute'] =="1") {
 			echo "<div class=\"alert alert-danger\">You have been muted. Please contact an administrator</div>";
-		}elseif($e['locked'] == "1"){
+		} elseif($e['locked'] == "1") {
 			echo "<div class=\"alert alert-danger\">This article has been locked.</div>";
-		}elseif($_SESSION['pname'] == "checkpname"){
+		} elseif($_SESSION['pname'] == "checkpname") {
 			echo "<div class=\"alert alert-danger\">You must assign a profile name before you can comment news articles.</div>";
-		}elseif($baseflood > 0 && (time() - $seconds) < $fetchg['date']) {
+		} elseif($baseflood > 0 && (time() - $seconds) < $fetchg['date']) {
 			echo "<div class=\"alert alert-danger\">You may only post every ".$basefloodint." minutes to prevent spam.</div>";
-		}else{
+		} else {
 			echo "
 			<form method=\"post\" id=\"commentBox\">
 				 <div class=\"form-group\">
@@ -120,29 +119,29 @@ if(@$_GET['id']){
 					<input type=\"submit\" name=\"comment\" value=\"Comment\" class=\"btn btn-primary\"/>
 			</form>";
 		}
-	}else{
+	} else {
 		echo "<br/><div class=\"alert alert-danger\">Please log in to comment.</div>";
 	}
-	if(isset($_POST['comment'])){
+	if(isset($_POST['comment'])) {
 		$author = $_SESSION['pname'];
 		$feedback = $mysqli->real_escape_string($_POST['feedback']);
 		$comment = $mysqli->real_escape_string($_POST['text']);
-		if($comment == ""){
+		if($comment == "") {
 			echo "<br/><div class=\"alert alert-danger\">You cannot leave the comment field blank!</div>";
-		}else{
+		} else{
 			$date = time();
 			$i = $mysqli->query("INSERT INTO ".$prefix."ecomments (eid, author, feedback, date, comment) VALUES ('".$id."','".$author."','".$feedback."','".$date."','".$comment."')") or die();
 			echo "<meta http-equiv=refresh content=\"0; url=?base=main&amp;page=events&amp;id=".$id."\" />";
 		}
 	}
 	echo "<hr />";
-	if($ngc = $gc->num_rows <= 0 && $e['locked'] == 0){
+	if($ngc = $gc->num_rows <= 0 && $e['locked'] == 0) {
 		echo "<div class=\"alert alert-info\">There are no comments for this article yet. Be the first to comment!</div>";
-	}else{
+	} else{
 		$commentconfig = HTMLPurifier_Config::createDefault();
 		$commentconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong, blockquote, small, hr'); 
 		$commentpurifier = new HTMLPurifier($commentconfig);
-		while($c = $gc->fetch_assoc()){
+		while($c = $gc->fetch_assoc()) {
 		$clean_comment = $commentpurifier->purify($c['comment']);
 			if($c['feedback'] == "0"){
 				$feedback = "<span class=\"positive_comment\">Positive</span>";
@@ -171,7 +170,7 @@ if(@$_GET['id']){
 				</div>";
 		}
 	}
-}else{
+} else{
 	$ge = $mysqli->query("SELECT * FROM ".$prefix."events ORDER BY id DESC") or die();
 	$rows = $ge->num_rows;
 	if ($rows < 1) {
@@ -188,7 +187,7 @@ if(@$_GET['id']){
 		<span class=\"commentbubble\">
 			<b>".$e['views']."</b> views | <b>".$cc."</b> comments
 		";
-		if(isset($_SESSION['admin'])){
+		if(isset($_SESSION['admin'])) {
 			echo "
 				<a href=\"?base=admin&amp;page=manevent&amp;action=edit&amp;id=".$e['id']."\">Edit</a> | 
 				<a href=\"?base=admin&amp;page=manevent&amp;action=del\">Delete</a> | 
@@ -202,13 +201,13 @@ if(@$_GET['id']){
 ?>
 <script>
 <?php
-	if(isset($_SESSION['id'])){
+	if(isset($_SESSION['id'])) {
 ?>
 CKEDITOR.replace( 'inputComment', {
     allowedContent: 'b i u li ol ul blockquote anchor hr small footer'
 });
 $(function() {
-for ( var i in CKEDITOR.instances ){
+for ( var i in CKEDITOR.instances ) {
    var currentInstance = i;
    break;
 }
@@ -229,7 +228,7 @@ var oEditor = CKEDITOR.instances[currentInstance];
 	}
 ?>
 $(function(){
-  $(".permalink").click(function(){
+  $(".permalink").click(function() {
 	 var comment_id = $(this).attr('href').replace(/[^0-9]+/, '');
     $(".linkid-" + comment_id).fadeToggle();
 	$(this).hide();
