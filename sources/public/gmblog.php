@@ -14,7 +14,7 @@ blockquote {
 }
 </style>
 <?php
-if(@$_GET['id']){
+if(@$_GET['id']) {
 	$id = sql_sanitize($_GET['id']);
 	$gb = $mysqli->query("SELECT * FROM ".$prefix."gmblog WHERE id='".$id."'") or die();
 	$b = $gb->fetch_assoc();
@@ -68,7 +68,7 @@ if(@$_GET['id']){
 	</div>";
 
 	$av = $mysqli->query("UPDATE ".$prefix."gmblog SET views = views + 1 WHERE id='".$id."'") or die();
-	if(isset($_SESSION['admin']) || isset($_SESSION['gm'])){
+	if(isset($_SESSION['admin']) || isset($_SESSION['gm'])) {
 		if($b['locked'] == "1"){
 			$buttontext = "Unlock";
 			$buttonlink = "unlock";
@@ -80,19 +80,19 @@ if(@$_GET['id']){
 			<a href=\"?base=gmcp&page=manblog&action=".$buttonlink."\" class=\"btn btn-default\">".$buttontext."</a>
 			<hr />";
 	}
-	if(isset($_SESSION['id'])){
+	if(isset($_SESSION['id'])) {
 	$flood = $mysqli->query("SELECT * FROM ".$prefix."bcomments WHERE bid='".$id."' && author='".$_SESSION['pname']."' ORDER BY date DESC LIMIT 1") or die();
 	$fetchg = $flood->fetch_assoc();
 	$seconds = 60*$basefloodint;
-		if($_SESSION['mute'] == "1"){
+		if($_SESSION['mute'] == "1") {
 			echo "<div class=\"alert alert-danger\">You have been muted. Please contact an administrator</div>";
-		}elseif($b['locked'] == "1"){
+		} elseif($b['locked'] == "1") {
 			echo "<div class=\"alert alert-danger\">This article has been locked.</div>";
-		}elseif($_SESSION['pname'] == "checkpname"){
+		} elseif($_SESSION['pname'] == "checkpname") {
 			echo "<div class=\"alert alert-danger\">You must assign a profile name before you can comment blogs.</div>";
-		}elseif($baseflood > 0 && (time() - $seconds) < $fetchg['date']) {
+		} elseif($baseflood > 0 && (time() - $seconds) < $fetchg['date']) {
 			echo "<div class=\"alert alert-danger\">You may only post every ".$basefloodint." minutes to prevent spam.</div>";
-		}else{
+		} else{
 			echo "
 			<form method=\"post\" id=\"commentBox\">
 				 <div class=\"form-group\">
@@ -111,17 +111,17 @@ if(@$_GET['id']){
 					<input type=\"submit\" name=\"comment\" value=\"Comment\" class=\"btn btn-primary\"/>
 			</form>";
 		}
-	}else{
+	} else{
 		echo "
 			<br/><div class=\"alert alert-danger\">Please log in to comment.</div>";
 	}
-	if(@$_POST['comment']){
+	if(@$_POST['comment']) {
 		$feedback = $mysqli->real_escape_string($_POST['feedback']);
 		$comment = $mysqli->real_escape_string($_POST['text']);
-		if($comment == ""){
+		if($comment == "") {
 			echo "
 				<br/><div class=\"alert alert-danger\">You cannot leave the comment field blank!</div>";
-		}else{
+		} else{
 			$date = time();
 			$i = $mysqli->query("INSERT INTO ".$prefix."bcomments (bid, author, feedback, date, comment) VALUES ('".$id."','".$_SESSION['pname']."','".$feedback."','".$date."','".$comment."')") or die(mysql_error());
 			echo "
@@ -131,26 +131,26 @@ if(@$_GET['id']){
 	echo "<hr />";
 	if($ngc = $gc->num_rows <= 0 && $b['locked'] == "0"){
 		echo "<div class=\"alert alert-info\">There are no comments for this blog yet. Be the first to comment!</div>";
-	}else{
+	} else {
 		$commentconfig = HTMLPurifier_Config::createDefault();
 		$commentconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong, blockquote, hr, small'); 
 		$commentpurifier = new HTMLPurifier($commentconfig);
 		while($c = $gc->fetch_assoc()){
 		$clean_comment = $commentpurifier->purify($c['comment']);
-			if($c['feedback'] == "0"){
+			if($c['feedback'] == "0") {
 				$feedback = "<span class=\"positive_comment\">Positive</span>";
-			}elseif($c['feedback'] == "1"){
+			} elseif($c['feedback'] == "1") {
 				$feedback = "<span class=\"neutral_comment\">Neutral</span>";
-			}elseif($c['feedback'] == "2"){
+			} elseif($c['feedback'] == "2") {
 				$feedback = "<span class=\"negative_comment\">Negative</span>";
 			}
 			$modify = "";
-			if(isset($_SESSION['admin'])){
+			if(isset($_SESSION['admin'])) {
 				$modify = "<a href=\"?base=gmcp&amp;page=manblog&amp;action=pdel&amp;id=".$c['id']."\">Delete</a> | ";
 			}
 			$quote = "";
 			$pm = "";
-			if(isset($_SESSION['id'])){
+			if(isset($_SESSION['id'])) {
 				$quote = "<a href=\"#comment-".$c['id']."-".$c['author']."\" class=\"quote\">Quote</a> | ";
 				$pm = " | <a href=\"?base=ucp&page=mail&uc=".$c['author']."\">PM</a>";
 			}
@@ -164,7 +164,7 @@ if(@$_GET['id']){
 				</div>";
 		}
 	}
-}else{
+} else{
 	$gb = $mysqli->query("SELECT * FROM ".$prefix."gmblog ORDER BY id DESC") or die();
 	$rows = $gb->num_rows;
 	if ($rows < 1) {
@@ -172,7 +172,7 @@ if(@$_GET['id']){
 	}
 	else {
 	echo "<h2 class=\"text-left\">".$servername." GM Blogs</h2><hr/>";
-	while($b = $gb->fetch_assoc()){
+	while($b = $gb->fetch_assoc()) {
 		$gc = $mysqli->query("SELECT * FROM ".$prefix."bcomments WHERE bid='".$b['id']."' ORDER BY id ASC") or die();
 		$cc = $gc->num_rows;
 		echo "
@@ -197,13 +197,13 @@ if(@$_GET['id']){
 ?>
 <script>
 <?php
-	if(isset($_SESSION['id'])){
+	if(isset($_SESSION['id'])) {
 ?>
 CKEDITOR.replace( 'inputComment', {
     allowedContent: 'b i u li ol ul blockquote anchor hr small footer'
 });
 $(function() {
-for ( var i in CKEDITOR.instances ){
+for ( var i in CKEDITOR.instances ) {
    var currentInstance = i;
    break;
 }
@@ -224,7 +224,7 @@ var oEditor = CKEDITOR.instances[currentInstance];
 	}
 ?>
 $(function(){
-  $(".permalink").click(function(){
+  $(".permalink").click(function() {
 	 var comment_id = $(this).attr('href').replace(/[^0-9]+/, '');
     $(".linkid-" + comment_id).fadeToggle();
 	$(this).hide();
