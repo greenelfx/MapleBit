@@ -109,8 +109,8 @@ function goBack() {window.history.back()}
 						<li <?php echo ($admin == "nxpacks") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=nxpacks"><i class="fa fa-shopping-cart"></i> NX Packs</a></li>
 						<li <?php echo ($admin == "bannedmaps") ? 'class="active"' : ''; ?>><a href="?base=admin&page=bannedmaps"><i class="fa fa-ban"></i> Jailed Maps</a></li>
 						<li <?php echo ($admin == "theme") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=theme"><i class="fa fa-magic"></i> Theme</a></li>
-						<li <?php echo ($admin == "banner") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=banner"><i class="fa fa-eye"></i> Banner</a></li>
-						<li <?php echo ($admin == "background") ? 'class = "active"' : ''; ?>><a href="?base=admin&amp;page=background"><i class="fa fa-eye"></i> Background</a></li>
+						<li <?php echo ($admin == "banner") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=banner"><i class="fa fa-flag"></i> Banner</a></li>
+						<li <?php echo ($admin == "background") ? 'class = "active"' : ''; ?>><a href="?base=admin&amp;page=background"><i class="fa fa-object-ungroup"></i> Background</a></li>
 					</ul>
 					<li>
 						<a href="#" data-toggle="collapse" data-target="#menu2">
