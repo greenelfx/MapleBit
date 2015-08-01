@@ -57,12 +57,12 @@ if($_SESSION['admin']){
 		";	
 	}
 	else {
-		$url = mysql_escape($_POST["url"]);
-		$bgcolor = mysql_escape($_POST["bgcolor"]);
-		$bgrepeat = mysql_escape($_POST["bgrepeat"]);
-		$bgcenter = mysql_escape(isset($_POST["bgcenter"]));
-		$bgfixed = mysql_escape(isset($_POST["bgfixed"]));
-		$bgcover = mysql_escape(isset($_POST["bgcover"]));
+		$url = $mysqli->real_escape_string($_POST["url"]);
+		$bgcolor = $mysqli->real_escape_string($_POST["bgcolor"]);
+		$bgrepeat = $mysqli->real_escape_string($_POST["bgrepeat"]);
+		$bgcenter = $mysqli->real_escape_string(isset($_POST["bgcenter"]));
+		$bgfixed = $mysqli->real_escape_string(isset($_POST["bgfixed"]));
+		$bgcover = $mysqli->real_escape_string(isset($_POST["bgcover"]));
 		$mysqli->query("UPDATE ".$prefix."properties SET background = '$url', bgcolor = '$bgcolor', bgrepeat = '$bgrepeat', bgcenter = '$bgcenter', bgfixed = '$bgfixed', bgcover = '$bgcover'");
 		echo "<div class=\"alert alert-success\">Successfully updated background.</div>";
 		redirect_wait5("?base=admin&page=background");
