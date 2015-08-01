@@ -18,7 +18,7 @@ $users = array("manageaccounts", "ticket", "banned");
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?php echo $sitetitle.$pb; ?></title>
 <link rel="icon" href="favicon.ico" type="image/x-icon" />
-<link href="<?php echo $siteurl; ?>assets/css/<?php echo $theme; ?>.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo $siteurl; ?>assets/css/<?php echo $theme; ?>.min.css" rel="stylesheet" type="text/css" id="theme"/>
 <link href="<?php echo $siteurl; ?>assets/css/addon.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo $siteurl; ?>assets/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
@@ -42,7 +42,7 @@ function goBack() {window.history.back()}
 </head>
 
 <body>
-<nav class="<?php echo getNav(); ?> navbar-fixed-top" role="navigation">
+<nav class="<?php echo getNav(); ?> navbar-fixed-top" role="navigation" id="navbar">
 	<div class="navbar-header">
 		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 			<span class="icon-bar"></span>
@@ -75,7 +75,7 @@ function goBack() {window.history.back()}
 			if(isset($_SESSION['id'])){
 			$name = $_SESSION['name'];
 		?>
-			<ul class="nav navbar-nav navbar-right">
+			<ul class="nav navbar-nav navbar-right" style="margin-right: 20px;">
 				<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $name; ?><b class="caret"></b></a>
 					<ul class="dropdown-menu">
