@@ -29,9 +29,9 @@ if(isset($_SESSION['admin'])){
 				if($tickets['status'] == 1){ $status = "Open";}
 					echo "
 						<tr>
-							<th>
+							<td>
 								" . $tickets['ticketid'] . "
-							</th>
+							</td>
 							<td>
 								<a href =\"?base=admin&amp;page=ticket&amp;a=$tickets[ticketid]&amp;ticket=Yes\">
 									" . $tickets['title'] . "
@@ -40,9 +40,9 @@ if(isset($_SESSION['admin'])){
 							<td>
 								" . $tickets['date'] . "
 							</td>
-							<th>
-								" .$status. "
-							</th>
+							<td>";
+							if($tickets['status'] == 1){echo "<span class=\"label label-success\">Open</span>";} elseif($tickets['status'] == 0) {echo "<span class=\"label label-default\">Closed</span>"; } else {echo "<span class=\"label label-warning\">Unknown</span>";}
+							echo "</td>
 						</tr>
 					";
 				}
@@ -61,17 +61,17 @@ if(isset($_SESSION['admin'])){
 			<h2 class=\"text-left\">Viewing Ticket</h2><hr/>
 				<b>Created By:</b> $viewTicket[name]<br/>
 				<b>Date:</b> $viewTicket[date]<br/>
-				<b>Ticket Details:</b><br/> 
-				$content";
+				<b>Ticket Details:</b><hr/>
+				$content<hr/>";
 				while($c = $getResponse->fetch_assoc()){
 				$clean_ticket = $ticketpurifier->purify($c['content']);
 				// Get webadmin status
 				$queryadmin = $mysqli->query("SELECT ".$prefix."tcomments.user, ".$prefix."profile.name, ".$prefix."profile.accountid, accounts.webadmin FROM ".$prefix."tcomments INNER JOIN ".$prefix."profile ON ".$prefix."tcomments.user = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE ".$prefix."tcomments.user = '".$c['user']."'");
 				$adminstatus = $queryadmin->fetch_assoc();
 				if($adminstatus['webadmin'] > 0){
-					echo "<hr/><div class=\"well well2\">";
+					echo "<div class=\"well well2\">";
 				} else {
-					echo "<hr/><div class=\"well\">";
+					echo "<div class=\"well\">";
 				}
 				echo "<b>" . $c['user'] . "</b> posted on " . $c['date_com'] . "<br/><br/> " . $clean_ticket . "</div><hr/>";
 				}
@@ -107,7 +107,7 @@ if(isset($_SESSION['admin'])){
 				if(isset($_POST['close'])){
 					$closeTicket = $mysqli->query("UPDATE ".$prefix."tickets SET status = 0 WHERE ticketid = '".sql_sanitize($_GET['a'])."'");
 					if($closeTicket){
-						echo "<div class=\"alert alert-success\">This ticket was successfully closed! You will be redirected in five seconds.</div>";
+						echo "<br/><div class=\"alert alert-success\">This ticket was successfully closed! You will be redirected in five seconds.</div>";
 						redirect_wait5("?base=admin&amp;page=ticket");
 					}
 				}
