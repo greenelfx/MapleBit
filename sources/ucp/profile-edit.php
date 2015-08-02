@@ -389,18 +389,18 @@ if($_SESSION['id']){
 			});
 			</script>";
 		}else{
-			$pname = mysql_escape(isset($_POST['pname']));
+			$pname = $mysqli->real_escape_string(isset($_POST['pname']));
 			if(isset($_POST['mainchar'])) {
-				$mainchar = mysql_escape($_POST['mainchar']);
+				$mainchar = $mysqli->real_escape_string($_POST['mainchar']);
 			} else {
 				$mainchar = "";
 			}
-			$realname = mysql_escape($_POST['realname']);
-			$age = mysql_escape($_POST['age']);
-			$country = mysql_escape($_POST['country']);
-			$motto = mysql_escape($_POST['motto']);
+			$realname = $mysqli->real_escape_string($_POST['realname']);
+			$age = $mysqli->real_escape_string($_POST['age']);
+			$country = $mysqli->real_escape_string($_POST['country']);
+			$motto = $mysqli->real_escape_string($_POST['motto']);
 			$favjob = $_POST['favjob'];
-			$text = mysql_escape($_POST['text']);
+			$text = $mysqli->real_escape_string($_POST['text']);
 			$u = $mysqli->query("UPDATE `".$prefix."profile` SET `mainchar`='".$mainchar."',`realname`='".$realname."',`age`='".$age."',`country`='".$country."',`motto`='".$motto."',`favjob`='".$favjob."',`text`='".$text."' WHERE `accountid`='".$_SESSION['id']."'") or die(mysql_error());
 				echo "<div class=\"alert alert-success\">Your public profile has been updated<br />";
 				echo "Click <a href=\"?base=main&amp;page=members&name=".$_SESSION['pname']."\" class=\"alert-link\">here</a> to go to your profile.</div>";
@@ -411,5 +411,5 @@ if($_SESSION['id']){
 }
 ?>
 <script>
-	CKEDITOR.replace( 'textCount' );
+	CKEDITOR.replace('textCount');
 </script>
