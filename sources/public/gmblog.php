@@ -14,7 +14,7 @@ blockquote {
 }
 </style>
 <?php
-if(@$_GET['id']) {
+if(isset($_GET['id'])) {
 	$id = sql_sanitize($_GET['id']);
 	$gb = $mysqli->query("SELECT * FROM ".$prefix."gmblog WHERE id='".$id."'") or die();
 	$b = $gb->fetch_assoc();
