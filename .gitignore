@@ -1,11 +1,12 @@
 #################
-## Cype Files
+## MapleBit Files
 #################
 assets/config/install/installdone.txt
 log.php
 sources/admin/log.php
 assets/img/GD/**/
-assets/libs/standalone/HTMLPurifier/DefinitionCache/
+assets/libs/standalone/HTMLPurifier/DefinitionCache/Serializer/HTML/**
+*.ser
 #################
 ## Eclipse
 #################
