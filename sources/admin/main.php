@@ -153,7 +153,7 @@ if(isset($_SESSION['id'])){
 			}elseif($admin == "manageaccounts"){
 				include('sources/admin/manage-accounts.php');
 			}
-			else{header("Location: ?base=admin");}
+			else{redirect("?base=admin");}
 			if($admin!=""){
 			echo "<hr/>";
 			include("sources/structure/footer.php");
