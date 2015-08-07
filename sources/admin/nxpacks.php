@@ -80,11 +80,11 @@ if($_SESSION['admin'] == 1) {
 					<form name=\"addpack\" method=\"post\">
 					<div class=\"form-group\">
 						<label for=\"inputMeso\">Cost in Mesos</label>
-						<input type=\"text\" name=\"meso\" class=\"form-control\" id=\"inputMeso\" required/>
+						<input type=\"text\" name=\"meso\" class=\"form-control\" id=\"inputMeso\" placeholder=\"20000\" required/>
 					</div>
 					<div class=\"form-group\">
 						<label for=\"inputNX\">NX</label>
-						<input type=\"text\" name=\"nx\" class=\"form-control\" id=\"inputNX\" required/>
+						<input type=\"text\" name=\"nx\" class=\"form-control\" id=\"inputNX\" placeholder=\"1000\" required/>
 					</div>
 						<input type=\"submit\" name=\"add\" value=\"Add &raquo;\" class=\"btn btn-primary\"/>
 					</form>
@@ -103,7 +103,7 @@ if($_SESSION['admin'] == 1) {
 					echo "<div class=\"alert alert-danger\">You can only use positive numbers.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 				}
 				elseif(!is_numeric($nx) || (is_numeric($nx) && $nx < 0)) {
-					echo '<div class="alert alert-danger">You can only use positive numbers. <a href="javascript:history.go(-1);">Go Back</a></div>';
+					echo '<div class="alert alert-danger">You can only use positive numbers.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>';
 				}
 				else {
 					$mysqli->query("INSERT INTO ".$prefix."buynx (meso, nx) VALUES ('".$meso."', '".$nx."')") or die();
