@@ -100,7 +100,7 @@ function goBack() {window.history.back()}
                 <ul class="nav nav-pills nav-stacked">
 					<li>
 						<a href="#" data-toggle="collapse" data-target="#menu1">
-						Site Settings <i class="fa fa-chevron-<?php echo (in_array($admin, $settings)) ? 'down' : 'right'; ?>"></i>
+						Site Settings <i class="fa fa-chevron-<?php echo (in_array($admin, $settings)) ? 'down' : 'right'; ?>" style="float:right;"></i>
                         </a>
 					</li>
 					<ul class="nav nav-pills nav-stacked collapse <?php echo (in_array($admin, $settings)) ? 'in' : ''; ?>" id="menu1">
@@ -114,7 +114,7 @@ function goBack() {window.history.back()}
 					</ul>
 					<li>
 						<a href="#" data-toggle="collapse" data-target="#menu2">
-							Manage Content <i class="fa fa-chevron-<?php echo (in_array($admin, $content)) ? 'down' : 'right'; ?>"></i>
+							Manage Content <i class="fa fa-chevron-<?php echo (in_array($admin, $content)) ? 'down' : 'right'; ?>" style="float:right;"></i>
 						</a>
 					</li>
 					<ul class="nav nav-pills nav-stacked collapse <?php echo (in_array($admin, $content)) ? 'in' : ''; ?>" id="menu2">
@@ -147,7 +147,7 @@ function goBack() {window.history.back()}
 					</ul>
 					<li>
 						<a href="#" data-toggle="collapse" data-target="#menu3">
-							Manage Community <i class="fa fa-chevron-<?php echo (in_array($admin, $users)) ? 'down' : 'right'; ?>"></i>
+							Manage Community <i class="fa fa-chevron-<?php echo (in_array($admin, $users)) ? 'down' : 'right'; ?>" style="float:right;"></i>
 						</a>
 					</li>
 					<ul class="nav nav-pills nav-stacked collapse <?php echo (in_array($admin, $users)) ? 'in' : ''; ?> " id="menu3">
