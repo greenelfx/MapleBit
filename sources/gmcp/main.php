@@ -4,7 +4,7 @@ if(basename($_SERVER["PHP_SELF"]) == "main.php"){
 }
 if(isset($_GET['page'])){
 		$gmcp = $_GET['page'];
-}else{
+} else{
 	$gmcp = "";
 }
 if(isset($_SESSION['id'])){
@@ -44,9 +44,9 @@ if(isset($_SESSION['id'])){
 			header("Location: ?base=gmcp");
 		}
 	}else{
-		redirect("?base");
+		redirect("?base=main");
 	}
 }else{
-	redirect("?base");
+	redirect("?base=main");
 }
 ?>
