@@ -167,7 +167,7 @@ if(isset($_SESSION['id'])) {
 					} else {
 						$delete = "DELETE FROM ".$prefix."bcomments WHERE id = ".$gmbid."";
 						if ($mysqli->query($delete)) {
-							header("Location:?base=main&page=gmblog&id=".$fetch['bid']);
+							redirect("?base=main&page=gmblog&id=".$fetch['bid']);
 						} else {
 							echo "<div class=\"alert alert-danger\">Error deleting blog comment.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 						}
