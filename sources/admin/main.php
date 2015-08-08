@@ -66,7 +66,7 @@ if(isset($_SESSION['id'])){
 				}
 				require_once 'assets/libs/HTMLPurifier.standalone.php';
 				$commentconfig = HTMLPurifier_Config::createDefault();
-				$commentconfig->set('HTML.Allowed', 'b, u, s, i'); 
+				$commentconfig->set('HTML.Allowed', ''); 
 				$commentpurifier = new HTMLPurifier($commentconfig);
 ?>
 
