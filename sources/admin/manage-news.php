@@ -128,7 +128,7 @@ if(isset($_SESSION['id'])){
 				} else {
 					$delete = "DELETE FROM ".$prefix."ncomments WHERE id = ".$newsid."";
 					if ($mysqli->query($delete)) {
-						header("Location:?base=main&page=news&id=".$fetch['nid']);
+						redirect("?base=main&page=news&id=".$fetch['nid']);
 					} else {
 						echo "<div class=\"alert alert-danger\">Error deleting news comment.</div>";
 					}
