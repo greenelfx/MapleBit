@@ -6,6 +6,7 @@ $editable = ">";
 if(isset($_SESSION['id'])){
 	if(isset($_SESSION['admin'])){
 ?>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script src="assets/libs/ckeditor/ckeditor.js"></script>
 <script>
 $(document).ready(function() {
