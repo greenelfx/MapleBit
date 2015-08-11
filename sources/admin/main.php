@@ -156,7 +156,7 @@ if(isset($_SESSION['id'])){
 			else{redirect("?base=admin");}
 			if($admin!=""){
 			echo "<hr/>";
-			include("sources/structure/footer.php");
+			include("sources/structure/admin/footer.php");
 			}
 		}else{
 			redirect("?base=main");
