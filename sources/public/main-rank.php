@@ -34,13 +34,13 @@ echo "
 						$p++;
 						if ($p == 1){
 							echo "
-							<img src=\"assets/img/GD/create.php?name=".$name."\" alt='".$name."' name=\"top5\"/>
+							<img src=\"assets/img/GD/create.php?name=".$name."\" alt='".$name."' name=\"top5\" class=\"rank_img\"/>
 						</td>";
 					}
 					echo "
 					<tr>
 						<td>
-							<a href=\"?base=main&amp;page=character&amp;n=".$name."\" onmouseover=\"roll('top5', 'assets/img/GD/Characters/".$name.".png')\">".$name."</a>
+							<a href=\"?base=main&amp;page=character&amp;n=".$name."\" onmouseover=\"roll('top5', 'assets/img/GD/Characters/".$name.".png')\" id=\"".$name."\">".$name."</a>
 						</td>
 						<td>".$player[$first]."</td>
 					</tr>
