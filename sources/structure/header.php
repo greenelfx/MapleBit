@@ -28,6 +28,7 @@ body{
 	
 }
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
   <script src="<?php echo $siteurl; ?>assets/js/ie/html5shiv.js"></script>
