@@ -12,7 +12,7 @@ if(isset($_SESSION['id'])){
 		if(!isset($_POST['submit'])) {
 			echo "<h2 class=\"text-left\">Home Content</h2><hr/>
 			<div class=\"alert alert-info\">
-			Adding something like a Youtube Video or XAT Chat? Press the \"Source\" button, and paste your embed code.<br/><b>Note:</b> You will not be able to use the inline editor if you embed flash.
+			Adding something like a XAT Chat? Press the \"Source\" button, and paste your embed code.<br/><b>Note:</b> You will not be able to use the inline editor if you embed flash.
 			</div>
 			<form method='post'>
 				<textarea name=\"content\" style=\"height:300px;\" class=\"form-control\" id=\"content\">".$gethome['homecontent']."</textarea><br/>
