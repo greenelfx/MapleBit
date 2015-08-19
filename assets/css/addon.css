@@ -17,3 +17,6 @@ blockquote {
 	font-size: 12px;
 	margin: 0 0 5px !important;
 }
+h2, .h2 {
+	font-size: 30px;
+}
