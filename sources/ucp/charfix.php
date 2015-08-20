@@ -39,10 +39,22 @@ if(isset($_SESSION['id'])){
 				echo "<div class=\"alert alert-danger\">You don't have any characters!</div>";
 			}
 		}else{
-			$char = $mysqli->real_escape_string($_POST['char']);
-			$henesys = $mysqli->real_escape_string($_POST['map']);
-			$m = $mysqli->query("UPDATE characters SET map='".$henesys."' WHERE id='".$char."'") or die();
-			echo "<div class=\"alert alert-success\"><b>Fix succesful.</b> Your character will now spawn at Henesys.</div>";
+			$name = $_SESSION['name'];
+			$queryAccount = $mysqli->query("SELECT * FROM `accounts` WHERE `name`='".$name."'") or die();
+			$getAccount = $queryAccount->fetch_assoc();
+
+			$inputCharacter = $mysqli->real_escape_string($_POST['char']);
+			$queryCharacter = $mysqli->query("SELECT * FROM `characters` WHERE `id`='".$inputCharacter."'") or die();
+			$getCharacter = $queryCharacter->fetch_assoc();
+			//$moveMap = $mysqli->real_escape_string($_POST['map']);
+			$moveMap = 100000000;
+			if($getAccount['id'] == $getCharacter['accountid']) {
+				$m = $mysqli->query("UPDATE characters SET map='".$moveMap."' WHERE id='".$inputCharacter."'") or die();
+				echo "<div class=\"alert alert-success\"><b>Fix succesful.</b> Your character will now spawn at Henesys.</div>";
+			}
+			else {
+				echo "<div class=\"alert alert-danger\"><b>Error.</b> Insufficient Permissions.</div>";
+			}
 			
 		}
 	} elseif(@$_GET['fix'] == "dc"){
