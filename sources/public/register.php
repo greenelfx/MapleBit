@@ -79,15 +79,15 @@ if (@$_POST["register"] != "1") {
 		$select_user_result = $mysqli->query("SELECT id FROM accounts WHERE name='".$username."' OR email='".$email."' LIMIT 1");
 		$returned = $select_user_result->num_rows;	
 		if ($returned > 0) {
-			echo ("<div class=\"alert alert-danger\">This username or email is already used!<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a>");
+			echo ("<div class=\"alert alert-danger\">This username or email is already used!<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a></div>");
 		} else if ($password != $confirm_password) {
-			echo ("<div class=\"alert alert-danger\">Passwords didn't match!<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a></div></div></div>");
+			echo ("<div class=\"alert alert-danger\">Passwords didn't match!<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a></div>");
 		} else if (strlen($password) < 4 || strlen($password) > 12) {
-			echo ("<div class=\"alert alert-danger\">Your password must be between 4-12 characters<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a>");
+			echo ("<div class=\"alert alert-danger\">Your password must be between 4-12 characters<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a></div>");
 		} else if (strlen($username) < 4 || strlen($username) > 12) {
-			echo ("<div class=\"alert alert-danger\">Your username must be between 4-12 characters<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a>");
+			echo ("<div class=\"alert alert-danger\">Your username must be between 4-12 characters<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a></div>");
 		} else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			echo ("<div class=\"alert alert-danger\">Please fill in a valid email address.<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a>");
+			echo ("<div class=\"alert alert-danger\">Please fill in a valid email address.<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a></div>");
 		} else {
 			//All data is ok
 			$password = sha1($password);
