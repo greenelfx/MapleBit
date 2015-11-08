@@ -65,8 +65,15 @@ if($_SESSION['id']){
 		}elseif($email == ""){
 			echo "<div class=\"alert alert-danger\">Please supply an email address.</div>";
 		}else{
-			$u = $mysqli->query("UPDATE `accounts` SET `email`='".$email."',`birthday`='".$birth."' WHERE `name`='".$userz['name']."'") or die();
-			echo "<div class=\"alert alert-success\">Your changes have successfully been saved.</div>";
+			$select_email =$mysqli->query("SELECT id FROM accounts WHERE email='".$email."' AND id != '".$userz['id']."' LIMIT 1");
+        	$returned = $select_email->num_rows;
+        	if($returned == 1) {
+        		echo "<div class=\"alert alert-danger\">This email has already been used.</div>";
+        	}
+        	else {
+				$u = $mysqli->query("UPDATE `accounts` SET `email`='".$email."',`birthday`='".$birth."' WHERE `name`='".$userz['name']."'") or die();
+				echo "<div class=\"alert alert-success\">Your changes have successfully been saved.</div>";
+			}
 		}
 	}
 }else{
