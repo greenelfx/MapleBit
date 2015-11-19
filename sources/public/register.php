@@ -9,7 +9,7 @@ else{
 echo "<h2 class=\"text-left\">Registration</h2><hr/>";
 if (@$_POST["register"] != "1") {
 ?>
-	<form action="?base=main&page=register" method="POST" role="form">
+	<form action="?base=main&amp;page=register" method="POST" role="form">
 	<div class="form-group">
 		<label for="inputUser">Username</label>
 		<input type="text" name="musername" maxlength="12" class="form-control" id="inputUser" autocomplete="off" placeholder="Username" required>

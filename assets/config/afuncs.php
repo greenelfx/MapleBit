@@ -511,7 +511,7 @@ function redirect_wait5($url) {
 function get_gravatar( $email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts = array() ) {
     $url = 'http://www.gravatar.com/avatar/';
     $url .= md5( strtolower( trim( $email ) ) );
-    $url .= "?s=$s&d=identicon&r=$r";
+    $url .= "?s=$s&amp;d=identicon&amp;r=$r";
     if ( $img ) {
         $url = '<img src="' . $url . '"';
         foreach ( $atts as $key => $val )
@@ -523,7 +523,7 @@ function get_gravatar( $email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts
 function get_small_gravatar( $email, $s = 40, $d = 'mm', $r = 'g', $img = false, $atts = array() ) {
     $url = 'http://www.gravatar.com/avatar/';
     $url .= md5( strtolower( trim( $email ) ) );
-    $url .= "?s=$s&d=identicon&r=$r";
+    $url .= "?s=$s&amp;d=identicon&amp;r=$r";
     if ( $img ) {
         $url = '<img src="' . $url . '"';
         foreach ( $atts as $key => $val )
