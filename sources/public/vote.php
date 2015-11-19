@@ -60,7 +60,6 @@ if(basename($_SERVER["PHP_SELF"]) == "vote.php"){
     } 
      
     else { ?> 
-<form method="post">  
 	<?php  
 		if(isset($funct_msg)) {echo '<div class="alert alert-danger">'.$funct_msg.'</div>';}  
 		if(isset($funct_error)) {echo '<div class="alert alert-danger">'.$funct_error.'</div>';}
@@ -70,6 +69,7 @@ if(basename($_SERVER["PHP_SELF"]) == "vote.php"){
 		}
 		else {
 			echo "
+			<form method=\"post\"> 
 			<div class=\"form-group\">
 			<label for=\"voteSite\">Select Site:</label>
 			<select name=\"votingsite\" class=\"form-control\" id=\"voteSite\" required>
@@ -82,7 +82,7 @@ if(basename($_SERVER["PHP_SELF"]) == "vote.php"){
 			if(!isset($_SESSION['id'])) {
 				echo "<input type=\"text\" name=\"name\" maxlength=\"15\" class=\"form-control\" placeholder=\"Username\" required autocomplete=\"off\"/><br/>";
 			} else {
-				echo "<input type=\"text\" name=\"name\" maxlength=\"15\" class=\"form-control\" placeholder=\"".$_SESSION['name']."\" value=\"".$_SESSION['name']."\"required autocomplete=\"off\"/><br/>";
+				echo "<input type=\"text\" name=\"name\" maxlength=\"15\" class=\"form-control\" placeholder=\"".$_SESSION['name']."\" value=\"".$_SESSION['name']."\" required autocomplete=\"off\"/><br/>";
 			}
 			echo "
 				<input type=\"submit\" name=\"submit\" value=\"Submit &raquo;\" class=\"btn btn-primary\"/>
