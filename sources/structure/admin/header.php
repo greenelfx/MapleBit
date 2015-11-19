@@ -80,7 +80,7 @@ function goBack() {window.history.back()}
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $name; ?><b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li><a href="?base=main&amp;page=members&amp;name=<?php echo $_SESSION['pname'] ?>">Profile</a></li>
-						<li><a href="?base=ucp&page=mail&s=3"><?php mailStats(3)?> Unread Mail</a></li>
+						<li><a href="?base=ucp&amp;page=mail&amp;s=3"><?php mailStats(3)?> Unread Mail</a></li>
 						<li><a href="?base=ucp&amp;page=charfix">Character Fix</a></li>
 						<li class="divider"></li>
 						<li><a href="?base=misc&amp;script=logout">Log Out</a></li>
