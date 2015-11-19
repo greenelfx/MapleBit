@@ -68,24 +68,26 @@ if(basename($_SERVER["PHP_SELF"]) == "vote.php"){
 		if($query->num_rows == 0){
 			echo "<div class=\"alert alert-danger\">Your administrator has not added any voting sites yet!</div>";
 		}
-		echo "
-		<div class=\"form-group\">
-		<label for=\"voteSite\">Select Site:</label>
-		<select name=\"votingsite\" class=\"form-control\" id=\"voteSite\" required>
-		<option value=\"\" disabled selected>Select Site...</option>";
-		while($row = $query->fetch_assoc()){
-			echo "<option value=\"".$row['id']."\">".$row['name']."</option>";
-		}
-		echo "</select>
-		</div>";
-		if(!isset($_SESSION['id'])) {
-			echo "<input type=\"text\" name=\"name\" maxlength=\"15\" class=\"form-control\" placeholder=\"Username\" required autocomplete=\"off\"/><br/>";
-		} else {
-			echo "<input type=\"text\" name=\"name\" maxlength=\"15\" class=\"form-control\" placeholder=\"".$_SESSION['name']."\" value=\"".$_SESSION['name']."\"required autocomplete=\"off\"/><br/>";
+		else {
+			echo "
+			<div class=\"form-group\">
+			<label for=\"voteSite\">Select Site:</label>
+			<select name=\"votingsite\" class=\"form-control\" id=\"voteSite\" required>
+			<option value=\"\" disabled selected>Select Site...</option>";
+			while($row = $query->fetch_assoc()){
+				echo "<option value=\"".$row['id']."\">".$row['name']."</option>";
+			}
+			echo "</select>
+			</div>";
+			if(!isset($_SESSION['id'])) {
+				echo "<input type=\"text\" name=\"name\" maxlength=\"15\" class=\"form-control\" placeholder=\"Username\" required autocomplete=\"off\"/><br/>";
+			} else {
+				echo "<input type=\"text\" name=\"name\" maxlength=\"15\" class=\"form-control\" placeholder=\"".$_SESSION['name']."\" value=\"".$_SESSION['name']."\"required autocomplete=\"off\"/><br/>";
+			}
+			echo "
+				<input type=\"submit\" name=\"submit\" value=\"Submit &raquo;\" class=\"btn btn-primary\"/>
+				</form> 
+			";
 		}
 	?>
-	
-	<input type="submit" name="submit" value="Submit &raquo;" class="btn btn-primary"/>
-</form> 
-<br/>
 <?php } ?>
