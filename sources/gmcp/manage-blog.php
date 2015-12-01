@@ -52,11 +52,11 @@ if(isset($_SESSION['id'])) {
 				<form method=\"post\">
 					<div class=\"form-group\">
 						<label for=\"title\">Title</label>
-						<input type=\"text\" name=\"title\" class=\"form-control\" id=\"title\" placeholder=\"Title\" value=\"".stripslashes($b['title'])."\" required/>
+						<input type=\"text\" name=\"title\" class=\"form-control\" id=\"title\" placeholder=\"Title\" value=\"".htmlspecialchars($b['title'], ENT_QUOTES, 'UTF-8')."\" required/>
 					</div>
 					<b>Author:</b> ".$b['author']." <br/>
 					<b>Content:</b><br/>
-					<textarea name=\"content\" style=\"height:300px;width:100%;\" class=\"form-control\">".stripslashes($b['content'])."</textarea><br/>
+					<textarea name=\"content\" style=\"height:300px;width:100%;\" class=\"form-control\">".htmlspecialchars($b['title'], ENT_QUOTES, 'UTF-8')."</textarea><br/>
 					<div class=\"alert alert-info\">You may edit or delete your blog entry later on.</div><br/>
 					<input type=\"submit\" name=\"edit\" value=\"Edit Blog Entry\" class=\"btn btn-primary\"/>
 				</form>";
@@ -69,7 +69,7 @@ if(isset($_SESSION['id'])) {
 								echo "<div class=\"alert alert-danger\">You must enter some content.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 							}else{
 								$u = $mysqli->query("UPDATE ".$prefix."gmblog SET title='".$title."', content='".$content."' WHERE id='".$id."'") or die();
-								echo "Blog entry, <b>".stripslashes($b['title'])."</b>, has been updated.<hr/><a href=\"?base=gmcp\" class=\"btn btn-primary\">&laquo; Go Back</a>";
+								echo "The Blog entry has been updated.<hr/><a href=\"?base=gmcp\" class=\"btn btn-primary\">&laquo; Go Back</a>";
 							}
 						}
 					}else{
@@ -96,7 +96,7 @@ if(isset($_SESSION['id'])) {
 								echo "
 								<tr>
 									<th scope=\"row\">".$i++."</th>
-									<td><a href=\"?base=gmcp&amp;page=manblog&action=edit&id=".$b['id']."\">".stripslashes($b['title'])." &raquo;</a></td>
+									<td><a href=\"?base=gmcp&amp;page=manblog&action=edit&id=".$b['id']."\">".htmlspecialchars($b['title'], ENT_QUOTES, 'UTF-8')." &raquo;</a></td>
 									<td>".$b['date']."</td>
 									<td>".$b['views']."</td>
 								</tr>";
@@ -133,7 +133,7 @@ if(isset($_SESSION['id'])) {
 								echo "
 								<tr>
 									<th scope=\"row\">".$i++."</th>
-									<td><a href=\"?base=gmcp&amp;page=manblog&action=edit&id=".$b['id']."\">".stripslashes($b['title'])." &raquo;</a></td>
+									<td><a href=\"?base=gmcp&amp;page=manblog&action=edit&id=".$b['id']."\">".htmlspecialchars($b['title'], ENT_QUOTES, 'UTF-8')." &raquo;</a></td>
 									<td><a href=\"?base=main&amp;page=members&name=".$b['author']."\">".$b['author']." &raquo;</a></td>
 									<td>".$b['date']."</td>
 									<td>".$b['views']."</td>
@@ -186,7 +186,7 @@ if(isset($_SESSION['id'])) {
 					$gb = $mysqli->query("SELECT * FROM ".$prefix."gmblog WHERE author='".$_SESSION['pname']."' ORDER BY id ASC") or die();
 					while($b = $gb->fetch_assoc()){
 						echo "		
-									<option value=\"".$b['id']."\">[".$b['date']."] ".stripslashes($b['title'])."</option>";
+									<option value=\"".$b['id']."\">[".$b['date']."] ".htmlspecialchars($b['title'], ENT_QUOTES, 'UTF-8')."</option>";
 					}
 					echo "
 								</optgroup>";
@@ -196,7 +196,7 @@ if(isset($_SESSION['id'])) {
 						$gb = $mysqli->query("SELECT * FROM ".$prefix."gmblog ORDER BY author, id ASC") or die();
 						while($b = $gb->fetch_assoc()){
 							echo "
-									<option value=\"".$b['id']."\">[".$b['date']."] ".stripslashes($b['title'])."</option>";
+									<option value=\"".$b['id']."\">[".$b['date']."] ".htmlspecialchars($b['title'], ENT_QUOTES, 'UTF-8')."</option>";
 						}
 					}
 					echo "
@@ -228,7 +228,7 @@ if(isset($_SESSION['id'])) {
 				$gn = $mysqli->query("SELECT * FROM ".$prefix."gmblog WHERE author='".$_SESSION['pname']."' AND locked = 0 ORDER BY id DESC") or die();
 				while($n = $gn->fetch_assoc()){
 					echo "
-							<option value=\"".$n['id']."\">#".$n['id']." - ".$n['title']."</option>";
+							<option value=\"".$n['id']."\">#".$n['id']." - ".htmlspecialchars($n['title'], ENT_QUOTES, 'UTF-8')."</option>";
 				}
 				echo "
 						</select>
@@ -258,7 +258,7 @@ if(isset($_SESSION['id'])) {
 				$gn = $mysqli->query("SELECT * FROM ".$prefix."gmblog WHERE author='".$_SESSION['pname']."' AND locked = 1 ORDER BY id DESC") or die();
 				while($n = $gn->fetch_assoc()){
 					echo "
-							<option value=\"".$n['id']."\">#".$n['id']." - ".$n['title']."</option>";
+							<option value=\"".$n['id']."\">#".$n['id']." - ".htmlspecialchars($n['title'], ENT_QUOTES, 'UTF-8')."</option>";
 				}
 				echo "
 						</select>

@@ -79,7 +79,7 @@ if(isset($_SESSION['id'])){
 			<form method=\"post\" action=''>
 			<div class=\"form-group\">
 				<label for=\"title\">Title</label>
-				<input type=\"text\" name=\"title\" class=\"form-control\" id=\"title\" placeholder=\"Title\" value=\"".$e['title']."\" required/>
+				<input type=\"text\" name=\"title\" class=\"form-control\" id=\"title\" placeholder=\"Title\" value=\"".htmlspecialchars($e['title'], ENT_QUOTES, 'UTF-8')."\" required/>
 			</div>
 			<b>Author:</b> ".$e['author']."<br/>
 			<div class=\"form-group\">
@@ -113,7 +113,7 @@ if(isset($_SESSION['id'])){
 						echo "<div class=\"alert alert-danger\">You must enter some content.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}else{
 						$u = $mysqli->query("UPDATE ".$prefix."events SET title='".$title."', type='".$cat."', status='".$status."', content='".$content."' WHERE id='".$id."'") or die();
-						echo "<div class=\"alert alert-success\"><b>".stripslashes($e['title'])."</b> has been updated.</div><hr/><a href=\"?base=admin\" class=\"btn btn-primary\">&laquo; Go Back</a>";
+						echo "<div class=\"alert alert-success\">Event was successfully updated.</div><hr/><a href=\"?base=admin\" class=\"btn btn-primary\">&laquo; Go Back</a>";
 					}
 				}
 			}else{
@@ -123,7 +123,7 @@ if(isset($_SESSION['id'])){
 					echo "Select an event to modify:<hr/>";
 					while($e = $ge->fetch_assoc()){
 						echo "
-							[".$e['date']."] <a href=\"?base=admin&amp;page=manevent&amp;action=edit&amp;id=".$e['id']."\">".$e['title']."</a> [#".$e['id']."]<hr/>
+							[".$e['date']."] <a href=\"?base=admin&amp;page=manevent&amp;action=edit&amp;id=".$e['id']."\">".htmlspecialchars($e['title'], ENT_QUOTES, 'UTF-8')."</a> [#".$e['id']."]<hr/>
 						";
 					}
 				} else {
@@ -166,7 +166,7 @@ if(isset($_SESSION['id'])){
 				$ge = $mysqli->query("SELECT * FROM ".$prefix."events ORDER BY id DESC") or die();
 				while($e = $ge->fetch_assoc()){
 					echo "
-					<option value=\"".$e['id']."\">#".$e['id']." - ".$e['title']."</option>";
+					<option value=\"".$e['id']."\">#".$e['id']." - ".htmlspecialchars($e['title'], ENT_QUOTES, 'UTF-8')."</option>";
 				}
 				echo "
 				</select>
@@ -194,7 +194,7 @@ if(isset($_SESSION['id'])){
 				$ge = $mysqli->query("SELECT * FROM ".$prefix."events WHERE locked = 0 ORDER BY id DESC") or die();
 				while($e = $ge->fetch_assoc()){
 					echo "
-						<option value=\"".$e['id']."\">#".$e['id']." - ".$e['title']."</option>";
+						<option value=\"".$e['id']."\">#".$e['id']." - ".htmlspecialchars($e['title'], ENT_QUOTES, 'UTF-8')."</option>";
 				}
 				echo "
 				</select>
@@ -224,7 +224,7 @@ if(isset($_SESSION['id'])){
 				$ge = $mysqli->query("SELECT * FROM ".$prefix."events WHERE locked = 1 ORDER BY id DESC") or die();
 				while($e = $ge->fetch_assoc()){
 					echo "
-						<option value=\"".$e['id']."\">#".$e['id']." - ".$e['title']."</option>";
+						<option value=\"".$e['id']."\">#".$e['id']." - ".htmlspecialchars($e['title'], ENT_QUOTES, 'UTF-8')."</option>";
 				}
 				echo "
 				</select>
