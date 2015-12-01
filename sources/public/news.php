@@ -47,7 +47,7 @@ if(isset($_GET['id'])){
 			$neutral = ($neutral/$cc)*100;
 		}
 	echo "
-		<h2 class=\"text-left\">".stripslashes($n['title'])." | Posted by <a href=\"?base=main&amp;page=members&amp;name=".$n['author']."\">".$n['author']."</a> on ".$n['date']."</h2><hr/>
+		<h2 class=\"text-left\">".htmlspecialchars($n['title'], ENT_QUOTES, 'UTF-8')." | Posted by <a href=\"?base=main&amp;page=members&amp;name=".$n['author']."\">".$n['author']."</a> on ".$n['date']."</h2><hr/>
 		";
 	echo "<div class=\"breakword\">" . $clean_html."</div><hr/>";
 	echo "
@@ -173,7 +173,7 @@ if(isset($_GET['id'])){
 		$cc = $gc->num_rows;
 		echo "
 			<img src=\"assets/img/news/".$n['type'].".gif\" alt='".$n['type']."' />
-			[".$n['date']."] <b><a href=\"?base=main&page=news&amp;id=".$n['id']."\">".stripslashes($n['title'])."</a></b>
+			[".$n['date']."] <b><a href=\"?base=main&page=news&amp;id=".$n['id']."\">".htmlspecialchars($n['title'], ENT_QUOTES, 'UTF-8')."</a></b>
 		<span class=\"commentbubble\">	
 			<b>".$n['views']."</b> views | <b>".$cc."</b> comments
 		";
