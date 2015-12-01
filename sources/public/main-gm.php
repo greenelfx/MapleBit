@@ -16,17 +16,16 @@ echo "
 			[".$b['date']."]
 			<a href=\"?base=main&amp;page=gmblog&amp;id=".$b['id']."\">";
 		if(strlen($title) > $maxlength){
-			echo stripslashes(shortTitle($title));
+			echo htmlspecialchars(shortTitle($title), ENT_QUOTES, 'UTF-8');
 		}else{
-			echo stripslashes($title);
+			echo htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
 		}
 		echo "<span class=\"badge pull-right\">".$cc."</span></a><br/>";
 		$i++;
-}
-
-		if($i == 0) {
-			echo "No blogs to display right now!";
-		}
+	}
+	if($i == 0) {
+		echo "No blogs to display right now!";
+	}
 
 echo "<hr/></div>";
 ?>

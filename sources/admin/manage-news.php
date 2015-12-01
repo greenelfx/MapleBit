@@ -70,7 +70,7 @@ if(isset($_SESSION['id'])){
 				<form method=\"post\">
 			<div class=\"form-group\">
 				<label for=\"title\">Title</label>
-				<input type=\"text\" name=\"title\" class=\"form-control\" id=\"title\" placeholder=\"Title\" value=\"".$n['title']."\" required/>
+				<input type=\"text\" name=\"title\" class=\"form-control\" id=\"title\" placeholder=\"Title\" value=\"".htmlspecialchars($n['title'], ENT_QUOTES, 'UTF-8')."\" required/>
 			</div>
 				<b>Author:</b> ".$n['author']."<br/>
 				<div class=\"form-group\">
@@ -95,7 +95,7 @@ if(isset($_SESSION['id'])){
 						echo "<div class=\"alert alert-danger\">You must enter some content.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}else{
 						$u = $mysqli->query("UPDATE ".$prefix."news SET title='".$title."', type='".$cat."', content='".$content."' WHERE id='".$id."'") or die();
-						echo "<div class=\"alert alert-success\"><b>".stripslashes($n['title'])."</b> has been updated.</div>";
+						echo "<div class=\"alert alert-success\">News Article successfully updated.</div>";
 					}
 				}
 			}else{
@@ -105,7 +105,7 @@ if(isset($_SESSION['id'])){
 					echo "Select a news article to modify:<hr/>";
 					while($n = $gn->fetch_assoc()){
 						echo "
-						[".$n['date']."] <a href=\"?base=admin&amp;page=mannews&amp;action=edit&amp;id=".$n['id']."\">".$n['title']."</a><hr/>
+						[".$n['date']."] <a href=\"?base=admin&amp;page=mannews&amp;action=edit&amp;id=".$n['id']."\">".htmlspecialchars($n['title'], ENT_QUOTES, 'UTF-8')."</a><hr/>
 						";
 					}
 				} else{
@@ -149,7 +149,7 @@ if(isset($_SESSION['id'])){
 				$gn = $mysqli->query("SELECT * FROM ".$prefix."news ORDER BY id DESC") or die();
 				while($n = $gn->fetch_assoc()){
 					echo "
-						<option value=\"".$n['id']."\">#".$n['id']." - ".$n['title']."</option>";
+						<option value=\"".$n['id']."\">#".$n['id']." - ".htmlspecialchars($n['title'], ENT_QUOTES, 'UTF-8')."</option>";
 				}
 				echo "
 				</select>
@@ -178,7 +178,7 @@ if(isset($_SESSION['id'])){
 				$gn = $mysqli->query("SELECT * FROM ".$prefix."news WHERE locked = 0 ORDER BY id DESC") or die();
 				while($n = $gn->fetch_assoc()){
 					echo "
-						<option value=\"".$n['id']."\">#".$n['id']." - ".$n['title']."</option>";
+						<option value=\"".$n['id']."\">#".$n['id']." - ".htmlspecialchars($n['title'], ENT_QUOTES, 'UTF-8')."</option>";
 				}
 				echo "
 				</select>
@@ -208,7 +208,7 @@ if(isset($_SESSION['id'])){
 				$gn = $mysqli->query("SELECT * FROM ".$prefix."news WHERE locked = 1 ORDER BY id DESC") or die();
 				while($n = $gn->fetch_assoc()){
 					echo "
-						<option value=\"".$n['id']."\">#".$n['id']." - ".$n['title']."</option>";
+						<option value=\"".$n['id']."\">#".$n['id']." - ".htmlspecialchars($n['title'], ENT_QUOTES, 'UTF-8')."</option>";
 				}
 				echo "
 				</select>
