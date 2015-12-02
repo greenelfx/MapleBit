@@ -168,7 +168,7 @@ if(isset($_SESSION['id'])){
 					echo "There is currently no responces to this ticket yet. If you need to add more details, go ahead and add one more!";
 				}*/
 				if($viewTicket['status'] == 0){
-					echo "<div class=\"alert alert-info\">This ticket is closed. If your solution is not here, please open another ticket.</div>";
+					echo "<hr/><div class=\"alert alert-info\">This ticket is closed. If your solution is not here, please open another ticket.</div>";
 				}
 				else {
 				echo "
