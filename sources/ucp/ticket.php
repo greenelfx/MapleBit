@@ -158,11 +158,11 @@ if(isset($_SESSION['id'])){
 				$queryadmin = $mysqli->query("SELECT ".$prefix."tcomments.user, ".$prefix."profile.name, ".$prefix."profile.accountid, accounts.webadmin FROM ".$prefix."tcomments INNER JOIN ".$prefix."profile ON ".$prefix."tcomments.user = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE ".$prefix."tcomments.user = '".$c['user']."'");
 				$adminstatus = $queryadmin->fetch_assoc();
 				if($adminstatus['webadmin'] > 0){
-					echo "<div class=\"well well2\">";
+					echo "<hr/><div class=\"well well2\" style=\"word-wrap: break-word;\">";
 				} else {
-					echo "<div class=\"well\">";
+					echo "<hr/><div class=\"well\" style=\"word-wrap: break-word;\">";
 				}
-					echo $c['user'] . " posted on " . $c['date_com'] . "<br/><br/> " . $clean_ticket . "</div><hr/>";
+					echo $c['user'] . " posted on " . $c['date_com'] . "<br/><br/> " . $clean_ticket . "</div>";
 				}
 				/*if($countTicket < 1){
 					echo "There is currently no responces to this ticket yet. If you need to add more details, go ahead and add one more!";
@@ -172,6 +172,7 @@ if(isset($_SESSION['id'])){
 				}
 				else {
 				echo "
+					<hr/>
 					<form method=\"post\">
 					 <div class=\"form-group\">
 						<label for=\"ticketDetails\">Response:</label>
