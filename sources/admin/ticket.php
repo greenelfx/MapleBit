@@ -69,16 +69,17 @@ if(isset($_SESSION['admin'])){
 				$queryadmin = $mysqli->query("SELECT ".$prefix."tcomments.user, ".$prefix."profile.name, ".$prefix."profile.accountid, accounts.webadmin FROM ".$prefix."tcomments INNER JOIN ".$prefix."profile ON ".$prefix."tcomments.user = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE ".$prefix."tcomments.user = '".$c['user']."'");
 				$adminstatus = $queryadmin->fetch_assoc();
 				if($adminstatus['webadmin'] > 0){
-					echo "<div class=\"well well2\">";
+					echo "<hr/><div class=\"well well2\" style=\"word-wrap: break-word;\">";
 				} else {
-					echo "<div class=\"well\">";
+					echo "<hr/><div class=\"well\" style=\"word-wrap: break-word;\">";
 				}
-				echo "<b>" . $c['user'] . "</b> posted on " . $c['date_com'] . "<br/><br/> " . $clean_ticket . "</div><hr/>";
+				echo "<b>" . $c['user'] . "</b> posted on " . $c['date_com'] . "<br/><br/> " . $clean_ticket . "</div>";
 				}
 				if($countTicket < 1){
-					echo "<hr/><div class=\"alert alert-info\">Please make a response to this ticket.</div><hr/>";
+					echo "<hr/><div class=\"alert alert-info\">Please make a response to this ticket.</div>";
 				}
 				echo "
+					<hr/>
 					Make a comment to this ticket:<br/>
 					<form method=\"post\" action\"\">
 						<textarea name=\"comment\" style=\"height:150px;\" class=\"form-control\" id=\"ticketDetails\"/></textarea><hr/>
