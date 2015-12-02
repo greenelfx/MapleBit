@@ -150,8 +150,8 @@ if(isset($_SESSION['id'])){
 			<hr/>
 				<b>Created By:</b> $viewTicket[name]<br/>
 				<b>Date:</b> $viewTicket[date]<br/>
-				<b>Ticket Details:</b><br/> 
-				$viewTicket[details]<hr/>";
+				<b>Ticket Details:</b><hr/>
+				<div style=\"word-wrap: break-word;\">" . $viewTicket['details'] . "</div>";
 				while($c = $getResponse->fetch_assoc()){
 				$clean_ticket = $ticketpurifier->purify($c['content']);
 				// Get webadmin status
