@@ -36,7 +36,7 @@ if($_SESSION['id']){
 		</div>
 		<div class=\"form-group\">
 			<label for=\"realName\">Real Name:</label>
-			<input type=\"text\" class=\"form-control\" name=\"realname\" value=\"".$p['realname']."\" id=\"realName\"/>
+			<input type=\"text\" class=\"form-control\" name=\"realname\" value=\"".htmlspecialchars($p['realname'], ENT_QUOTES, 'UTF-8')."\" id=\"realName\"/>
 		</div>
 		<div class=\"form-group\">
 			<label for=\"myAge\">Age: </label>
@@ -305,7 +305,7 @@ if($_SESSION['id']){
 		</div>
 		<div class=\"form-group\">
 			<label for=\"Motto\">Motto:</label>
-			<input type=\"text\" class=\"form-control\" name=\"motto\" value=\"".$p['motto']."\" id=\"Motto\"/>
+			<input type=\"text\" class=\"form-control\" name=\"motto\" value=\"".htmlspecialchars($p['motto'], ENT_QUOTES, 'UTF-8')."\" id=\"Motto\"/>
 		</div>
 		<div class=\"form-group\">
 			<label for=\"favJob\">Favorite Job:</label>

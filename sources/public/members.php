@@ -38,24 +38,24 @@ if(isset($_GET['name'])){
 		} else {
 			$p['realname'] = "(" . $p['realname'] . ")";
 		}
-		echo "<h2 class=\"text-left\"><img src=\"".get_gravatar($a['email'])."\" class=\"img-circle\">&nbsp;".$name." ".$p['realname']."</h2>
+		echo "<h2 class=\"text-left\"><img src=\"".get_gravatar($a['email'])."\" class=\"img-circle\">&nbsp;".$name." ".htmlspecialchars($p['realname'], ENT_QUOTES, 'UTF-8')."</h2>
 		<hr/>
 		".$status." in game and ".onlineCheck(getInfo('accid', $name, 'profilename'))." on the site
 		<hr/>";
 		if(!$m['name'] == "") {
-			echo "<b>Main Character:</b> ".$m['name']. "<br/>";
+			echo "<b>Main Character:</b> ".htmlspecialchars($m['name'], ENT_QUOTES, 'UTF-8'). "<br/>";
 		}
 		if(!empty($p['country'])) {
-			echo "<b>Country: </b>".$p['country']."<br/>";
+			echo "<b>Country: </b>".htmlspecialchars($p['country'], ENT_QUOTES, 'UTF-8')."<br/>";
 		} 
 		if(!empty($p['motto'])) {
-			echo "<b>Motto:</b> ".$p['motto']."<br/>";
+			echo "<b>Motto:</b> ".htmlspecialchars($p['motto'], ENT_QUOTES, 'UTF-8')."<br/>";
 		}
 		if(!empty($p['age'])) {
-			echo "<b>Age:</b> ".$p['age']."<br/>";
+			echo "<b>Age:</b> ".htmlspecialchars($p['age'], ENT_QUOTES, 'UTF-8')."<br/>";
 		}
 		if(!empty($p['favjob'])) {
-			echo "<b>Favorite Job: </b>".$p['favjob']."<br/><br/>";
+			echo "<b>Favorite Job: </b>".htmlspecialchars($p['favjob'], ENT_QUOTES, 'UTF-8')."<br/><br/>";
 		}
 		if(!empty($p['text'])) {
 			echo "	
