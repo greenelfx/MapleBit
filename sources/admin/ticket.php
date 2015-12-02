@@ -34,7 +34,7 @@ if(isset($_SESSION['admin'])){
 							</td>
 							<td>
 								<a href =\"?base=admin&amp;page=ticket&amp;a=$tickets[ticketid]&amp;ticket=Yes\">
-									" . $tickets['title'] . "
+									" . htmlspecialchars($tickets['title'], ENT_QUOTES, 'UTF-8') . "
 								</a>
 							</td>
 							<td>
