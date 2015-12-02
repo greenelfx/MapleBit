@@ -34,7 +34,7 @@ if(isset($_SESSION['id'])){
 						</td>
 						<td>
 							<a href =\"?base=ucp&amp;page=ticket&amp;a=$tickets[ticketid]&amp;ticket=Yes\">
-								" . $tickets['title'] . "
+								" . htmlspecialchars($tickets['title'], ENT_QUOTES, 'UTF-8') . "
 							</a>
 						</td>
 						<td>
@@ -236,7 +236,7 @@ if(isset($_SESSION['id'])){
 						</td>
 						<td>
 							<a href = \"?base=ucp&amp;page=ticket&amp;ticket=Yes&amp;a=$viewTickets[ticketid]\">
-								" . $viewTickets['title'] . "
+								" . htmlspecialchars($viewTickets['title'], ENT_QUOTES, 'UTF-8') . "
 							</a>
 						</td>
 						<td>
