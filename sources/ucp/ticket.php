@@ -151,16 +151,16 @@ if(isset($_SESSION['id'])){
 				<b>Created By:</b> $viewTicket[name]<br/>
 				<b>Date:</b> $viewTicket[date]<br/>
 				<b>Ticket Details:</b><hr/>
-				<div style=\"word-wrap: break-word;\">" . $viewTicket['details'] . "</div>";
+				<div class=\"breakword\">" . $viewTicket['details'] . "</div>";
 				while($c = $getResponse->fetch_assoc()){
 				$clean_ticket = $ticketpurifier->purify($c['content']);
 				// Get webadmin status
 				$queryadmin = $mysqli->query("SELECT ".$prefix."tcomments.user, ".$prefix."profile.name, ".$prefix."profile.accountid, accounts.webadmin FROM ".$prefix."tcomments INNER JOIN ".$prefix."profile ON ".$prefix."tcomments.user = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE ".$prefix."tcomments.user = '".$c['user']."'");
 				$adminstatus = $queryadmin->fetch_assoc();
 				if($adminstatus['webadmin'] > 0){
-					echo "<hr/><div class=\"well well2\" style=\"word-wrap: break-word;\">";
+					echo "<hr/><div class=\"well well2 breakword\">";
 				} else {
-					echo "<hr/><div class=\"well\" style=\"word-wrap: break-word;\">";
+					echo "<hr/><div class=\"well breakword\">";
 				}
 					echo $c['user'] . " posted on " . $c['date_com'] . "<br/><br/> " . $clean_ticket . "</div>";
 				}
