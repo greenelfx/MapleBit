@@ -18,7 +18,7 @@ $('#myTab a').click(function (e) {
 })
 </script>
 <h2 class=\"text-left\">
-Welcome Back, ".getInfo('accname', 'base_session', 'accid')."</h2>
+Welcome Back, ".$_SESSION['name']."</h2>
 <hr/>
 <ul id=\"myTab\" class=\"nav nav-tabs\">
 	<li class=\"active\"><a href=\"#account\" data-toggle=\"tab\">Account</a></li>
@@ -51,7 +51,6 @@ echo "</div>";
 echo "
 <div class=\"tab-pane fade\" id=\"community\">
     <br/>
-	<a href=\"?base=main&amp;page=mail\">Mail</a><br/>
 	<a href=\"?base=main&amp;page=rankings\">Rankings</a><br/>
 	<a href=\"?base=main&amp;page=members\">Members</a><br/>
 	<a href=\"?base=main&amp;page=guildlist\">Guild List</a><br/><br/>
@@ -69,8 +68,6 @@ echo "
 				include('sources/ucp/profile-name.php');
 			}elseif($ucp == "ticket"){
 				include('sources/ucp/ticket.php');
-			}elseif($ucp == "mail"){
-				include('sources/ucp/mail.php');
 			}elseif($ucp == "characters"){
 				include('sources/ucp/characters.php');
 			}else{
