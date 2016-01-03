@@ -21,9 +21,10 @@ if(!file_exists('assets/config/install/installdone.txt')){
 			header('Location: ?base=main');
 			break;
 		case "main":
-			$getslug = $mysqli->query("SELECT slug from ".$prefix."pages");
+			$getslug = $mysqli->query("SELECT slug, title, visible from ".$prefix."pages");
 			while($fetchslug = $getslug->fetch_assoc()) {
-				$slugarray[] = $fetchslug['slug'];
+				$slugs[] = $fetchslug['slug'];
+				$slugarray[] = array($fetchslug['slug'], $fetchslug['title'], $fetchslug['visible']);
 			}
 			include("sources/structure/header.php");
 			include("sources/public/main.php");
