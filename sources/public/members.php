@@ -5,7 +5,7 @@ if(basename($_SERVER["PHP_SELF"]) == "members.php"){
 $name = $_SESSION['name'];
 if(isset($_GET['name'])){$name = sql_sanitize($_GET['name']);}
 $check = $mysqli->query("SELECT * FROM `accounts` WHERE `id`='".getInfo('accid', $name, 'profilename')."'") or die();
-$real = $check->num_rows;;
+$real = $check->num_rows;
 if($real < 1){
 	if($_SESSION){
 		$name = $_SESSION['name'];
