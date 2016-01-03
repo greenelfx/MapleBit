@@ -80,16 +80,18 @@ if(isset($_GET['id'])){
 	$flood = $mysqli->query("SELECT * FROM `".$prefix."ncomments` WHERE `nid`='".$id."' && `author`='".$_SESSION['pname']."' ORDER BY `date` DESC LIMIT 1") or die();
 	$fetchg = $flood->fetch_assoc();
 	$seconds = 60*$basefloodint;
-		if($_SESSION['mute'] == 1){
+	$editor = false;
+		if($_SESSION['mute'] == 1) {
 			echo "<div class=\"alert alert-danger\">You have been muted. Please contact an administrator</div>";
 		}
-		elseif($n['locked'] == "1"){
+		elseif($n['locked'] == "1") {
 			echo "<div class=\"alert alert-danger\">This article has been locked.</div>";
-		}elseif($_SESSION['pname'] == "checkpname"){
+		} elseif($_SESSION['pname'] == "checkpname"){
 			echo "<div class=\"alert alert-danger\">You must assign a profile name before you can comment news articles.</div>";
-		}elseif($baseflood > 0 && (time() - $seconds) < $fetchg['date']) {
+		} elseif($baseflood > 0 && (time() - $seconds) < $fetchg['date']) {
 			echo "<div class=\"alert alert-danger\">You may only post every ".$basefloodint." minutes to prevent spam.</div>";
-		}else{
+		} else {
+			$editor = true;
 			echo "
 			<form method=\"post\" id=\"commentBox\">
 				 <div class=\"form-group\">
@@ -189,7 +191,7 @@ if(isset($_GET['id'])){
 ?>
 <script>
 <?php
-	if(isset($_SESSION['id'])){
+	if(isset($_SESSION['id']) && $editor){
 ?>
 CKEDITOR.replace( 'inputComment', {
     allowedContent: 'b i u li ol ul blockquote anchor hr small'
