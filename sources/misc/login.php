@@ -36,7 +36,8 @@ if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 			$checkprofile = $checkpname->fetch_assoc();
 			$_SESSION['id'] = $auser['id'];
 			$_SESSION['name'] = $auser['name'];	
-			$_SESSION['mute'] = $auser['mute'];	
+			$_SESSION['mute'] = $auser['mute'];
+			$_SESSION['email'] = $auser['email'];
 			if($countcheckpname == 1){
 				$_SESSION['pname'] =  $checkprofile['name'];
 			}
