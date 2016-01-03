@@ -92,6 +92,7 @@ if(@$_GET['id']){
 		$flood = $mysqli->query("SELECT * FROM ".$prefix."ecomments WHERE eid='".$id."' && author='".$_SESSION['pname']."' ORDER BY date DESC LIMIT 1") or die();
 		$fetchg = $flood->fetch_assoc();
 		$seconds = 60*$basefloodint;
+		$editor = false;
 		if($_SESSION['mute'] =="1") {
 			echo "<div class=\"alert alert-danger\">You have been muted. Please contact an administrator</div>";
 		} elseif($e['locked'] == "1") {
@@ -101,6 +102,7 @@ if(@$_GET['id']){
 		} elseif($baseflood > 0 && (time() - $seconds) < $fetchg['date']) {
 			echo "<div class=\"alert alert-danger\">You may only post every ".$basefloodint." minutes to prevent spam.</div>";
 		} else {
+			$editor = true;
 			echo "
 			<form method=\"post\" id=\"commentBox\">
 				 <div class=\"form-group\">
@@ -128,7 +130,7 @@ if(@$_GET['id']){
 		$comment = $mysqli->real_escape_string($_POST['text']);
 		if($comment == "") {
 			echo "<br/><div class=\"alert alert-danger\">You cannot leave the comment field blank!</div>";
-		} else{
+		} else {
 			$date = time();
 			$i = $mysqli->query("INSERT INTO ".$prefix."ecomments (eid, author, feedback, date, comment) VALUES ('".$id."','".$author."','".$feedback."','".$date."','".$comment."')") or die();
 			echo "<meta http-equiv=refresh content=\"0; url=?base=main&amp;page=events&amp;id=".$id."\" />";
@@ -199,7 +201,7 @@ if(@$_GET['id']){
 ?>
 <script>
 <?php
-	if(isset($_SESSION['id'])) {
+	if(isset($_SESSION['id']) && $editor) {
 ?>
 CKEDITOR.replace( 'inputComment', {
     allowedContent: 'b i u li ol ul blockquote anchor hr small footer'
