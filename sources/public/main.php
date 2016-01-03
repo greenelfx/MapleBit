@@ -42,7 +42,7 @@ if(isset($_GET['page'])){
 			include('sources/public/vote.php');
 		}elseif($main == "character"){
 			include('sources/public/character.php');
-		}elseif(in_array($main, $slugarray)) {
+		}elseif(in_array($main, $slugs)) {
 			include('sources/public/pages.php');
 		}
 		else {
