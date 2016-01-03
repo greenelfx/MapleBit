@@ -62,9 +62,11 @@ if($banner != ""){echo "<img src=\"".$banner."\" alt=\"banner\" class=\"img-resp
 			  <li><a href="?base=main&amp;page=vote">Vote</a></li>
 			  <li><a href="<?php echo $forumurl; ?>">Forums</a></li>
 			<?php
-			$getpages = $mysqli->query("SELECT * from ".$prefix."pages WHERE visible = 1");
-			while ($fetchpages = $getpages->fetch_assoc()){ 
-				echo "<li><a href=\"?base=main&amp;page=".$fetchpages['slug']."\">" . $fetchpages['title'] . "</a>";
+			// var_dump($slugarray);
+			foreach($slugarray as $page) {
+				if($page[2]) {
+					echo "<li><a href=\"?base=main&amp;page=".$page[0]."\">" . $page[1] . "</a></li>";
+				}
 			}
 			?>
 			
