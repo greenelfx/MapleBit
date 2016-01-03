@@ -73,13 +73,10 @@ if($banner != ""){echo "<img src=\"".$banner."\" alt=\"banner\" class=\"img-resp
             </ul>
 		<?php	
 			if(isset($_SESSION['id'])){
-			$name = $_SESSION['name']; // Probably unneeded
-			$getemail = $mysqli->query("SELECT email, name FROM accounts WHERE name = '". $_SESSION['name']."'");
-			$fetchemail = $getemail->fetch_assoc();
 		?>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo get_small_gravatar($fetchemail['email']);?>" alt="gravatar" class="img-responsive img-circle" style="float:left;margin-top: -10px;padding-right: 5px;"><?php echo $name; ?><b class="caret"></b></a>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo get_small_gravatar($_SESSION['email']);?>" alt="gravatar" class="img-responsive img-circle" style="float:left;margin-top: -10px;padding-right: 5px;"><?php echo $_SESSION['name']; ?><b class="caret"></b></a>
 					<ul class="dropdown-menu">
 					<?php
 						if($_SESSION['pname'] == "checkpname") {
@@ -89,7 +86,6 @@ if($banner != ""){echo "<img src=\"".$banner."\" alt=\"banner\" class=\"img-resp
 							echo "<li><a href=\"?base=main&amp;page=members&amp;name=".$_SESSION['pname']."\">Profile</a></li>";
 						}
 					?>
-						<li><a href="?base=ucp&amp;page=mail&amp;s=3"><?php mailStats(3)?> Unread Mail</a></li>
 						<li><a href="?base=ucp&amp;page=charfix">Character Fix</a></li>
 						<li class="divider"></li>
 						<li><a href="?base=misc&amp;script=logout">Log Out</a></li>
