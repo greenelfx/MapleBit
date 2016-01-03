@@ -1,6 +1,6 @@
 MapleBit
 ============
-Welcome to the MapleBit Github page. MapleBit is a Content Management System (CMS) built for Maplestory servers. The CMS is currently in Beta testing, and is considered to be both stable and secure. 
+Welcome to the MapleBit Github page. MapleBit is a Content Management System (CMS). The CMS is currently in Beta testing, and is considered to be both stable and secure. 
 
 Installation
 ============
