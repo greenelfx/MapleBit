@@ -320,18 +320,6 @@ function unSolved($type){
 		}
 		return "There ".$tickquant." <a href=\"?base=admin&amp;page=ticket\"><u><b>".$counttick." unsolved ticket".$tickplural."</b></u></a>.";
 	}
-	elseif($type == "mail"){
-		$GrabReportedpm = $mysqli->query("SELECT * FROM `".$prefix."mail` WHERE `status` = '10'");
-		$countpm = $GrabReportedpm->num_rows;
-		if($countpm == 1){
-			$pmquant = "is";
-			$pmplural = "";
-		}else{
-			$pmquant = "are";
-			$pmplural = "'s";
-		}
-		return "There ".$pmquant." <a href=\"?cype=admin&page=mailreport&s=10\"><u><b> ".$countpm." reported PM".$pmplural."</b></u></a>.";
-	}
 }
 
 //This function is for the "BuyNX" page in the UCP
@@ -433,20 +421,6 @@ function buyNX($char, $info, $pack){
 	}
 }
 
-function mailStats($s) {
-	global $mysqli, $prefix;
-	if($s == 4) {
-		$show = "from";
-	} else {
-		$show = "to";
-	}
-	if($s != 1){
-		$mailCount = $mysqli->query("SELECT * FROM `".$prefix."mail` WHERE `".$show."`='".$_SESSION['pname']."' AND `status`='".$s."'");
-	} else{
-		$mailCount = $mysqli->query("SELECT * FROM `".$prefix."mail` WHERE `".$show."`='".$_SESSION['pname']."'");
-	}
-	echo $mailCount->num_rows;
-}
 function getNav() {
 	global $mysqli, $prefix;
 	$query = $mysqli->query("SELECT nav FROM ".$prefix."properties");
