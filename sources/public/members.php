@@ -2,6 +2,7 @@
 if(basename($_SERVER["PHP_SELF"]) == "members.php"){
     die("403 - Access Forbidden");
 }
+$name = $_SESSION['name'];
 if(isset($_GET['name'])){$name = sql_sanitize($_GET['name']);}
 $check = $mysqli->query("SELECT * FROM `accounts` WHERE `id`='".getInfo('accid', $name, 'profilename')."'") or die();
 $real = $check->num_rows;;
