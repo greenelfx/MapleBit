@@ -62,7 +62,6 @@ if($banner != ""){echo "<img src=\"".$banner."\" alt=\"banner\" class=\"img-resp
 			  <li><a href="?base=main&amp;page=vote">Vote</a></li>
 			  <li><a href="<?php echo $forumurl; ?>">Forums</a></li>
 			<?php
-			// var_dump($slugarray);
 			foreach($slugarray as $page) {
 				if($page[2]) {
 					echo "<li><a href=\"?base=main&amp;page=".$page[0]."\">" . $page[1] . "</a></li>";

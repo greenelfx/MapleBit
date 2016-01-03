@@ -155,17 +155,15 @@ if(@$_GET['id']){
 				$modify = "<a href=\"?base=admin&amp;page=manevent&amp;action=pdel&amp;id=".$c['id']."\">Delete</a> | ";
 			}
 			$quote = "";
-			$pm = "";
 			if(isset($_SESSION['id'])){
 				$quote = "<a href=\"#comment-".$c['id']."-".$c['author']."\" class=\"quote\">Quote</a> | ";
-				$pm = " | <a href=\"?base=ucp&page=mail&uc=".$c['author']."\">PM</a>";
 			}
 			echo "
 			<div class=\"well\"><img src=\"" . get_gravatar($c['email']) . "\" alt=\"".$c['author']."\" class=\"img-responsive\" style=\"float:left;padding-right:10px;\"/>
 			<h4 style=\"margin:0px;\">".$c['author']."</h4>
 				<b>Feedback:</b> ".$feedback."<br/>
 				<small>Posted ".ago($c['date']).", on ". date('M j, Y', $c['date'])."</small><br/>
-				<small>".$modify . $quote."<a href=\"#comment-link-".$c['id']."\" class=\"permalink\">Permalink</a><a href=\"?base=main&page=events&id=".$id."#comment-".$c['id']."\" class=\"permalinkshow linkid-".$c['id']."\">?base=main&page=events&id=".$id."#comment-".$c['id']."</a>".$pm."</small><hr/>
+				<small>".$modify . $quote."<a href=\"#comment-link-".$c['id']."\" class=\"permalink\">Permalink</a><a href=\"?base=main&page=events&id=".$id."#comment-".$c['id']."\" class=\"permalinkshow linkid-".$c['id']."\">?base=main&page=events&id=".$id."#comment-".$c['id']."</a></small><hr/>
 				<div class=\"breakword\" id=\"comment-".$c['id']."\">".$clean_comment."</div>
 				</div>";
 		}
