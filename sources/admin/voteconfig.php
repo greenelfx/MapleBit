@@ -85,7 +85,7 @@ if($_SESSION['admin']){
 			<form method='post'>
 				<div class=\"form-group\">
 					<label for=\"voteLink\">Vote Link</label>
-					<input name=\"votelink\" type=\"text\" class='form-control' id=\"voteLink\" placeholder=\"http://www.gtop100.com/maplestory\" required/>
+					<input name=\"votelink\" type=\"text\" class='form-control' id=\"voteLink\" placeholder=\"http://www.votesite.com\" required/>
 				</div>
 					<div class=\"form-group\">
 						<label for=\"linkName\">Name of Voting Site</label>
