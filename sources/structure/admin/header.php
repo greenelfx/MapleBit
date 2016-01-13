@@ -25,8 +25,8 @@ $users = array("manageaccounts", "ticket", "banned");
 body {
   min-height: 200px;
   padding-top: 90px;
-}        
-.nav > li > a { color: #787878 }  
+}
+.nav > li > a { color: #787878 }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="<?php echo $siteurl; ?>assets/js/bootstrap.min.js"></script>
@@ -50,7 +50,7 @@ function goBack() {window.history.back()}
 			<span class="icon-bar"></span>
 		</button>
 		<a class="navbar-brand" href="#"><?php echo $servername; ?></a>
-	</div>	
+	</div>
 	<div class="navbar-collapse collapse">
 		<ul class="nav navbar-nav">
               <li><a href="?base=main">Home</a></li>
@@ -65,13 +65,13 @@ function goBack() {window.history.back()}
 			  <li><a href="<?php echo $forumurl; ?>">Forums</a></li>
 			<?php
 			$getpages = $mysqli->query("SELECT * from ".$prefix."pages WHERE visible = 1");
-			while ($fetchpages = $getpages->fetch_assoc()){ 
+			while ($fetchpages = $getpages->fetch_assoc()){
 				echo "<li><a href=\"?base=main&amp;page=".$fetchpages['slug']."\">" . $fetchpages['title'] . "</a>";
 			}
 			?>
-			
+
             </ul>
-		<?php	
+		<?php
 			if(isset($_SESSION['id'])){
 			$name = $_SESSION['name'];
 		?>

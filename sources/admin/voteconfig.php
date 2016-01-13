@@ -28,12 +28,12 @@ if($_SESSION['admin']){
 					<tbody>";
 			while($row = $query->fetch_assoc()){
 				echo "<tr>" .
-						"<td><a href=\"" . $row['link'] . "\">".$row['name']."</td>" . 
-						"<td>" . $row['gnx'] . "</td>" . 
-						"<td>" . $row['gvp'] . "</td>" . 
+						"<td><a href=\"" . $row['link'] . "\">".$row['name']."</td>" .
+						"<td>" . $row['gnx'] . "</td>" .
+						"<td>" . $row['gvp'] . "</td>" .
 						"<td>" . $row['waittime']/3600 . " hours</td>" .
-						"<td><a href=\"?base=admin&amp;page=voteconfig&amp;action=edit&amp;id=" . $row['id'] . "\">Edit &raquo;</td>" . 	
-						"<td><a href=\"?base=admin&amp;page=voteconfig&amp;action=delete&amp;id=" . $row['id'] . "\">Delete &raquo;</td>" . 							
+						"<td><a href=\"?base=admin&amp;page=voteconfig&amp;action=edit&amp;id=" . $row['id'] . "\">Edit &raquo;</td>" .
+						"<td><a href=\"?base=admin&amp;page=voteconfig&amp;action=delete&amp;id=" . $row['id'] . "\">Delete &raquo;</td>" .
 					"</tr>";
 			}
 			echo "
@@ -105,7 +105,7 @@ if($_SESSION['admin']){
 				<div class=\"form-group\">
 					<label for=\"waitTime\">Waiting Time (In Hours)</label> <small>(How long do players have to wait before voting again? [Usually 6 hours])</small>
 					<input name=\"wait\" type=\"text\" maxlength=\"10\" class='form-control' id=\"waitTime\" placeholder=\"6\" required/>
-				</div>			
+				</div>
 			<input type='submit' name='submit' value='Submit &raquo;' class=\"btn btn-primary btn-large\"/>
 			</form>";
 		}
@@ -145,7 +145,7 @@ if($_SESSION['admin']){
 			}
 			else {
 				$givevp = $mysqli->real_escape_string(strip_tags($_POST['vp']));
-			}				
+			}
 			if(empty($_POST['wait']) || !is_numeric($_POST['wait'])){
 				echo "<div class=\"alert alert-danger\">Please enter an amount for the waiting time.</div>";
 				$error = true;
@@ -194,7 +194,7 @@ if($_SESSION['admin']){
 					<div class=\"form-group\">
 						<label for=\"waitTime\">Waiting Time (In Hours)</label> <small>(How long do players have to wait before voting again? [Usually 6 hours])</small>
 						<input name=\"wait\" type=\"text\" maxlength=\"10\" class='form-control' id=\"waitTime\" placeholder=\"6\" value=\"".$wait."\" required/>
-					</div>			
+					</div>
 				<input type='submit' name='submit' value='Submit &raquo;' class=\"btn btn-primary btn-large\"/>
 				</form>";
 			}
@@ -234,7 +234,7 @@ if($_SESSION['admin']){
 				}
 				else {
 					$givevp = $mysqli->real_escape_string(strip_tags($_POST['vp']));
-				}				
+				}
 				if(empty($_POST['wait']) || !is_numeric($_POST['wait'])){
 					echo "<div class=\"alert alert-danger\">Please enter an amount for the waiting time.</div>";
 					$error = true;
@@ -253,7 +253,7 @@ if($_SESSION['admin']){
 		} else {
 			redirect ("?base=admin&page=voteconfig");
 		}
-	} 
+	}
 	elseif(isset($_GET['action']) && $_GET['action'] == "delete" && isset($_GET['id'])) {
 		$id = $mysqli->real_escape_string(strip_tags($_GET['id']));
 		$query = $mysqli->query("DELETE FROM ".$prefix."vote WHERE id = ".$id."");
