@@ -4,7 +4,7 @@ if(basename($_SERVER["PHP_SELF"]) == "manage-blog.php"){
 }
 ?>
 <script src="assets/libs/ckeditor/ckeditor.js"></script>
-<?php 
+<?php
 if(isset($_SESSION['id'])) {
 	if(isset($_SESSION['gm']) || isset($_SESSION['admin'])){
 		if($_SESSION['pname'] == NULL || $_SESSION['pname'] == "checkpname"){
@@ -161,7 +161,7 @@ if(isset($_SESSION['id'])) {
 					$query = $mysqli->query("SELECT * FROM ".$prefix."bcomments WHERE id = ".$gmbid."") or die();
 					$rows = $query->num_rows;
 					$fetch = $query->fetch_assoc();
-		
+
 					if ($rows != 1) {
 						echo "<div class=\"alert alert-danger\">This comment doesn't exist!</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					} else {
@@ -185,7 +185,7 @@ if(isset($_SESSION['id'])) {
 								<optgroup label=\"Your Blog Entries\">";
 					$gb = $mysqli->query("SELECT * FROM ".$prefix."gmblog WHERE author='".$_SESSION['pname']."' ORDER BY id ASC") or die();
 					while($b = $gb->fetch_assoc()){
-						echo "		
+						echo "
 									<option value=\"".$b['id']."\">[".$b['date']."] ".htmlspecialchars($b['title'], ENT_QUOTES, 'UTF-8')."</option>";
 					}
 					echo "

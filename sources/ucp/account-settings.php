@@ -1,4 +1,4 @@
-<?php 
+<?php
 if(basename($_SERVER["PHP_SELF"]) == "account-settings.php"){
     die("403 - Access Forbidden");
 }
@@ -44,7 +44,7 @@ if($_SESSION['id']){
 		$cpass = mysql_escape($_POST['copassword']);
 		$email = mysql_escape($_POST['email']);
 		$birth = mysql_escape($_POST['birth']);
-		
+
 		if($current){
 			if($userz['password'] == hash('sha512',$current.$userz['salt']) || sha1($current) == $userz['password']){
 				if($pass != $cpass){

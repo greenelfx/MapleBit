@@ -1,4 +1,4 @@
-<?php 
+<?php
 if(basename($_SERVER["PHP_SELF"]) == "members.php"){
     die("403 - Access Forbidden");
 }
@@ -16,7 +16,7 @@ if($real < 1){
 	}
 }
 
-if(isset($_GET['name'])){	
+if(isset($_GET['name'])){
 		$ga = $mysqli->query("SELECT * FROM `accounts` WHERE `id`='".getInfo('accid', $name, 'profilename')."'") or die();
 		$a = $ga->fetch_assoc();
 		if($a['loggedin'] == "0"){
@@ -31,7 +31,7 @@ if(isset($_GET['name'])){
 		$m = $gmc->fetch_assoc();
 		require_once 'assets/libs/HTMLPurifier.standalone.php';
 		$config = HTMLPurifier_Config::createDefault();
-		$config->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong'); 
+		$config->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong');
 		$purifier = new HTMLPurifier($config);
 		$clean_html = $purifier->purify($p['text']);
 		if(empty($p['realname'])){
@@ -48,7 +48,7 @@ if(isset($_GET['name'])){
 		}
 		if(!empty($p['country'])) {
 			echo "<b>Country: </b>".htmlspecialchars($p['country'], ENT_QUOTES, 'UTF-8')."<br/>";
-		} 
+		}
 		if(!empty($p['motto'])) {
 			echo "<b>Motto:</b> ".htmlspecialchars($p['motto'], ENT_QUOTES, 'UTF-8')."<br/>";
 		}
@@ -59,10 +59,10 @@ if(isset($_GET['name'])){
 			echo "<b>Favorite Job: </b>".htmlspecialchars($p['favjob'], ENT_QUOTES, 'UTF-8')."<br/><br/>";
 		}
 		if(!empty($p['text'])) {
-			echo "	
+			echo "
 				<b>About Me:</b>
 				<div class=\"breakword\">" . $clean_html."</div>
-				<hr/>";				
+				<hr/>";
 		}
 		if(isset($_SESSION['pname'])) {
 			echo "<a href=\"?base=ucp&amp;page=mail&amp;uc=$name\">Send me Mail &raquo;</a>";
@@ -88,14 +88,14 @@ if(isset($_GET['name'])){
 	echo "
 		<h2 class=\"text-left\">Members List</h2><hr/>";
 	echo "
-		Here's the full list of the members of the <b>".$servername."</b> community. 
+		Here's the full list of the members of the <b>".$servername."</b> community.
 		You can select one to visit their profile or you can search for an user.<hr />
 		<div class=\"row\">
 		<div class=\"col-md-6 col-md-offset-6\">
 			<form method=\"post\" action=\"?base=main&amp;page=members&amp;action=search\" role=\"form\">
 			<div style=\"float:right;margin-bottom:0px;\">
 				<div class=\"input-group\">
-					<input type=\"text\" name=\"name\" placeholder=\"Profile Name\" required id=\"profileName\" class=\"form-control\"/> 				
+					<input type=\"text\" name=\"name\" placeholder=\"Profile Name\" required id=\"profileName\" class=\"form-control\"/>
 						<span class=\"input-group-btn\">
 							<input class=\"btn btn-primary\" name=\"search\" type=\"submit\"/>
 						</span>

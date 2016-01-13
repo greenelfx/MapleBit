@@ -25,7 +25,7 @@ if(!isset($_POST['buyNX'])) {
 	$fetchPack = $mysqli->query("SELECT * FROM `".$prefix."buynx`");
 		if($fetchPack->num_rows == 0){
 			echo "<div class=\"alert alert-danger\">Oops! Looks like there's no NX packages available right now!</div></form>";
-		} 
+		}
 		else{
 			while($getPack = $fetchPack->fetch_assoc()) {
 				echo '

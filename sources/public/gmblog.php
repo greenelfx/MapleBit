@@ -7,7 +7,7 @@ if(basename($_SERVER["PHP_SELF"]) == "gmblog.php"){
 <style>
 blockquote {
 	margin: 0px;
-	
+
 }
 .permalinkshow {
 	display: none;
@@ -36,7 +36,7 @@ if(isset($_GET['id'])) {
 		$getfeedback = $mysqli->query("SELECT feedback FROM ".$prefix."bcomments");
 		if($cc > 0) {
 			while($afeed = $getfeedback->fetch_assoc()) {
-				if($afeed['feedback'] == 0){ 
+				if($afeed['feedback'] == 0){
 					$positive++;
 				}
 				elseif ($afeed['feedback'] == 1) {
@@ -135,7 +135,7 @@ if(isset($_GET['id'])) {
 		echo "<div class=\"alert alert-info\">There are no comments for this blog yet. Be the first to comment!</div>";
 	} else {
 		$commentconfig = HTMLPurifier_Config::createDefault();
-		$commentconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong, blockquote, hr, small'); 
+		$commentconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong, blockquote, hr, small');
 		$commentpurifier = new HTMLPurifier($commentconfig);
 		while($c = $gc->fetch_assoc()){
 		$clean_comment = $commentpurifier->purify($c['comment']);
@@ -178,15 +178,15 @@ if(isset($_GET['id'])) {
 		echo "
 			[".$b['date']."]
 				<b><a href=\"?base=main&amp;page=gmblog&amp;id=".$b['id']."\">".htmlspecialchars($b['title'], ENT_QUOTES, 'UTF-8')."</a></b> by
-				<a href=\"?base=main&amp;page=members&amp;name=".$b['author']."\">".$b['author']."</a> 
+				<a href=\"?base=main&amp;page=members&amp;name=".$b['author']."\">".$b['author']."</a>
 		<span class=\"commentbubble\">
 			<b>".$b['views']."</b> views | <b>".$cc."</b> comments
 		";
 		if (isset($_SESSION['gm'])) {
 			echo "
 			<span class=\"commentbubble\">
-				<a href=\"?base=admin&amp;page=manblog&amp;action=edit&amp;id=".$b['id']."\">Edit</a> | 
-				<a href=\"?base=admin&amp;page=manblog&amp;action=del\">Delete</a> | 
+				<a href=\"?base=admin&amp;page=manblog&amp;action=edit&amp;id=".$b['id']."\">Edit</a> |
+				<a href=\"?base=admin&amp;page=manblog&amp;action=del\">Delete</a> |
 				<a href=\"?base=admin&amp;page=manblog&amp;action=lock\">Lock</a>&nbsp;
 			";
 		}
@@ -216,7 +216,7 @@ var oEditor = CKEDITOR.instances[currentInstance];
     var comment = '<blockquote>' + $("#comment-"+ comment_id).html() + '<small>' + author + '</small></blockquote><hr><p>';
 	oEditor.insertHtml(comment);
       $("body, html").animate({
-		scrollTop: $('#commentBox').offset().top+10 
+		scrollTop: $('#commentBox').offset().top+10
 	}, 200);
   });
 });
@@ -228,6 +228,6 @@ $(function(){
 	 var comment_id = $(this).attr('href').replace(/[^0-9]+/, '');
     $(".linkid-" + comment_id).fadeToggle();
 	$(this).hide();
-  });  
+  });
 });
 </script>
