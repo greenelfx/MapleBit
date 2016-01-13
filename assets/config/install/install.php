@@ -150,8 +150,8 @@ $mysqli = new MySQLi($host[\'hostname\'],$host[\'user\'],$host[\'password\'],$ho
 				echo "<hr/><div class=\"alert alert-danger\">(2) You need to have a valid game database installed before installing MapleBit!</div><hr/><a href=\"?install=1\" class=\"btn btn-danger btn-lg\" value=\"Continue &raquo;\" style=\"float:right\">&laquo; Go Back</a><br/><br/>";
 				exit();
     		}
-$queryaccounts = $mysqli->query("SELECT * FROM `accounts`"); 
-$getcolumns = $queryaccounts->fetch_assoc(); 
+$queryaccounts = $mysqli->query("SELECT * FROM `accounts`");
+$getcolumns = $queryaccounts->fetch_assoc();
 
 if(!isset($getcolumns['sitelogged'])) {
 	$mysqli->query("ALTER TABLE accounts ADD `sitelogged` TEXT;");
@@ -381,14 +381,14 @@ CREATE TABLE ".$prefix."gdcache (
 ) ENGINE = MYISAM ;
 
 DROP TABLE IF EXISTS `".$prefix."votingrecords`;
-CREATE TABLE `".$prefix."votingrecords` ( 
+CREATE TABLE `".$prefix."votingrecords` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ip` varchar(30) NOT NULL DEFAULT '0',
   `siteid` int(11) DEFAULT NULL,
-  `account` varchar(13) NOT NULL DEFAULT '0', 
-  `date` int(11) NOT NULL DEFAULT '0', 
-  `times` bigint(20) unsigned NOT NULL DEFAULT '0', 
-  PRIMARY KEY (`id`) 
+  `account` varchar(13) NOT NULL DEFAULT '0',
+  `date` int(11) NOT NULL DEFAULT '0',
+  `times` bigint(20) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=MYISAM;"
 );
 echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
@@ -404,12 +404,12 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				$smeso = $mysqli->real_escape_string(stripslashes($_POST['mesorate']));
 				$sdrop = $mysqli->real_escape_string(stripslashes($_POST['droprate']));
 				$sgmlevel = $mysqli->real_escape_string(stripslashes($_POST['gmlevel']));
-				$ssiteurl = $mysqli->real_escape_string(stripslashes($_POST['sitepath']));		
+				$ssiteurl = $mysqli->real_escape_string(stripslashes($_POST['sitepath']));
 				$sversion = $mysqli->real_escape_string(stripslashes($_POST['version']));
 				$sservertype = $mysqli->real_escape_string($_POST['servertype']);
 				$scolnx = $mysqli->real_escape_string(stripslashes($_POST['colnx']));
 				$scolvp = $mysqli->real_escape_string(stripslashes($_POST['colvp']));
-				
+
 				$stop = "false";
 				if(empty($sservername)){
 					echo '<div class="alert alert-danger">Your server doesn&apos;t have a name?</div>';

@@ -29,10 +29,10 @@ if(isset($_GET['id'])){
 		$neutral = 0;
 		$gc = $mysqli->query("SELECT ".$prefix."ncomments.*, accounts.email, accounts.id As id1, ".$prefix."profile.accountid, ".$prefix."profile.name FROM ".$prefix."ncomments INNER JOIN ".$prefix."profile ON ".$prefix."ncomments.author = ".$prefix."profile.name INNER JOIN accounts ON ".$prefix."profile.accountid = accounts.id WHERE ".$prefix."ncomments.nid= '".$id."' ORDER BY date DESC") or die();
 		$cc = $gc->num_rows;
-		$getfeedback = $mysqli->query("SELECT feedback FROM ".$prefix."ncomments");		
+		$getfeedback = $mysqli->query("SELECT feedback FROM ".$prefix."ncomments");
 		if($cc > 0) {
 			while($afeed = $getfeedback->fetch_assoc()) {
-				if($afeed['feedback'] == 0){ 
+				if($afeed['feedback'] == 0){
 					$positive++;
 				}
 				elseif ($afeed['feedback'] == 1) {
@@ -131,7 +131,7 @@ if(isset($_GET['id'])){
 		echo "<div class=\"alert alert-info\">There are no comments for this article yet. Be the first to comment!</div>";
 	}else{
 		$commentconfig = HTMLPurifier_Config::createDefault();
-		$commentconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong, blockquote, small, hr'); 
+		$commentconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong, blockquote, small, hr');
 		$commentpurifier = new HTMLPurifier($commentconfig);
 		while($c = $gc->fetch_assoc()){
 		$clean_comment = $commentpurifier->purify($c['comment']);
@@ -174,12 +174,12 @@ if(isset($_GET['id'])){
 		echo "
 			<img src=\"assets/img/news/".$n['type'].".gif\" alt='".$n['type']."' />
 			[".$n['date']."] <b><a href=\"?base=main&page=news&amp;id=".$n['id']."\">".htmlspecialchars($n['title'], ENT_QUOTES, 'UTF-8')."</a></b>
-		<span class=\"commentbubble\">	
+		<span class=\"commentbubble\">
 			<b>".$n['views']."</b> views | <b>".$cc."</b> comments
 		";
 		if(isset($_SESSION['admin'])){
 			echo "
-				<a href=\"?base=admin&amp;page=mannews&amp;action=edit&amp;id=".$n['id']."\">Edit</a> | 
+				<a href=\"?base=admin&amp;page=mannews&amp;action=edit&amp;id=".$n['id']."\">Edit</a> |
 				<a href=\"?base=admin&amp;page=mannews&amp;action=del\">Delete</a> |
 				<a href=\"?base=admin&amp;page=mannews&amp;action=lock\">Lock</a>&nbsp;
 			";
@@ -222,6 +222,6 @@ $(function(){
 	var comment_id = $(this).attr('href').replace(/[^0-9]+/, '');
     $(".linkid-" + comment_id).fadeToggle();
 	$(this).hide();
-  });  
+  });
 });
 </script>
