@@ -6,8 +6,8 @@ if(basename($_SERVER["PHP_SELF"]) == "vote.php"){
 <h2 class="text-left">Vote</h2><hr/>
 <?php
     $earnedpoints = false;
-	$insertnew = false; 
-    $time = time();  
+	$insertnew = false;
+    $time = time();
 	$redirect = "";
 	$account = $mysqli->real_escape_string(preg_replace("/[^A-Za-z0-9 ]/", '', @$_POST['name']));
 	$siteid = $mysqli->real_escape_string(@$_POST['votingsite']);
@@ -32,36 +32,36 @@ if(basename($_SERVER["PHP_SELF"]) == "vote.php"){
 			$gvp = $vsite['gvp'];
 			$gnx = $vsite['gnx'];
 	        $timecalc = $time - $row['date'];
-	        if ($row['amount'] == '' || $timecalc > $vsite['waittime']) { 
-	            if($row['amount'] == '') { 
-	                $result = $mysqli->query("INSERT INTO ".$prefix."votingrecords (siteid, ip, account, date, times) VALUES ('".$siteid."', '".$ipaddress."', '".$account."', '".$time."', '1')") or die ('Error - Could not insert vote records!'); 
-	            } 
-	            else { 
+	        if ($row['amount'] == '' || $timecalc > $vsite['waittime']) {
+	            if($row['amount'] == '') {
+	                $result = $mysqli->query("INSERT INTO ".$prefix."votingrecords (siteid, ip, account, date, times) VALUES ('".$siteid."', '".$ipaddress."', '".$account."', '".$time."', '1')") or die ('Error - Could not insert vote records!');
+	            }
+	            else {
 	                $result = $mysqli->query("UPDATE ".$prefix."votingrecords SET siteid = '".$siteid."', ip='".$ipaddress."', account='".$account."', date='".$time."', times='1' WHERE account='".$account."' AND siteid = '".$siteid."'") or die ('Error - Could not update vote records!');
-	            } 
-	            $earnedpoints = true;  
-	            if ($earnedpoints == true) { 
-	                if ($account != '') {$result = $mysqli->query("UPDATE accounts SET $colvp = $colvp + $gvp, $colnx = $colnx + $gnx WHERE name='".$account."'") or die ('Error - Could not give rewards. Your site administrator needs to configure the NX and VP settings.');} 
+	            }
+	            $earnedpoints = true;
+	            if ($earnedpoints == true) {
+	                if ($account != '') {$result = $mysqli->query("UPDATE accounts SET $colvp = $colvp + $gvp, $colnx = $colnx + $gnx WHERE name='".$account."'") or die ('Error - Could not give rewards. Your site administrator needs to configure the NX and VP settings.');}
 					$funct_msg = '<meta http-equiv="refresh" content="0; url='.$vsite['link'].'">';
-	                $redirect = true; 
-	            } 
-	        } 
-	        elseif($timecalc < $vsite['waittime'] && $row['amount'] != '') { 
-	            $funct_msg = 'You\'ve already voted for '.$vsite['name'].' within the last '.round($vsite['waittime']/3600).' hours!'; 
-	            $funct_msg .= '<br />Vote time: '. date('M d\, h:i A', $row['date']); 
-	        } 
-	        else { 
-	            $funct_error = 'Unknown Error'; 
+	                $redirect = true;
+	            }
+	        }
+	        elseif($timecalc < $vsite['waittime'] && $row['amount'] != '') {
+	            $funct_msg = 'You\'ve already voted for '.$vsite['name'].' within the last '.round($vsite['waittime']/3600).' hours!';
+	            $funct_msg .= '<br />Vote time: '. date('M d\, h:i A', $row['date']);
+	        }
+	        else {
+	            $funct_error = 'Unknown Error';
 	        }
     	}
-    } 
-    if($redirect == true) { 
-        echo $funct_msg; 
-    } 
-     
-    else { ?> 
-	<?php  
-		if(isset($funct_msg)) {echo '<div class="alert alert-danger">'.$funct_msg.'</div>';}  
+    }
+    if($redirect == true) {
+        echo $funct_msg;
+    }
+
+    else { ?>
+	<?php
+		if(isset($funct_msg)) {echo '<div class="alert alert-danger">'.$funct_msg.'</div>';}
 		if(isset($funct_error)) {echo '<div class="alert alert-danger">'.$funct_error.'</div>';}
 		$query = $mysqli->query("SELECT * from ".$prefix."vote");
 		if($query->num_rows == 0){
@@ -69,7 +69,7 @@ if(basename($_SERVER["PHP_SELF"]) == "vote.php"){
 		}
 		else {
 			echo "
-			<form method=\"post\"> 
+			<form method=\"post\">
 			<div class=\"form-group\">
 			<label for=\"voteSite\">Select Site:</label>
 			<select name=\"votingsite\" class=\"form-control\" id=\"voteSite\" required>
@@ -86,7 +86,7 @@ if(basename($_SERVER["PHP_SELF"]) == "vote.php"){
 			}
 			echo "
 				<input type=\"submit\" name=\"submit\" value=\"Submit &raquo;\" class=\"btn btn-primary\"/>
-				</form> 
+				</form>
 			";
 		}
 	?>

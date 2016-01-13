@@ -35,7 +35,7 @@ if(@$_GET['id']){
 		$getfeedback = $mysqli->query("SELECT feedback FROM ".$prefix."ecomments");
 		if($cc > 0) {
 			while($afeed = $getfeedback->fetch_assoc()) {
-				if($afeed['feedback'] == 0){ 
+				if($afeed['feedback'] == 0){
 					$positive++;
 				}
 				elseif ($afeed['feedback'] == 1) {
@@ -141,7 +141,7 @@ if(@$_GET['id']){
 		echo "<div class=\"alert alert-info\">There are no comments for this article yet. Be the first to comment!</div>";
 	} else{
 		$commentconfig = HTMLPurifier_Config::createDefault();
-		$commentconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong, blockquote, small, hr'); 
+		$commentconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong, blockquote, small, hr');
 		$commentpurifier = new HTMLPurifier($commentconfig);
 		while($c = $gc->fetch_assoc()) {
 		$clean_comment = $commentpurifier->purify($c['comment']);
@@ -182,15 +182,15 @@ if(@$_GET['id']){
 		$gc = $mysqli->query("SELECT * FROM ".$prefix."ecomments WHERE eid='".sql_sanitize($e['id'])."' ORDER BY id ASC") or die();
 		$cc = $gc->num_rows;
 		echo "<img src=\"assets/img/news/".$e['type'].".gif\" alt='' />";
-		echo "[".$e['date']."]  
+		echo "[".$e['date']."]
 			<b><a href=\"?base=main&amp;page=events&amp;id=".$e['id']."\">".htmlspecialchars($e['title'], ENT_QUOTES, 'UTF-8')."</a></b>
 		<span class=\"commentbubble\">
 			<b>".$e['views']."</b> views | <b>".$cc."</b> comments
 		";
 		if(isset($_SESSION['admin'])) {
 			echo "
-				<a href=\"?base=admin&amp;page=manevent&amp;action=edit&amp;id=".$e['id']."\">Edit</a> | 
-				<a href=\"?base=admin&amp;page=manevent&amp;action=del\">Delete</a> | 
+				<a href=\"?base=admin&amp;page=manevent&amp;action=edit&amp;id=".$e['id']."\">Edit</a> |
+				<a href=\"?base=admin&amp;page=manevent&amp;action=del\">Delete</a> |
 				<a href=\"?base=admin&amp;page=manevent&amp;action=lock\">Lock</a>&nbsp;
 			";
 		}
@@ -220,7 +220,7 @@ var oEditor = CKEDITOR.instances[currentInstance];
     var comment = '<blockquote>' + $("#comment-"+ comment_id).html() + '<small>' + author + '</small></blockquote><hr><p>';
 	oEditor.insertHtml(comment);
       $("body, html").animate({
-		scrollTop: $('#commentBox').offset().top+10 
+		scrollTop: $('#commentBox').offset().top+10
 	}, 200);
   });
 });
@@ -232,6 +232,6 @@ $(function(){
 	 var comment_id = $(this).attr('href').replace(/[^0-9]+/, '');
     $(".linkid-" + comment_id).fadeToggle();
 	$(this).hide();
-  });  
+  });
 });
 </script>

@@ -47,7 +47,7 @@ if(isset($_SESSION['id'])){
 				echo "
 				<tr>
 					<td><a href=\"?base=admin&amp;page=manageaccounts&amp;action=view&amp;user=".$row['name']."\">".$row['name']."</td>";
-				if(array_key_exists('email', $row)) { echo "<td>".$row['email']."</td>"; } else { echo "<td>Unknown</td>";}			
+				if(array_key_exists('email', $row)) { echo "<td>".$row['email']."</td>"; } else { echo "<td>Unknown</td>";}
 				if(array_key_exists('gm', $row)) { echo "<td>".$row['gm']."</td>"; } else { echo "<td>Unknown</td>";}
 				if(array_key_exists($colnx, $row)) { echo "<td>".$row[$colnx]."</td>"; } else { echo "<td>Unknown</td>";}
 				if(array_key_exists($colvp, $row)) { echo "<td>".$row[$colvp]."</td>"; } else { echo "<td>Unknown</td>";}
@@ -97,7 +97,7 @@ if(isset($_SESSION['id'])){
 					else {
 						$status = "<span class=\"label label-warning\">Unknown</span>";
 					}
-					
+
 					if($row['webadmin'] == 1) {
 						$webchecked = "checked";
 					} else {
@@ -211,7 +211,7 @@ if(isset($_SESSION['id'])){
 								$mysqli->query("UPDATE accounts SET password = '".$password."', email = '".$email."', ".$colnx." = '".$nx."', ".$colvp." = '".$vp."', gm = '".$gm."', webadmin = '".$webadmin."', mute = '".$muted."' WHERE name = '".$user."'");
 								echo "<div class=\"alert alert-success\">".$user." successfully edited</div>";
 								redirect_wait5("?base=admin&page=manageaccounts&action=view&user=".$user."");
-							}					
+							}
 						}
 					}
 					else {

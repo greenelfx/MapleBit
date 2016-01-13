@@ -1,4 +1,4 @@
-<?php 
+<?php
 if(basename($_SERVER["PHP_SELF"]) == "main-news.php"){
     die("403 - Access Forbidden");
 }
