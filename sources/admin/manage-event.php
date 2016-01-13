@@ -4,7 +4,7 @@ if(basename($_SERVER["PHP_SELF"]) == "manage-event.php"){
 }
 ?>
 <script src="assets/libs/ckeditor/ckeditor.js"></script>
-<?php 
+<?php
 if(isset($_SESSION['id'])){
 	if(isset($_SESSION['admin'])){
 		if(empty($_GET['action'])){
@@ -140,7 +140,7 @@ if(isset($_SESSION['id'])){
 				$query = $mysqli->query("SELECT * FROM ".$prefix."ecomments WHERE id = ".$eventid."") or die();
 				$rows = $query->num_rows;
 				$fetch = $query->fetch_assoc();
-	
+
 				if ($rows != 1) {
 					echo "<div class=\"alert alert-danger\">Comment ID doesn't exist!</div>";
 				} else {
