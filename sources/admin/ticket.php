@@ -7,7 +7,7 @@ if(basename($_SERVER["PHP_SELF"]) == "ticket.php"){
 <?php
 	require_once 'assets/libs/HTMLPurifier.standalone.php';
 	$ticketconfig = HTMLPurifier_Config::createDefault();
-	$ticketconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong, blockquote, small, hr'); 
+	$ticketconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong, blockquote, small, hr');
 	$ticketpurifier = new HTMLPurifier($ticketconfig);
 if(isset($_SESSION['admin'])){
 	if(!isset($_GET['ticket']) || isset($_GET['ticket']) == ""){
@@ -89,7 +89,7 @@ if(isset($_SESSION['admin'])){
 				";
 				if(isset($_POST['subcomment'])){
 					$postComment = $mysqli->real_escape_string($_POST['comment']);
-						
+
 					if(strlen($postComment) < 10){
 						echo "Please provide more information.";
 					}

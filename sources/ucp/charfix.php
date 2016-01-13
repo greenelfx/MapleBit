@@ -1,4 +1,4 @@
-<?php 
+<?php
 if(basename($_SERVER["PHP_SELF"]) == "charfix.php"){
     die("403 - Access Forbidden");
 }
@@ -55,7 +55,7 @@ if(isset($_SESSION['id'])){
 			else {
 				echo "<div class=\"alert alert-danger\"><b>Error.</b> Insufficient Permissions.</div>";
 			}
-			
+
 		}
 	} elseif(@$_GET['fix'] == "dc"){
 		echo "<h2 class=\"text-left\">Disconnect your Account</h2><hr/>";

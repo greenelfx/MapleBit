@@ -22,6 +22,6 @@ if(basename($_SERVER["PHP_SELF"]) == "pages.php"){
 		$clean_html = $purifier->purify($p['content']);
 		echo "<h2 class=\"text-left\">".$p['title']."</h2>
 		<hr/>
-		".$clean_html."";	
+		".$clean_html."";
 	}
 ?>

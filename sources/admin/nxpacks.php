@@ -1,4 +1,4 @@
-<?php 
+<?php
 if(basename($_SERVER["PHP_SELF"]) == "nxpacks.php"){
     die("403 - Access Forbidden");
 }
@@ -8,7 +8,7 @@ if($_SESSION['admin'] == 1) {
 	echo "<h2 class=\"text-left\">Configure NX Packages</h2><hr/>";
 	switch($do)
 	{
-		case NULL:		
+		case NULL:
 			$fetchPacks = $mysqli->query("SELECT * FROM ".$prefix."buynx") or die('Oops, I messed up: '.mysql_error());
 			$countfetchPacks = $fetchPacks->num_rows;
 			if($countfetchPacks > 0) {
