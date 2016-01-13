@@ -8,7 +8,7 @@ if(basename($_SERVER["PHP_SELF"]) == "sidebar.php"){
 if(isset($_SESSION['id'])){
 		echo "
 	<h3 class=\"text-center\">Control Panel</h3><hr/>
-	
+
 	<a href=\"?base=ucp\" class=\"btn btn-default btn-block\">Control Panel</a>
 	";
 	if(isset($_SESSION['admin'])){
@@ -36,7 +36,7 @@ if(isset($_SESSION['id'])){
 		";
 		} else {
 ?>
-    <form name="loginform" id="loginform" autocomplete="off">	
+    <form name="loginform" id="loginform" autocomplete="off">
 		<div class="form-group">
 			<label for="username">Username</label>
 			<input type="text" name="username" maxlength="12" class="form-control" placeholder="Username" id="username" required/>
@@ -63,7 +63,7 @@ echo "
 		$scharacters = $characters->num_rows;
 	$online = $mysqli->query("SELECT * FROM accounts where loggedin = 2");
 		$sonline = $online->num_rows;
-				echo "	
+				echo "
 	Players Online: <b>".$sonline."</b><br/>
 	Accounts: <b>".$saccounts."</b><br/>
 	Characters: <b>".$scharacters."</b><br/>";
