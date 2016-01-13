@@ -4,7 +4,7 @@ if(basename($_SERVER["PHP_SELF"]) == "profile-edit.php"){
 }
 ?>
 <script src="assets/libs/cksimple/ckeditor.js"></script>
-<?php 
+<?php
 if($_SESSION['id']){
 	if($_SESSION['pname'] == "checkpname"){
 		echo "<div class=\"alert alert-danger\">You must assign a profile name before you can edit your public profile.</div>";
@@ -313,7 +313,7 @@ if($_SESSION['id']){
 				if(isset($p['favjob'])) {
 					echo "<option value=\"".$p['favjob']."\">".$p['favjob']."</option>";
 				}
-					echo "	
+					echo "
 								<optgroup label=\"Beginner\">
 								<option value=\"Beginner\">Beginner</option>
 								<option value=\"PermaNoob\">PermaNoob</option>

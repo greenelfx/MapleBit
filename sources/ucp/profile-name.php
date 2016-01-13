@@ -8,7 +8,7 @@ if($_SESSION['id']){
 		<h2 class=\"text-left\">Set Profile Name</h2><hr/>
 		Once you've created a profile, other people can view your biography, character, and so on. Note that none of your private information will be shown.<br />
 		Please pick a name <i>other</i> than your LoginID!<br/><br/>
-		
+
 		<b>Steps:</b><br />
 		<b>1.</b> Insert your desired profile name and click submit.<br />
 		<b>2.</b> If the name is taken, you will be notified. If not, your profile will be created.<br />

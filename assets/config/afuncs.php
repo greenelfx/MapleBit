@@ -1,4 +1,4 @@
-<?php 
+<?php
 if(basename($_SERVER["PHP_SELF"]) == "afuncs.php"){
 	die("403 - Access Forbidden");
 }
@@ -297,8 +297,8 @@ function mysql_escape($string) {
 function sql_sanitize( $sCode ) {
 	global $mysqli, $prefix;
 	$escapedCode = $mysqli->real_escape_string( $sCode );
-	$sCode = preg_replace("/[^a-zA-Z0-9]+/", "", $escapedCode);	
-	return $sCode;							
+	$sCode = preg_replace("/[^a-zA-Z0-9]+/", "", $escapedCode);
+	return $sCode;
 }
 function sanitize_space($string) {
 	global $mysqli, $prefix;
@@ -375,17 +375,17 @@ function buyNX($char, $info, $pack){
 			return number_format($rnx['paypalNX']);
 		}
 	}
-	
+
 	//When a Package is selected, this will activate
-	
+
 	elseif($char && $info == "package"){
-	
+
 		$m = $mysqli->query("SELECT * FROM `characters` WHERE `id`='".$char."'");
 		$rm = $m->fetch_assoc();
 		$nx = $mysqli->query("SELECT * FROM `accounts` WHERE `id`='".$rm['accountid']."'") or die();
 		$rx = $nx->fetch_assoc();
 		$package = $mysqli->real_escape_string($_POST['nx']);
-		
+
 		//If the the user is logged in, It will execute this.
 		if($rx['loggedin'] > 0){
 			return "You cannot continue because you are already logged on to the game. Please log off and try again.";
@@ -463,12 +463,12 @@ function getRealIpAddr() //for Registration
 function redirect($url)
 {
     if (!headers_sent())
-    {    
+    {
         header('Location: '.$url);
         exit;
         }
     else
-        {  
+        {
         echo '<script type="text/javascript">';
         echo 'window.location.href="'.$url.'";';
         echo '</script>';

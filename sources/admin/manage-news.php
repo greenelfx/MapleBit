@@ -4,7 +4,7 @@ if(basename($_SERVER["PHP_SELF"]) == "manage-news.php"){
 }
 ?>
 <script src="assets/libs/ckeditor/ckeditor.js"></script>
-<?php 
+<?php
 if(isset($_SESSION['id'])){
 	if(isset($_SESSION['admin'])){
 		if(empty($_GET['action'])){
@@ -81,7 +81,7 @@ if(isset($_SESSION['id'])){
 					</select>
 				</div>
 				<textarea name=\"content\" style=\"height:300px;\" class=\"form-control\" id=\"content\">".stripslashes($n['content'])."</textarea><br/>
-				<input type=\"submit\" name=\"edit\" class=\"btn btn-primary\" value=\"Edit News Article &raquo;\" />		
+				<input type=\"submit\" name=\"edit\" class=\"btn btn-primary\" value=\"Edit News Article &raquo;\" />
 			</form>";
 				}else{
 					$title = mysql_escape($_POST['title']);
@@ -122,7 +122,7 @@ if(isset($_SESSION['id'])){
 				$query = $mysqli->query("SELECT * FROM ".$prefix."ncomments WHERE id = ".$newsid."") or die();
 				$rows = $query->num_rows;
 				$fetch = $query->fetch_assoc();
-				
+
 				if ($rows != 1) {
 					echo "<div class=\"alert alert-danger\">Comment ID doesn't exist!</div>";
 				} else {

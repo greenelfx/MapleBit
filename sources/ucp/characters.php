@@ -3,7 +3,7 @@ if(basename($_SERVER["PHP_SELF"]) == "characters.php"){
 	die("403 - Access Forbidden");
 }
 if(isset($_SESSION['id'])){
-	if($servertype == 1) { 
+	if($servertype == 1) {
 		$first = "reborns";
 		$second = "level";
 	} else {

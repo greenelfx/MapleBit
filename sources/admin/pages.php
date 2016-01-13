@@ -4,7 +4,7 @@ if(basename($_SERVER["PHP_SELF"]) == "pages.php"){
 }
 ?>
 <script src="assets/libs/ckeditor/ckeditor.js"></script>
-<?php 
+<?php
 if(isset($_SESSION['id'])){
 	if(isset($_SESSION['admin'])){
 		if(empty($_GET['action'])){

@@ -7,7 +7,7 @@ if(basename($_SERVER["PHP_SELF"]) == "ticket.php"){
 <?php
 	require_once 'assets/libs/HTMLPurifier.standalone.php';
 	$ticketconfig = HTMLPurifier_Config::createDefault();
-	$ticketconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong, blockquote, small, hr'); 
+	$ticketconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong, blockquote, small, hr');
 	$ticketpurifier = new HTMLPurifier($ticketconfig);
 if(isset($_SESSION['id'])){
 	if(isset($_SESSION['pname']) && $_SESSION['pname'] != "checkpname"){
@@ -49,13 +49,13 @@ if(isset($_SESSION['id'])){
 		echo "
 		</table>";
 			echo "<hr/><a href=\"?base=ucp&amp;page=ticket&amp;ticket=create\" class=\"btn btn-primary\">Create Ticket</a>&nbsp;<a href=\"?base=ucp&amp;page=ticket&amp;ticket=closed\" class=\"btn btn-info\">View Closed Tickets</a>";
-		
+
 	}
 	if(@$_GET['ticket'] == "create"){
 		$gettickets = $mysqli->query("SELECT * FROM ".$prefix."tickets WHERE name = '".$_SESSION['pname']."' AND status = 1 ORDER BY ticketid DESC");
 		$opentickets = $gettickets->num_rows;
 		if($opentickets < 5) {
-		echo " 
+		echo "
 			<h2 class=\"text-left\">Create Ticket</h2><hr/>
 				<form method=\"post\" role=\"form\">
 				<div class=\"form-group\">
@@ -98,7 +98,7 @@ if(isset($_SESSION['id'])){
 					<input type=\"submit\" name=\"ticket\" value=\"Send Ticket &raquo;\" class=\"btn btn-primary\"/>
 				</div>
 				</form>";
-				if(isset($_POST['ticket'])){					
+				if(isset($_POST['ticket'])){
 					if(!isset($_POST['type']) || $_POST['type'] == ""){
 						echo "<div class=\"alert alert-danger\">Please select the ticket category.</div>";
 					}
@@ -116,9 +116,9 @@ if(isset($_SESSION['id'])){
 						$support = $mysqli->real_escape_string($_POST['support']);
 						$title = $mysqli->real_escape_string($_POST['title']);
 						$details = $mysqli->real_escape_string($_POST['details']);
-						$newticket = $mysqli->query("INSERT INTO ".$prefix."tickets (title, type, support_type, details, date, ip, name, status) 
+						$newticket = $mysqli->query("INSERT INTO ".$prefix."tickets (title, type, support_type, details, date, ip, name, status)
 							VALUES ('".$title."', '".$type."', '".$support."', '".$details."', '".date('F d - g:i A')."', '".$_SERVER['REMOTE_ADDR']."', '".$_SESSION['pname']."', 1)");
-							
+
 						if($newticket){
 							echo "<meta http-equiv=\"refresh\" content=\"0; url=?base=ucp&amp;page=ticket\"/>";
 						}
@@ -191,9 +191,9 @@ if(isset($_SESSION['id'])){
 					else{
 						$insertComment = $mysqli->query("INSERT INTO `".$prefix."tcomments` (ticketid, user, content, date_com)
 							VALUES "."('".sql_sanitize($_GET['a'])."', '".$_SESSION['pname']."', '".$postComment."', '".date('F d - g:i A')."')") or die(mysql_error());
-						
+
 						$insertComment = $mysqli->query("UPDATE `".$prefix."tickets` SET `date` = '".date('F d - g:i A')."' WHERE `ticketid` = '".sql_sanitize($_GET['a'])."'");
-							
+
 						if($insertComment){
 							echo "<meta http-equiv=\"refresh\" content=\"0; url=\"/>";
 						}
