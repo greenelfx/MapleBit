@@ -74,22 +74,22 @@ if(isset($search)){
 	}
 }
 if($servertype == 1) { 
-	$result = $mysqli->query("SELECT c.name , c.gm, c.job, c.level, c.reborns, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE (c.gm < '$gmlevel') ".$show."".$csearch." GROUP BY c.id DESC ORDER BY reborns DESC, level DESC LIMIT 10 OFFSET $start") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
+	$result = $mysqli->query("SELECT c.name , c.gm, c.job, c.level, c.reborns, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE (c.gm < '$gmlevel') ".$show."".$csearch." GROUP BY c.id DESC ORDER BY reborns DESC, level DESC LIMIT 15 OFFSET $start") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
 } else {
-	$result = $mysqli->query("SELECT c.name , c.gm, c.job, c.level, c.exp, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE (c.gm < '$gmlevel') ".$show."".$csearch." GROUP BY c.id DESC ORDER BY level DESC, exp DESC LIMIT 10 OFFSET $start") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
+	$result = $mysqli->query("SELECT c.name , c.gm, c.job, c.level, c.exp, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE (c.gm < '$gmlevel') ".$show."".$csearch." GROUP BY c.id DESC ORDER BY level DESC, exp DESC LIMIT 15 OFFSET $start") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
 }
 echo "
 <div class=\"row\">
 	<div class=\"col-md-6\">
 		<div class=\"well well2\" style=\"margin: 0 auto; display: inline-block;margin-bottom:0px;\">
-			<a href=\"?base=main&page=rankings&job=beginner\"><img src=\"".$siteurl."assets/img/rank/beginner.png\" data-toggle=\"tooltip\" title=\"Beginner\"/></a>
-			<a href=\"?base=main&page=rankings&job=warrior\"><img src=\"".$siteurl."assets/img/rank/warrior.png\" data-toggle=\"tooltip\" title=\"Warrior\"/></a>
-			<a href=\"?base=main&page=rankings&job=magician\"><img src=\"".$siteurl."assets/img/rank/magician.png\" data-toggle=\"tooltip\" title=\"Magician\"/></a>
-			<a href=\"?base=main&page=rankings&job=bowman\"><img src=\"".$siteurl."assets/img/rank/bowman.png\" data-toggle=\"tooltip\" title=\"Bowman\"/></a>
-			<a href=\"?base=main&page=rankings&job=thief\"><img src=\"".$siteurl."assets/img/rank/thief.png\" data-toggle=\"tooltip\" title=\"Thief\"/></a>
-			<a href=\"?base=main&page=rankings&job=pirate\"><img src=\"".$siteurl."assets/img/rank/pirate.png\" data-toggle=\"tooltip\" title=\"Pirate\"/></a>
-			<a href=\"?base=main&page=rankings&job=cygnus\"><img src=\"".$siteurl."assets/img/rank/cygnus.png\" data-toggle=\"tooltip\" title=\"Cygnus\"/></a>
-			<a href=\"?base=main&page=rankings&job=aran\"><img src=\"".$siteurl."assets/img/rank/aran.png\" data-toggle=\"tooltip\" title=\"Aran\"/></a>
+			<a href=\"?base=main&page=rankings&job=beginner\"><img src=\"".$siteurl."assets/img/rank/beginner.png\" data-toggle=\"tooltip\" title=\"Beginner\" alt=\"Beginner\"/></a>
+			<a href=\"?base=main&page=rankings&job=warrior\"><img src=\"".$siteurl."assets/img/rank/warrior.png\" data-toggle=\"tooltip\" title=\"Warrior\" alt=\"Warrior\"/></a>
+			<a href=\"?base=main&page=rankings&job=magician\"><img src=\"".$siteurl."assets/img/rank/magician.png\" data-toggle=\"tooltip\" title=\"Magician\" alt=\"Magician\"/></a>
+			<a href=\"?base=main&page=rankings&job=bowman\"><img src=\"".$siteurl."assets/img/rank/bowman.png\" data-toggle=\"tooltip\" title=\"Bowman\" alt=\"Bowman\"/></a>
+			<a href=\"?base=main&page=rankings&job=thief\"><img src=\"".$siteurl."assets/img/rank/thief.png\" data-toggle=\"tooltip\" title=\"Thief\" alt=\"Theif\"/></a>
+			<a href=\"?base=main&page=rankings&job=pirate\"><img src=\"".$siteurl."assets/img/rank/pirate.png\" data-toggle=\"tooltip\" title=\"Pirate\" alt=\"Pirate\"/></a>
+			<a href=\"?base=main&page=rankings&job=cygnus\"><img src=\"".$siteurl."assets/img/rank/cygnus.png\" data-toggle=\"tooltip\" title=\"Cygnus\" alt=\"Cygnus\"/></a>
+			<a href=\"?base=main&page=rankings&job=aran\"><img src=\"".$siteurl."assets/img/rank/aran.png\" data-toggle=\"tooltip\" title=\"Aran\" alt=\"Aran\"/></a>
 		</div>
 	</div>
 	<div class=\"col-md-5 col-md-offset-1\">
