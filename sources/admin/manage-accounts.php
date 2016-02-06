@@ -15,10 +15,9 @@ if(isset($_SESSION['id'])){
 			require 'assets/libs/Zebra_Pagination.php';
 			$pagination = new Zebra_Pagination();
 			$pagination->variable_name('p');
-			$query = $mysqli->query("SELECT SQL_CALC_FOUND_ROWS * FROM accounts LIMIT ". (($pagination->get_page() - 1) * $records_per_page) . ", " . $records_per_page . "");
-			$pre_rows = $mysqli->query('SELECT FOUND_ROWS() AS rows');
-			$rows = $pre_rows->fetch_assoc();
-			$pagination->records($rows['rows']);
+			$query = $mysqli->query("SELECT * FROM accounts LIMIT ". (($pagination->get_page() - 1) * $records_per_page) . ", " . $records_per_page . "");
+			$count = $mysqli->query("SELECT count(*) FROM accounts");
+			$pagination->records($count->fetch_assoc()["count(*)"]);
 			$pagination->records_per_page($records_per_page);
 
 			echo "<h2 class=\"text-left\">Manage Accounts</h2><hr/>
