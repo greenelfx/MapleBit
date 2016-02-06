@@ -5,6 +5,22 @@ if(basename($_SERVER["PHP_SELF"]) == "manage-accounts.php"){
 if(isset($_SESSION['id'])){
 	if(isset($_SESSION['admin'])){
 		if(empty($_GET['action'])){
+			if(isset($_GET['p']) && is_numeric($_GET['p']) && $_GET['p']>0){
+				$page = $mysqli->real_escape_string($_GET['p']);
+			}
+			else {
+				redirect("?base=admin&page=manageaccounts&p=1");
+			}
+			$records_per_page = 15;
+			require 'assets/libs/Zebra_Pagination.php';
+			$pagination = new Zebra_Pagination();
+			$pagination->variable_name('p');
+			$query = $mysqli->query("SELECT SQL_CALC_FOUND_ROWS * FROM accounts LIMIT ". (($pagination->get_page() - 1) * $records_per_page) . ", " . $records_per_page . "");
+			$pre_rows = $mysqli->query('SELECT FOUND_ROWS() AS rows');
+			$rows = $pre_rows->fetch_assoc();
+			$pagination->records($rows['rows']);
+			$pagination->records_per_page($records_per_page);
+
 			echo "<h2 class=\"text-left\">Manage Accounts</h2><hr/>
 				<table class=\"table\">
 				  <thead>
@@ -17,20 +33,7 @@ if(isset($_SESSION['id'])){
 					  <th>Status</th>
 					</tr>
 				  </thead>
-				  <tbody>";
-			$per_page = 15;
-			$pages_query = $mysqli->query("SELECT id FROM `accounts`")->num_rows;
-			$pages = ceil($pages_query/$per_page);
-			if(isset($_GET['p']) && is_numeric($_GET['p']) && $_GET['p']>0){
-				$page = $mysqli->real_escape_string($_GET['p']);
-			}
-			else {
-				redirect("?base=admin&page=manageaccounts&p=1");
-			}
-			$start = ($page - 1) * $per_page;
-
-			$query = $mysqli->query("SELECT * FROM accounts ORDER BY name ASC LIMIT $start, $per_page");
-			//if (array_key_exists($colnx, $query)) {
+				  <tbody>";	
 			while ($row = $query->fetch_assoc()) {
 				if(isset($row['loggedin']) && $row['loggedin'] > 0) {
 					$status = "<span class=\"label label-success\">Online</span>";
@@ -46,7 +49,7 @@ if(isset($_SESSION['id'])){
 				}
 				echo "
 				<tr>
-					<td><a href=\"?base=admin&amp;page=manageaccounts&amp;action=view&amp;user=".$row['name']."\">".$row['name']."</td>";
+					<td><a href=\"?base=admin&amp;page=manageaccounts&amp;action=view&amp;user=".$row['name']."\">".$row['name']." &raquo;</td>";
 				if(array_key_exists('email', $row)) { echo "<td>".$row['email']."</td>"; } else { echo "<td>Unknown</td>";}
 				if(array_key_exists('gm', $row)) { echo "<td>".$row['gm']."</td>"; } else { echo "<td>Unknown</td>";}
 				if(array_key_exists($colnx, $row)) { echo "<td>".$row[$colnx]."</td>"; } else { echo "<td>Unknown</td>";}
@@ -55,29 +58,11 @@ if(isset($_SESSION['id'])){
 					<td>".$status."</td>
 					</tr>";
 			}
-			$minus1 = $page - 1;
 			echo "</tbody>
 			</table>
-			<div class=\"text-center\">
-			<ul class=\"pagination\">";
-			if ($pages >=1 && $page <=$pages) {
-			if($page-5 <= 0){
-				$x = 1;
-			}
-			else {
-				$x = $page-5;
-			}
-			  for ($x; $x<=$page+5; $x++) {
-				if($x == $page){
-					echo "<li class=\"active\">";
-				} else{
-					echo "<li>";
-				}
-				echo "<a href=\"?base=admin&amp;page=manageaccounts&amp;p=".$x."\">".$x."</a></li>";
-			  }
-			}
-			echo "</ul>
-			</div>";
+			<div class=\"text-center\">";
+			$pagination->render();
+			echo "</div>";
 		}
 		elseif($_GET['action']=="view"){
 			if(isset($_GET['user'])){
