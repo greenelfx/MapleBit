@@ -11,15 +11,18 @@ if(isset($_SESSION['id'])){
 			else {
 				redirect("?base=admin&page=manageaccounts&p=1");
 			}
-			$records_per_page = 15;
 			require 'assets/libs/Zebra_Pagination.php';
 			$pagination = new Zebra_Pagination();
+
+			$records_per_page = 15;
 			$pagination->variable_name('p');
 			$query = $mysqli->query("SELECT * FROM accounts LIMIT ". (($pagination->get_page() - 1) * $records_per_page) . ", " . $records_per_page . "");
 			$count = $mysqli->query("SELECT count(*) FROM accounts");
 			$pagination->records($count->fetch_assoc()["count(*)"]);
 			$pagination->records_per_page($records_per_page);
-
+			if(!$query->num_rows) {
+				redirect("?base=admin&page=manageaccounts&p=1"); // If page is out of range
+			}
 			echo "<h2 class=\"text-left\">Manage Accounts</h2><hr/>
 				<table class=\"table\">
 				  <thead>
