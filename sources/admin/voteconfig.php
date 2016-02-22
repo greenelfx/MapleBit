@@ -89,7 +89,7 @@ if($_SESSION['admin']){
 				</div>
 					<div class=\"form-group\">
 						<label for=\"linkName\">Name of Voting Site</label>
-						<input name=\"sitename\" type=\"text\" maxlength=\"100\" class='form-control' id=\"linkName\" placeholder=\"GTOP100\" required/>
+						<input name=\"sitename\" type=\"text\" maxlength=\"100\" class='form-control' id=\"linkName\" placeholder=\"VOTESITE100\" required/>
 					</div>
 				<hr/>
 				<div class=\"form-group\">
@@ -174,11 +174,11 @@ if($_SESSION['admin']){
 				<form method='post'>
 					<div class=\"form-group\">
 						<label for=\"voteLink\">Vote Link</label>
-						<input name=\"votelink\" type=\"text\" class='form-control' id=\"voteLink\" placeholder=\"http://www.gtop100.com/maplestory\" value=\"".$row['link']."\" required/>
+						<input name=\"votelink\" type=\"text\" class='form-control' id=\"voteLink\" placeholder=\"http://www.votesite.com/\" value=\"".$row['link']."\" required/>
 					</div>
 					<div class=\"form-group\">
 						<label for=\"linkName\">Name of Voting Site</label>
-						<input name=\"sitename\" type=\"text\" maxlength=\"100\" class='form-control' id=\"linkName\" placeholder=\"GTOP100\" value=\"".$row['name']."\" required/>
+						<input name=\"sitename\" type=\"text\" maxlength=\"100\" class='form-control' id=\"linkName\" placeholder=\"VOTESITE100\" value=\"".$row['name']."\" required/>
 					</div>
 					<hr/>
 					<div class=\"form-group\">
