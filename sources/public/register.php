@@ -9,7 +9,7 @@ else{
 echo "<h2 class=\"text-left\">Registration</h2><hr/>";
 if (@$_POST["register"] != "1") {
 ?>
-	<form action="?base=main&amp;page=register" method="POST" role="form">
+	<form action="?base=main&amp;page=register" method="POST">
 	<div class="form-group">
 		<label for="inputUser">Username</label>
 		<input type="text" name="musername" maxlength="12" class="form-control" id="inputUser" autocomplete="off" placeholder="Username" required>
@@ -35,7 +35,7 @@ if (@$_POST["register"] != "1") {
 		echo recaptcha_get_html($publickey, $error);
 	?>
 		<br/>
-		<input type="submit" class="btn btn-primary" name="submit" alt="Register" value="Register &raquo;"> 
+		<input type="submit" class="btn btn-primary" name="submit" value="Register &raquo;"> 
 		<input type="hidden" name="register" value="1">
 	</form>
 <?php

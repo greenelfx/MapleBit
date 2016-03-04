@@ -42,7 +42,7 @@ function goBack() {window.history.back()}
 </head>
 
 <body>
-<nav class="<?php echo getNav(); ?> navbar-fixed-top" role="navigation" id="navbar">
+<nav class="<?php echo getNav(); ?> navbar-fixed-top" id="navbar">
 	<div class="navbar-header">
 		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 			<span class="icon-bar"></span>
@@ -89,82 +89,81 @@ function goBack() {window.history.back()}
 		<?php } ?>
 	</div>
 </nav>
-<body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3">
-                <!-- Left column -->
-                <h2 class="text-left">Panel</h2>
-                <hr/>
-                <ul class="nav nav-pills nav-stacked">
-					<li>
-						<a href="#" data-toggle="collapse" data-target="#menu1">
-						Site Settings <i class="fa fa-chevron-<?php echo (in_array($admin, $settings)) ? 'down' : 'right'; ?>" style="float:right;"></i>
-                        </a>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <!-- Left column -->
+            <h2 class="text-left">Panel</h2>
+            <hr/>
+            <ul class="nav nav-pills nav-stacked">
+				<li>
+					<a href="#" data-toggle="collapse" data-target="#menu1">
+					Site Settings <i class="fa fa-chevron-<?php echo (in_array($admin, $settings)) ? 'down' : 'right'; ?>" style="float:right;"></i>
+                    </a>
+				</li>
+				<ul class="nav nav-pills nav-stacked collapse <?php echo (in_array($admin, $settings)) ? 'in' : ''; ?>" id="menu1">
+					<li <?php echo ($admin == "properties") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=properties"><i class="fa fa-cogs"></i> Site Configuration</a></li>
+					<li <?php echo ($admin == "voteconfig") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=voteconfig"><i class="fa fa-arrow-circle-o-up"></i> Vote Configuration</a></li>
+					<li <?php echo ($admin == "nxpacks") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=nxpacks"><i class="fa fa-shopping-cart"></i> NX Packs</a></li>
+					<li <?php echo ($admin == "bannedmaps") ? 'class="active"' : ''; ?>><a href="?base=admin&page=bannedmaps"><i class="fa fa-ban"></i> Jailed Maps</a></li>
+					<li <?php echo ($admin == "theme") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=theme"><i class="fa fa-magic"></i> Theme</a></li>
+					<li <?php echo ($admin == "banner") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=banner"><i class="fa fa-flag"></i> Banner</a></li>
+					<li <?php echo ($admin == "background") ? 'class = "active"' : ''; ?>><a href="?base=admin&amp;page=background"><i class="fa fa-object-ungroup"></i> Background</a></li>
+				</ul>
+				<li>
+					<a href="#" data-toggle="collapse" data-target="#menu2">
+						Manage Content <i class="fa fa-chevron-<?php echo (in_array($admin, $content)) ? 'down' : 'right'; ?>" style="float:right;"></i>
+					</a>
+				</li>
+				<ul class="nav nav-pills nav-stacked collapse <?php echo (in_array($admin, $content)) ? 'in' : ''; ?>" id="menu2">
+					<li <?php echo ($admin == "homeconfig") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=homeconfig"><i class="fa fa-home"></i> Home Content</a></li>
+					<li class="dropdown <?php echo ($admin == "mannews") ? 'active' : ''; ?>">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-pencil"></i> News <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="?base=admin&amp;page=mannews&amp;action=add">Add News</a></li>
+							<li><a href="?base=admin&amp;page=mannews&amp;action=edit">Edit News</a></li>
+							<li><a href="?base=admin&amp;page=mannews&amp;action=del">Delete News</a></li>
+						</ul>
 					</li>
-					<ul class="nav nav-pills nav-stacked collapse <?php echo (in_array($admin, $settings)) ? 'in' : ''; ?>" id="menu1">
-						<li <?php echo ($admin == "properties") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=properties"><i class="fa fa-cogs"></i> Site Configuration</a></li>
-						<li <?php echo ($admin == "voteconfig") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=voteconfig"><i class="fa fa-arrow-circle-o-up"></i> Vote Configuration</a></li>
-						<li <?php echo ($admin == "nxpacks") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=nxpacks"><i class="fa fa-shopping-cart"></i> NX Packs</a></li>
-						<li <?php echo ($admin == "bannedmaps") ? 'class="active"' : ''; ?>><a href="?base=admin&page=bannedmaps"><i class="fa fa-ban"></i> Jailed Maps</a></li>
-						<li <?php echo ($admin == "theme") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=theme"><i class="fa fa-magic"></i> Theme</a></li>
-						<li <?php echo ($admin == "banner") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=banner"><i class="fa fa-flag"></i> Banner</a></li>
-						<li <?php echo ($admin == "background") ? 'class = "active"' : ''; ?>><a href="?base=admin&amp;page=background"><i class="fa fa-object-ungroup"></i> Background</a></li>
-					</ul>
-					<li>
-						<a href="#" data-toggle="collapse" data-target="#menu2">
-							Manage Content <i class="fa fa-chevron-<?php echo (in_array($admin, $content)) ? 'down' : 'right'; ?>" style="float:right;"></i>
-						</a>
+					<li class="dropdown <?php echo ($admin == "manevent") ? 'active' : ''; ?>">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-pencil"></i> Events <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="?base=admin&amp;page=manevent&amp;action=add">Add Event</a></li>
+							<li><a href="?base=admin&amp;page=manevent&amp;action=edit">Edit Event</a></li>
+							<li><a href="?base=admin&amp;page=manevent&amp;action=del">Delete Event</a></li>
+						</ul>
 					</li>
-					<ul class="nav nav-pills nav-stacked collapse <?php echo (in_array($admin, $content)) ? 'in' : ''; ?>" id="menu2">
-						<li <?php echo ($admin == "homeconfig") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=homeconfig"><i class="fa fa-home"></i> Home Content</a></li>
-						<li class="dropdown <?php echo ($admin == "mannews") ? 'active' : ''; ?>">
-							<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-pencil"></i> News <span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="?base=admin&amp;page=mannews&amp;action=add">Add News</a></li>
-								<li><a href="?base=admin&amp;page=mannews&amp;action=edit">Edit News</a></li>
-								<li><a href="?base=admin&amp;page=mannews&amp;action=del">Delete News</a></li>
-							</ul>
-						</li>
-						<li class="dropdown <?php echo ($admin == "manevent") ? 'active' : ''; ?>">
-							<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-pencil"></i> Events <span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="?base=admin&amp;page=manevent&amp;action=add">Add Event</a></li>
-								<li><a href="?base=admin&amp;page=manevent&amp;action=edit">Edit Event</a></li>
-								<li><a href="?base=admin&amp;page=manevent&amp;action=del">Delete Event</a></li>
-							</ul>
-						</li>
-						<li><a href="?base=gmcp"><i class="fa fa-pencil"></i> GM Blogs</a> </li>
-						<li class="dropdown <?php echo ($admin == "pages") ? 'active' : ''; ?>">
-							<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-file-text"></i> Pages <span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="?base=admin&amp;page=pages&amp;action=add">Add Page</a></li>
-								<li><a href="?base=admin&amp;page=pages&amp;action=edit">Edit Page</a></li>
-								<li><a href="?base=admin&amp;page=pages&amp;action=del">Delete Page</a></li>
-							</ul>
-						</li>
-					</ul>
-					<li>
-						<a href="#" data-toggle="collapse" data-target="#menu3">
-							Manage Community <i class="fa fa-chevron-<?php echo (in_array($admin, $users)) ? 'down' : 'right'; ?>" style="float:right;"></i>
-						</a>
+					<li><a href="?base=gmcp"><i class="fa fa-pencil"></i> GM Blogs</a> </li>
+					<li class="dropdown <?php echo ($admin == "pages") ? 'active' : ''; ?>">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-file-text"></i> Pages <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="?base=admin&amp;page=pages&amp;action=add">Add Page</a></li>
+							<li><a href="?base=admin&amp;page=pages&amp;action=edit">Edit Page</a></li>
+							<li><a href="?base=admin&amp;page=pages&amp;action=del">Delete Page</a></li>
+						</ul>
 					</li>
-					<ul class="nav nav-pills nav-stacked collapse <?php echo (in_array($admin, $users)) ? 'in' : ''; ?> " id="menu3">
-						<li <?php echo ($admin == "manageaccounts") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=manageaccounts"><i class="fa fa-user"></i> Manage Accounts</a></li>
-						<li <?php echo ($admin == "ticket") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=ticket"><i class="fa fa-ticket"></i> View Tickets</a></li>
-						<li <?php echo ($admin == "banned") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=banned"><i class="fa fa-gavel"></i> Banned Users</a></li>
-					</ul>
-                </ul>
-				<hr/>
-				<h2 class="text-left">Resources</h2>
-                <hr/>
-                <ul class="nav nav-pills nav-stacked">
-					<li class="nav-header"></li>
-					<li><a href="?base=admin"><i class="fa fa-tachometer"></i>  Admin Dashboard</a></li>
-                    <li><a href="https://github.com/greenelfx/MapleBit/"><i class="fa fa-github"></i> GitHub</a></li>
-                    <li><a href="http://forum.ragezone.com/f690/beta-maplebitcms-977439/"><i class="fa fa-comment"></i> Ragezone Thread</a></li>
-                </ul>
-                <hr/>
-            </div>
-            <!-- /col-3 -->
-			<div class="col-md-9">
+				</ul>
+				<li>
+					<a href="#" data-toggle="collapse" data-target="#menu3">
+						Manage Community <i class="fa fa-chevron-<?php echo (in_array($admin, $users)) ? 'down' : 'right'; ?>" style="float:right;"></i>
+					</a>
+				</li>
+				<ul class="nav nav-pills nav-stacked collapse <?php echo (in_array($admin, $users)) ? 'in' : ''; ?> " id="menu3">
+					<li <?php echo ($admin == "manageaccounts") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=manageaccounts"><i class="fa fa-user"></i> Manage Accounts</a></li>
+					<li <?php echo ($admin == "ticket") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=ticket"><i class="fa fa-ticket"></i> View Tickets</a></li>
+					<li <?php echo ($admin == "banned") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=banned"><i class="fa fa-gavel"></i> Banned Users</a></li>
+				</ul>
+            </ul>
+			<hr/>
+			<h2 class="text-left">Resources</h2>
+            <hr/>
+            <ul class="nav nav-pills nav-stacked">
+				<li class="nav-header"></li>
+				<li><a href="?base=admin"><i class="fa fa-tachometer"></i>  Admin Dashboard</a></li>
+                <li><a href="https://github.com/greenelfx/MapleBit/"><i class="fa fa-github"></i> GitHub</a></li>
+                <li><a href="http://forum.ragezone.com/f690/beta-maplebitcms-977439/"><i class="fa fa-comment"></i> Ragezone Thread</a></li>
+            </ul>
+            <hr/>
+        </div>
+        <!-- /col-3 -->
+		<div class="col-md-9">
