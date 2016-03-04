@@ -119,7 +119,7 @@ if(isset($_SESSION['id'])){
 			<hr/>
 		</div>
 	</div>
-</div>
+</div></div></div>
 <?php
 			}elseif($admin == "voteconfig"){
 				include('sources/admin/voteconfig.php');
