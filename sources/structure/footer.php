@@ -15,7 +15,7 @@ if(basename($_SERVER["PHP_SELF"]) == "footer.php"){
 <script type="text/javascript" src="<?php echo $siteurl; ?>assets/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo $siteurl; ?>assets/js/login.js"></script>
 <script>
-	function roll(img_name1, img_src1) {document[img_name1].src = img_src1;}
+	function roll(img_name1, img_src1) {document.getElementById(img_name1).src = img_src1;}
 	function goBack() {window.history.back()}
 </script>
 </body>
