@@ -34,7 +34,7 @@ echo "
 						$p++;
 						if ($p == 1){
 							echo "
-							<img src=\"assets/img/GD/create.php?name=".$name."\" alt='".$name."' name=\"top5\" class=\"rank_img\"/>
+							<img src=\"assets/img/GD/create.php?name=".$name."\" alt='".$name."' id=\"top5\" class=\"rank_img\"/>
 						</td>";
 					}
 					echo "
