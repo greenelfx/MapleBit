@@ -40,7 +40,7 @@ body{
 <?php
 if($banner != ""){echo "<img src=\"".$banner."\" alt=\"banner\" class=\"img-responsive\" style=\"margin: 0 auto;margin-top:20px;\">";} 
 ?>
-<nav class="<?php echo getNav();?>" style="bottom:-22px;">
+<nav class="<?php echo $nav;?>" style="bottom:-22px;">
 	<div class="navbar-header">
 		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 			<span class="icon-bar"></span>
@@ -77,7 +77,7 @@ if($banner != ""){echo "<img src=\"".$banner."\" alt=\"banner\" class=\"img-resp
 		?>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo get_small_gravatar($_SESSION['email']);?>" alt="gravatar" class="img-responsive img-circle" style="float:left;margin-top: -10px;padding-right: 5px;"><?php echo $_SESSION['name']; ?><b class="caret"></b></a>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo get_gravatar($_SESSION['email'], 40);?>" alt="gravatar" class="img-responsive img-circle" style="float:left;margin-top: -10px;padding-right: 5px;"><?php echo $_SESSION['name']; ?><b class="caret"></b></a>
 					<ul class="dropdown-menu">
 					<?php
 						if($_SESSION['pname'] == "checkpname") {

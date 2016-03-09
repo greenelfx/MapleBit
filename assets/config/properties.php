@@ -57,6 +57,13 @@ try {
 	/*Get Vote Config*/
 	$colnx = $prop['colnx'];
 	$colvp = $prop['colvp'];
+
+	if ($prop['nav']){
+		$nav = "navbar navbar-default navbar-inverse";
+	}
+	else {
+		$nav = "navbar navbar-default";
+	}
 } catch(Exception $e) {
 	echo "Unable to load MapleBit configuration. Perhaps MapleBit has not been installed yet.";
 	echo "<br/>To resolve this, delete <b>assets/config/install/installdone.txt</b> and reload this page.";

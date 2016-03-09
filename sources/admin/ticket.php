@@ -54,7 +54,7 @@ if(isset($_SESSION['admin'])){
 	elseif($_GET['ticket'] == "Yes"){
 		$GrabTicket = $mysqli->query("SELECT * FROM ".$prefix."tickets LEFT JOIN ".$prefix."tcomments ON ".$prefix."tickets.ticketid = ".$prefix."tcomments.ticketid WHERE ".$prefix."tickets.ticketid = '".mysql_real_escape_string($_GET['a'])."'");
 		$viewTicket = $GrabTicket->fetch_assoc();
-		$getResponse = $mysqli->query("SELECT * FROM ".$prefix."tcomments WHERE ticketid = '".sql_sanitize($_GET['a'])."'");
+		$getResponse = $mysqli->query("SELECT * FROM ".$prefix."tcomments WHERE ticketid = '".$mysqli->real_escape_string($_GET['a'])."'");
 		$countTicket = $getResponse->num_rows;
 		$content = stripslashes($viewTicket['details']);
 		echo "
@@ -96,7 +96,7 @@ if(isset($_SESSION['admin'])){
 					else{
 						$insertComment = $mysqli->query("INSERT INTO ".$prefix."tcomments (ticketid, user, content, date_com)
 							VALUES "."('".$_GET['a']."', '".$_SESSION['pname']."', '".$postComment."', '".date('F d - g:i A')."')") or die(mysql_error());
-						$insertComment = $mysqli->query("UPDATE ".$prefix."tickets SET date = '".date('F d - g:i A')."' WHERE ticketid = '".sql_sanitize($_GET['a'])."'") or die(mysql_error());
+						$insertComment = $mysqli->query("UPDATE ".$prefix."tickets SET date = '".date('F d - g:i A')."' WHERE ticketid = '".$mysqli->real_escape_string($_GET['a'])."'") or die(mysql_error());
 						if($insertComment){
 							echo "<meta http-equiv=\"refresh\" content=\"0; url=\"/>";
 						}
@@ -106,7 +106,7 @@ if(isset($_SESSION['admin'])){
 					}
 				}
 				if(isset($_POST['close'])){
-					$closeTicket = $mysqli->query("UPDATE ".$prefix."tickets SET status = 0 WHERE ticketid = '".sql_sanitize($_GET['a'])."'");
+					$closeTicket = $mysqli->query("UPDATE ".$prefix."tickets SET status = 0 WHERE ticketid = '".$mysqli->real_escape_string($_GET['a'])."'");
 					if($closeTicket){
 						echo "<br/><div class=\"alert alert-success\">This ticket was successfully closed! You will be redirected in five seconds.</div>";
 						redirect_wait5("?base=admin&amp;page=ticket");

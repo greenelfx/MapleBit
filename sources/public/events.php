@@ -15,7 +15,7 @@ blockquote {
 <?php
 if(@$_GET['id']){
 	$id = $mysqli->real_escape_string($_GET['id']);
-	$ge = $mysqli->query("SELECT * FROM ".$prefix."events WHERE id='".sql_sanitize($id)."'") or die();
+	$ge = $mysqli->query("SELECT * FROM ".$prefix."events WHERE id='".$mysqli->real_escape_string($id)."'") or die();
 	$e = $ge->fetch_assoc();
 	require_once 'assets/libs/HTMLPurifier.standalone.php';
 		$config = HTMLPurifier_Config::createDefault();
@@ -75,7 +75,7 @@ if(@$_GET['id']){
 			<span class=\"sr-only\">".$neutral." (neutral)</span>
 		</div>
 	</div>";
-	$av = $mysqli->query("UPDATE ".$prefix."events SET views = views + 1 WHERE id='".sql_sanitize($id)."'") or die();
+	$av = $mysqli->query("UPDATE ".$prefix."events SET views = views + 1 WHERE id='".$mysqli->real_escape_string($id)."'") or die();
 	if(isset($_SESSION['admin'])){
 		if($e['locked'] == "1"){
 			$buttontext = "Unlock";
@@ -179,7 +179,7 @@ if(@$_GET['id']){
 	else {
 	echo "<h2 class=\"text-left\">".$servername." Events</h2><hr/>";
 	while($e = $ge->fetch_assoc()){
-		$gc = $mysqli->query("SELECT * FROM ".$prefix."ecomments WHERE eid='".sql_sanitize($e['id'])."' ORDER BY id ASC") or die();
+		$gc = $mysqli->query("SELECT * FROM ".$prefix."ecomments WHERE eid='".$mysqli->real_escape_string($e['id'])."' ORDER BY id ASC") or die();
 		$cc = $gc->num_rows;
 		echo "<img src=\"assets/img/news/".$e['type'].".gif\" alt='' />";
 		echo "[".$e['date']."]
