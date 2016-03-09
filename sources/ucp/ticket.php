@@ -135,7 +135,7 @@ if(isset($_SESSION['id'])){
 	elseif(@$_GET['ticket'] == "Yes"){
 		$GrabTicket = $mysqli->query("SELECT * FROM ".$prefix."tickets LEFT JOIN ".$prefix."tcomments ON ".$prefix."tickets.ticketid = ".$prefix."tcomments.ticketid WHERE ".$prefix."tickets.ticketid = '".$mysqli->real_escape_string($_GET['a'])."'");
 		$viewTicket = $GrabTicket->fetch_assoc();
-		$getResponse = $mysqli->query("SELECT * FROM ".$prefix."tcomments WHERE ticketid = '".sql_sanitize($_GET['a'])."'");
+		$getResponse = $mysqli->query("SELECT * FROM ".$prefix."tcomments WHERE ticketid = '".$mysqli->real_escape_string($_GET['a'])."'");
 		$countTicket = $getResponse->num_rows;
 	//View the ticket
 		if($_SESSION['pname'] != $viewTicket['name']){
@@ -190,9 +190,9 @@ if(isset($_SESSION['id'])){
 					}
 					else{
 						$insertComment = $mysqli->query("INSERT INTO `".$prefix."tcomments` (ticketid, user, content, date_com)
-							VALUES "."('".sql_sanitize($_GET['a'])."', '".$_SESSION['pname']."', '".$postComment."', '".date('F d - g:i A')."')") or die(mysql_error());
+							VALUES "."('".$mysqli->real_escape_string($_GET['a'])."', '".$_SESSION['pname']."', '".$postComment."', '".date('F d - g:i A')."')") or die(mysql_error());
 
-						$insertComment = $mysqli->query("UPDATE `".$prefix."tickets` SET `date` = '".date('F d - g:i A')."' WHERE `ticketid` = '".sql_sanitize($_GET['a'])."'");
+						$insertComment = $mysqli->query("UPDATE `".$prefix."tickets` SET `date` = '".date('F d - g:i A')."' WHERE `ticketid` = '".$mysqli->real_escape_string($_GET['a'])."'");
 
 						if($insertComment){
 							echo "<meta http-equiv=\"refresh\" content=\"0; url=\"/>";

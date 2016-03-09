@@ -15,7 +15,7 @@ blockquote {
 </style>
 <?php
 if(isset($_GET['id'])) {
-	$id = sql_sanitize($_GET['id']);
+	$id = $mysqli->real_escape_string($_GET['id']);
 	$gb = $mysqli->query("SELECT * FROM ".$prefix."gmblog WHERE id='".$id."'") or die();
 	$b = $gb->fetch_assoc();
 	require_once 'assets/libs/HTMLPurifier.standalone.php';

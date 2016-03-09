@@ -289,22 +289,6 @@ function shortTitle($title){
 	$title = $title."...";
 	return $title;
 }
-function mysql_escape($string) {
-	global $mysqli, $prefix;
-	$string = $mysqli->real_escape_string($string);
-	return $string;
-}
-function sql_sanitize( $sCode ) {
-	global $mysqli, $prefix;
-	$escapedCode = $mysqli->real_escape_string( $sCode );
-	$sCode = preg_replace("/[^a-zA-Z0-9]+/", "", $escapedCode);
-	return $sCode;
-}
-function sanitize_space($string) {
-	global $mysqli, $prefix;
-	$string = $mysqli->real_escape_string($string);
-	return preg_replace('/[^a-zA-Z0-9\s]/', '', $string);
-}
 
 function unSolved($type){
 	global $mysqli, $prefix;
@@ -421,26 +405,6 @@ function buyNX($char, $info, $pack){
 	}
 }
 
-function getNav() {
-	global $mysqli, $prefix;
-	$query = $mysqli->query("SELECT nav FROM ".$prefix."properties");
-	$navtype = $query->fetch_assoc();
-	$nav = "";
-		if ($navtype['nav'] == "0"){
-			$nav = "navbar navbar-default";
-		}
-		if ($navtype['nav'] == "1"){
-			$nav = "navbar navbar-default navbar-inverse";
-		}
-	return $nav;
-}
-
-function countOnline() {
-	global $mysqli, $prefix;
-	$conline = $mysqli->query("SELECT * FROM accounts where loggedin = 2");
-	return intval($conline);
-}
-
 function getRealIpAddr() //for Registration
 {
   if (!empty($_SERVER['HTTP_CLIENT_IP']))
@@ -494,20 +458,8 @@ function get_gravatar( $email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts
     }
     return $url;
 }
-function get_small_gravatar( $email, $s = 40, $d = 'mm', $r = 'g', $img = false, $atts = array() ) {
-    $url = 'http://www.gravatar.com/avatar/';
-    $url .= md5( strtolower( trim( $email ) ) );
-    $url .= "?s=$s&amp;d=identicon&amp;r=$r";
-    if ( $img ) {
-        $url = '<img src="' . $url . '"';
-        foreach ( $atts as $key => $val )
-            $url .= ' ' . $key . '="' . $val . '"';
-        $url .= ' />';
-    }
-    return $url;
-}
-function ago($time)
-{
+
+function ago($time) {
    $periods = array("second", "minute", "hour", "day", "week", "month", "year", "decade");
    $lengths = array("60","60","24","7","4.35","12","10");
 

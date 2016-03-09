@@ -39,11 +39,11 @@ if($_SESSION['id']){
 	}else{
 		$u = $mysqli->query("SELECT * FROM `accounts` WHERE `id`='".$_SESSION['id']."'") or die();
 		$userz = $u->fetch_assoc();
-		$current = mysql_escape($_POST['current']);
-		$pass = mysql_escape($_POST['password']);
-		$cpass = mysql_escape($_POST['copassword']);
-		$email = mysql_escape($_POST['email']);
-		$birth = mysql_escape($_POST['birth']);
+		$current = $mysqli->real_escape_string($_POST['current']);
+		$pass = $mysqli->real_escape_string($_POST['password']);
+		$cpass = $mysqli->real_escape_string($_POST['copassword']);
+		$email = $mysqli->real_escape_string($_POST['email']);
+		$birth = $mysqli->real_escape_string($_POST['birth']);
 
 		if($current){
 			if($userz['password'] == hash('sha512',$current.$userz['salt']) || sha1($current) == $userz['password']){

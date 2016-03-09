@@ -42,7 +42,7 @@ function goBack() {window.history.back()}
 </head>
 
 <body>
-<nav class="<?php echo getNav(); ?> navbar-fixed-top" id="navbar">
+<nav class="<?php echo $nav; ?> navbar-fixed-top" id="navbar">
 	<div class="navbar-header">
 		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 			<span class="icon-bar"></span>
