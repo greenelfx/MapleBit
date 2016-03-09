@@ -19,7 +19,7 @@ if($_SESSION['admin'] == 1) {
 				}
 			}
 			echo "<hr/>";
-			if(getNav() == "navbar navbar-default") {
+			if($nav == "navbar navbar-default") {
 				echo "
 					<div class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"nav\" value=\"0\" checked>Normal Navigation Bar</label></div>
 					<div class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"nav\" value=\"1\">Inverse Navigation Bar</label></div>
