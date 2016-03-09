@@ -84,9 +84,9 @@ if(isset($_SESSION['id'])){
 				<input type=\"submit\" name=\"edit\" class=\"btn btn-primary\" value=\"Edit News Article &raquo;\" />
 			</form>";
 				}else{
-					$title = mysql_escape($_POST['title']);
-					$cat = mysql_escape($_POST['cat']);
-					$content = mysql_escape($_POST['content']);
+					$title = $mysqli->real_escape_string($_POST['title']);
+					$cat = $mysqli->real_escape_string($_POST['cat']);
+					$content = $mysqli->real_escape_string($_POST['content']);
 					if($title == ""){
 						echo "<div class=\"alert alert-danger\">You must enter a title.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}elseif(empty($cat)){
