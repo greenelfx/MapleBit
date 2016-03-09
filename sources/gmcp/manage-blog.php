@@ -43,7 +43,7 @@ if(isset($_SESSION['id'])) {
 			}elseif($_GET['action']=="edit"){
 				echo "<h2 class=\"text-left\">Edit a Blog</h2><hr/>";
 				if(isset($_GET['id'])){
-					$id = sql_sanitize($_GET['id']);
+					$id = $mysqli->real_escape_string($_GET['id']);
 					$gb = $mysqli->query("SELECT * FROM ".$prefix."gmblog WHERE id='".$id."'") or die();
 					$b = $gb->fetch_assoc();
 					if($_SESSION['pname'] == $b['author'] || isset($_SESSION['admin'])){
@@ -157,7 +157,7 @@ if(isset($_SESSION['id'])) {
 				} else if (!is_numeric($_GET['id'])) {
 					echo "Invalid Blog Comment ID.";
 				} else {
-					$gmbid = sql_sanitize($_GET['id']);
+					$gmbid = $mysqli->real_escape_string($_GET['id']);
 					$query = $mysqli->query("SELECT * FROM ".$prefix."bcomments WHERE id = ".$gmbid."") or die();
 					$rows = $query->num_rows;
 					$fetch = $query->fetch_assoc();
@@ -207,7 +207,7 @@ if(isset($_SESSION['id'])) {
 					</form>
 					";
 				}else{
-					$blog = sql_sanitize($_POST['blog']);
+					$blog = $mysqli->real_escape_string($_POST['blog']);
 					if($blog == ""){
 						echo "<div class=\"alert alert-danger\">Please select a blog entry to delete.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}else{
