@@ -208,21 +208,21 @@ if($_SESSION['admin']){
 					$sitename = $mysqli->real_escape_string(strip_tags($_POST['sitename']));
 				}
 				if(empty($_POST['nx']) || !is_numeric($_POST['nx'])){
-					echo "<div class=\"alert alert-danger\">Please enter an amount for the NX given.</div>";
+					echo "<div class=\"alert alert-danger\">Please enter a valid amount for the NX given.</div>";
 					$error = true;
 				}
 				else {
 					$givenx = $mysqli->real_escape_string(strip_tags($_POST['nx']));
 				}
 				if(empty($_POST['vp']) || !is_numeric($_POST['vp'])){
-					echo "<div class=\"alert alert-danger\">Please enter an amount for the Vote Points given.</div>";
+					echo "<div class=\"alert alert-danger\">Please enter a valid amount for the Vote Points given.</div>";
 					$error = true;
 				}
 				else {
 					$givevp = $mysqli->real_escape_string(strip_tags($_POST['vp']));
 				}
 				if(empty($_POST['wait']) || !is_numeric($_POST['wait'])){
-					echo "<div class=\"alert alert-danger\">Please enter an amount for the waiting time.</div>";
+					echo "<div class=\"alert alert-danger\">Please enter a valid amount for the waiting time.</div>";
 					$error = true;
 				}
 				else {
