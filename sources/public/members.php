@@ -60,11 +60,7 @@ if(isset($_GET['name'])) {
 	if(!empty($p['text'])) {
 		echo "
 			<b>About Me:</b>
-			<div class=\"breakword\">" . $clean_html."</div>
-			<hr/>";
-	}
-	if(isset($_SESSION['pname'])) {
-		echo "<a href=\"?base=ucp&amp;page=mail&amp;uc=$name\">Send me Mail &raquo;</a>";
+			<div class=\"breakword\">" . $clean_html."</div>";
 	}
 	if(isset($_SESSION['pname']) && $_GET['name'] == $_SESSION['pname']) {
 		echo "<hr/><a href=\"?base=ucp&page=profedit\">Edit Profile &raquo;</a><hr/>";
