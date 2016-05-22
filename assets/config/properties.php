@@ -14,9 +14,6 @@ try {
 
 	/* Name of server */
 	$servername = $prop['name'];
-	/* Site title */
-	$sitetitle = $prop['name'];
-	$pb = " (Powered by MapleBit)";
 	$siteurl = $prop['siteurl'];
 	$banner = $prop['banner'];
 	$background = $prop['background'];

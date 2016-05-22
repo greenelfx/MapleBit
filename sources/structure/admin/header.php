@@ -16,7 +16,7 @@ $users = array("manageaccounts", "ticket", "banned");
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title><?php echo $sitetitle.$pb;?></title>
+		<title><?php echo $servername;?></title>
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link href="<?php echo $siteurl; ?>assets/css/<?php echo $theme; ?>.min.css" rel="stylesheet" type="text/css" id="theme"/>
 		<link href="<?php echo $siteurl; ?>assets/css/addon.css" rel="stylesheet" type="text/css" />
