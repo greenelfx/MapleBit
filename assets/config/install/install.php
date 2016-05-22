@@ -26,8 +26,9 @@ if(isset($_GET['install'])) {
 }
 if(file_exists('installdone.txt')) {
 	echo "<div class=\"alert alert-info\">Oops! Looks like MapleBit has already been installed! If you'd like, you can delete everything in the install folder, except for installdone.txt</div>";
-} else {
-	switch($install) {
+}
+else{
+	switch($install){
 		case NULL:
 			echo '
 				<h4>Welcome to MapleBit.</h4>
@@ -52,50 +53,53 @@ if(file_exists('installdone.txt')) {
 				<h4>Configure your database settings</h4>
 				<hr/>
 				<form action="?install=2" method="post" class="form-horizontal" role="form">
-					<div class="form-group">
+				<div class="form-group">
 						<label for="inputHost" class="col-lg-4 control-label">MySQL Host</label>
-						<div class="col-lg-5">
-							<input type="text" class="form-control" id="inputHost" placeholder="localhost" name="host" required>
-						</div>
+					<div class="col-lg-5">
+						<input type="text" class="form-control" id="inputHost" placeholder="localhost" name="host" required>
 					</div>
-					<div class="form-group">
+				</div>
+				<div class="form-group">
 						<label for="inputDB" class="col-lg-4 control-label">Database Name</label>
-						<div class="col-lg-5">
-							<input type="text" class="form-control" id="inputDB" placeholder="Database Name" name="DB" required>
-						</div>
+					<div class="col-lg-5">
+						<input type="text" class="form-control" id="inputDB" placeholder="Database Name" name="DB" required>
 					</div>
-					<div class="form-group">
+				</div>
+				<div class="form-group">
 						<label for="inputDBU" class="col-lg-4 control-label">Database Username</label>
-						<div class="col-lg-5">
-							<input type="text" class="form-control" id="inputDBU" placeholder="Database Username" name="DBuser" required>
-						</div>
+					<div class="col-lg-5">
+						<input type="text" class="form-control" id="inputDBU" placeholder="Database Username" name="DBuser" required>
 					</div>
-					<div class="form-group">
+				</div>
+				<div class="form-group">
 						<label for="inputDBPWD" class="col-lg-4 control-label">Database Password</label>
-						<div class="col-lg-5">
-							<input type="text" class="form-control" id="inputDBPWD" placeholder="Database Password" name="DBpass">
-						</div>
+					<div class="col-lg-5">
+						<input type="text" class="form-control" id="inputDBPWD" placeholder="Database Password" name="DBpass">
 					</div>
-					<div class="form-group">
+				</div>
+				<div class="form-group">
 						<label for="inputPrefix" class="col-lg-4 control-label">Database Prefix</label>
-						<div class="col-lg-5">
-							<input type="text" class="form-control" id="inputPrefix" placeholder="Database Prefix" name="DBprefix" value="bit_">
-						</div>
+					<div class="col-lg-5">
+						<input type="text" class="form-control" id="inputPrefix" placeholder="Database Prefix" name="DBprefix" value="bit_">
 					</div>
-					<hr/>
+				</div>
+				<hr/>
 					<input type="submit" class="btn btn-default btn-lg" value="Continue &raquo;" style="float:right"/>
 				</form>
 				<br/><br/>';
 		break;
 		case 2:
-			echo '<h4>SQL Connection</h4><hr/>';
+			echo '
+				<h4>SQL Connection</h4>
+				<hr/>
+			';
 			error_reporting(0);
 			$host = $_POST["host"];
 			$db = $_POST["DB"];
 			$dbuser = $_POST["DBuser"];
 			$dbpass = $_POST["DBpass"];
 			$dbprefix = $_POST["DBprefix"];
-			$mysqli = new mysqli($host, $dbuser, $dbpass, $db);
+			$mysqli = new mysqli("$host", "$dbuser", "$dbpass", "$db");
 			if ($mysqli->connect_errno) {
 			    printf("<div class=\"alert alert-danger\">Connect failed: %s\n", $mysqli->connect_error);
 				echo "</div><hr/><a href=\"?install=1\" class=\"btn btn-danger btn-lg\" value=\"Continue &raquo;\" style=\"float:right\">&laquo; Go Back</a><br/><br/>";
@@ -107,7 +111,7 @@ if(file_exists('installdone.txt')) {
 				exit();
 			}
 file_put_contents('../database.php', '<?php
-if(basename($_SERVER["PHP_SELF"]) == "database.php") {
+if(basename($_SERVER["PHP_SELF"]) == "database.php"){
     die("403 - Access Forbidden");
 }
 //SQL Information
@@ -391,7 +395,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 		break;
 		case 4:
 		include('../database.php');
-			if(isset($_POST['submit'])) {
+			if(isset($_POST['submit'])){
 				$sservername = $mysqli->real_escape_string(stripslashes($_POST['servername']));
 				$sclient = $mysqli->real_escape_string(stripslashes($_POST['client']));
 				$sserver = $mysqli->real_escape_string(stripslashes($_POST['setup']));
@@ -405,53 +409,97 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				$sservertype = $mysqli->real_escape_string($_POST['servertype']);
 				$scolnx = $mysqli->real_escape_string(stripslashes($_POST['colnx']));
 				$scolvp = $mysqli->real_escape_string(stripslashes($_POST['colvp']));
-				$continue = true;
 
-				if(empty($sservername)) {
+				$stop = "false";
+				if(empty($sservername)){
 					echo '<div class="alert alert-danger">Your server doesn&apos;t have a name?</div>';
-					$continue = false;
-				}elseif(empty($sclient)) {
-					echo '<div class="alert alert-danger">You need a client link.</div>';
-					$continue = false;
-				} elseif(empty($sserver)) {
-					echo '<div class="alert alert-danger">You need a server link.</div>';
-					$continue = false;
-				} elseif(empty($sforumurl)) {
-					echo '<div class="alert alert-danger">You need to enter a forum URL. If you don&apos; have one, just put a &apos;#&apos; in the text box.</div>';
-					$continue = false;
-				} elseif(empty($sexp)) {
-					echo '<div class="alert alert-danger">Enter an exp rate. Don&apos;t put an x in the text box!</div>';
-					$continue = false;
-				} elseif(empty($smeso)) {
-					echo '<div class="alert alert-danger">Enter a meso rate. Don&apos;t put an x in the text box!</div>';
-					$continue = false;
-				} elseif(empty($sdrop)) {
-					echo '<div class="alert alert-danger">Enter an drop rate. Don&apos;t put an x in the text box!</div>';
-					$continue = false;
-				} elseif(empty($sgmlevel)){
-					echo '<div class="alert alert-danger">Enter the level that you must be to be GM (Usually 1)</div>';
-					$continue = false;
-				} elseif(empty($ssiteurl)){
-					echo '<div class="alert alert-danger">Enter the site path</div>';
-					$continue = false;
-				} elseif(is_numeric($sversion) == FALSE){
-					echo '<div class="alert alert-danger">Enter a numeric value for the server version</div>';
-					$continue = false;
-				} elseif(empty($scolnx)){
-					echo '<div class="alert alert-danger">Please enter your NX column name.</div>';
-					$continue = false;
-				} elseif(empty($scolvp)){
-					echo '<div class="alert alert-danger">Please enter your VP column name.</div>';
-					$continue = false;
-				}
-				if(!$continue) {
+					$stop = "true";
 					echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
-				} else {
-					$mysqli->query("UPDATE ".$prefix."properties SET name='".$sservername."', type = '".$sservertype."', client='".$sclient."', server = '".$sserver."', version='".$sversion."', forumurl='".$sforumurl."', siteurl='".$ssiteurl."', exprate='".$sexp."', mesorate='".$smeso."', droprate='".$sdrop."', gmlevel = '".$sgmlevel."', flood='1', floodint='5', theme='cerulean', nav='0', pcap='100', colnx = '".$scolnx."', colvp = '".$scolvp."'");
+				}
+				if($stop == "false"){
+					if(empty($sclient)){
+						echo '<div class="alert alert-danger">You need a client link.</div>';
+						$stop = "true";
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+					}
+				}
+				if($stop == "false"){
+					if(empty($sserver)){
+						echo '<div class="alert alert-danger">You need a server link.</div>';
+						$stop = "true";
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+					}
+				}
+				if($stop == "false"){
+					if(empty($sforumurl)){
+						echo '<div class="alert alert-danger">You need to enter a forum URL. If you don&apos; have one, just put a &apos;#&apos; in the text box.</div>';
+						$stop = "true";
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+					}
+				}
+				if($stop == "false"){
+					if(empty($sexp)){
+						echo '<div class="alert alert-danger">Enter an exp rate. Don&apos;t put an x in the text box!</div>';
+						$stop = "true";
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+					}
+				}
+				if($stop == "false"){
+					if(empty($smeso)){
+						echo '<div class="alert alert-danger">Enter a meso rate. Don&apos;t put an x in the text box!</div>';
+						$stop = "true";
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+					}
+				}
+				if($stop == "false"){
+					if(empty($sdrop)){
+						echo '<div class="alert alert-danger">Enter an drop rate. Don&apos;t put an x in the text box!</div>';
+						$stop = "true";
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+					}
+				}
+				if($stop == "false"){
+					if(empty($sgmlevel)){
+						echo '<div class="alert alert-danger">Enter the level that you must be to be GM (Usually 1)</div>';
+						$stop = "true";
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+					}
+				}
+				if($stop == "false"){
+					if(empty($ssiteurl)){
+						echo '<div class="alert alert-danger">Enter the site path</div>';
+						$stop = "true";
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+					}
+				}
+				if($stop == "false"){
+					if(is_numeric($sversion) == FALSE){
+						echo '<div class="alert alert-danger">Enter a numeric value for the server version</div>';
+						$stop = "true";
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+					}
+				}
+				if($stop == "false"){
+					if(empty($scolnx)){
+						echo '<div class="alert alert-danger">Please enter your NX column name.</div>';
+						$stop = "true";
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+					}
+				}
+				if($stop == "false"){
+					if(empty($scolvp)){
+						echo '<div class="alert alert-danger">Please enter your VP column name.</div>';
+						$stop = "true";
+						echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+					}
+				}
+				if($stop == "false"){
+					$mysqli->query("UPDATE ".$prefix."properties SET name='$sservername', type = '$sservertype', client='$sclient', server = '$sserver', version='$sversion', forumurl='$sforumurl', siteurl='$ssiteurl', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', gmlevel = '$sgmlevel', flood='1', floodint='5', theme='cerulean', nav='0', pcap='100', colnx = '$scolnx', colvp = '$scolvp'");
 					echo "Working...";
 					echo "<meta http-equiv=\"refresh\" content=\"1; url=?install=5\" />";
 				}
-			} else {
+			}
+			else {
 				include('../properties.php');
 				$url = $_SERVER["REQUEST_URI"];
 				$url = str_replace('/assets/config/install/install.php?install=4','',$url) . "/";
@@ -530,32 +578,37 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 			}
 		break;
 		case 5:
-			echo "<h4>Extract GD Images</h4><hr/>";
+			echo "
+			<h4>Extract GD Images</h4>
+			<hr/>";
 			if(isset($_POST['myself'])) {
 				echo "<meta http-equiv=\"refresh\" content=\"0; url=?install=6\" />";
-			} else {
-				echo "For the rankings to work, you need the GD archive to be extracted. This can take some time. Go to assets/img/GD and extract the .zip archive.
-				<hr/>
-				<form method=\"post\">
-					<input type=\"submit\" name=\"myself\" class=\"btn btn-warning btn-lg\" value=\"OK, I&#39;ll do it! &raquo;\" style=\"float:right;\"/><br/><br/>
-				</form>";
+			}
+			else {
+			echo "For the rankings to work, you need the GD archive to be extracted. This can take some time. Go to assets/img/GD and extract the .zip archive.
+			<hr/>
+			<form method=\"post\">
+				<input type=\"submit\" name=\"myself\" class=\"btn btn-warning btn-lg\" value=\"OK, I&#39;ll do it! &raquo;\" style=\"float:right;\"/><br/><br/>
+			</form>";
 			}
 		break;
 		case 6:
 			include('../database.php');
-			echo "<h4>Create Administrator Account</h4><hr/>";
-			if(!isset($_POST['submit'])) {
+			echo "
+			<h4>Create Administrator Account</h4>
+			<hr/>";
+			if(!isset($_POST['submit'])){
 				$_SESSION['flash'] = "";
 				echo "
 				<form method=\"post\" action=\"\" role=\"form\">
-					<div class=\"form-group\">
-						<label for=\"accName\">Your Account Name</label>
-						<input name=\"accname\" type=\"text\" class=\"form-control\" id=\"accName\" placeholder=\"Username\" required/>
-					</div>
-					<hr/>
-					<a href=\"?install=done\" class=\"btn btn-lg btn-info\" style=\"float:left\">Skip &raquo;</a>
-					<input name=\"submit\" type=\"submit\" value=\"Submit &raquo;\" class=\"btn btn-primary btn-lg\" style=\"float:right\"/>
-					<br/><br/>
+				<div class=\"form-group\">
+					<label for=\"accName\">Your Account Name</label>
+					<input name=\"accname\" type=\"text\" class=\"form-control\" id=\"accName\" placeholder=\"Username\" required/>
+				</div>
+				<hr/>
+				<a href=\"?install=done\" class=\"btn btn-lg btn-info\" style=\"float:left\">Skip &raquo;</a>
+				<input name=\"submit\" type=\"submit\" value=\"Submit &raquo;\" class=\"btn btn-primary btn-lg\" style=\"float:right\"/>
+				<br/><br/>
 				</form>
 				";
 			} else {
@@ -566,7 +619,8 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 					$mysqli->query("UPDATE accounts SET webadmin = 1 WHERE name = '".$name."'");
 					echo "<meta http-equiv=\"refresh\" content=\"0; url=?install=done\" />";
 					$_SESSION['flash'] = "<div class=\"alert alert-success\">".$name." is now a web administrator</div>";
-				} else {
+				}
+				else {
 					echo "<div class=\"alert alert-danger\">Invalid account.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 				}
 			}
