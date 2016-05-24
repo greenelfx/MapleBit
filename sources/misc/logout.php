@@ -5,7 +5,6 @@ if (basename($_SERVER["PHP_SELF"]) == "logout.php") {
 if ($_SESSION['id']) {
 	session_destroy();
 	$_SESSION = array();
-	include('sources/public/main.php');
 	redirect("?base=main");
 } else {
 	redirect("?base=main");
