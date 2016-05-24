@@ -90,21 +90,23 @@ if(isset($_SESSION['id']) && isset($_SESSION['admin'])) {
 			if($getcomments->num_rows) {
 				echo '<ul class="list-group">';
 				while($comments = $getcomments->fetch_assoc()) {
-				$clean_comment = $commentpurifier->purify($comments['comment']);
-				$clean_comment = (strlen($clean_comment) > 50) ? substr($clean_comment,0,50).'...' : $clean_comment;
-				if($comments['feedback'] == 0){
-					$feedback = "<span class=\"positive_comment\">Positive</span>";
-				}
-				elseif($comments['feedback'] == 1){
-					$feedback = "<span class=\"neutral_comment\">Neutral</span>";
-				}
-				if($comments['feedback'] == 2){
-					$feedback = "<span class=\"negative_comment\">Negative</span>";
-				}
-					echo "<li class=\"list-group-item\">
+					$clean_comment = $commentpurifier->purify($comments['comment']);
+					$clean_comment = (strlen($clean_comment) > 50) ? substr($clean_comment,0,50).'...' : $clean_comment;
+					if($comments['feedback'] == 0){
+						$feedback = "<span class=\"positive_comment\">Positive</span>";
+					}
+					elseif($comments['feedback'] == 1){
+						$feedback = "<span class=\"neutral_comment\">Neutral</span>";
+					}
+					if($comments['feedback'] == 2){
+						$feedback = "<span class=\"negative_comment\">Negative</span>";
+					}
+					echo "
+						<li class=\"list-group-item\">
 						<a href=\"?base=main&page=members&name=" . $comments['author'] . "\">" . $comments['author'] . "</a> - ".$feedback." - Posted ".ago($comments['date']).".<br/>
-						".$clean_comment."
-						</li>";
+							".$clean_comment."
+						</li>
+					";
 				}
 				echo "</ul>";
 			}

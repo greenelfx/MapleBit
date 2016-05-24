@@ -20,11 +20,13 @@ $query = $mysqli->query("SELECT guilds.leader, guilds.GP, guilds.name, character
 while ($row = $query->fetch_assoc()) {
 ?>
 	<tr>
-		<td><?php echo ++$n;?></td>
-		<td><?php if(array_key_exists('name', $row)) { echo $row['name']; } else { echo "Unknown";}?></td>
-		<td><?php if(array_key_exists('cname', $row)) { echo $row['cname']; } else { echo "Unknown";}?></td>
-		<td><?php if(array_key_exists('GP', $row)) { echo $row['GP']; } else { echo "Unknown";}?></td>
+		<td><?php echo ++$n; ?></td>
+		<td><?php if(array_key_exists('name', $row)) { echo $row['name']; } else { echo "Unknown";} ?></td>
+		<td><?php if(array_key_exists('cname', $row)) { echo $row['cname']; } else { echo "Unknown";} ?></td>
+		<td><?php if(array_key_exists('GP', $row)) { echo $row['GP']; } else { echo "Unknown";} ?></td>
 	</tr>
-<?php  } ?>
+<?php
+}
+?>
 </tbody>
 </table>
