@@ -2,11 +2,12 @@
 if(basename($_SERVER["PHP_SELF"]) == "header.php") {
     die("403 - Access Forbidden");
 }
+
+$admin = "";
 if(isset($_GET['page'])) {
 	$admin = $_GET['page'];
-} else { 
-	$admin = "";
 }
+
 $settings = array("properties", "voteconfig", "nxpacks", "bannedmaps", "theme", "banner", "background");
 $content = array("homeconfig", "mannews", "manevent", "pages");
 $users = array("manageaccounts", "ticket", "banned");
@@ -33,14 +34,14 @@ $users = array("manageaccounts", "ticket", "banned");
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 		<script type="text/javascript" src="<?php echo $siteurl;?>assets/js/bootstrap.min.js"></script>
 		<script type="text/javascript">
-		$(document).ready(function() {
-			$('[data-toggle=collapse]').click(function() {
-				$(this).find("i").toggleClass("fa-chevron-right fa-chevron-down");
-			});
-		 });
-		function goBack() {
-			window.history.back();
-		}
+			$(document).ready(function() {
+				$('[data-toggle=collapse]').click(function() {
+					$(this).find("i").toggleClass("fa-chevron-right fa-chevron-down");
+				});
+			 });
+			function goBack() {
+				window.history.back();
+			}
 		</script>
 	</head>
 	<body>
@@ -56,11 +57,6 @@ $users = array("manageaccounts", "ticket", "banned");
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 					<li><a href="?base=main">Home</a></li>
-					<?php
-					if(!isset($_SESSION['id'])){
-						echo "<li><a href=\"?base=main&amp;page=register\">Register</a></li>";
-					}
-					?>
 					<li><a href="?base=main&amp;page=download">Download</a></li>
 					<li><a href="?base=main&amp;page=rankings">Rankings</a></li>
 					<li><a href="?base=main&amp;page=vote">Vote</a></li>
@@ -71,14 +67,10 @@ $users = array("manageaccounts", "ticket", "banned");
 						echo "<li><a href=\"?base=main&amp;page=".$fetchpages['slug']."\">" . $fetchpages['title'] . "</a>";
 					}
 					?>
-
 				</ul>
-				<?php
-				if(isset($_SESSION['id'])) {
-					$name = $_SESSION['name'];
-				?>
+
 				<ul class="nav navbar-nav navbar-right" style="margin-right: 20px;">
-					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $name;?><b class="caret"></b></a>
+					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_SESSION['pname'];?><b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a href="?base=main&amp;page=members&amp;name=<?php echo $_SESSION['pname'] ?>">Profile</a></li>
 							<li><a href="?base=ucp&amp;page=charfix">Character Fix</a></li>
@@ -87,9 +79,6 @@ $users = array("manageaccounts", "ticket", "banned");
 						</ul>
 					</li>
 				</ul>
-				<?php
-				}
-				?>
 			</div>
 		</nav>
 		<div class="container">
@@ -104,7 +93,7 @@ $users = array("manageaccounts", "ticket", "banned");
 							<li <?php echo ($admin == "properties") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=properties"><i class="fa fa-cogs"></i> Site Configuration</a></li>
 							<li <?php echo ($admin == "voteconfig") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=voteconfig"><i class="fa fa-arrow-circle-o-up"></i> Vote Configuration</a></li>
 							<li <?php echo ($admin == "nxpacks") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=nxpacks"><i class="fa fa-shopping-cart"></i> NX Packs</a></li>
-							<li <?php echo ($admin == "bannedmaps") ? 'class="active"' : ''; ?>><a href="?base=admin&page=bannedmaps"><i class="fa fa-ban"></i> Jailed Maps</a></li>
+							<li <?php echo ($admin == "bannedmaps") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=bannedmaps"><i class="fa fa-ban"></i> Jailed Maps</a></li>
 							<li <?php echo ($admin == "theme") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=theme"><i class="fa fa-magic"></i> Theme</a></li>
 							<li <?php echo ($admin == "banner") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=banner"><i class="fa fa-flag"></i> Banner</a></li>
 							<li <?php echo ($admin == "background") ? 'class = "active"' : ''; ?>><a href="?base=admin&amp;page=background"><i class="fa fa-object-ungroup"></i> Background</a></li>
