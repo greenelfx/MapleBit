@@ -7,6 +7,8 @@ sources/admin/log.php
 assets/img/GD/**/
 assets/libs/standalone/HTMLPurifier/DefinitionCache/Serializer/HTML/**
 *.ser
+assets/config/database.php
+
 #################
 ## Eclipse
 #################
@@ -222,3 +224,4 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
