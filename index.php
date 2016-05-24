@@ -12,7 +12,8 @@ if(!file_exists('assets/config/install/installdone.txt')){
 
 	# Import Essential Files
 	require_once("assets/config/properties.php");
-	require_once("assets/config/afuncs.php");
+	require_once("assets/config/funcs.php");
+	
 	# Define $getbase variable
 	$getbase = isset($_GET['base']) ? $_GET['base'] : "";
 

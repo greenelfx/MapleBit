@@ -149,10 +149,6 @@ $mysqli = new MySQLi($host[\'hostname\'],$host[\'user\'],$host[\'password\'],$ho
 $queryaccounts = $mysqli->query("SELECT * FROM `accounts`");
 $getcolumns = $queryaccounts->fetch_assoc();
 
-if(!isset($getcolumns['sitelogged'])) {
-	$mysqli->query("ALTER TABLE accounts ADD `sitelogged` TEXT;");
-	echo "Added sitelogged<br/>";
-}
 if(!isset($getcolumns['webadmin'])) {
 	$mysqli->query("ALTER TABLE accounts ADD `webadmin` int(1) DEFAULT 0;");
 	echo "Added webadmin<br/>";
