@@ -10,6 +10,7 @@ if(basename($_SERVER["PHP_SELF"]) == "footer.php") {
 			</div>
 			<footer>
 				<div class="container">
+				<hr/>
 					<p class="text-center">Proudly powered by MapleBit | <a href="http://forum.ragezone.com/members/1333360872.html">greenelf(x) &raquo;</a></p><br/>
 				</div>
 			</footer>

@@ -17,25 +17,20 @@ if(!file_exists('assets/config/install/installdone.txt')){
 	# Define $getbase variable
 	$getbase = isset($_GET['base']) ? $_GET['base'] : "";
 
-	switch($getbase){
+	$getslug = $mysqli->query("SELECT slug, title, visible from ".$prefix."pages");
+	while($fetchslug = $getslug->fetch_assoc()) {
+		$slugs[] = $fetchslug['slug'];
+		$slugarray[] = array($fetchslug['slug'], $fetchslug['title'], $fetchslug['visible']);
+	}
+
+	switch($getbase) {
 		case NULL:
-			header('Location: ?base=main');
-			break;
 		case "main":
-			$getslug = $mysqli->query("SELECT slug, title, visible from ".$prefix."pages");
-			while($fetchslug = $getslug->fetch_assoc()) {
-				$slugs[] = $fetchslug['slug'];
-				$slugarray[] = array($fetchslug['slug'], $fetchslug['title'], $fetchslug['visible']);
-			}
 			include("sources/structure/header.php");
 			include("sources/public/main.php");
 			include("sources/structure/footer.php");
 			break;
 		case "ucp":
-			$getslug = $mysqli->query("SELECT slug, title, visible from ".$prefix."pages");
-			while($fetchslug = $getslug->fetch_assoc()) {
-				$slugarray[] = array($fetchslug['slug'], $fetchslug['title'], $fetchslug['visible']);
-			}
 			include("sources/structure/header.php");
 			include("sources/ucp/main.php");
 			include("sources/structure/footer.php");
@@ -45,10 +40,6 @@ if(!file_exists('assets/config/install/installdone.txt')){
 			include("sources/admin/main.php");
 			break;
 		case "gmcp":
-			$getslug = $mysqli->query("SELECT slug, title, visible from ".$prefix."pages");
-			while($fetchslug = $getslug->fetch_assoc()) {
-				$slugarray[] = array($fetchslug['slug'], $fetchslug['title'], $fetchslug['visible']);
-			}
 			include("sources/structure/header.php");
 			include("sources/gmcp/main.php");
 			include("sources/structure/footer.php");
