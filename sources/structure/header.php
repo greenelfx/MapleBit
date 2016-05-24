@@ -1,6 +1,6 @@
 <?php
 if(basename($_SERVER["PHP_SELF"]) == "header.php") {
-    die("403 - Access Forbidden");
+	die("403 - Access Forbidden");
 }
 ?>
 <!DOCTYPE html>
@@ -40,7 +40,7 @@ if(basename($_SERVER["PHP_SELF"]) == "header.php") {
 		<div class="container">
 <?php
 if($banner != "") {
-	print("<img src=\"".$banner."\" alt=\"banner\" class=\"img-responsive\" style=\"margin: 0 auto;margin-top:20px;\">");
+	echo "<img src=\"".$banner."\" alt=\"banner\" class=\"img-responsive\" style=\"margin: 0 auto;margin-top:20px;\">";
 } 
 ?>
 <nav class="<?php echo $nav;?>" style="bottom:-22px;">
@@ -75,7 +75,7 @@ if($banner != "") {
 			?>
 		</ul>
 		<?php
-		if(isset($_SESSION['id'])) {
+			if(isset($_SESSION['id'])) {
 		?>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
@@ -95,7 +95,7 @@ if($banner != "") {
 				</li>
 			</ul>
 		<?php
-		}
+			}
 		?>
 	</div>
 </nav>
