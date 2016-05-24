@@ -2,8 +2,8 @@ $(function () {
     var action = '';
     var form_data = '';
     $('#login').click(function () {
-    	$("#username").attr("disabled", true);
-    	$("#password").attr("disabled", true);
+    	$("#username").prop("disabled", true);
+    	$("#password").prop("disabled", true);
         action = $("#loginform").attr("action");
         form_data = {
             username: $("#username").val(),
@@ -25,12 +25,19 @@ $(function () {
                         $("#message").html('<script>location.reload();</script><div class=\"alert alert-success\">Logged in. Reloading...</div>');
                     });
                 }
-                else if(response == 'wait') {
-                	$('#message').hide().html("<br/><div class=\"alert alert-warning\">You're doing this too often. Please wait.</div>").fadeIn('fast');
+                else if(response.indexOf('wait') > -1) {
+                    var time = response.split("%")[1];
+                	$('#message').hide().html("<br/><div class=\"alert alert-warning\">You're doing this too often. Please wait " + time + " seconds before trying again.</div>").fadeIn('fast');
+                    setTimeout(function() {
+                        $("#username").prop("disabled", false);
+                        $("#password").prop("disabled", false);
+                        $('#message').fadeOut('fast');
+                    }, 60000);
+
                 }
                 else {
-                	$("#username").attr("disabled", false);
-    				$("#password").attr("disabled", false);
+                	$("#username").prop("disabled", false);
+    				$("#password").prop("disabled", false);
                     $('#message').hide().html("<br/><div class=\"alert alert-danger\">Wrong username or password</div>").fadeIn('fast');
                 }
                 console.log(response);
