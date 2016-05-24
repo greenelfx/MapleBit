@@ -2,9 +2,10 @@
 if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
 	$is_ajax = $_REQUEST['is_ajax'];
 	if(isset($is_ajax) && $is_ajax) {
-		include_once('assets/config/database.php');
 		if(isset($_COOKIE["block"])) {
-			echo "wait";
+			$cookie = json_decode($_COOKIE['block']);
+			$time = $cookie->expiry - time();
+			echo "wait%" . $time;
 			return;
 		}
 		else {
@@ -13,9 +14,12 @@ if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 			}
 			else {
 				if($_SESSION['attempts'] >= 3) {
-					setcookie("block", 1, time()+60);
+					$expiry = time() + 60;
+					$cookieData = array("data" => 1, "expiry" => $expiry);
+					setcookie("block", json_encode($cookieData), $expiry);
 					$_SESSION['attempts'] = 1;
-					echo "wait";
+					$time = $expiry - time();
+					echo "wait%" . $time;
 					return;
 				}
 				else {
