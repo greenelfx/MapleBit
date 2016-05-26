@@ -1,11 +1,10 @@
 <?php 
-if(basename($_SERVER["PHP_SELF"]) == "bannedmaps.php"){
-    die("403 - Access Forbidden");
+if(basename($_SERVER["PHP_SELF"]) == "bannedmaps.php") {
+	die("403 - Access Forbidden");
 }
-if($_SESSION['admin']){
-	echo "<h2 class=\"text-left\">Edit Banned Maps</h2>
-	<hr/>";
-	if(!isset($_POST['submit'])) {
+
+echo "<h2 class=\"text-left\">Edit Banned Maps</h2><hr/>";
+if(!isset($_POST['submit'])) {
 	$seekmaps = $mysqli->query("SELECT jailmaps FROM ".$prefix."properties");
 	$getmaps = $seekmaps->fetch_assoc();
 	$mapid = explode("," , $getmaps['jailmaps']);
@@ -14,41 +13,39 @@ if($_SESSION['admin']){
 		Prevent users from warping out of jail from the User Control Panel.<br/><br/>
 		<form role=\"form\" method=\"post\">
 			<div class=\"form-group\">
-				<div class=\"input_fields_wrap\">";
-				for($i = 0; $i <= $totalids-1; $i++) {
-					$n = $i+1;
-					echo "<div class=\"row\" style=\"margin-bottom:15px;\"><div class=\"col-md-10\"><input autocomplete=\"off\" class=\"form-control\" type=\"text\" placeholder=\"Jail Map ID\" type=\"text\" name=\"input_map[]\"  value=\"".$mapid[$i]."\"></div><div class=\"col-md-2\"><a href=\"#\" class=\"remove_field btn btn-danger\">Remove</a><br/></div></div>";
-				}
-		echo "	
-			</div></div></div>
-			<span class=\"input-group-btn\">
-				<button id=\"b1\" class=\"btn btn-info add_field_button\" type=\"button\">Add another Map</button>
-			</span>
-			<hr/>
-			<button class=\"btn btn-primary\" name=\"submit\">Submit &raquo;</button>
-		";
-	} else {
-		$input_map = $_POST['input_map'];
-		$maps = array();
-		$i = 1;
-		foreach($input_map as $key => $n ) {
-			$fieldval = $mysqli->real_escape_string(preg_replace("/[^A-Za-z0-9 ]/", '', $n));
-			if(!is_numeric($fieldval)) {
-				echo "<div class=\"alert alert-danger\">Please make sure to only use numbers! Check map entry #".$i.".</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
-				exit();
-			}
-			else {
-				$maps[] = $fieldval;
-			}
-			$i++;
-		}
-
-		$maplist = implode(",", $maps);
-		$mysqli->query("UPDATE ".$prefix."properties SET jailmaps = '$maplist'");
-		echo "<div class=\"alert alert-success\">Successfully updated jail maps</div><hr/><a href=\"?base=admin\" class=\"btn btn-primary\">&laquo; Admin Panel</a>";
+				<div class=\"input_fields_wrap\">
+	";
+	for($i = 0; $i <= $totalids-1; $i++) {
+		$n = $i+1;
+		echo "<div class=\"row\" style=\"margin-bottom:15px;\"><div class=\"col-md-10\"><input autocomplete=\"off\" class=\"form-control\" type=\"text\" placeholder=\"Jail Map ID\" type=\"text\" name=\"input_map[]\"  value=\"".$mapid[$i]."\"></div><div class=\"col-md-2\"><a href=\"#\" class=\"remove_field btn btn-danger\">Remove</a><br/></div></div>";
 	}
-} else{
-	redirect("?base");
+	echo "	
+		</div></div></div>
+		<span class=\"input-group-btn\">
+			<button id=\"b1\" class=\"btn btn-info add_field_button\" type=\"button\">Add another Map</button>
+		</span>
+		<hr/>
+		<button class=\"btn btn-primary\" name=\"submit\">Submit &raquo;</button>
+	";
+} else {
+	$input_map = $_POST['input_map'];
+	$maps = array();
+	$i = 1;
+	foreach($input_map as $key => $n ) {
+		$fieldval = $mysqli->real_escape_string(preg_replace("/[^A-Za-z0-9 ]/", '', $n));
+		if(!is_numeric($fieldval)) {
+			echo "<div class=\"alert alert-danger\">Please make sure to only use numbers! Check map entry #".$i.".</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+			exit();
+		}
+		else {
+			$maps[] = $fieldval;
+		}
+		$i++;
+	}
+
+	$maplist = implode(",", $maps);
+	$mysqli->query("UPDATE ".$prefix."properties SET jailmaps = '$maplist'");
+	echo "<div class=\"alert alert-success\">Successfully updated jail maps</div><hr/><a href=\"?base=admin\" class=\"btn btn-primary\">&laquo; Admin Panel</a>";
 }
 ?>
 <script>
