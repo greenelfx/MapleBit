@@ -6,19 +6,19 @@ if(basename($_SERVER["PHP_SELF"]) == "banned.php") {
 try {
 	$result = $mysqli->query("SELECT name, banreason, ip FROM accounts WHERE banned >= 1");
 	if ($result === FALSE)
-	     throw new Exception($mysqli->error);
+		throw new Exception($mysqli->error);
 
 	echo "
 		<h2 class=\"text-left\">Banned Members</h2>
 		<hr/>
 		<table class=\"table table-bordered table-hover table-striped\">
-		<thead>
-			<tr>
-				<th>Account ID</th>
-				<th>Reason</th>
-				<th>IP</th>
-			</tr>
-		</thead>
+			<thead>
+				<tr>
+					<th>Account ID</th>
+					<th>Reason</th>
+					<th>IP</th>
+				</tr>
+			</thead>
 		<tbody>
 	";
 	while($row = $result->fetch_assoc()) {

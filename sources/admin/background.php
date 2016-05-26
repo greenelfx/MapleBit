@@ -1,13 +1,12 @@
 <?php
 if(basename($_SERVER["PHP_SELF"]) == "background.php") {
-    die("403 - Access Forbidden");
+	die("403 - Access Forbidden");
 }
 $bgfixedcheck = $bgcentercheck = $bgcovercheck = null;
 ?>
 <script type="text/javascript" src="<?php echo $siteurl; ?>assets/js/jscolor.js"></script>
 <?php 
-if($_SESSION['admin']) {
-	if(!isset($_POST['url'])) {
+if(!isset($_POST['url'])) {
 ?>
 <h2 class="text-left">Site Background</h2>
 <hr/>
@@ -49,25 +48,21 @@ if($_SESSION['admin']) {
 	<button type="submit" class="btn btn-primary" required>Submit &raquo;</button>
 </form>
 <?php	
-	} else {
-		$bgcenter = $bgfixed = $bgcover = "";
-		$url = $mysqli->real_escape_string($_POST['url']);
-		$bgcolor = $mysqli->real_escape_string($_POST['bgcolor']);
-		$bgrepeat = $mysqli->real_escape_string($_POST['bgrepeat']);
-		if(isset($_POST['bgcenter'])) {
-			$bgcenter = $mysqli->real_escape_string($_POST['bgcenter']);
-		}
-		if(isset($_POST['bgfixed'])) {
-			$bgfixed = $mysqli->real_escape_string($_POST['bgfixed']);
-		}
-		if(isset($_POST['bgcover'])) {
-			$bgcover = $mysqli->real_escape_string($_POST['bgcover']);
-		}
-		$mysqli->query("UPDATE ".$prefix."properties SET background = '".$url."', bgcolor = '".$bgcolor."', bgrepeat = '".$bgrepeat."', bgcenter = '".$bgcenter."', bgfixed = '".$bgfixed."', bgcover = '".$bgcover."'");
-		print("<div class=\"alert alert-success\">Successfully updated background.</div>");
-		redirect_wait5("?base=admin&page=background");
-	}
 } else {
-	redirect("?base");
+	$bgcenter = $bgfixed = $bgcover = "";
+	$url = $mysqli->real_escape_string($_POST['url']);
+	$bgcolor = $mysqli->real_escape_string($_POST['bgcolor']);
+	$bgrepeat = $mysqli->real_escape_string($_POST['bgrepeat']);
+	if(isset($_POST['bgcenter'])) {
+		$bgcenter = $mysqli->real_escape_string($_POST['bgcenter']);
+	}
+	if(isset($_POST['bgfixed'])) {
+		$bgfixed = $mysqli->real_escape_string($_POST['bgfixed']);
+	}
+	if(isset($_POST['bgcover'])) {
+		$bgcover = $mysqli->real_escape_string($_POST['bgcover']);
+	}
+	$mysqli->query("UPDATE ".$prefix."properties SET background = '".$url."', bgcolor = '".$bgcolor."', bgrepeat = '".$bgrepeat."', bgcenter = '".$bgcenter."', bgfixed = '".$bgfixed."', bgcover = '".$bgcover."'");
+	print("<div class=\"alert alert-success\">Successfully updated background.</div>");
+	redirect_wait5("?base=admin&page=background");
 }
-?>
