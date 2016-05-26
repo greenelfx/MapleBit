@@ -1,5 +1,5 @@
 <?php 
-if(basename($_SERVER["PHP_SELF"]) == "main.php"){
+if(basename($_SERVER["PHP_SELF"]) == "main.php") {
     die("403 - Access Forbidden");
 }
 
@@ -82,8 +82,7 @@ if(isset($_SESSION['id'])) {
 	else {
 		redirect("?base=main");
 	}
-		
+
 } else {
 	redirect("?base=main");
 }
-?>
