@@ -162,9 +162,6 @@ if(isset($_SESSION['id']) && isset($_SESSION['admin'])) {
 	elseif($admin === "pages") {
 		include('sources/admin/pages.php');
 	}
-	elseif($admin === "update") {
-		include('sources/admin/update.php');
-	}
 	elseif($admin === "homeconfig") {
 		include('sources/admin/homeconfig.php');
 	}

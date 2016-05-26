@@ -41,7 +41,7 @@ if(isset($_SESSION['id']) && (isset($_SESSION['gm']) || isset($_SESSION['admin']
 	elseif($gmcp === "banned") {
 		include('sources/gmcp/banned.php');
 	}
-} else {
+}
+else {
 	redirect("?base=main");
 }
-?>
