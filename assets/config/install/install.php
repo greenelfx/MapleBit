@@ -571,7 +571,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 			echo "<h4>Woohoo! You're done installing MapleBit!</h4>
 			".$_SESSION['flash']."
 			<hr/>
-				<form action=\"../../../?cype=main\" method=\"post\">
+				<form action=\"../../../?base=main\" method=\"post\">
 					<input type=\"submit\" class=\"btn btn-success btn-lg\" value=\"Ok, let's go! &raquo;\" style=\"float:right;\"/><br/><br/>
 				</form>";
 			$content = "Congratulations on completing your MapleBit Installation! Leave this file here, or delete it if you would like to reconfigure your website.";
