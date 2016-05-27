@@ -4,9 +4,10 @@ if(basename($_SERVER["PHP_SELF"]) == "main.php") {
 }
 
 $main = "";
-if(isset($_GET['page'])) 
+if(isset($_GET['page'])) {
 	$main = $_GET['page'];
 }
+
 if($getbase === "main") {
 	if(empty($main)) {
 		$queryhome = $mysqli->query("SELECT homecontent FROM ".$prefix."properties");
