@@ -1,15 +1,16 @@
 <?php
 if(basename($_SERVER["PHP_SELF"]) == "charfix.php") {
-    die("403 - Access Forbidden");
+	die("403 - Access Forbidden");
 }
 if(isset($_GET['fix']) && $_GET['fix'] === "unstuck") {
 	echo "<h2 class=\"text-left\">Move Character</h2><hr/>";
 	if(!isset($_POST['unstuck'])) {
 		$seekmaps = $mysqli->query("SELECT jailmaps FROM ".$prefix."properties");
 		$getmaps = $seekmaps->fetch_assoc(); // Get array
-		if($getmaps['jailmaps'] == "") {
+		if(empty($getmaps['jailmaps'])) {
 			$avail_chars = $mysqli->query("SELECT * FROM characters WHERE accountid='".$_SESSION['id']."' ORDER BY id ASC") or die();
-		} else {
+		}
+		else {
 			$avail_chars = $mysqli->query("SELECT * FROM characters WHERE accountid='".$_SESSION['id']."' AND map NOT IN (".$getmaps['jailmaps'].") ORDER BY id ASC") or die();
 		}
 		$count_avail_chars = $avail_chars->num_rows;
@@ -42,12 +43,11 @@ if(isset($_GET['fix']) && $_GET['fix'] === "unstuck") {
 		$name = $_SESSION['name'];
 		$queryAccount = $mysqli->query("SELECT * FROM `accounts` WHERE `name`='".$name."'") or die();
 		$getAccount = $queryAccount->fetch_assoc();
-
 		$inputCharacter = $mysqli->real_escape_string($_POST['char']);
 		$queryCharacter = $mysqli->query("SELECT * FROM `characters` WHERE `id`='".$inputCharacter."'") or die();
 		$getCharacter = $queryCharacter->fetch_assoc();
-		//$moveMap = $mysqli->real_escape_string($_POST['map']);
 		$moveMap = 100000000;
+
 		if($getAccount['id'] == $getCharacter['accountid']) {
 			$m = $mysqli->query("UPDATE characters SET map='".$moveMap."' WHERE id='".$inputCharacter."'") or die();
 			echo "<div class=\"alert alert-success\"><b>Fix succesful.</b> Your character will now spawn at Henesys.</div>";
@@ -57,7 +57,8 @@ if(isset($_GET['fix']) && $_GET['fix'] === "unstuck") {
 		}
 
 	}
-} elseif(isset($_GET['fix']) && $_GET['fix'] == "dc") {
+}
+elseif(isset($_GET['fix']) && $_GET['fix'] == "dc") {
 	$name = $_SESSION['name'];
 	$acc = $mysqli->query("SELECT * FROM `accounts` WHERE `name`='".$name."'")->fetch_assoc();
 	if($acc['loggedin']=="0") {

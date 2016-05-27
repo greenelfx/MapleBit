@@ -31,7 +31,7 @@ if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 		$p = $_REQUEST['password'];
 		$s = $mysqli->query("SELECT * FROM `accounts` WHERE `name`='".$u."'") or die();
 		$i = $s->fetch_assoc();
-		if($i['password'] == hash('sha512',$p.$i['salt']) || sha1($p) == $i['password']){
+		if($i['password'] == hash('sha512',$p.$i['salt']) || sha1($p) == $i['password']) {
 			#echo "SELECT * FROM `accounts` WHERE `name`='".$i['name']."' AND `password`='".$i['password']."'";
 			$userz = $mysqli->query("SELECT * FROM `accounts` WHERE `name`='".$i['name']."' AND `password`='".$i['password']."'") or die();
 			$auser = $userz->fetch_assoc();
@@ -42,11 +42,11 @@ if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 			$_SESSION['name'] = $auser['name'];
 			$_SESSION['mute'] = $auser['mute'];
 			$_SESSION['email'] = $auser['email'];
-			if($countcheckpname == 1){
+			if($countcheckpname == 1) {
 				$_SESSION['pname'] =  $checkprofile['name'];
 			}
 			else {$_SESSION['pname'] = "checkpname";}
-			if($auser['webadmin'] == "1"){
+			if($auser['webadmin'] == "1") {
 				$_SESSION['admin'] = $auser['webadmin'];
 			}
 			if(isset($auser['gm']) && $auser['gm'] >= $gmlevel){ // Make sure that the gm column exists. If it does, check if gmLevel is above

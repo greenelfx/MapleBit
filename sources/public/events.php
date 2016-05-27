@@ -1,5 +1,5 @@
 <?php
-if(basename($_SERVER["PHP_SELF"]) == "events.php"){
+if(basename($_SERVER["PHP_SELF"]) == "events.php") {
     die("403 - Access Forbidden");
 }
 ?>
