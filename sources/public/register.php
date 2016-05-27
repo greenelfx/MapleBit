@@ -1,8 +1,8 @@
 <?php 
-if(basename($_SERVER["PHP_SELF"]) == "register.php"){
-    die("403 - Access Forbidden");
+if(basename($_SERVER["PHP_SELF"]) == "register.php") {
+	die("403 - Access Forbidden");
 }
-if(isset($_SESSION['id'])){
+if(isset($_SESSION['id'])) {
     echo "<meta http-equiv=refresh content=\"0; url=?base=ucp\">";
 }
 else{
