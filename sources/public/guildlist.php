@@ -1,6 +1,6 @@
 <?php
-if(basename($_SERVER["PHP_SELF"]) == "guildlist.php"){
-    die("403 - Access Forbidden");
+if(basename($_SERVER["PHP_SELF"]) == "guildlist.php") {
+	die("403 - Access Forbidden");
 }
 ?>
 <h2 class="text-left">Guild List</h2><hr/>

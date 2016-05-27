@@ -1,5 +1,5 @@
 <?php
-if(basename($_SERVER["PHP_SELF"]) == "download.php"){
+if(basename($_SERVER["PHP_SELF"]) == "download.php") {
     die("403 - Access Forbidden");
 }
 ?>
