@@ -36,7 +36,6 @@ try {
 	$droprate = $prop['droprate'];
 	/* Flood Prevention */
 	$baseflood = $prop['flood'];
-	$pcap = $prop['pcap'];
 	/* Flood Interval */
 	$basefloodint = $prop['floodint'];
 	/* Level for GMs and up */

@@ -7,7 +7,7 @@ if(isset($_SESSION['id']) && isset($_SESSION['admin'])) {
 		$getcomments = $mysqli->query("SELECT author, feedback, date, comment FROM ".$prefix."bcomments UNION ALL SELECT author, feedback, date, comment FROM ".$prefix."ncomments UNION ALL SELECT author, feedback, date, comment FROM ".$prefix."ecomments");
 		$gettime = $mysqli->query("SELECT githubapi FROM ".$prefix."properties")->fetch_assoc();
 		$time = time();
-		if($gettime['githubapi'] == "" || $gettime['githubapi'] >= $time+21600) {
+		if(empty($gettime['githubapi']) || $gettime['githubapi'] >= $time+21600) {
 			$time = $time + 21600;
 			if (extension_loaded('openssl')) {
 				$opts = array(

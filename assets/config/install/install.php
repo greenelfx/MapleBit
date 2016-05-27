@@ -194,7 +194,6 @@ CREATE TABLE `".$prefix."properties` (
   `bgcover` tinyint(1) DEFAULT NULL,
   `flood` tinyint(4) NOT NULL DEFAULT '1',
   `floodint` int(11) DEFAULT NULL,
-  `pcap` text,
   `gmlevel` int(11) NOT NULL DEFAULT '1',
   `theme` text NOT NULL,
   `nav` text NOT NULL,
@@ -443,7 +442,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				if(!$continue) {
 					echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 				} else {
-					$mysqli->query("UPDATE ".$prefix."properties SET name='".$sservername."', type = '".$sservertype."', client='".$sclient."', server = '".$sserver."', version='".$sversion."', forumurl='".$sforumurl."', siteurl='".$ssiteurl."', exprate='".$sexp."', mesorate='".$smeso."', droprate='".$sdrop."', gmlevel = '".$sgmlevel."', flood='1', floodint='5', theme='cerulean', nav='0', pcap='100', colnx = '".$scolnx."', colvp = '".$scolvp."'");
+					$mysqli->query("UPDATE ".$prefix."properties SET name='".$sservername."', type = '".$sservertype."', client='".$sclient."', server = '".$sserver."', version='".$sversion."', forumurl='".$sforumurl."', siteurl='".$ssiteurl."', exprate='".$sexp."', mesorate='".$smeso."', droprate='".$sdrop."', gmlevel = '".$sgmlevel."', flood='1', floodint='5', theme='cerulean', nav='0', colnx = '".$scolnx."', colvp = '".$scolvp."'");
 					echo "Working...";
 					echo "<meta http-equiv=\"refresh\" content=\"1; url=?install=5\" />";
 				}
