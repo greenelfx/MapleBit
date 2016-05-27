@@ -1,6 +1,6 @@
 <?php 
-if(basename($_SERVER["PHP_SELF"]) == "gmlog.php"){
-    die("403 - Access Forbidden");
+if(basename($_SERVER["PHP_SELF"]) == "gmlog.php") {
+	die("403 - Access Forbidden");
 }
 try {
 	$query = $mysqli->query("SELECT characters.id AS cid, characters.name AS cname, gmlog.cid AS cid, gmlog.command AS command, gmlog.when AS 'when' FROM characters,gmlog WHERE characters.id = gmlog.cid ORDER BY gmlog.when DESC LIMIT 200");
@@ -8,17 +8,18 @@ try {
 		throw new Exception($mysqli->error);
 
 	echo "
-	<h2 class=\"text-left\">GM Logs</h2>
-	<hr/>
-	<table class=\"table table-bordered table-hover table-striped\">
-	<thead>
-		<tr>
-			<th>Character</th>
-			<th>Command</th>
-			<th>Timestamp</th>
-		</tr>
-	</thead>
-	<tbody>";
+		<h2 class=\"text-left\">GM Logs</h2>
+		<hr/>
+		<table class=\"table table-bordered table-hover table-striped\">
+		<thead>
+			<tr>
+				<th>Character</th>
+				<th>Command</th>
+				<th>Timestamp</th>
+			</tr>
+		</thead>
+		<tbody>
+	";
 	$commands = array();
 	while($row = $query->fetch_assoc()) {
 		if(!array_key_exists('cname', $row) || $row['cname'] == ""){$row['cname'] = "Unknown";}
@@ -45,7 +46,9 @@ try {
 	echo "</tbody></table>";
 }
 catch (Exception $e) {
-		echo "<h2 class=\"text-left\">GM Logs</h2><hr/>
-		<div class=\"alert alert-danger\">Could not look up GM logs.</div>";
-	}
+	echo "
+		h2 class=\"text-left\">GM Logs</h2><hr/>
+		<div class=\"alert alert-danger\">Could not look up GM logs.</div>
+	";
+}
 ?>

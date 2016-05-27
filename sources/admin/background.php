@@ -2,11 +2,12 @@
 if(basename($_SERVER["PHP_SELF"]) == "background.php") {
 	die("403 - Access Forbidden");
 }
+
 $bgfixedcheck = $bgcentercheck = $bgcovercheck = null;
 ?>
 <script type="text/javascript" src="<?php echo $siteurl; ?>assets/js/jscolor.js"></script>
 <?php 
-if(!isset($_POST['url'])) {
+if(!isset($_POST['submit'])) {
 ?>
 <h2 class="text-left">Site Background</h2>
 <hr/>
@@ -45,7 +46,7 @@ if(!isset($_POST['url'])) {
 	</div>				
 	<span class="help-block">Background images can be resized to fit the browser window.</span>
 	<hr/>
-	<button type="submit" class="btn btn-primary" required>Submit &raquo;</button>
+	<button name="submit" type="submit" class="btn btn-primary" required>Submit &raquo;</button>
 </form>
 <?php	
 } else {
