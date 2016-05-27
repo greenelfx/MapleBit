@@ -106,7 +106,7 @@ try {
 		14000 => "Kinesis", 14200 => "Kinesis", 14210 => "Kinesis", 14211 => "Kinesis", 14212 => "Kinesis"
 	);
 
-	if ($prop['nav']){
+	if ($prop['nav']) {
 		$nav = "navbar navbar-default navbar-inverse";
 	}
 } catch(Exception $e) {

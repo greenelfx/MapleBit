@@ -3,7 +3,7 @@ if(basename($_SERVER["PHP_SELF"]) == "main.php") {
     die("403 - Access Forbidden");
 }
 
-if(isset($_GET['page'])){
+if(isset($_GET['page'])) {
 	$ucp = $_GET['page'];
 }
 
@@ -67,16 +67,16 @@ if(isset($_SESSION['id'])) {
 	elseif($ucp === "charfix"){
 		include('sources/ucp/charfix.php');
 	}
-	elseif($ucp === "profedit"){
+	elseif($ucp === "profedit") {
 		include('sources/ucp/profile-edit.php');
 	}
-	elseif($ucp === "profname"){
+	elseif($ucp === "profname") {
 		include('sources/ucp/profile-name.php');
 	}
-	elseif($ucp === "ticket"){
+	elseif($ucp === "ticket") {
 		include('sources/ucp/ticket.php');
 	}
-	elseif($ucp === "characters"){
+	elseif($ucp === "characters") {
 		include('sources/ucp/characters.php');
 	}
 	else {

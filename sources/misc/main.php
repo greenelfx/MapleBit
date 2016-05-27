@@ -1,6 +1,6 @@
 <?php 
-if(basename($_SERVER["PHP_SELF"]) == "main.php"){
-    die("403 - Access Forbidden");
+if(basename($_SERVER["PHP_SELF"]) == "main.php") {
+	die("403 - Access Forbidden");
 }
 
 $script = "";

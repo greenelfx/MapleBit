@@ -1,5 +1,5 @@
 <?php
-if(basename($_SERVER["PHP_SELF"]) == "character.php"){
+if(basename($_SERVER["PHP_SELF"]) == "character.php") {
 	die("403 - Access Forbidden");
 }
 if(isset($_GET['n'])) {

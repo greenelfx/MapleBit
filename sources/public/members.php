@@ -1,6 +1,6 @@
 <?php
-if(basename($_SERVER["PHP_SELF"]) == "members.php"){
-    die("403 - Access Forbidden");
+if(basename($_SERVER["PHP_SELF"]) == "members.php") {
+	die("403 - Access Forbidden");
 }
 
 require_once 'assets/libs/HTMLPurifier.standalone.php';
@@ -71,7 +71,7 @@ elseif(isset($_GET['action']) && $_GET['action'] == "search" && isset($_POST['se
 		<h3 class=\"text-left\">Search Results:</h3><hr/>
 		<div class=\"list-group\">
 	";
-	while($s = $gs->fetch_assoc()){
+	while($s = $gs->fetch_assoc()) {
 		echo "<a href=\"?base=main&amp;page=members&amp;name=".$s['name']."\" class=\"list-group-item\">".$s['name']."</a>";
 	}
 	echo "</div>";
@@ -98,7 +98,7 @@ else {
 	";
 	$gp = $mysqli->query("SELECT * FROM `".$prefix."profile` WHERE `name` != 'NULL' ORDER BY `name` ASC") or die();
 	echo "<div class=\"list-group\">";
-	while($p = $gp->fetch_assoc()){
+	while($p = $gp->fetch_assoc()) {
 		echo "<a href=\"?base=main&amp;page=members&amp;name=".$p['name']."\" class=\"list-group-item\">".$p['name']."</a>";
 	}
 	echo "</div>";

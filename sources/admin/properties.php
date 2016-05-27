@@ -50,11 +50,11 @@ if(isset($_POST['submit'])) {
 		echo '<div class="alert alert-danger">Enter an exp rate.</div>';
 		$continue = false;
 	}
-	elseif(empty($smeso)){
+	elseif(empty($smeso)) {
 		echo '<div class="alert alert-danger">Enter a meso rate.</div>';
 		$continue = false;
 	}
-	elseif(empty($sdrop)){
+	elseif(empty($sdrop)) {
 		echo '<div class="alert alert-danger">Enter an drop rate.</div>';
 		$continue = false;
 	}
