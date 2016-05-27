@@ -15,7 +15,7 @@ if(!isset($_POST['submit'])) {
 			<div class=\"form-group\">
 				<div class=\"input_fields_wrap\">
 	";
-	for($i = 0; $i <= $totalids-1; $i++) {
+	for($i = 0; $i < $totalids; $i++) {
 		$n = $i+1;
 		echo "<div class=\"row\" style=\"margin-bottom:15px;\"><div class=\"col-md-10\"><input autocomplete=\"off\" class=\"form-control\" type=\"text\" placeholder=\"Jail Map ID\" type=\"text\" name=\"input_map[]\"  value=\"".$mapid[$i]."\"></div><div class=\"col-md-2\"><a href=\"#\" class=\"remove_field btn btn-danger\">Remove</a><br/></div></div>";
 	}
@@ -31,7 +31,7 @@ if(!isset($_POST['submit'])) {
 	$input_map = $_POST['input_map'];
 	$maps = array();
 	$i = 1;
-	foreach($input_map as $key => $n ) {
+	foreach($input_map as $n) {
 		$fieldval = $mysqli->real_escape_string(preg_replace("/[^A-Za-z0-9 ]/", '', $n));
 		if(!is_numeric($fieldval)) {
 			echo "<div class=\"alert alert-danger\">Please make sure to only use numbers! Check map entry #".$i.".</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
@@ -45,7 +45,8 @@ if(!isset($_POST['submit'])) {
 
 	$maplist = implode(",", $maps);
 	$mysqli->query("UPDATE ".$prefix."properties SET jailmaps = '$maplist'");
-	echo "<div class=\"alert alert-success\">Successfully updated jail maps</div><hr/><a href=\"?base=admin\" class=\"btn btn-primary\">&laquo; Admin Panel</a>";
+	echo "<div class=\"alert alert-success\">Successfully updated jail maps</div>";
+	redirect_wait5("?base=admin&page=bannedmaps");
 }
 ?>
 <script>
