@@ -37,9 +37,11 @@ if(isset($_SESSION['id'])) {
 			}
 		}
 		echo "</div>";
-	} else {
+	}
+	else {
 		echo "<div class=\"alert alert-danger\">Oops! You don't have any characters.</div>";
 	}
-} else {
+}
+else {
 	redirect("?base=main");
 }

@@ -55,15 +55,15 @@ $(document).ready(function() {
     var wrapper	= $(".input_fields_wrap");
     var add_button	= $(".add_field_button");
     var x = 1;
-    $(add_button).click(function(e){
+    $(add_button).click(function(e) {
         e.preventDefault();
-        if(x < max_fields){
+        if(x < max_fields) {
             x++;
             $(wrapper).append('<div class=\"row\" style=\"margin-bottom:15px;\"><div class="col-md-10"><input autocomplete="off" class="form-control" type="text" placeholder="Jail Map ID" type="text" name="input_map[]"/></div><div class="col-md-2"><a href="#" class="remove_field btn btn-danger">Remove</a></div></div>'); //add input box
         }
     });
     
-    $(wrapper).on("click",".remove_field", function(e){
+    $(wrapper).on("click",".remove_field", function(e) {
         e.preventDefault(); $(this).parent('div').parent('div').remove(); x--;
     })
 });
