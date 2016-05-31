@@ -9,26 +9,27 @@ if(!isset($_POST['apply'])) {
 	echo "
 		Please click one of the options below to preview the theme. Once you are happy with your theme, click the \"Apply Theme\" button below.
 		<hr/>
-		<form name=\"applytheme\" method=\"post\">";
-		foreach($themes as $t) {
-			echo "<div class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"theme\" value=\"$t\"";
-			if($theme == $t) { echo " checked"; }
-			echo ">". ucfirst($t) ." <a href=\"http://bootswatch.com/".$t."/\" target=\"_blank\"><i class=\"fa fa-external-link\"></i></a></label></div>";
-		}
-		echo "<hr/>";
-		if($nav == "navbar navbar-default") {
-			echo "
-				<div class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"nav\" value=\"0\" checked>Normal Navigation Bar</label></div>
-				<div class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"nav\" value=\"1\">Inverse Navigation Bar</label></div>
-			";
-		}
-		else {
-			echo "
-				<div class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"nav\" value=\"0\">Normal Navigation Bar</label></div>
-				<div class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"nav\" value=\"1\" checked>Inverse Navigation Bar</label></div>
-			";	
-		}
-		echo '
+		<form name=\"applytheme\" method=\"post\">
+	";
+	foreach($themes as $t) {
+		echo "<div class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"theme\" value=\"$t\"";
+		if($theme == $t) { echo " checked"; }
+		echo ">". ucfirst($t) ." <a href=\"http://bootswatch.com/".$t."/\" target=\"_blank\"><i class=\"fa fa-external-link\"></i></a></label></div>";
+	}
+	echo "<hr/>";
+	if($nav == "navbar navbar-default") {
+		echo "
+			<div class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"nav\" value=\"0\" checked>Normal Navigation Bar</label></div>
+			<div class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"nav\" value=\"1\">Inverse Navigation Bar</label></div>
+		";
+	}
+	else {
+		echo "
+			<div class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"nav\" value=\"0\">Normal Navigation Bar</label></div>
+			<div class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"nav\" value=\"1\" checked>Inverse Navigation Bar</label></div>
+		";	
+	}
+	echo '
 		<hr/>
 		<input type="submit" name="apply" value="Apply Theme &raquo;" class="btn btn-primary"/>
 		</form>
@@ -49,10 +50,10 @@ else {
 }
 ?>
 <script>
-$("input[name='theme']").change(function(){
+$("input[name='theme']").change(function() {
 	$("#theme").attr("href", "<?php echo $siteurl; ?>assets/css/" + $(this).val() + ".min.css");
 });
-$("input[name='nav']").change(function(){
+$("input[name='nav']").change(function() {
 	if($(this).val() == 0) {
 		$("#navbar").removeClass("navbar-inverse").addClass("navbar-default");
 	}

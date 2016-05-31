@@ -49,7 +49,8 @@ if(!isset($_POST['submit'])) {
 	<button name="submit" type="submit" class="btn btn-primary" required>Submit &raquo;</button>
 </form>
 <?php	
-} else {
+}
+else {
 	$bgcenter = $bgfixed = $bgcover = "";
 	$url = $mysqli->real_escape_string($_POST['url']);
 	$bgcolor = $mysqli->real_escape_string($_POST['bgcolor']);
@@ -64,6 +65,6 @@ if(!isset($_POST['submit'])) {
 		$bgcover = $mysqli->real_escape_string($_POST['bgcover']);
 	}
 	$mysqli->query("UPDATE ".$prefix."properties SET background = '".$url."', bgcolor = '".$bgcolor."', bgrepeat = '".$bgrepeat."', bgcenter = '".$bgcenter."', bgfixed = '".$bgfixed."', bgcover = '".$bgcover."'");
-	print("<div class=\"alert alert-success\">Successfully updated background.</div>");
+	echo "<div class=\"alert alert-success\">Successfully updated background.</div>";
 	redirect_wait5("?base=admin&page=background");
 }
