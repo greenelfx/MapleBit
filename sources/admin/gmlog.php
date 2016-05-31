@@ -51,4 +51,3 @@ catch (Exception $e) {
 		<div class=\"alert alert-danger\">Could not look up GM logs.</div>
 	";
 }
-?>
