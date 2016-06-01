@@ -5,9 +5,9 @@ if(basename($_SERVER["PHP_SELF"]) == "register.php") {
 if(isset($_SESSION['id'])) {
     echo "<meta http-equiv=refresh content=\"0; url=?base=ucp\">";
 }
-else{
+else {
 echo "<h2 class=\"text-left\">Registration</h2><hr/>";
-if (@$_POST["register"] != "1") {
+if (!isset($_POST['submit'])) {
 ?>
 	<form action="?base=main&amp;page=register" method="POST">
 	<div class="form-group">
@@ -36,22 +36,21 @@ if (@$_POST["register"] != "1") {
 	?>
 		<br/>
 		<input type="submit" class="btn btn-primary" name="submit" value="Register &raquo;"> 
-		<input type="hidden" name="register" value="1">
 	</form>
 <?php
-} else {
-	if (!isset($_POST["musername"]) OR
-		!isset($_POST["mpass"]) OR
-		!isset($_POST["mpwcheck"]) OR
-		!isset($_POST["memail"]) OR
+}
+else {
+	if (!isset($_POST["musername"]) ||
+		!isset($_POST["mpass"]) ||
+		!isset($_POST["mpwcheck"]) ||
+		!isset($_POST["memail"]) ||
 		!isset($_POST["recaptcha_response_field"])) {
-		die ("<div class=\"alert alert-error\">Please fill in the correct ReCAPTCHA code!<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a></div>");
+		die ("<div class=\"alert alert-error\">Please fill in the correct ReCAPTCHA code!<br/><a onclick=\"goBack()\">&laquo; Go Back</a></div>");
 	}
 	
-	$getusername = $mysqli->real_escape_string($_POST["musername"]); # Get Username
-	$username = preg_replace("/[^A-Za-z0-9 ]/", '', $getusername); # Escape and Strip
+	$username = $mysqli->real_escape_string($_POST["musername"]); # Get Username
 	$password = $_POST["mpass"]; # Get Password
-	$confirm_password =$_POST["mpwcheck"]; # Get Confirm Password
+	$confirm_password = $_POST["mpwcheck"]; # Get Confirm Password
 	$email = $mysqli->real_escape_string($_POST["memail"]);
 	$birth = "1990-01-01";
 	$ip = getRealIpAddr();
@@ -64,40 +63,41 @@ if (@$_POST["register"] != "1") {
 	$privatekey = "6LemqAwAAAAAAO69RT3j9M1eHPX_ahhmC6Gakuwb";
 	
 	$resp = null;
-	$danger = null;
 
 	if ($_POST["recaptcha_response_field"]) {
-			$resp = recaptcha_check_answer ($privatekey, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
-			if ($resp->is_valid) {
-				$continue = true;
-			}
+		$resp = recaptcha_check_answer ($privatekey, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
+		if ($resp->is_valid) {
+			$continue = true;
+		}
 	}
-
+	$continue = true;
 	if (!$continue) {
 		echo ("<div class=\"alert alert-danger\">Please fill in the correct ReCAPTCHA code!<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a></div>");
-	} else {
-		$select_user_result = $mysqli->query("SELECT id FROM accounts WHERE name='".$username."' OR email='".$email."' LIMIT 1");
-		$returned = $select_user_result->num_rows;	
-		if ($returned > 0) {
+	}
+	else {
+		$select_user_result = $mysqli->query("SELECT COUNT(*) FROM accounts WHERE name='".$username."' OR email='".$email."'");
+		if ($select_user_result->fetch_row()[0]) {
 			echo ("<div class=\"alert alert-danger\">This username or email is already used!<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a></div>");
-		} else if ($password != $confirm_password) {
+		}
+		else if ($password != $confirm_password) {
 			echo ("<div class=\"alert alert-danger\">Passwords didn't match!<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a></div>");
-		} else if (strlen($password) < 4 || strlen($password) > 12) {
-			echo ("<div class=\"alert alert-danger\">Your password must be between 4-12 characters<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a></div>");
-		} else if (strlen($username) < 4 || strlen($username) > 12) {
+		}
+		else if (strlen($password) < 6 || strlen($password) > 12) {
+			echo ("<div class=\"alert alert-danger\">Your password must be between 6-12 characters<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a></div>");
+		}
+		else if (strlen($username) < 4 || strlen($username) > 12) {
 			echo ("<div class=\"alert alert-danger\">Your username must be between 4-12 characters<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a></div>");
-		} else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+		}
+		else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			echo ("<div class=\"alert alert-danger\">Please fill in a valid email address.<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a></div>");
-		} else {
+		}
+		else {
 			//All data is ok
 			$password = sha1($password);
 			$insert_user_query = "INSERT INTO accounts (`name`, `password`, `ip`, `email`, `birthday`) VALUES ('".$username."', '".$password."', '".$ip."', '".$email."', '".$birth."')";
 			$mysqli->query($insert_user_query);
-			echo "
-			<div class=\"alert alert-success\"><b>Success!</b> Please login, and head to the downloads page to get started!</div>
-			";
+			echo "<div class=\"alert alert-success\"><b>Success!</b> Please login, and head to the downloads page to get started!</div>";
 		}
 	}
-	}
 }
-?>
+}
