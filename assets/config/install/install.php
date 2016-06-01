@@ -205,7 +205,7 @@ CREATE TABLE `".$prefix."properties` (
   `status` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-INSERT INTO ".$prefix."properties (version, theme, nav, colnx, colvp, homecontent) VALUES (83, 'cerulean', 0, 'paypalNX', 'votepoints', 'Admins: Double click here to edit');
+INSERT INTO ".$prefix."properties (version, theme, nav, colnx, colvp, homecontent) VALUES (83, 'cerulean', 0, 'paypalNX', 'votepoints', 'Admins: Click here to edit');
 
 DROP TABLE IF EXISTS `".$prefix."pages`;
 CREATE TABLE `".$prefix."pages` (
@@ -423,19 +423,19 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				} elseif(empty($sdrop)) {
 					echo '<div class="alert alert-danger">Enter an drop rate. Don&apos;t put an x in the text box!</div>';
 					$continue = false;
-				} elseif(empty($sgmlevel)){
+				} elseif(empty($sgmlevel)) {
 					echo '<div class="alert alert-danger">Enter the level that you must be to be GM (Usually 1)</div>';
 					$continue = false;
-				} elseif(empty($ssiteurl)){
+				} elseif(empty($ssiteurl)) {
 					echo '<div class="alert alert-danger">Enter the site path</div>';
 					$continue = false;
-				} elseif(is_numeric($sversion) == FALSE){
+				} elseif(!is_numeric($sversion)) {
 					echo '<div class="alert alert-danger">Enter a numeric value for the server version</div>';
 					$continue = false;
-				} elseif(empty($scolnx)){
+				} elseif(empty($scolnx)) {
 					echo '<div class="alert alert-danger">Please enter your NX column name.</div>';
 					$continue = false;
-				} elseif(empty($scolvp)){
+				} elseif(empty($scolvp)) {
 					echo '<div class="alert alert-danger">Please enter your VP column name.</div>';
 					$continue = false;
 				}
