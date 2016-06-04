@@ -1,4 +1,4 @@
-<?php 
+<?php
 if(basename($_SERVER["PHP_SELF"]) == "main.php") {
 	die("403 - Access Forbidden");
 }
@@ -18,7 +18,7 @@ if(isset($_SESSION['id']) && isset($_SESSION['admin'])) {
 				);
 				$context = stream_context_create($opts);
 				$current_tags = file_get_contents("https://api.github.com/repos/greenelfx/maplebit/tags", false, $context);
-				if ($current_tags !== false) {
+				if ($current_tags) {
 					$tags = json_decode($current_tags);
 					$ref_tag = "v1.14";
 					$current_tag = $tags[0]->name;
@@ -48,11 +48,11 @@ if(isset($_SESSION['id']) && isset($_SESSION['admin'])) {
 				$alert_class = "success";
 				$version_message = "<b>MapleBit is up to date.</b>";
 			}
-			elseif($getstatus['status'] == 1){
+			elseif($getstatus['status'] == 1) {
 				$alert_class = "info";
 				$version_message = "<a href=\"https://github.com/greenelfx/MapleBit\" class=\"alert-link\">Update Available &raquo;</a>";
 			}
-			elseif($getstatus['status'] == 2){
+			elseif($getstatus['status'] == 2) {
 				$alert_class = "danger";
 				$version_message = "Can't get MapleBit update status.";
 			}
@@ -63,7 +63,7 @@ if(isset($_SESSION['id']) && isset($_SESSION['admin'])) {
 		}
 		require_once 'assets/libs/HTMLPurifier.standalone.php';
 		$commentconfig = HTMLPurifier_Config::createDefault();
-		$commentconfig->set('HTML.Allowed', ''); 
+		$commentconfig->set('HTML.Allowed', '');
 		$commentpurifier = new HTMLPurifier($commentconfig);
 ?>
 <h2 class="text-left">Admin Home</h2>
@@ -92,13 +92,13 @@ if(isset($_SESSION['id']) && isset($_SESSION['admin'])) {
 				while($comments = $getcomments->fetch_assoc()) {
 					$clean_comment = $commentpurifier->purify($comments['comment']);
 					$clean_comment = (strlen($clean_comment) > 50) ? substr($clean_comment,0,50).'...' : $clean_comment;
-					if($comments['feedback'] == 0){
+					if($comments['feedback'] == 0) {
 						$feedback = "<span class=\"positive_comment\">Positive</span>";
 					}
-					elseif($comments['feedback'] == 1){
+					elseif($comments['feedback'] == 1) {
 						$feedback = "<span class=\"neutral_comment\">Neutral</span>";
 					}
-					if($comments['feedback'] == 2){
+					if($comments['feedback'] == 2) {
 						$feedback = "<span class=\"negative_comment\">Negative</span>";
 					}
 					echo "

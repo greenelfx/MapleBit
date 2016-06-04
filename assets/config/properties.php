@@ -5,7 +5,7 @@ if(basename($_SERVER["PHP_SELF"]) == "properties.php") {
 try {
 	/* Site Controls */
 	$properties = $mysqli->query("SELECT * FROM ".$prefix."properties");
-	if ($properties === FALSE)
+	if (!$properties)
         throw new Exception($mysqli->error);
 	$prop = $properties->fetch_assoc();
 	$themetype = "light";
@@ -49,7 +49,7 @@ try {
 	/*Get Vote Config*/
 	$colnx = $prop['colnx'];
 	$colvp = $prop['colvp'];
-	
+
 	$jobNames = array(
 		0 => "Beginner",
 		100 => "Warrior",

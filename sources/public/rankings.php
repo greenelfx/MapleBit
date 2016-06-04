@@ -1,5 +1,5 @@
 <?php
-if(basename($_SERVER["PHP_SELF"]) == "rankings.php"){
+if(basename($_SERVER["PHP_SELF"]) == "rankings.php") {
 	die("403 - Access Forbidden");
 }
 ?>
@@ -13,31 +13,31 @@ if(isset($_GET['job'])) {
 }
 $dir = "/";
 if(isset($getjob) && $getjob != NULL) {
-	if($getjob == "beginner"){
+	if($getjob == "beginner") {
 		$show = "AND (c.job = 000)";
 	}
-	elseif($getjob == "warrior"){
+	elseif($getjob == "warrior") {
 		$show = "AND (c.job = 100 OR c.job = 110 OR c.job = 111 OR c.job = 112 OR c.job = 120 OR c.job = 121 OR c.job = 122 OR c.job = 130 OR c.job = 131 OR c.job = 132)";
 	}
-	elseif($getjob == "magician"){
+	elseif($getjob == "magician") {
 		$show = "AND (c.job = 200 OR c.job = 210 OR c.job = 211 OR c.job = 212 OR c.job = 220 OR c.job = 221 OR c.job = 222 OR c.job = 230 OR c.job = 231 OR c.job = 232)";
 	}
-	elseif($getjob == "bowman"){
+	elseif($getjob == "bowman") {
 		$show = "AND (c.job = 300 OR c.job = 310 OR c.job = 311 OR c.job = 312 OR c.job = 320 OR c.job = 321 OR c.job = 322)";
 	}
-	elseif($getjob == "thief"){
+	elseif($getjob == "thief") {
 		$show = "AND (c.job = 400 OR c.job = 410 OR c.job = 411 OR c.job = 412 OR c.job = 420 OR c.job = 421 OR c.job = 422)";
-	}	
-	elseif($getjob == "pirate"){
+	}
+	elseif($getjob == "pirate") {
 		$show = "AND (c.job = 500 OR c.job = 510 OR c.job = 511 OR c.job = 512 OR c.job = 520 OR c.job = 521 OR c.job = 522)";
 	}
-	elseif($getjob == "cygnus"){
+	elseif($getjob == "cygnus") {
 		$show = "AND (c.job = 1000 OR c.job = 1100 OR c.job = 1110 OR c.job = 1111 OR c.job = 1112 OR c.job = 1200 OR c.job = 1210 OR c.job = 1211 OR c.job = 1212 OR c.job = 1300 OR c.job = 1310 OR c.job = 1311 OR c.job = 1312 OR c.job = 1400 OR c.job = 1410 OR c.job = 4111 OR c.job = 1412 OR c.job = 1500 OR c.job = 1511 OR c.job = 1512)";
-	}	
-	elseif($getjob == "aran"){
+	}
+	elseif($getjob == "aran") {
 		$show = "AND (c.job = 2000 OR c.job = 2100 OR c.job = 2110 OR c.job = 2111 OR c.job = 2112)";
 	}
-	elseif($getjob == "all"){
+	elseif($getjob == "all") {
 		$show = "";
 	}
 } else {
@@ -55,25 +55,25 @@ if(isset($search)) {
 } else {
 	$csearch = "";
 }
-if(isset($search)){
-	if($servertype == 1) { 
+if(isset($search)) {
+	if($servertype == 1) {
 		$result2 = $mysqli->query("SELECT c.name , c.gm, c.job , c.level, c.reborns, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE c.gm < $gmlevel ".$show."".$csearch." GROUP BY c.id DESC ORDER BY reborns DESC, level DESC LIMIT $start, 15") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
 	} else {
 		$result2 = $mysqli->query("SELECT c.name , c.gm, c.job , c.level, c.exp, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE c.gm < $gmlevel ".$show."".$csearch." GROUP BY c.id DESC ORDER BY level DESC, exp DESC LIMIT $start, 15") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
 	}
 	$row_number = 0;
 	$int = 0;
-	while(($row = $result2->fetch_assoc()) && !$row_number){
-		if(strtolower($row['name']) == strtolower($search)){
+	while(($row = $result2->fetch_assoc()) && !$row_number) {
+		if(strtolower($row['name']) == strtolower($search)) {
 			$row_number = $int;
 		}
 		$int++;
 	}
-	if($row_number){
+	if($row_number) {
 		$start = $row_number - ($row_number % 5);
 	}
 }
-if($servertype == 1) { 
+if($servertype == 1) {
 	$result = $mysqli->query("SELECT c.name , c.gm, c.job, c.level, c.reborns, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE (c.gm < '$gmlevel') ".$show."".$csearch." GROUP BY c.id DESC ORDER BY reborns DESC, level DESC LIMIT 15 OFFSET $start") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
 } else {
 	$result = $mysqli->query("SELECT c.name , c.gm, c.job, c.level, c.exp, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE (c.gm < '$gmlevel') ".$show."".$csearch." GROUP BY c.id DESC ORDER BY level DESC, exp DESC LIMIT 15 OFFSET $start") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
@@ -96,7 +96,7 @@ echo "
 		<form id='search_form' method='post' action='?base=main&page=rankings'>
 			<div style=\"float:right;\">
 				<div class=\"well well2\" style=\"margin-bottom:0px;\">
-					<div class=\"input-group\">			
+					<div class=\"input-group\">
 						<input type='text' name='search' id='s' class='form-control' placeholder='Character Name' required value='".$search."'/>
 						<span class=\"input-group-btn\">
 							<button class=\"btn btn-primary\" type=\"submit\"><i class=\"icon-search\"></i> Search</button>
@@ -116,7 +116,7 @@ echo "
 				<th class=\"hidden-sm hidden-xs\">Picture</th>
 				<th>Name</th>
 				<th>Job</th>";
-				if($servertype == 1){
+				if($servertype == 1) {
 					echo "<th>Rebirths</th>";
 				}
 				echo "		<th>Level</th>
@@ -272,14 +272,14 @@ echo "
 							echo "Aran 2";
 						if ($row['job']=="2112")
 							echo "Aran 3";
-						
-						if($servertype == 1){
+
+						if($servertype == 1) {
 							echo "</td>
 							<td>".$row['reborns']."</td>";
-						}			
+						}
 						echo "
 						<td>".$row['level']."</td>
-					</tr>";				
+					</tr>";
 				}
 				echo "
 			</tbody>
