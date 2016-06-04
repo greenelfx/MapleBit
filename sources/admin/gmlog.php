@@ -1,10 +1,10 @@
-<?php 
+<?php
 if(basename($_SERVER["PHP_SELF"]) == "gmlog.php") {
 	die("403 - Access Forbidden");
 }
 try {
 	$query = $mysqli->query("SELECT characters.id AS cid, characters.name AS cname, gmlog.cid AS cid, gmlog.command AS command, gmlog.when AS 'when' FROM characters,gmlog WHERE characters.id = gmlog.cid ORDER BY gmlog.when DESC LIMIT 200");
-	if ($query === FALSE)
+	if (!$query)
 		throw new Exception($mysqli->error);
 
 	echo "
@@ -22,9 +22,9 @@ try {
 	";
 	$commands = array();
 	while($row = $query->fetch_assoc()) {
-		if(!array_key_exists('cname', $row) || $row['cname'] == ""){$row['cname'] = "Unknown";}
-		if(!array_key_exists('command', $row) || $row['command'] == ""){$row['command'] = "Unknown";}
-		if(!array_key_exists('when', $row) || $row['when'] == ""){$row['when'] = "Unknown";}
+		if(!array_key_exists('cname', $row) || $row['cname'] == "") {$row['cname'] = "Unknown";}
+		if(!array_key_exists('command', $row) || $row['command'] == "") {$row['command'] = "Unknown";}
+		if(!array_key_exists('when', $row) || $row['when'] == "") {$row['when'] = "Unknown";}
 		$commands[] = $row['command'];
 		$warp = '!warp';
 		$kill = '!kill';

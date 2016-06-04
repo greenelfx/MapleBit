@@ -1,17 +1,17 @@
 <?php
-if(basename($_SERVER["PHP_SELF"]) == "manage-blog.php"){
+if(basename($_SERVER["PHP_SELF"]) == "manage-blog.php") {
     die("403 - Access Forbidden");
 }
 ?>
 <script src="assets/libs/ckeditor/ckeditor.js"></script>
 <?php
 if(isset($_SESSION['id'])) {
-	if(isset($_SESSION['gm']) || isset($_SESSION['admin'])){
-		if($_SESSION['pname'] == NULL || $_SESSION['pname'] == "checkpname"){
+	if(isset($_SESSION['gm']) || isset($_SESSION['admin'])) {
+		if($_SESSION['pname'] == NULL || $_SESSION['pname'] == "checkpname") {
 			echo "<div class=\"alert alert-danger\"><b>Error:</b> You need to assign a profile name before you do this.<hr/><a href=\"?base=ucp&page=profname\" class=\"alert-link\">Set Profile Name &raquo;</a></div>";
 		}else{
-			if($_GET['action']=="add"){
-				if(!isset($_POST['add'])){
+			if($_GET['action']=="add") {
+				if(!isset($_POST['add'])) {
 				echo "<h2 class=\"text-left\">Add a GM Blog</h2><hr/>";
 					echo "
 				<form method=\"post\">
@@ -31,23 +31,23 @@ if(isset($_SESSION['id'])) {
 					$title = $mysqli->real_escape_string($_POST['title']);
 					$date = date("m.d");
 					$content = $mysqli->real_escape_string($_POST['content']);
-					if($title == ""){
+					if($title == "") {
 						echo "<div class=\"alert alert-danger\">You must enter a title.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
-					}elseif($content == ""){
+					}elseif($content == "") {
 						echo "<div class=\"alert alert-danger\">You must enter some content.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}else{
 						$i = $mysqli->query("INSERT INTO ".$prefix."gmblog (title, author, date, content) VALUES ('".$title."','".$_SESSION['pname']."','".$date."','".$content."')") or die(mysql_error());
 						echo "<div class=\"alert alert-success\">Your blog entry has been posted.</div><hr/><a href=\"?base=gmcp\" class=\"btn btn-primary\">&laquo; Go Back</a>";
 					}
 				}
-			}elseif($_GET['action']=="edit"){
+			}elseif($_GET['action']=="edit") {
 				echo "<h2 class=\"text-left\">Edit a Blog</h2><hr/>";
-				if(isset($_GET['id'])){
+				if(isset($_GET['id'])) {
 					$id = $mysqli->real_escape_string($_GET['id']);
 					$gb = $mysqli->query("SELECT * FROM ".$prefix."gmblog WHERE id='".$id."'") or die();
 					$b = $gb->fetch_assoc();
-					if($_SESSION['pname'] == $b['author'] || isset($_SESSION['admin'])){
-						if(!isset($_POST['edit'])){
+					if($_SESSION['pname'] == $b['author'] || isset($_SESSION['admin'])) {
+						if(!isset($_POST['edit'])) {
 							echo "
 				<form method=\"post\">
 					<div class=\"form-group\">
@@ -63,9 +63,9 @@ if(isset($_SESSION['id'])) {
 						}else{
 							$title = $mysqli->real_escape_string($_POST['title']);
 							$content = $mysqli->real_escape_string($_POST['content']);
-							if($title == ""){
+							if($title == "") {
 								echo "<div class=\"alert alert-danger\">You must enter a title.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
-							}elseif($content == ""){
+							}elseif($content == "") {
 								echo "<div class=\"alert alert-danger\">You must enter some content.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 							}else{
 								$u = $mysqli->query("UPDATE ".$prefix."gmblog SET title='".$title."', content='".$content."' WHERE id='".$id."'") or die();
@@ -76,7 +76,7 @@ if(isset($_SESSION['id'])) {
 						echo "<div class=\"alert alert-error\">This blog entry does not belong to you.</div><hr/><a href=\"?base=gmcp\" class=\"btn btn-primary\">&laquo; Go Back</a>";
 					}
 				}else{
-					if(isset($_SESSION['gm']) || isset($_SESSION['admin'])){
+					if(isset($_SESSION['gm']) || isset($_SESSION['admin'])) {
 						$gb = $mysqli->query("SELECT * FROM ".$prefix."gmblog WHERE author='".$_SESSION['pname']."' ORDER BY id ASC") or die();
 						if($gb->num_rows > 0) {
 							$i = 1;
@@ -92,7 +92,7 @@ if(isset($_SESSION['id'])) {
 							</thead>
 							<tbody>
 							";
-							while($b = $gb->fetch_assoc()){
+							while($b = $gb->fetch_assoc()) {
 								echo "
 								<tr>
 									<th scope=\"row\">".$i++."</th>
@@ -110,7 +110,7 @@ if(isset($_SESSION['id'])) {
 							echo "<div class=\"alert alert-info\">No blogs found!</div>";
 						}
 					}
-					if(isset($_SESSION['admin'])){
+					if(isset($_SESSION['admin'])) {
 						echo "<hr/>
 						<h3>Edit all Blogs <small>(Administrators Only)</small></h3>";
 						$gab = $mysqli->query("SELECT * FROM ".$prefix."gmblog ORDER BY id ASC") or die();
@@ -129,7 +129,7 @@ if(isset($_SESSION['id'])) {
 							</thead>
 							<tbody>
 							";
-							while($b = $gab->fetch_assoc()){
+							while($b = $gab->fetch_assoc()) {
 								echo "
 								<tr>
 									<th scope=\"row\">".$i++."</th>
@@ -173,9 +173,9 @@ if(isset($_SESSION['id'])) {
 						}
 					}
 				}
-			}elseif($_GET['action']=="del"){
+			}elseif($_GET['action']=="del") {
 				echo "<h2 class=\"text-left\">Delete a GM Blog</h2><hr/>";
-				if(!isset($_POST['del'])){
+				if(!isset($_POST['del'])) {
 					echo "
 					<form method=\"post\">
 						<div class=\"form-group\">
@@ -184,17 +184,17 @@ if(isset($_SESSION['id'])) {
 							<option value=\"\">Please select...</option>
 								<optgroup label=\"Your Blog Entries\">";
 					$gb = $mysqli->query("SELECT * FROM ".$prefix."gmblog WHERE author='".$_SESSION['pname']."' ORDER BY id ASC") or die();
-					while($b = $gb->fetch_assoc()){
+					while($b = $gb->fetch_assoc()) {
 						echo "
 									<option value=\"".$b['id']."\">[".$b['date']."] ".htmlspecialchars($b['title'], ENT_QUOTES, 'UTF-8')."</option>";
 					}
 					echo "
 								</optgroup>";
-					if($_SESSION['admin']){
+					if($_SESSION['admin']) {
 						echo "
 								<optgroup label=\"Administrator\">";
 						$gb = $mysqli->query("SELECT * FROM ".$prefix."gmblog ORDER BY author, id ASC") or die();
-						while($b = $gb->fetch_assoc()){
+						while($b = $gb->fetch_assoc()) {
 							echo "
 									<option value=\"".$b['id']."\">[".$b['date']."] ".htmlspecialchars($b['title'], ENT_QUOTES, 'UTF-8')."</option>";
 						}
@@ -208,17 +208,17 @@ if(isset($_SESSION['id'])) {
 					";
 				}else{
 					$blog = $mysqli->real_escape_string($_POST['blog']);
-					if($blog == ""){
+					if($blog == "") {
 						echo "<div class=\"alert alert-danger\">Please select a blog entry to delete.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}else{
 						$d = $mysqli->query("DELETE FROM ".$prefix."gmblog WHERE id='".$blog."'") or die();
 						echo "<div class=\"alert alert-success\">The blog entry has been deleted.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}
 				}
-		}elseif($_GET['action']=="lock"){
+		}elseif($_GET['action']=="lock") {
 			echo "
 			<h2 class=\"text-left\">Lock a Blog</h2><hr/>";
-			if(!isset($_POST['lock'])){
+			if(!isset($_POST['lock'])) {
 				echo "
 			<form method=\"post\">
 				<div class=\"form-group\">
@@ -226,7 +226,7 @@ if(isset($_SESSION['id'])) {
 						<select name=\"art\" id=\"selectBlog\" class=\"form-control\">
 							<option value=\"\">Please select...</option>";
 				$gn = $mysqli->query("SELECT * FROM ".$prefix."gmblog WHERE author='".$_SESSION['pname']."' AND locked = 0 ORDER BY id DESC") or die();
-				while($n = $gn->fetch_assoc()){
+				while($n = $gn->fetch_assoc()) {
 					echo "
 							<option value=\"".$n['id']."\">#".$n['id']." - ".htmlspecialchars($n['title'], ENT_QUOTES, 'UTF-8')."</option>";
 				}
@@ -238,17 +238,17 @@ if(isset($_SESSION['id'])) {
 			</form>";
 			}else{
 				$art = $mysqli->real_escape_string($_POST['art']);
-				if($art == ""){
+				if($art == "") {
 					echo "<div class=\"alert alert-danger\">Please select a blog to lock.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 				}else{
 					$d = $mysqli->query("UPDATE ".$prefix."gmblog SET locked = 1 WHERE id='".$art."' AND author='".$_SESSION['pname']."'") or die();
 					echo "<div class=\"alert alert-success\">The blog has been locked.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 				}
 			}
-		}elseif($_GET['action']=="unlock"){
+		}elseif($_GET['action']=="unlock") {
 			echo "
 			<h2 class=\"text-left\">Unlock a Blog</h2><hr/>";
-			if(!isset($_POST['unlock'])){
+			if(!isset($_POST['unlock'])) {
 				echo "
 			<form method=\"post\" action=''>
 				<div class=\"form-group\">
@@ -256,7 +256,7 @@ if(isset($_SESSION['id'])) {
 						<select name=\"art\" id=\"selectBlog\" class=\"form-control\">
 							<option value=\"\">Please select...</option>";
 				$gn = $mysqli->query("SELECT * FROM ".$prefix."gmblog WHERE author='".$_SESSION['pname']."' AND locked = 1 ORDER BY id DESC") or die();
-				while($n = $gn->fetch_assoc()){
+				while($n = $gn->fetch_assoc()) {
 					echo "
 							<option value=\"".$n['id']."\">#".$n['id']." - ".htmlspecialchars($n['title'], ENT_QUOTES, 'UTF-8')."</option>";
 				}
@@ -268,7 +268,7 @@ if(isset($_SESSION['id'])) {
 			</form>";
 			}else{
 				$art = $mysqli->real_escape_string($_POST['art']);
-				if($art == ""){
+				if($art == "") {
 					echo "<div class=\"alert alert-danger\">Please select a blog to unlock.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 				}else{
 					$d = $mysqli->query("UPDATE ".$prefix."gmblog SET locked = 0 WHERE id='".$art."' AND author='".$_SESSION['pname']."'") or die();
