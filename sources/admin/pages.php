@@ -5,22 +5,22 @@ if(basename($_SERVER["PHP_SELF"]) == "pages.php") {
 ?>
 <script src="assets/libs/ckeditor/ckeditor.js"></script>
 <?php
-if(isset($_SESSION['id'])){
-	if(isset($_SESSION['admin'])){
-		if(empty($_GET['action'])){
+if(isset($_SESSION['id'])) {
+	if(isset($_SESSION['admin'])) {
+		if(empty($_GET['action'])) {
 			echo "<h2 class=\"text-left\">Manage Pages</h2><hr/>
 				<a href=\"?base=admin&amp;page=pages&amp;action=add\"><b>Add Page &raquo;</b></a><br/>
 				<a href=\"?base=admin&amp;page=pages&amp;action=edit\">Edit Page</a><br/>
 				<a href=\"?base=admin&amp;page=pages&amp;action=del\">Delete Page</a><br/>
 			";
 		}
-		elseif($_GET['action']=="add"){
+		elseif($_GET['action']=="add") {
 			echo "
 			<h2 class=\"text-left\">Add Page</h2><hr/>";
-			if($_SESSION['pname'] == "checkpname"){
+			if($_SESSION['pname'] == "checkpname") {
 				echo "<div class=\"alert alert-danger\">You must assign a profile name before you can enter this page.</div>";
 			}else{
-				if(!isset($_POST['add'])){
+				if(!isset($_POST['add'])) {
 					echo "
 			<form method=\"post\" role=\"form\">
 			<div class=\"form-group\">
@@ -57,11 +57,11 @@ if(isset($_SESSION['id'])){
 					} else {
 						$visible = 0;
 					}
-					if($title == ""){
+					if($title == "") {
 						echo "<div class=\"alert alert-danger\">You must enter a title.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
-					}elseif($content == ""){
+					}elseif($content == "") {
 						echo "<div class=\"alert alert-danger\">You must enter some content.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
-					}elseif($slug == ""){
+					}elseif($slug == "") {
 						echo "<div class=\"alert alert-danger\">You must enter a slug.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}else{
 						$i = $mysqli->query("INSERT INTO ".$prefix."pages (title, slug, author, content, visible) VALUES ('".$title."','".$slug."','".$_SESSION['pname']."','".$content."', '".$visible."')") or die();
@@ -71,10 +71,10 @@ if(isset($_SESSION['id'])){
 			}
 			echo "
 		";
-		}elseif($_GET['action']=="edit"){
+		}elseif($_GET['action']=="edit") {
 			echo "
 			<h2 class=\"text-left\">Edit Page</h2><hr/>";
-			if(isset($_GET['id'])){
+			if(isset($_GET['id'])) {
 				$id = $mysqli->real_escape_string($_GET['id']);
 				$gp = $mysqli->query("SELECT * FROM ".$prefix."pages WHERE id='".$id."'") or die();
 				$p = $gp->fetch_assoc();
@@ -83,7 +83,7 @@ if(isset($_SESSION['id'])){
 				} else {
 					$checked = "";
 				}
-				if(!isset($_POST['edit'])){
+				if(!isset($_POST['edit'])) {
 					echo "
 			<form method=\"post\" action=''>
 			<div class=\"form-group\">
@@ -114,11 +114,11 @@ if(isset($_SESSION['id'])){
 					} else {
 						$visible = 0;
 					}
-					if($title == ""){
+					if($title == "") {
 						echo "<div class=\"alert alert-danger\">You must enter a title.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
-					}elseif($content == ""){
+					}elseif($content == "") {
 						echo "<div class=\"alert alert-danger\">You must enter some content.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
-					}elseif($slug == ""){
+					}elseif($slug == "") {
 						echo "<div class=\"alert alert-danger\">You must enter a slug.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 					}else{
 						$u = $mysqli->query("UPDATE ".$prefix."pages SET title='".$title."', slug = '".$slug."', content='".$content."', visible = '".$visible."' WHERE id='".$id."'") or die();
@@ -128,9 +128,9 @@ if(isset($_SESSION['id'])){
 			}else{
 				$gp = $mysqli->query("SELECT * FROM ".$prefix."pages ORDER BY id DESC") or die();
 				$cgp = $gp->num_rows;
-				if($cgp > 0){
+				if($cgp > 0) {
 					echo "Select a page to modify:<hr/>";
-					while($p = $gp->fetch_assoc()){
+					while($p = $gp->fetch_assoc()) {
 						echo "
 							<a href=\"?base=admin&amp;page=pages&amp;action=edit&amp;id=".$p['id']."\">".$p['title']."</a><hr/>
 						";
@@ -139,9 +139,9 @@ if(isset($_SESSION['id'])){
 					echo "<div class=\"alert alert-danger\">No Pages found!</div>";
 				}
 			}
-		}elseif($_GET['action']=="del"){
+		}elseif($_GET['action']=="del") {
 			echo "<h2 class=\"text-left\">Delete a Page</h2><hr/>";
-			if(!isset($_POST['del'])){
+			if(!isset($_POST['del'])) {
 				echo "
 			<form method=\"post\" action=''>
 			<div class=\"form-group\">
@@ -149,7 +149,7 @@ if(isset($_SESSION['id'])){
 				<select name=\"page\" class=\"form-control\" id=\"deletePage\">
 					<option value=\"\">Please select...</option>";
 				$gp = $mysqli->query("SELECT * FROM ".$prefix."pages ORDER BY id DESC") or die();
-				while($p = $gp->fetch_assoc()){
+				while($p = $gp->fetch_assoc()) {
 					echo "
 					<option value=\"".$p['id']."\">".$p['title']."</option>";
 				}
@@ -160,7 +160,7 @@ if(isset($_SESSION['id'])){
 				</form>";
 			}else{
 				$page = $mysqli->real_escape_string($_POST['page']);
-				if($page == ""){
+				if($page == "") {
 					echo "<div class=\"alert alert-danger\">Please select a page to delete.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 				}else{
 					$d = $mysqli->query("DELETE FROM ".$prefix."pages WHERE id='".$page."'") or die();

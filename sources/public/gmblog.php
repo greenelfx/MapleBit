@@ -1,5 +1,5 @@
 <?php
-if(basename($_SERVER["PHP_SELF"]) == "gmblog.php"){
+if(basename($_SERVER["PHP_SELF"]) == "gmblog.php") {
     die("403 - Access Forbidden");
 }
 ?>
@@ -36,13 +36,13 @@ if(isset($_GET['id'])) {
 		$getfeedback = $mysqli->query("SELECT feedback FROM ".$prefix."bcomments");
 		if($cc > 0) {
 			while($afeed = $getfeedback->fetch_assoc()) {
-				if($afeed['feedback'] == 0){
+				if($afeed['feedback'] == 0) {
 					$positive++;
 				}
 				elseif ($afeed['feedback'] == 1) {
 					$neutral++;
 				}
-				elseif($afeed['feedback'] == 2){
+				elseif($afeed['feedback'] == 2) {
 					$negative++;
 				}
 			}
@@ -69,7 +69,7 @@ if(isset($_GET['id'])) {
 
 	$av = $mysqli->query("UPDATE ".$prefix."gmblog SET views = views + 1 WHERE id='".$id."'") or die();
 	if(isset($_SESSION['admin']) || isset($_SESSION['gm'])) {
-		if($b['locked'] == "1"){
+		if($b['locked'] == "1") {
 			$buttontext = "Unlock";
 			$buttonlink = "unlock";
 		}
@@ -131,13 +131,13 @@ if(isset($_GET['id'])) {
 		}
 	}
 	echo "<hr />";
-	if($ngc = $gc->num_rows <= 0 && $b['locked'] == "0"){
+	if($ngc = $gc->num_rows <= 0 && $b['locked'] == "0") {
 		echo "<div class=\"alert alert-info\">There are no comments for this blog yet. Be the first to comment!</div>";
 	} else {
 		$commentconfig = HTMLPurifier_Config::createDefault();
 		$commentconfig->set('HTML.Allowed', 'p, b, u, s, ol, li, ul, i, em, strong, blockquote, hr, small');
 		$commentpurifier = new HTMLPurifier($commentconfig);
-		while($c = $gc->fetch_assoc()){
+		while($c = $gc->fetch_assoc()) {
 		$clean_comment = $commentpurifier->purify($c['comment']);
 			if($c['feedback'] == "0") {
 				$feedback = "<span class=\"positive_comment\">Positive</span>";
@@ -223,7 +223,7 @@ var oEditor = CKEDITOR.instances[currentInstance];
 <?php
 	}
 ?>
-$(function(){
+$(function() {
   $(".permalink").click(function() {
 	 var comment_id = $(this).attr('href').replace(/[^0-9]+/, '');
     $(".linkid-" + comment_id).fadeToggle();
