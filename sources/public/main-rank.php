@@ -2,7 +2,7 @@
 if(basename($_SERVER["PHP_SELF"]) == "main-rank.php") {
 	die("403 - Access Forbidden");
 }
-if($servertype == 1) { 
+if($servertype == 1) {
 	$first = "reborns";
 	$second = "level";
 }
@@ -35,7 +35,7 @@ if($gc->num_rows) {
 		$char = $player['accountid'];
 		$name = $player['name'];
 		$p++;
-		if ($p == 1){
+		if ($p == 1) {
 			echo "
 				<img src=\"assets/img/GD/create.php?name=".$name."\" alt='".$name."' id=\"top5\" class=\"rank_img\"/>
 				</td>
