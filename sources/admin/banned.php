@@ -1,11 +1,11 @@
-<?php 
+<?php
 if(basename($_SERVER["PHP_SELF"]) == "banned.php") {
 	die("403 - Access Forbidden");
 }
 
 try {
 	$result = $mysqli->query("SELECT name, banreason, ip FROM accounts WHERE banned >= 1");
-	if ($result === FALSE)
+	if (!$result)
 		throw new Exception($mysqli->error);
 
 	echo "

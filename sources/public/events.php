@@ -13,7 +13,7 @@ blockquote {
 }
 </style>
 <?php
-if(@$_GET['id']){
+if(@$_GET['id']) {
 	$id = $mysqli->real_escape_string($_GET['id']);
 	$ge = $mysqli->query("SELECT * FROM ".$prefix."events WHERE id='".$mysqli->real_escape_string($id)."'") or die();
 	$e = $ge->fetch_assoc();
@@ -35,13 +35,13 @@ if(@$_GET['id']){
 		$getfeedback = $mysqli->query("SELECT feedback FROM ".$prefix."ecomments");
 		if($cc > 0) {
 			while($afeed = $getfeedback->fetch_assoc()) {
-				if($afeed['feedback'] == 0){
+				if($afeed['feedback'] == 0) {
 					$positive++;
 				}
 				elseif ($afeed['feedback'] == 1) {
 					$neutral++;
 				}
-				elseif($afeed['feedback'] == 2){
+				elseif($afeed['feedback'] == 2) {
 					$negative++;
 				}
 			}
@@ -52,13 +52,13 @@ if(@$_GET['id']){
 	echo "
 		<h2 class=\"text-left\">".htmlspecialchars($e['title'], ENT_QUOTES, 'UTF-8')." | Posted by <a href=\"?base=main&amp;page=members&amp;name=".$e['author']."\">".$e['author']."</a> on ".$e['date']."</h2><hr/>
 	";
-	if($e['status'] == "Active"){
+	if($e['status'] == "Active") {
 		$status = "<div class=\"alert alert-success\">Event is active</div>";
 	}
-	if($e['status'] == "Standby"){
+	if($e['status'] == "Standby") {
 			$status = "<div class=\"alert alert-warning\">Event is on Standby</div>";
 	}
-	if($e['status'] == "Ended"){
+	if($e['status'] == "Ended") {
 		$status = "<div class=\"alert alert-danger\">This event has ended</div>";
 	}
 	echo " ".$status."";
@@ -76,8 +76,8 @@ if(@$_GET['id']){
 		</div>
 	</div>";
 	$av = $mysqli->query("UPDATE ".$prefix."events SET views = views + 1 WHERE id='".$mysqli->real_escape_string($id)."'") or die();
-	if(isset($_SESSION['admin'])){
-		if($e['locked'] == "1"){
+	if(isset($_SESSION['admin'])) {
+		if($e['locked'] == "1") {
 			$buttontext = "Unlock";
 			$buttonlink = "unlock";
 		}
@@ -88,7 +88,7 @@ if(@$_GET['id']){
 			<a href=\"?base=admin&amp;page=manevent&amp;action=".$buttonlink."\" class=\"btn btn-default\">".$buttontext."</a>
 			<hr />";
 	}
-	if(isset($_SESSION['id'])){
+	if(isset($_SESSION['id'])) {
 		$flood = $mysqli->query("SELECT * FROM ".$prefix."ecomments WHERE eid='".$id."' && author='".$_SESSION['pname']."' ORDER BY date DESC LIMIT 1") or die();
 		$fetchg = $flood->fetch_assoc();
 		$seconds = 60*$basefloodint;
@@ -145,19 +145,19 @@ if(@$_GET['id']){
 		$commentpurifier = new HTMLPurifier($commentconfig);
 		while($c = $gc->fetch_assoc()) {
 		$clean_comment = $commentpurifier->purify($c['comment']);
-			if($c['feedback'] == "0"){
+			if($c['feedback'] == "0") {
 				$feedback = "<span class=\"positive_comment\">Positive</span>";
-			}elseif($c['feedback'] == "1"){
+			}elseif($c['feedback'] == "1") {
 				$feedback = "<span class=\"neutral_comment\">Neutral</span>";
-			}elseif($c['feedback'] == "2"){
+			}elseif($c['feedback'] == "2") {
 				$feedback = "<span class=\"negative_comment\">Negative</span>";
 			}
 			$modify = "";
-			if(isset($_SESSION['admin'])){
+			if(isset($_SESSION['admin'])) {
 				$modify = "<a href=\"?base=admin&amp;page=manevent&amp;action=pdel&amp;id=".$c['id']."\">Delete</a> | ";
 			}
 			$quote = "";
-			if(isset($_SESSION['id'])){
+			if(isset($_SESSION['id'])) {
 				$quote = "<a href=\"#comment-".$c['id']."-".$c['author']."\" class=\"quote\">Quote</a> | ";
 			}
 			echo "
@@ -178,7 +178,7 @@ if(@$_GET['id']){
 	}
 	else {
 	echo "<h2 class=\"text-left\">".$servername." Events</h2><hr/>";
-	while($e = $ge->fetch_assoc()){
+	while($e = $ge->fetch_assoc()) {
 		$gc = $mysqli->query("SELECT * FROM ".$prefix."ecomments WHERE eid='".$mysqli->real_escape_string($e['id'])."' ORDER BY id ASC") or die();
 		$cc = $gc->num_rows;
 		echo "<img src=\"assets/img/news/".$e['type'].".gif\" alt='' />";
@@ -227,7 +227,7 @@ var oEditor = CKEDITOR.instances[currentInstance];
 <?php
 	}
 ?>
-$(function(){
+$(function() {
   $(".permalink").click(function() {
 	 var comment_id = $(this).attr('href').replace(/[^0-9]+/, '');
     $(".linkid-" + comment_id).fadeToggle();
