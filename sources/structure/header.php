@@ -15,17 +15,13 @@ if(basename($_SERVER["PHP_SELF"]) == "header.php") {
 		<link href="<?php echo $siteurl;?>assets/css/<?php echo $themetype; ?>.css" rel="stylesheet" type="text/css" />
 		<style type="text/css">
 			body {
-				background-color: #<?php echo $bgcolor;?>;
-				background-image: url(<?php echo $background;?>);
-				background-repeat: <?php echo $bgrepeat;?>;
-				background-position: <?php echo $bgcenter; ?>;
 				<?php
-				if($bgfixed == "checked") {
-					echo "background-attachment: fixed;";
-				}
-				if($bgcover == "checked") {
-					echo "background-size: cover;";
-				}
+					if(!empty($background)) echo "background-image: url(" . $background . ");";
+					if(!empty($bgcolor)) echo "background-color: #" . $bgcolor . ";";
+					if(!empty($bgrepeat)) echo "background-repeat: " . $bgrepeat . ";";
+					if(!empty($bgcenter)) echo "background-position: center;";
+					if(!empty($bgfixed)) { echo "background-attachment: fixed;"; }
+					if(!empty($bgcover)) {echo "background-size: cover;"; }
 				?>
 			}
 		</style>
