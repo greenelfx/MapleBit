@@ -11,7 +11,9 @@ $account = $mysqli->real_escape_string(preg_replace("/[^A-Za-z0-9 ]/", '', @$_PO
 $siteid = $mysqli->real_escape_string(@$_POST['votingsite']);
 $checkacc = $mysqli->query("SELECT * FROM accounts WHERE name = '$account'");
 $countcheckacc = $checkacc->num_rows;
+$row = $checkacc->fetch_assoc();
 if($countcheckacc == 0 && isset($_POST['submit'])) { $funct_error =  "This account doesn't exist!";}
+if($row['loggedin'] > 0 && isset($_POST['submit'])) { $funct_error =  "This account is logged in!";}
 elseif ($account == '' && isset($_POST['submit'])) {$funct_error = 'You need to put in a username!';}
 elseif(empty($_POST['votingsite']) && isset($_POST['submit'])){
 	$funct_error = "Please select a voting site";
