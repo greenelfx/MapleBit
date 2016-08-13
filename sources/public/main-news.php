@@ -8,7 +8,7 @@ echo "
 ";
 
 $gn = $mysqli->query("SELECT * FROM ".$prefix."news ORDER BY id DESC LIMIT 4");
-if($gn->num_rows) {
+if($gn && $gn->num_rows) {
 	while($n = $gn->fetch_assoc()) {
 		$gc = $mysqli->query("SELECT * FROM ".$prefix."ncomments WHERE nid='".$n['id']."' ORDER BY id ASC");
 		$cc = $gc->num_rows;

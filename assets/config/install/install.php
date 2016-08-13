@@ -163,15 +163,15 @@ if(!isset($getcolumns['mute'])) {
 }
 if(!isset($getcolumns['email'])) {
 	$mysqli->query("ALTER TABLE accounts ADD `email` VARCHAR(45) DEFAULT NULL;");
-	echo "Added mute<br/>";
+	echo "Added email<br/>";
 }
 if(!isset($getcolumns['ip'])) {
 	$mysqli->query("ALTER TABLE accounts ADD `ip` text;");
-	echo "Added mute<br/>";
+	echo "Added ip<br/>";
 }
 if(!isset($getcolumns['birthday'])) {
 	$mysqli->query("ALTER TABLE accounts ADD `birthday` DATE;");
-	echo "Added mute<br/>";
+	echo "Added birthday<br/>";
 }
 mysqli_multi_query($mysqli, "DROP TABLE IF EXISTS `".$prefix."properties`;
 CREATE TABLE `".$prefix."properties` (
