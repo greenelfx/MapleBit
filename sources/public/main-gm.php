@@ -8,7 +8,7 @@ echo "
 ";
 
 $gb = $mysqli->query("SELECT * FROM ".$prefix."gmblog ORDER BY id DESC LIMIT 4");
-if($gb->num_rows) {
+if($gb && $gb->num_rows) {
 	while($b = $gb->fetch_assoc()) {
 		$gc = $mysqli->query("SELECT * FROM ".$prefix."bcomments WHERE bid='".$b['id']."' ORDER BY id ASC");
 		$cc = $gc->num_rows;
