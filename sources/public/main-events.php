@@ -8,7 +8,7 @@ echo "
 ";
 
 $ge = $mysqli->query("SELECT * FROM ".$prefix."events ORDER BY id DESC LIMIT 4");
-if($ge->num_rows) {
+if($ge && $ge->num_rows) {
 	while($e = $ge->fetch_assoc()) {
 		$gc = $mysqli->query("SELECT * FROM ".$prefix."ecomments WHERE eid='".$e['id']."' ORDER BY id ASC");
 		$cc = $gc->num_rows;
