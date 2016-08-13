@@ -1,103 +1,72 @@
-<?php 
+<?php
 if(basename($_SERVER["PHP_SELF"]) == "register.php") {
 	die("403 - Access Forbidden");
 }
+require_once('assets/config/recaptchalib.php');
+require "assets/libs/gump.class.php";
+
+GUMP::add_validator("recaptcha", function($field, $input, $param = NULL) use ($privatekey) {
+	$resp = recaptcha_check_answer ($privatekey, $_SERVER["REMOTE_ADDR"], $input['recaptcha_challenge_field'], $input[$field]);
+	return $resp->is_valid;
+});
+
+GUMP::add_validator("exists", function($field, $input, $param = NULL) use ($mysqli) {
+	return $mysqli->query("SELECT COUNT(*) FROM accounts WHERE $param ='".$input[$field]."'")->fetch_row()[0] == 0;
+});
+
 if(isset($_SESSION['id'])) {
     echo "<meta http-equiv=refresh content=\"0; url=?base=ucp\">";
+    return;
 }
-else {
-echo "<h2 class=\"text-left\">Registration</h2><hr/>";
-if (!isset($_POST['submit'])) {
+
+if (isset($_POST['submit'])) {
+	$gump = new GUMP();
+	$_POST = $gump->sanitize($_POST);
+	$gump->validation_rules(array(
+    	'username' => 'required|alpha_numeric|exists,name|max_len,12|min_len,4',
+    	'password' => 'required|min_len,6',
+    	'email' => 'required|valid_email|exists,email',
+    	'recaptcha_response_field' => 'required|recaptcha',
+	));
+	$gump->filter_rules(array(
+	    'username' => 'trim|sanitize_string',
+	    'password' => 'trim',
+	    'email'    => 'trim|sanitize_email',
+	));
+	$validated_data = $gump->run($_POST);
+	
+	if($validated_data === false) {
+		echo '<div class="alert alert-danger">';
+		foreach($gump->get_errors_array() as $error) {
+			echo $error . '<br/>';
+		}
+		echo '</div>';
+	} else {
+		$insert_user_query = "INSERT INTO accounts (`name`, `password`, `ip`, `email`, `birthday`) VALUES ('".$validated_data['username']."', '".sha1($validated_data['password'])."', '".getRealIpAddr()."', '".$validated_data['email']."', '1990-01-01')";
+		$mysqli->query($insert_user_query);
+		echo '<div class="alert alert-success"><b>Success!</b> Please login, and head to the downloads page to get started!</div><script>$(function() {$("#register").fadeOut();});</script>';
+	}
+}
 ?>
-	<form action="?base=main&amp;page=register" method="POST">
+<h2 class="text-left">Registration</h2><hr/>
+<form action="?base=main&amp;page=register" method="POST" id="register">
 	<div class="form-group">
-		<label for="inputUser">Username</label>
-		<input type="text" name="musername" maxlength="12" class="form-control" id="inputUser" autocomplete="off" placeholder="Username" required>
+		<label for="inputUsername">Username</label>
+		<input type="text" name="username" maxlength="12" class="form-control" id="inputUsername" autocomplete="off" placeholder="Username" value="<?php echo isset($_POST['username']) ? $_POST['username'] : '' ?>" required>
 	</div>
 	<div class="form-group">
-		<label for="inputPass">Password</label>
-		<input type="password" name="mpass" maxlength="12" class="form-control" id="inputPass" autocomplete="off" placeholder="Password" required>
-	</div>
-	<div class="form-group">
-		<label for="inputConfirm">Confirm Password</label>
-		<input type="password" name="mpwcheck" maxlength="12" class="form-control" id="inputConfirm" autocomplete="off" placeholder="Confirm Password" required>
+		<label for="inputPassword">Password</label>
+		<input type="password" name="password" maxlength="100" class="form-control" id="inputPassword" autocomplete="off" placeholder="Password" value="<?php echo isset($_POST['password']) ? $_POST['password'] : '' ?>" required>
 	</div>
 	<div class="form-group">
 		<label for="inputEmail">Email</label>
-		<input type="email" name="memail" class="form-control" id="inputEmail" autocomplete="off" placeholder="Email" required>
+		<input type="email" name="email" class="form-control" id="inputEmail" autocomplete="off" placeholder="Email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : '' ?>" required>
 	</div>
 	<b>reCAPTCHA</b>
 	<?php
-		require_once('assets/config/recaptchalib.php');
 		$error = null;
-		$publickey = "6LemqAwAAAAAAF4dIpSjTB3GJt1ax0MRQ9FvOX_T";
-		$privatekey = "6LemqAwAAAAAAO69RT3j9M1eHPX_ahhmC6Gakuwb";
 		echo recaptcha_get_html($publickey, $error);
 	?>
-		<br/>
-		<input type="submit" class="btn btn-primary" name="submit" value="Register &raquo;"> 
-	</form>
-<?php
-}
-else {
-	if (!isset($_POST["musername"]) ||
-		!isset($_POST["mpass"]) ||
-		!isset($_POST["mpwcheck"]) ||
-		!isset($_POST["memail"]) ||
-		!isset($_POST["recaptcha_response_field"])) {
-		die ("<div class=\"alert alert-error\">Please fill in the correct ReCAPTCHA code!<br/><a onclick=\"goBack()\">&laquo; Go Back</a></div>");
-	}
-	
-	$username = $mysqli->real_escape_string($_POST["musername"]); # Get Username
-	$password = $_POST["mpass"]; # Get Password
-	$confirm_password = $_POST["mpwcheck"]; # Get Confirm Password
-	$email = $mysqli->real_escape_string($_POST["memail"]);
-	$birth = "1990-01-01";
-	$ip = getRealIpAddr();
-	
-	$continue = false;
-	
-	require_once('assets/config/recaptchalib.php');
-
-	$publickey = "6LemqAwAAAAAAF4dIpSjTB3GJt1ax0MRQ9FvOX_T";
-	$privatekey = "6LemqAwAAAAAAO69RT3j9M1eHPX_ahhmC6Gakuwb";
-	
-	$resp = null;
-
-	if ($_POST["recaptcha_response_field"]) {
-		$resp = recaptcha_check_answer ($privatekey, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
-		if ($resp->is_valid) {
-			$continue = true;
-		}
-	}
-	$continue = true;
-	if (!$continue) {
-		echo ("<div class=\"alert alert-danger\">Please fill in the correct ReCAPTCHA code!<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a></div>");
-	}
-	else {
-		$select_user_result = $mysqli->query("SELECT COUNT(*) FROM accounts WHERE name='".$username."' OR email='".$email."'");
-		if ($select_user_result->fetch_row()[0]) {
-			echo ("<div class=\"alert alert-danger\">This username or email is already used!<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a></div>");
-		}
-		else if ($password != $confirm_password) {
-			echo ("<div class=\"alert alert-danger\">Passwords didn't match!<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a></div>");
-		}
-		else if (strlen($password) < 6 || strlen($password) > 12) {
-			echo ("<div class=\"alert alert-danger\">Your password must be between 6-12 characters<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a></div>");
-		}
-		else if (strlen($username) < 4 || strlen($username) > 12) {
-			echo ("<div class=\"alert alert-danger\">Your username must be between 4-12 characters<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a></div>");
-		}
-		else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			echo ("<div class=\"alert alert-danger\">Please fill in a valid email address.<br/><a href=\"?base=main&page=register\">&laquo; Go Back</a></div>");
-		}
-		else {
-			//All data is ok
-			$password = sha1($password);
-			$insert_user_query = "INSERT INTO accounts (`name`, `password`, `ip`, `email`, `birthday`) VALUES ('".$username."', '".$password."', '".$ip."', '".$email."', '".$birth."')";
-			$mysqli->query($insert_user_query);
-			echo "<div class=\"alert alert-success\"><b>Success!</b> Please login, and head to the downloads page to get started!</div>";
-		}
-	}
-}
-}
+	<br/>
+	<input type="submit" class="btn btn-primary" name="submit" value="Register &raquo;"> 
+</form>
