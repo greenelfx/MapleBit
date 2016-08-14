@@ -11,7 +11,7 @@ GUMP::add_validator("recaptcha", function($field, $input, $param = NULL) use ($p
 });
 
 GUMP::add_validator("exists", function($field, $input, $param = NULL) use ($mysqli) {
-	return $mysqli->query("SELECT COUNT(*) FROM accounts WHERE $param ='".$input[$field]."'")->fetch_row()[0] == 0;
+	return $mysqli->query("SELECT COUNT(*) FROM accounts WHERE $param ='".$mysqli->real_escape_string($input[$field])."'")->fetch_row()[0] == 0;
 });
 
 if(isset($_SESSION['id'])) {
