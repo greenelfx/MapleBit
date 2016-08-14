@@ -4,9 +4,8 @@ if(basename($_SERVER["PHP_SELF"]) == "character.php") {
 }
 if(isset($_GET['n'])) {
 	$getchar = $mysqli->real_escape_string($_GET['n']);
-	$checkchar = $mysqli->query("SELECT * from characters WHERE name = '".$getchar."'");
-	if($checkchar->num_rows == 1) {
-		$c = $checkchar->fetch_assoc();
+	$c = $mysqli->query("SELECT * from characters WHERE name = '".$getchar."'")->fetch_assoc();
+	if($c) {
 		echo "
 			<h2 class=\"text-left\">Character Info</h2><hr/>
 			<div class=\"row\">
