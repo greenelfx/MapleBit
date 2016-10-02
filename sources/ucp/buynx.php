@@ -45,8 +45,8 @@ if(!isset($_POST['buyNX'])) {
 	}
 }
 else {
-	$selChar = isset($_POST['selChar']) ? $_POST['selChar'] : '';
-	$selPack = isset($_POST['selPack']) ? $_POST['selPack'] : '';
+	$selChar = isset($_POST['selChar']) ? $mysqli->real_escape_string( $_POST['selChar'] ) : '';
+	$selPack = isset($_POST['selPack']) ? $mysqli->real_escape_string( $_POST['selPack'] ) : '';
 	$hasMeso = $mysqli->query("SELECT * FROM `characters` WHERE `id` = '".$selChar."'") or die();
 	$getMeso = $hasMeso->fetch_assoc();
 	$fetchNX = $mysqli->query("SELECT * FROM `".$prefix."buynx` WHERE `meso` = '".$selPack."'") or die();
