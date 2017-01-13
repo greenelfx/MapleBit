@@ -2,12 +2,13 @@
 if(basename($_SERVER["PHP_SELF"]) == "register.php") {
 	die("403 - Access Forbidden");
 }
-require_once('assets/config/recaptchalib.php');
+require "assets/libs/recaptcha/autoload.php";
 require "assets/libs/gump.class.php";
 
-GUMP::add_validator("recaptcha", function($field, $input, $param = NULL) use ($privatekey) {
-	$resp = recaptcha_check_answer ($privatekey, $_SERVER["REMOTE_ADDR"], $input['recaptcha_challenge_field'], $input[$field]);
-	return $resp->is_valid;
+GUMP::add_validator("recaptcha", function($field, $input, $param = NULL) use ($recaptcha_private) {
+	$recaptcha = new \ReCaptcha\ReCaptcha($recaptcha_private);
+	$resp = $recaptcha->verify($input['g-recaptcha-response'], $_SERVER["REMOTE_ADDR"]);
+	return $resp->isSuccess();
 });
 
 GUMP::add_validator("exists", function($field, $input, $param = NULL) use ($mysqli) {
@@ -26,15 +27,16 @@ if (isset($_POST['submit'])) {
     	'username' => 'required|alpha_numeric|exists,name|max_len,12|min_len,4',
     	'password' => 'required|min_len,6',
     	'email' => 'required|valid_email|exists,email',
-    	'recaptcha_response_field' => 'required|recaptcha',
+    	'g-recaptcha-response' => 'required|recaptcha',
 	));
 	$gump->filter_rules(array(
 	    'username' => 'trim|sanitize_string',
 	    'password' => 'trim',
 	    'email'    => 'trim|sanitize_email',
 	));
+	GUMP::set_field_name("g-recaptcha-response", "reCAPTCHA");
 	$validated_data = $gump->run($_POST);
-	
+
 	if($validated_data === false) {
 		echo '<div class="alert alert-danger">';
 		foreach($gump->get_errors_array() as $error) {
@@ -63,10 +65,7 @@ if (isset($_POST['submit'])) {
 		<input type="email" name="email" class="form-control" id="inputEmail" autocomplete="off" placeholder="Email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : '' ?>" required>
 	</div>
 	<b>reCAPTCHA</b>
-	<?php
-		$error = null;
-		echo recaptcha_get_html($publickey, $error);
-	?>
+	<div class="g-recaptcha" data-sitekey="<?php echo $recaptcha_public; ?>"></div>
 	<br/>
-	<input type="submit" class="btn btn-primary" name="submit" value="Register &raquo;"> 
+	<input type="submit" class="btn btn-primary" name="submit" value="Register &raquo;">
 </form>
