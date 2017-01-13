@@ -11,7 +11,8 @@ try {
 	$themetype = "light";
 	$nav = "navbar navbar-default";
 	$ipaddress = isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
-
+	
+	
 	/* Name of server */
 	$servername = $prop['name'];
 	$siteurl = $prop['siteurl'];
@@ -49,7 +50,11 @@ try {
 	/*Get Vote Config*/
 	$colnx = $prop['colnx'];
 	$colvp = $prop['colvp'];
-
+	
+	/* reCAPTCHA Keys */
+	$recaptcha_public = ($prop['recaptcha_public'] ?: null);
+	$recaptcha_private = ($prop['recaptcha_private'] ?: null);
+	
 	if ($prop['nav']) {
 		$nav = "navbar navbar-default navbar-inverse";
 	}
