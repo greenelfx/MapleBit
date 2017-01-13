@@ -527,11 +527,11 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 			}
 		break;
 		case 5:
-			echo "<h4>Extract GD Images</h4><hr/>";
+			echo "<h4>Extra Steps</h4><hr/>";
 			if(isset($_POST['myself'])) {
 				echo "<meta http-equiv=\"refresh\" content=\"0; url=?install=6\" />";
 			} else {
-				echo "For the rankings to work, you need the GD archive to be extracted. This can take some time. Go to assets/img/GD and extract the .zip archive.
+				echo "<b>Registration</b><br/>For Registration to function, you must head to the <a href='https://www.google.com/recaptcha/admin#list'>Google reCAPTCHA</a> page, register your domain, and then submit your private and public keys in the Admin Panel -> Site Settings -> Site Configuration page.<hr/><b>Rankings</b><hr/>For the rankings to work, you need the GD archive to be extracted. This can take some time. Go to assets/img/GD and extract the .zip archive.
 				<hr/>
 				<form method=\"post\">
 					<input type=\"submit\" name=\"myself\" class=\"btn btn-warning btn-lg\" value=\"OK, I&#39;ll do it! &raquo;\" style=\"float:right;\"/><br/><br/>
