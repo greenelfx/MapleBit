@@ -5,6 +5,10 @@ if(basename($_SERVER["PHP_SELF"]) == "register.php") {
 require "assets/libs/recaptcha/autoload.php";
 require "assets/libs/gump.class.php";
 
+if($recaptcha_public == null || $recaptcha_private == null) {
+	echo '<div class="alert alert-danger">Your administrator has not setup ReCATPCHA yet!</div>';
+	return;
+}
 GUMP::add_validator("recaptcha", function($field, $input, $param = NULL) use ($recaptcha_private) {
 	$recaptcha = new \ReCaptcha\ReCaptcha($recaptcha_private);
 	$resp = $recaptcha->verify($input['g-recaptcha-response'], $_SERVER["REMOTE_ADDR"]);
