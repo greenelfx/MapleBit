@@ -17,6 +17,5 @@ $worldport = "8484";
 
 /* Don`t touch. */
 $mysqli = new MySQLi($host['hostname'],$host['user'],$host['password'],$host['database']);
-$publickey = "6LemqAwAAAAAAF4dIpSjTB3GJt1ax0MRQ9FvOX_T";
-$privatekey = "6LemqAwAAAAAAO69RT3j9M1eHPX_ahhmC6Gakuwb";
+
 ?>
