@@ -17,6 +17,8 @@ if(isset($_POST['submit'])) {
 	$sgmlevel = $mysqli->real_escape_string(stripslashes($_POST['gmlevel']));
 	$sversion = $mysqli->real_escape_string(stripslashes($_POST['version']));
 	$sservertype = $mysqli->real_escape_string(stripslashes($_POST['servertype']));
+	$srecaptchapublic = $mysqli->real_escape_string(stripslashes($_POST['recaptcha-public']));//can be null
+	$srecaptchaprivate = $mysqli->real_escape_string(stripslashes($_POST['recaptcha-private']));//can be null
 	$continue = true;
 
 	if(empty($sservername)) {
@@ -71,7 +73,7 @@ if(isset($_POST['submit'])) {
 		echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 	}
 	else {
-		$mquery = "UPDATE ".$prefix."properties SET name='$sservername', type = '$sservertype', client='$sclient', server = '$sserver', forumurl='$sforumurl', siteurl = '$ssiteurl', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', version='$sversion', flood='$floodp', floodint='$floodi', gmlevel='$sgmlevel'";
+		$mquery = "UPDATE ".$prefix."properties SET name='$sservername', type = '$sservertype', client='$sclient', server = '$sserver', forumurl='$sforumurl', siteurl = '$ssiteurl', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', version='$sversion', flood='$floodp', floodint='$floodi', gmlevel='$sgmlevel', recaptcha_public='$srecaptchapublic', recaptcha_private='$srecaptchaprivate'";
 		$exec = $mysqli->query($mquery);
 		echo "<h2 class=\"text-left\">Success</h2><hr/><div class=\"alert alert-success\">Configuration Updated</div>";
 		redirect_wait5("?base=admin&page=properties");
@@ -103,6 +105,7 @@ else {
 			<li><a href=\"#links\" data-toggle=\"tab\">Links</a></li>
 			<li><a href=\"#info\" data-toggle=\"tab\">Game Info</a></li>
 			<li><a href=\"#comment\" data-toggle=\"tab\">Comments</a></li>
+			<li><a href=\"#recaptcha\" data-toggle=\"tab\">reCAPTCHA</a></li>
 		</ul>
 		<form method='post' action='?base=admin&amp;page=properties'>
 		<div id=\"myTabContent\" class=\"tab-content\">
@@ -176,6 +179,30 @@ else {
 			<div class=\"form-group\">
 				<label for=\"postingInterval\">Posting Interval</label> <small>Amount of time in <b>minutes</b> between comments</small>
 				<input name=\"floodi\" type=\"text\" maxlength=\"10\" class='form-control' id=\"postingInterval\" value=\"".$basefloodint."\" required/>
+			</div>
+		</div>
+		<div class=\"tab-pane fade\" id=\"recaptcha\">
+			<br/>
+			<div class=\"row\">
+			  <div class=\"col-md-7\">
+				<div class=\"form-group\">
+					<label for=\"recaptcha-public\">Site Key</label>
+					<input name=\"recaptcha-public\" type=\"text\" maxlength=\"100\" class='form-control' id=\"recaptcha-public\" value=\"".$recaptcha_public."\" required/>
+				</div>	
+				<div class=\"form-group\">
+					<label for=\"recaptcha-private\">Private Key</label>
+					<input name=\"recaptcha-private\" type=\"text\" maxlength=\"100\" class='form-control' id=\"recaptcha-private\" value=\"".$recaptcha_private."\" required/>
+				</div>
+			  </div>
+			  <div class=\"col-md-5\">
+				<h4>Quick Guide</h4>
+				<ol>
+					<li>Visit <a href=\"https://www.google.com/recaptcha\" target=\"_blank\">this link</a>.</li>
+					<li>If you see a prompt for Invisible Captcha, please skip and continue to get a regular reCAPTCHA code and click the  \"Get reCAPTCHA\" button.</li>
+					<li>Follow the instructions and input the domains you want to use. This will probably be <b>".$_SERVER['HTTP_HOST']."</b>.</li>
+					<li>Add the \"Site key\" and the \"Private key\" given to you by Google into this form.</li>
+				</ol>
+			  </div>
 			</div>
 		</div>
 		</div>

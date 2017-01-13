@@ -26,6 +26,7 @@ if(basename($_SERVER["PHP_SELF"]) == "header.php") {
 			}
 		</style>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src='https://www.google.com/recaptcha/api.js'></script>
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
 		<script src="<?php echo $siteurl; ?>assets/js/ie/html5shiv.js"></script>
@@ -37,7 +38,7 @@ if(basename($_SERVER["PHP_SELF"]) == "header.php") {
 <?php
 if($banner != "") {
 	echo "<img src=\"".$banner."\" alt=\"banner\" class=\"img-responsive\" style=\"margin: 0 auto;margin-top:20px;\">";
-} 
+}
 ?>
 <nav class="<?php echo $nav;?>" style="bottom:-22px;">
 	<div class="navbar-header">
@@ -47,7 +48,7 @@ if($banner != "") {
 			<span class="icon-bar"></span>
 		</button>
 		<a class="navbar-brand" href="#"><?php echo $servername;?></a>
-	</div>	
+	</div>
 	<div class="navbar-collapse collapse">
 		<ul class="nav navbar-nav">
 			<li><a href="?base=main">Home</a></li>
