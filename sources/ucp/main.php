@@ -23,7 +23,6 @@ if(isset($_SESSION['id'])) {
 				<li><a href=\"?base=ucp&amp;page=characters\">Characters</a></li>
 				<li><a href=\"#community\" data-toggle=\"tab\">Community</a></li>
 				<li><a href=\"?base=ucp&amp;page=buynx\">Cash Shop</a></li>
-				<li><a href=\"?base=ucp&amp;page=ticket\">Tickets</a></li>
 			</ul>
  			<div id=\"myTabContent\" class=\"tab-content\">
 				<div class=\"tab-pane fade in active\" id=\"account\">
@@ -72,9 +71,6 @@ if(isset($_SESSION['id'])) {
 	}
 	elseif($ucp === "profname") {
 		include('sources/ucp/profile-name.php');
-	}
-	elseif($ucp === "ticket") {
-		include('sources/ucp/ticket.php');
 	}
 	elseif($ucp === "characters") {
 		include('sources/ucp/characters.php');

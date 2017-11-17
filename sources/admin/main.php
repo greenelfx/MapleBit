@@ -156,9 +156,6 @@ if(isset($_SESSION['id']) && isset($_SESSION['admin'])) {
 	elseif($admin === "background") {
 		include('sources/admin/background.php');
 	}
-	elseif($admin === "ticket") {
-		include('sources/admin/ticket.php');
-	}
 	elseif($admin === "pages") {
 		include('sources/admin/pages.php');
 	}
