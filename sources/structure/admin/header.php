@@ -10,7 +10,7 @@ if(isset($_GET['page'])) {
 
 $settings = array("properties", "voteconfig", "nxpacks", "bannedmaps", "theme", "banner", "background");
 $content = array("homeconfig", "mannews", "manevent", "pages");
-$users = array("manageaccounts", "ticket", "banned");
+$users = array("manageaccounts", "banned");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -127,7 +127,6 @@ $users = array("manageaccounts", "ticket", "banned");
 						<li><a href="#" data-toggle="collapse" data-target="#menu3">Manage Community <i class="fa fa-chevron-<?php echo (in_array($admin, $users)) ? 'down' : 'right'; ?>" style="float:right;"></i></a></li>
 						<ul class="nav nav-pills nav-stacked collapse <?php echo (in_array($admin, $users)) ? 'in' : ''; ?> " id="menu3">
 							<li <?php echo ($admin == "manageaccounts") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=manageaccounts"><i class="fa fa-user"></i> Manage Accounts</a></li>
-							<li <?php echo ($admin == "ticket") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=ticket"><i class="fa fa-ticket"></i> View Tickets</a></li>
 							<li <?php echo ($admin == "banned") ? 'class="active"' : ''; ?>><a href="?base=admin&amp;page=banned"><i class="fa fa-gavel"></i> Banned Users</a></li>
 						</ul>
 					</ul>

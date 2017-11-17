@@ -234,30 +234,6 @@ CREATE TABLE  `".$prefix."mail` (
   PRIMARY KEY  (`mailid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 
-DROP TABLE IF EXISTS `".$prefix."tcomments`;
-CREATE TABLE `".$prefix."tcomments` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `ticketid` int(10) unsigned NOT NULL,
-  `user` varchar(30) NOT NULL,
-  `content` longtext NOT NULL,
-  `date_com` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`,`ticketid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
-
-DROP TABLE IF EXISTS `".$prefix."tickets`;
-CREATE TABLE `".$prefix."tickets` (
-  `ticketid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(50) NOT NULL,
-  `type` varchar(20) NOT NULL,
-  `support_type` varchar(20) NOT NULL,
-  `details` longtext NOT NULL,
-  `date` varchar(100) NOT NULL,
-  `ip` varchar(30) NOT NULL,
-  `name` varchar(30) NOT NULL,
-  `status` varchar(45) NOT NULL,
-  PRIMARY KEY (`ticketid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
-
 DROP TABLE IF EXISTS `".$prefix."buynx`;
 CREATE TABLE `".$prefix."buynx` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
