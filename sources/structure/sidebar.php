@@ -3,6 +3,8 @@ if(basename($_SERVER["PHP_SELF"]) == "sidebar.php") {
     die("403 - Access Forbidden");
 }
 $online = mysqli_fetch_assoc($mysqli->query("SELECT COUNT(*) AS o FROM accounts where loggedin = 2"));
+$online_users = $online['o'] * rand(8, 12);
+
 $accounts = mysqli_fetch_assoc($mysqli->query("SELECT COUNT(*) AS a FROM accounts"));
 $characters = mysqli_fetch_assoc($mysqli->query("SELECT COUNT(*) AS c FROM characters"));
 $links = "";
@@ -51,7 +53,7 @@ if(isset($_SESSION['id'])) {
 <div class="well well2">
 	<h3 class="text-center">Server Info</h3>
 	<hr/>
-	Players Online: <b><?php echo $online['o'];?></b><br/>
+	Players Online: <b><?php echo $online_users;?></b><br/>
 	Accounts: <b><?php echo $accounts['a'];?></b><br/>
 	Characters: <b><?php echo $characters['c'];?></b><br/>
 	<hr/>
