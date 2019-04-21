@@ -4,7 +4,7 @@ if(basename($_SERVER["PHP_SELF"]) == "theme.php") {
 }
 
 echo "<h2 class=\"text-left\">Configure Theme</h2><hr/>";
-$themes = array('bootstrap', 'cerulean', 'cosmo', 'cyborg', 'darkly', 'flatly', 'journal', 'lumen', 'paper', 'readable', 'sandstone', 'slate', 'simplex', 'spacelab', 'superhero', 'united', 'yeti');
+$themes = array('bootstrap', 'cerulean', 'cosmo', 'cyborg', 'darkly', 'flatly', 'journal', 'lumen', 'materia', 'sandstone', 'slate', 'simplex', 'spacelab', 'superhero', 'united', 'yeti', 'pulse', 'solar', 'minty');
 if(!isset($_POST['apply'])) {
 	echo "
 		Please click one of the options below to preview the theme. Once you are happy with your theme, click the \"Apply Theme\" button below.
@@ -12,21 +12,38 @@ if(!isset($_POST['apply'])) {
 		<form name=\"applytheme\" method=\"post\">
 	";
 	foreach($themes as $t) {
-		echo "<div class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"theme\" value=\"$t\"";
-		if($theme == $t) { echo " checked"; }
-		echo ">". ucfirst($t) ." <a href=\"http://bootswatch.com/".$t."/\" target=\"_blank\"><i class=\"fa fa-external-link\"></i></a></label></div>";
+		$checked = ($theme == $t ? 'checked' : '');
+		$display_text = ucfirst($t) . '&nbsp;<a href="http://bootswatch.com/'.$t.'/" target="_blank"><i class="fa fa-external-link"></i></a>';
+		echo '
+			<div class="form-check">
+				<input class="form-check-input" type="radio" name="theme" value="'.$t.'" id="'.$t.'" '.$checked.'>
+				<label class="form-check-label" for="'.$t.'">'.$display_text.'</label>
+			</div>
+		';
 	}
 	echo "<hr/>";
-	if($nav == "navbar navbar-default") {
+	if($nav == "navbar navbar-expand-lg navbar-light bg-light") {
 		echo "
-			<div class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"nav\" value=\"0\" checked>Normal Navigation Bar</label></div>
-			<div class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"nav\" value=\"1\">Inverse Navigation Bar</label></div>
+			<div class=\"form-check\">
+				<input class=\"form-check-input\" type=\"radio\" name=\"nav\" value=\"0\" id='normal' checked>
+				<label class=\"form-check-label\" for=\"normal\">Normal Navigation Bar (light)</label>
+			</div>
+			<div class=\"form-check\">
+				<input class=\"form-check-input\" type=\"radio\" name=\"nav\" value=\"1\" id='inverse'>
+				<label class=\"form-check-label\" for=\"inverse\">Inverse Navigation Bar (dark)</label>
+			</div>
 		";
 	}
 	else {
 		echo "
-			<div class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"nav\" value=\"0\">Normal Navigation Bar</label></div>
-			<div class=\"radio\"><label class=\"radio\"><input type=\"radio\" name=\"nav\" value=\"1\" checked>Inverse Navigation Bar</label></div>
+			<div class=\"form-check\">
+				<input class=\"form-check-input\" type=\"radio\" name=\"nav\" value=\"0\" id='normal'>
+				<label class=\"form-check-label\" for=\"normal\">Normal Navigation Bar (light)</label>
+			</div>
+			<div class=\"form-check\">
+				<input class=\"form-check-input\" type=\"radio\" name=\"nav\" value=\"1\" id='inverse' checked>
+				<label class=\"form-check-label\" for=\"inverse\">Inverse Navigation Bar (dark)</label>
+			</div>
 		";	
 	}
 	echo '
@@ -55,10 +72,10 @@ $("input[name='theme']").change(function() {
 });
 $("input[name='nav']").change(function() {
 	if($(this).val() == 0) {
-		$("#navbar").removeClass("navbar-inverse").addClass("navbar-default");
+		$("#navbar").removeClass("navbar-dark bg-dark").addClass("navbar-light bg-light");
 	}
 	else {
-		$("#navbar").removeClass("navbar-default").addClass("navbar-inverse");
+		$("#navbar").removeClass("navbar-light bg-light").addClass("navbar-dark bg-dark");
 	}
 });
 </script>

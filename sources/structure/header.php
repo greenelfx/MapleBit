@@ -25,13 +25,8 @@ if(basename($_SERVER["PHP_SELF"]) == "header.php") {
 				?>
 			}
 		</style>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src='https://www.google.com/recaptcha/api.js'></script>
-		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-		<!--[if lt IE 9]>
-		<script src="<?php echo $siteurl; ?>assets/js/ie/html5shiv.js"></script>
-		<script src="<?php echo $siteurl; ?>assets/js/ie/respond.min.js"></script>
-		<![endif]-->
 	</head>
 	<body>
 		<div class="container">
@@ -40,32 +35,28 @@ if($banner != "") {
 	echo "<img src=\"".$banner."\" alt=\"banner\" class=\"img-responsive\" style=\"margin: 0 auto;margin-top:20px;\">";
 }
 ?>
-<nav class="<?php echo $nav;?>" style="bottom:-22px;">
-	<div class="navbar-header">
-		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-		</button>
-		<a class="navbar-brand" href="#"><?php echo $servername;?></a>
-	</div>
-	<div class="navbar-collapse collapse">
-		<ul class="nav navbar-nav">
-			<li><a href="?base=main">Home</a></li>
+<nav class="<?php echo $nav;?>">
+	<a class="navbar-brand" href="#"><?php echo $servername;?></a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	  <span class="navbar-toggler-icon"></span>
+	</button>	
+	<div class="collapse navbar-collapse">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item"><a class="nav-link" href="?base=main">Home</a></li>
 			<?php
 			if(!isset($_SESSION['id'])) {
-				echo "<li><a href=\"?base=main&amp;page=register\">Register</a></li>";
+				echo "<li><a class=\"nav-link\" href=\"?base=main&amp;page=register\">Register</a></li>";
 			}
 			?>
-			<li><a href="?base=main&amp;page=download">Download</a></li>
-			<li><a href="?base=main&amp;page=rankings">Rankings</a></li>
-			<li><a href="?base=main&amp;page=vote">Vote</a></li>
-			<li><a href="<?php echo $forumurl; ?>">Forums</a></li>
+			<li class="nav-item"><a class="nav-link" href="?base=main&amp;page=download">Download</a></li>
+			<li class="nav-item"><a class="nav-link" href="?base=main&amp;page=rankings">Rankings</a></li>
+			<li class="nav-item"><a class="nav-link" href="?base=main&amp;page=vote">Vote</a></li>
+			<li class="nav-item"><a class="nav-link" href="<?php echo $forumurl; ?>">Forums</a></li>
 			<?php
 			if(!empty($slugarray)) {
 				foreach($slugarray as $page) {
 					if($page[2]) {
-						echo "<li><a href=\"?base=main&amp;page=".$page[0]."\">" . $page[1] . "</a></li>";
+						echo "<li class=\"nav-item\"><a class=\"nav-link\" href=\"?base=main&amp;page=".$page[0]."\">" . $page[1] . "</a></li>";
 					}
 				}
 			}
@@ -74,21 +65,23 @@ if($banner != "") {
 		<?php
 			if(isset($_SESSION['id'])) {
 		?>
-			<ul class="nav navbar-nav navbar-right">
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo get_gravatar($_SESSION['email'], 40);?>" alt="gravatar" class="img-responsive img-circle" style="float:left;margin-top: -10px;padding-right: 5px;"><?php echo $_SESSION['name']; ?><b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<?php
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item dropdown">
+					<a href="#" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<img src="<?php echo get_gravatar($_SESSION['email'], 40);?>" alt="gravatar" class="img-fluid rounded-circle" style="float:left;margin-top: -10px;padding-right: 5px;"><?php echo $_SESSION['name']; ?><b class="caret"></b>
+					</a>
+					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+					<?php
 						if($_SESSION['pname'] == "checkpname") {
-							echo "<li><a href=\"?base=ucp&amp;page=profname\">Set Profile Name</a></li>";
+							echo "<a class=\"dropdown-item\" href=\"?base=ucp&amp;page=profname\">Set Profile Name</a>";
 						} else {
-							echo "<li><a href=\"?base=main&amp;page=members&amp;name=".$_SESSION['pname']."\">Profile</a></li>";
+							echo "<a class=\"dropdown-item\" href=\"?base=main&amp;page=members&amp;name=".$_SESSION['pname']."\">Profile</a>";
 						}
-						?>
-						<li><a href="?base=ucp&amp;page=charfix">Character Fix</a></li>
-						<li class="divider"></li>
-						<li><a href="?base=misc&amp;script=logout">Log Out</a></li>
-					</ul>
+					?>
+						<a class="dropdown-item" href="?base=ucp&amp;page=charfix">Character Fix</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item"href="?base=misc&amp;script=logout">Log Out</a>
+					</div>
 				</li>
 			</ul>
 		<?php
@@ -97,7 +90,7 @@ if($banner != "") {
 	</div>
 </nav>
 
-<div class="well">
+<div class="card card-body">
 	<div class="row">
 		<div class="col-md-3">
 			<?php include("sources/structure/sidebar.php"); ?>

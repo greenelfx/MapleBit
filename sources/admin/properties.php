@@ -100,16 +100,16 @@ else {
 			})
 		</script>
 		<h2 class=\"text-left\">Site Configuration</h2><hr/>
-		<ul id=\"myTab\" class=\"nav nav-tabs\">
-			<li class=\"active\"><a href=\"#mainconfig\" data-toggle=\"tab\">Site</a></li>
-			<li><a href=\"#links\" data-toggle=\"tab\">Links</a></li>
-			<li><a href=\"#info\" data-toggle=\"tab\">Game Info</a></li>
-			<li><a href=\"#comment\" data-toggle=\"tab\">Comments</a></li>
-			<li><a href=\"#recaptcha\" data-toggle=\"tab\">reCAPTCHA</a></li>
+		<ul class=\"nav nav-tabs\" id=\"configTabs\" role=\"tablist\">
+			<li class=\"nav-item\"><a class=\"nav-link active\" href=\"#mainconfig\" data-toggle=\"tab\">Site</a></li>
+			<li class=\"nav-item\"><a class=\"nav-link\" href=\"#links\" data-toggle=\"tab\">Links</a></li>
+			<li class=\"nav-item\"><a class=\"nav-link\" href=\"#info\" data-toggle=\"tab\">Game Info</a></li>
+			<li class=\"nav-item\"><a class=\"nav-link\" href=\"#comment\" data-toggle=\"tab\">Comments</a></li>
+			<li class=\"nav-item\"><a class=\"nav-link\" href=\"#recaptcha\" data-toggle=\"tab\">reCAPTCHA</a></li>
 		</ul>
 		<form method='post' action='?base=admin&amp;page=properties'>
 		<div id=\"myTabContent\" class=\"tab-content\">
-		<div class=\"tab-pane fade in active\" id=\"mainconfig\">
+		<div class=\"tab-pane fade show active\" id=\"mainconfig\">
 		<br/>
 			<div class=\"form-group\">
 				<label for=\"serverName\">Server Name</label>
@@ -120,9 +120,9 @@ else {
 				<input name=\"gmlevel\" type=\"text\" maxlength=\"100\" class='form-control' id=\"gmLevel\" value=\"".$gmlevel."\" required/>
 			</div>
 			<div class=\"form-group\">
-				<label for=\"siteURL\">Site Path <span class=\"label label-danger\">IMPORTANT. NEEDS TRAILING SLASH</span></label>
+				<label for=\"siteURL\">Site Path <span class=\"badge badge-danger\">IMPORTANT. NEEDS TRAILING SLASH</span></label>
 				<input name=\"siteurl\" type=\"text\" maxlength=\"100\" class='form-control' id=\"siteURL\" value=\"".$siteurl."\" required/>
-				<span class=\"help-block\">/ indicates the root directory. /base/ indicates that base has been installed in a folder called base. You <b>must</b> use a trailing slash</span>			
+				<small id=\"siteUrlHelpBlock\" class=\"form-text text-muted\">/ indicates the root directory. /base/ indicates that base has been installed in a folder called base. You <b>must</b> use a trailing slash</small>			
 			</div>	
 		</div>
 		
@@ -195,13 +195,17 @@ else {
 				</div>
 			  </div>
 			  <div class=\"col-md-5\">
-				<h4>Quick Guide</h4>
-				<ol>
-					<li>Visit <a href=\"https://www.google.com/recaptcha\" target=\"_blank\">this link</a>.</li>
-					<li>If you see a prompt for Invisible Captcha, please skip and continue to get a regular reCAPTCHA code and click the  \"Get reCAPTCHA\" button.</li>
-					<li>Follow the instructions and input the domains you want to use. This will probably be <b>".$_SERVER['HTTP_HOST']."</b>.</li>
-					<li>Add the \"Site key\" and the \"Private key\" given to you by Google into this form.</li>
-				</ol>
+				<div class=\"card\">
+				<div class=\"card-header\">reCAPTCHA Guide</div>
+					<div class=\"card-body\">
+						<ol>
+							<li>Visit <a href=\"https://www.google.com/recaptcha\" target=\"_blank\">this link</a>.</li>
+							<li>If you see a prompt for Invisible Captcha, please skip and continue to get a regular reCAPTCHA code and click the  \"Get reCAPTCHA\" button.</li>
+							<li>Follow the instructions and input the domains you want to use. This will probably be <b>".$_SERVER['HTTP_HOST']."</b>.</li>
+							<li>Add the \"Site key\" and the \"Private key\" given to you by Google into this form.</li>
+						</ol>
+					</div>
+				</div>
 			  </div>
 			</div>
 		</div>

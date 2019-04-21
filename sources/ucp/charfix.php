@@ -31,9 +31,10 @@ if(isset($_GET['fix']) && $_GET['fix'] === "unstuck") {
 				<b>Spawn point:</b><br/>
 				<select name=\"map\" class=\"form-control\">
 					<option value=\"100000000\">Henesys</option>
-				</select><br/>
-				<input type=\"submit\" name=\"unstuck\" value=\"Unstuck &raquo;\" class=\"btn btn-info\"/>
-				</form><br/>
+				</select>
+				<hr/>
+				<input type=\"submit\" name=\"unstuck\" value=\"Unstuck &raquo;\" class=\"btn btn-primary float-right\"/>
+				</form>
 			";
 		} else {
 			echo "<div class=\"alert alert-danger\">You don't have any available characters!</div>";

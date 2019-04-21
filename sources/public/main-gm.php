@@ -4,7 +4,7 @@ if(basename($_SERVER["PHP_SELF"]) == "main-gm.php") {
 }
 echo "
 	<div class=\"col-md-6\">
-	<a href='?base=main&amp;page=gmblog'><h4>GM Blogs &raquo;</h4></a><hr/>
+	<a href='?base=main&amp;page=gmblog'><h5>GM Blogs &raquo;</h5></a><hr/>
 ";
 
 $gb = $mysqli->query("SELECT * FROM ".$prefix."gmblog ORDER BY id DESC LIMIT 4");
@@ -16,7 +16,7 @@ if($gb && $gb->num_rows) {
 			[".$b['date']."]
 			<a href=\"?base=main&amp;page=gmblog&amp;id=".$b['id']."\">";
 			echo htmlspecialchars(ellipsize($b['title'], 25, 1, "..."), ENT_QUOTES, 'UTF-8');
-			echo "<span class=\"badge pull-right\">".$cc."</span></a><br/>
+			echo "<span class=\"badge badge badge-secondary float-right\">".$cc."</span></a><br/>
 		";
 	}
 }

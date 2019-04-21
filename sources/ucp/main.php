@@ -18,14 +18,14 @@ if(isset($_SESSION['id'])) {
 			</script>
 			<h2 class=\"text-left\">Welcome Back, ".$_SESSION['name']."</h2>
 			<hr/>
-			<ul id=\"myTab\" class=\"nav nav-tabs\">
-				<li class=\"active\"><a href=\"#account\" data-toggle=\"tab\">Account</a></li>
-				<li><a href=\"?base=ucp&amp;page=characters\">Characters</a></li>
-				<li><a href=\"#community\" data-toggle=\"tab\">Community</a></li>
-				<li><a href=\"?base=ucp&amp;page=buynx\">Cash Shop</a></li>
+			<ul class=\"nav nav-tabs\" id=\"userTabs\" role=\"tablist\">
+				<li class=\"nav-item\"><a class=\"nav-link active\" href=\"#account\" data-toggle=\"tab\">Account</a></li>
+				<li class=\"nav-item\"><a class=\"nav-link\" href=\"?base=ucp&amp;page=characters\">Characters</a></li>
+				<li class=\"nav-item\"><a class=\"nav-link\" href=\"#community\" data-toggle=\"tab\">Community</a></li>
+				<li class=\"nav-item\"><a class=\"nav-link\" href=\"?base=ucp&amp;page=buynx\">Cash Shop</a></li>
 			</ul>
  			<div id=\"myTabContent\" class=\"tab-content\">
-				<div class=\"tab-pane fade in active\" id=\"account\">
+				<div class=\"tab-pane fade show active\" id=\"account\">
 				<br/>
 				<a href=\"?base=ucp&amp;page=accset\">Account Settings</a><br/>
 				<a href=\"?base=ucp&amp;page=charfix\">Character Fixes</a><br/><hr/>

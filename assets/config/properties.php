@@ -9,7 +9,7 @@ try {
         throw new Exception($mysqli->error);
 	$prop = $properties->fetch_assoc();
 	$themetype = "light";
-	$nav = "navbar navbar-default";
+	$nav = "navbar navbar-expand-lg navbar-light bg-light";
 	$ipaddress = isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
 	
 	
@@ -56,7 +56,7 @@ try {
 	$recaptcha_private = ($prop['recaptcha_private'] ?: null);
 	
 	if ($prop['nav']) {
-		$nav = "navbar navbar-default navbar-inverse";
+		$nav = "navbar navbar-expand-lg navbar-dark bg-dark";
 	}
 } catch(Exception $e) {
 	print("Unable to load MapleBit configuration. Perhaps MapleBit has not been installed yet.<br/>To resolve this, delete <b>assets/config/install/installdone.txt</b> and reload this page.");

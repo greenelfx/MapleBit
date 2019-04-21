@@ -9,13 +9,15 @@ if(isset($_GET['n'])) {
 		echo "
 			<h2 class=\"text-left\">Character Info</h2><hr/>
 			<div class=\"row\">
-				<div class=\"col-md-6 col-md-offset-3\">
-					<div class=\"well\">
-						<h3 class=\"text-center\"> " . $c['name'] . "</h3>
-						<hr/>
-						<img src=\"".$siteurl."assets/img/GD/create.php?name=".$c['name']."\" alt=\"".$c['name']."\" 	class=\"avatar img-responsive\" style=\"margin: 0 auto;\">
-						<hr/>
-						<b>Job:</b> " . $c['job'] . "<br/>
+				<div class=\"col-6 offset-3\">
+					<div class=\"card\">
+  						<div class=\"card-header\">".$c['name']."</div>
+						<div class=\"card-body\">
+							<div class=\"text-center\">
+								<img src=\"".$siteurl."assets/img/GD/create.php?name=".$c['name']."\" alt=\"".$c['name']."\" img-fluid\">
+							</div>
+							<hr/>
+							<b>Job:</b> " . $c['job'] . "<br/>
 		";
 		if($servertype == 1) {
 			echo "<b>Rebirths:</b> " . $c['reborns'] . "<br/>";
@@ -26,6 +28,7 @@ if(isset($_GET['n'])) {
 					</div>
 				</div>
 			</div>
+		</div>
 		";
 	} else {
 		echo "<div class=\"alert alert-danger\">This character doesn't exist!</div>";

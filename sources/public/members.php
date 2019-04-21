@@ -84,14 +84,12 @@ else {
 		<div class=\"row\">
 		<div class=\"col-md-6 col-md-offset-6\">
 			<form method=\"post\" action=\"?base=main&amp;page=members&amp;action=search\" role=\"form\">
-			<div style=\"float:right;margin-bottom:0px;\">
 				<div class=\"input-group\">
 					<input type=\"text\" name=\"name\" placeholder=\"Profile Name\" required id=\"profileName\" class=\"form-control\"/>
-						<span class=\"input-group-btn\">
-							<input class=\"btn btn-primary\" name=\"search\" type=\"submit\"/>
-						</span>
+					<div class=\"input-group-append\">
+						<input class=\"btn btn-primary\" name=\"search\" type=\"submit\" value=\"Search\"/>
+					</div>
 				</div>
-			</div>
 			</form>
 		</div>
 		</div><hr/>
