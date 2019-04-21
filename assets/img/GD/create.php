@@ -9,7 +9,7 @@ error_reporting(0);
 	| It took me over a couple of months to finish this code |
 	|                                                        |
 	+--------------------------------------------------------+
-
+	
 	Added Ian edits
 */
 require_once('../../config/database.php');
@@ -51,7 +51,7 @@ if(!empty($_GET['name'])) {
 				$Image->setWepInfo($weapon);
 			}
 			$nHash = hash("sha1", $cap.$mask.$eyes.$ears.$coat.$pants.$shoes.$glove.$cape.$shield.$weapon);
-
+			
 			if($nHash === $oHash[0]) {
 				$Image->charType('use', $name);
 				touch($cache);
@@ -110,7 +110,7 @@ if(!empty($_GET['name'])) {
 				$Image->setAccessory('Eyes', 'accessoryEyeBelowFace');
 				$Image->setFace();
 				$Image->setAccessory('Mask', 'accessoryFace');
-				$Image->setCap('accessoryEyeOverCap');
+				$Image->setCap('accessoryEyeOverCap'); 
 				$Image->setAccessory('Eyes', 'accessoryEye');
 				$Image->setCap('accessoryEar');
 				$Image->setHair('hair');
@@ -143,8 +143,8 @@ if(!empty($_GET['name'])) {
 				$Image->setWeapon('weaponWristOverGlove');
 				$Image->setWeapon('emotionOverBody');
 				$Image->setWeapon('characterEnd');
-
-
+				
+				
 				$Image->charType('create', $name);
 			}
 		} else

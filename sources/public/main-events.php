@@ -4,7 +4,7 @@ if(basename($_SERVER["PHP_SELF"]) == "main-events.php") {
 }
 echo "
 	<div class=\"col-md-6\">
-	<a href='?base=main&amp;page=events'><h4>Events &raquo;</h4></a><hr/>
+	<a href='?base=main&amp;page=events'><h5>Events &raquo;</h5></a><hr/>
 ";
 
 $ge = $mysqli->query("SELECT * FROM ".$prefix."events ORDER BY id DESC LIMIT 4");
@@ -18,7 +18,7 @@ if($ge && $ge->num_rows) {
 			<a href=\"?base=main&amp;page=events&amp;id=".$e['id']."\">
 		";
 		echo htmlspecialchars(ellipsize($e['title'], 25, 1, "..."), ENT_QUOTES, 'UTF-8');
-		echo "<span class=\"badge pull-right\">".$cc."</span></a><br/>";
+		echo "<span class=\"badge badge badge-secondary float-right\">".$cc."</span></a><br/>";
 	}
 }
 else {

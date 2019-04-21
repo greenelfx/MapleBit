@@ -21,3 +21,6 @@ h2, .h2 {
 	font-size: 30px;
 }
 h2>.label { vertical-align: middle;font-size:10px; } 
+body {
+	padding-top: 20px;
+}

@@ -92,15 +92,13 @@ echo "
 			<a href=\"?base=main&page=rankings&job=aran\"><img src=\"".$siteurl."assets/img/rank/aran.png\" data-toggle=\"tooltip\" title=\"Aran\" alt=\"Aran\"/></a>
 		</div>
 	</div>
-	<div class=\"col-md-5 col-md-offset-1\">
+	<div class=\"col-md-5 offset-md-1\">
 		<form id='search_form' method='post' action='?base=main&page=rankings'>
 			<div style=\"float:right;\">
-				<div class=\"well well2\" style=\"margin-bottom:0px;\">
-					<div class=\"input-group\">
-						<input type='text' name='search' id='s' class='form-control' placeholder='Character Name' required value='".$search."'/>
-						<span class=\"input-group-btn\">
-							<button class=\"btn btn-primary\" type=\"submit\"><i class=\"icon-search\"></i> Search</button>
-						</span>
+				<div class=\"input-group\">
+					<input type='text' name='search' id='s' class='form-control' placeholder='Character Name' required value='".$search."'/>
+					<div class=\"input-group-append\">
+						<button class=\"btn btn-primary\" type=\"submit\"><i class=\"icon-search\"></i> Search</button>
 					</div>
 				</div>
 			</div>
@@ -123,15 +121,18 @@ echo "
 			</tr>
 		</thead>
 		<tbody>";
-
 			$ranking=$start;
 			while($row = $result->fetch_assoc()) {
 				$ranking++;
 				$name = $row['name'];
 				echo "
 				<tr>
-					<td><span class=\"badge\">$ranking</span></td>
-					<td class=\"hidden-sm hidden-xs\"><img src=\"".$siteurl."assets/img/GD/create.php?name=".$name."\" alt=\"".$name."\" class=\"avatar img-responsive\" style=\"margin: 0 auto;\"></td>
+					<td><span class=\"badge badge badge-secondary\">$ranking</span></td>
+					<td class=\"hidden-sm hidden-xs\">
+						<div class=\"text-center\">
+							<img src=\"".$siteurl."assets/img/GD/create.php?name=".$name."\" alt=\"".$name."\" class=\"avatar img-fluid\">
+						</div>
+					</td>
 					<td><a href=\"?base=main&page=character&n=".$row['name']."\">".$row['name']."</a></td>
 					<td>";
 						if ($row['job']=="000")
@@ -285,17 +286,17 @@ echo "
 			</tbody>
 		</table>
 	</div>
-	<ul class=\"pager\">
+
+	<ul class=\"pagination justify-content-center\">
 		";
 
-		if($start == 0 || $start<=15) {
-			echo "  <li class=\"previous\"><a href=\"?base=main&page=rankings&job=".$getjob."/\"><i class=\"icon-arrow-left\"></i> Previous</a></li>";
+		if($start == 0 || $start<15) {
+			echo "  <li class=\"page-item disabled\"><a class=\"page-link\" href=\"?base=main&page=rankings&job=".$getjob."/\"><i class=\"icon-arrow-left\"></i> Previous</a></li>";
 		}
 		else{
-			echo "<li class=\"previous\"><a href=\"?base=main&page=rankings&job=".$getjob."&start=". abs($start - 15) ."\"><i class=\"icon-arrow-left\"></i> Previous</a></li>";
+			echo "<li class=\"page-item\"><a class=\"page-link\" href=\"?base=main&page=rankings&job=".$getjob."&start=". abs($start - 15) ."\"><i class=\"icon-arrow-left\"></i> Previous</a></li>";
 		}
 		echo"
-		<li class=\"next\"><a href=\"?base=main&page=rankings&job=".$getjob."&start=". abs($start + 15) ."\">Next<i class=\"icon-arrow-right\"></i></a></li>";
+		<li class=\"page-item\"><a class=\"page-link\" href=\"?base=main&page=rankings&job=".$getjob."&start=". abs($start + 15) ."\">Next<i class=\"icon-arrow-right\"></i></a></li>";
 		?>
-
 	</ul>
