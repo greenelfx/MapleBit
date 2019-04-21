@@ -7,6 +7,7 @@ echo '
 <meta charset="utf-8">
 <title>MapleBit Installation</title>
 <link href="../../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 <link href="style.css" rel="stylesheet" type="text/css" />
 <script>
 function goBack() {window.history.back()}
@@ -14,10 +15,12 @@ function goBack() {window.history.back()}
 <link rel="icon" href="../favicon.ico" type="image/x-icon" />
 </head>
 <body>
-
 <div class="container">
-	<div class="form-install">
-    <h2 class="form-install-heading">MapleBit Installation</h2>
+	<div class="row justify-content-md-center">
+		<div class="col col-lg-7">
+			<div class="card">
+				<h5 class="card-header">MapleBit Installation</h5>
+				<div class="card-body">
 ';
 if(isset($_GET['install'])) {
 	$install = $_GET['install'];
@@ -30,9 +33,9 @@ if(file_exists('installdone.txt')) {
 	switch($install) {
 		case NULL:
 			echo '
-				<h4>Welcome to MapleBit.</h4>
+				<h5 class="card-title">Welcome to MapleBit.</h5>
 				<hr/>
-				Before you can use your new website, MapleBit must be installed. Please make sure you have the following information handy:<br/><br/>
+				<p class="card-text">Before you can use your new website, MapleBit must be installed. Please make sure you have the following information handy:</p>
 				<ul>
 					<li>Database name</li>
 					<li>Database username</li>
@@ -41,17 +44,17 @@ if(file_exists('installdone.txt')) {
 					<li>Table Prefix <small>(Optional)</small></li>
 				</ul>
 				<hr/>
-				<form action="?install=1" method="post" style="float:right;">
-					<input type="submit" class="btn btn-primary btn-lg" value="Begin &raquo;" />
+				<form action="?install=1" method="post">
+					<input type="submit" class="btn btn btn-outline-primary float-right" value="Begin &raquo;" />
 				</form>
 				<br/><br/>';
 			exit;
 		break;
 		case 1:
 			echo '
-				<h4>Configure your database settings</h4>
+				<h5 class="card-title">Configure your database settings</h5>
 				<hr/>
-				<form action="?install=2" method="post" class="form-horizontal" role="form">
+				<form action="?install=2" method="post" role="form">
 					<div class="form-group">
 						<label for="inputHost" class="col-lg-4 control-label">MySQL Host</label>
 						<div class="col-lg-5">
@@ -83,12 +86,12 @@ if(file_exists('installdone.txt')) {
 						</div>
 					</div>
 					<hr/>
-					<input type="submit" class="btn btn-default btn-lg" value="Continue &raquo;" style="float:right"/>
+					<input type="submit" class="btn btn-outline-primary float-right" value="Continue &raquo;"/>
 				</form>
 				<br/><br/>';
 		break;
 		case 2:
-			echo '<h4>SQL Connection</h4><hr/>';
+			echo '<h5 class="card-title">SQL Connection Check</h5><hr/>';
 			error_reporting(0);
 			$host = $_POST["host"];
 			$db = $_POST["DB"];
@@ -98,12 +101,12 @@ if(file_exists('installdone.txt')) {
 			$mysqli = new mysqli($host, $dbuser, $dbpass, $db);
 			if ($mysqli->connect_errno) {
 			    printf("<div class=\"alert alert-danger\">Connect failed: %s\n", $mysqli->connect_error);
-				echo "</div><hr/><a href=\"?install=1\" class=\"btn btn-danger btn-lg\" value=\"Continue &raquo;\" style=\"float:right\">&laquo; Go Back</a><br/><br/>";
+				echo "</div><hr/><a href=\"?install=1\" class=\"btn btn-danger float-right\" value=\"Continue &raquo;\">&laquo; Go Back</a><br/><br/>";
 			    exit();
 			}
 			if($host == "" || $db == "") {
 				echo"<div class=\"alert alert-danger\">Please enter the correct information</div>";
-				echo "<hr/><a href=\"?install=1\" class=\"btn btn-danger btn-lg\" value=\"Continue &raquo;\" style=\"float:right\">&laquo; Go Back</a><br/><br/>";
+				echo "<hr/><a href=\"?install=1\" class=\"btn btn-danger float-right\" value=\"Continue &raquo;\">&laquo; Go Back</a><br/><br/>";
 				exit();
 			}
 file_put_contents('../database.php', '<?php
@@ -131,8 +134,8 @@ $mysqli = new MySQLi($host[\'hostname\'],$host[\'user\'],$host[\'password\'],$ho
 			echo '
 			<div class="alert alert-success">Successfully connected to MySQL.</div>
 			<hr/>
-			<form action="?install=3" method="post" style="float:right">
-				<input type="submit" class="btn btn-default btn-lg" value="Execute SQL &raquo;" />
+			<form action="?install=3" method="post"`>
+				<input type="submit" class="btn btn-outline-primary float-right" value="Execute SQL &raquo;" />
 			</form>
 			<br/><br/>';
 		break;
@@ -207,7 +210,7 @@ CREATE TABLE `".$prefix."properties` (
   `recaptcha_private` text DEFAULT NULL,
   PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-INSERT INTO ".$prefix."properties (version, theme, nav, colnx, colvp, homecontent) VALUES (83, 'cerulean', 0, 'paypalNX', 'votepoints', 'Admins: Click here to edit');
+INSERT INTO ".$prefix."properties (version, theme, nav, colnx, colvp, homecontent) VALUES (83, 'bootstrap', 1, 'paypalNX', 'votepoints', 'Admins: Click here to edit');
 
 DROP TABLE IF EXISTS `".$prefix."pages`;
 CREATE TABLE `".$prefix."pages` (
@@ -373,7 +376,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				$smeso = $mysqli->real_escape_string(stripslashes($_POST['mesorate']));
 				$sdrop = $mysqli->real_escape_string(stripslashes($_POST['droprate']));
 				$sgmlevel = $mysqli->real_escape_string(stripslashes($_POST['gmlevel']));
-				$ssiteurl = $mysqli->real_escape_string(stripslashes($_POST['sitepath']));
+				$ssiteurl = str_replace('/assets/config/install/install.php?install=4','',$_SERVER["REQUEST_URI"]) . "/";
 				$sversion = $mysqli->real_escape_string(stripslashes($_POST['version']));
 				$sservertype = $mysqli->real_escape_string($_POST['servertype']);
 				$scolnx = $mysqli->real_escape_string(stripslashes($_POST['colnx']));
@@ -404,9 +407,6 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				} elseif(empty($sgmlevel)) {
 					echo '<div class="alert alert-danger">Enter the level that you must be to be GM (Usually 1)</div>';
 					$continue = false;
-				} elseif(empty($ssiteurl)) {
-					echo '<div class="alert alert-danger">Enter the site path</div>';
-					$continue = false;
 				} elseif(!is_numeric($sversion)) {
 					echo '<div class="alert alert-danger">Enter a numeric value for the server version</div>';
 					$continue = false;
@@ -420,7 +420,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				if(!$continue) {
 					echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 				} else {
-					$mysqli->query("UPDATE ".$prefix."properties SET name='".$sservername."', type = '".$sservertype."', client='".$sclient."', server = '".$sserver."', version='".$sversion."', forumurl='".$sforumurl."', siteurl='".$ssiteurl."', exprate='".$sexp."', mesorate='".$smeso."', droprate='".$sdrop."', gmlevel = '".$sgmlevel."', flood='1', floodint='5', theme='cerulean', nav='0', colnx = '".$scolnx."', colvp = '".$scolvp."'");
+					$mysqli->query("UPDATE ".$prefix."properties SET name='".$sservername."', type = '".$sservertype."', client='".$sclient."', server = '".$sserver."', version='".$sversion."', forumurl='".$sforumurl."', siteurl='".$ssiteurl."', exprate='".$sexp."', mesorate='".$smeso."', droprate='".$sdrop."', gmlevel = '".$sgmlevel."', flood='1', floodint='5', theme='bootstrap', nav='1', colnx = '".$scolnx."', colvp = '".$scolvp."'");
 					echo "Working...";
 					echo "<meta http-equiv=\"refresh\" content=\"1; url=?install=5\" />";
 				}
@@ -429,9 +429,8 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				$url = $_SERVER["REQUEST_URI"];
 				$url = str_replace('/assets/config/install/install.php?install=4','',$url) . "/";
 				echo "
-				<h4>Site Configuration</h4>
+				<h5 class=\"card-title\">Site Configuration</h5><hr/>
 				<form method=\"post\" action=\"\" role=\"form\">
-				<div style='height:100%; width:500px;'>
 				<div class=\"form-group\">
 					<label for=\"serverName\">Server Name</label>
 					<input name=\"servername\" type=\"text\" maxlength=\"100\" value='MapleBit' class='form-control' id=\"serverName\" required/>
@@ -475,48 +474,48 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				<div class=\"form-group\">
 					<label for=\"nxCol\">NX Column</label>
 					<input name=\"colnx\" type=\"text\" maxlength=\"30\" class='form-control' id=\"nxCol\" placeholder=\"paypalNX\" required/>
-					<span class=\"help-block\">What column in the accounts table holds the NX value?</span>
+					<small id=\"nxColumnHelp\" class=\"form-text text-muted\">What column in the accounts table holds the NX value?</small>
 				</div>
 				<div class=\"form-group\">
 					<label for=\"vpCol\">Vote Point Column</label>
 					<input name=\"colvp\" type=\"text\" maxlength=\"30\" class='form-control' id=\"vpCol\" placeholder=\"votepoints\" required/>
-					<span class=\"help-block\">What column in the accounts table holds the Vote Points value?</span>
+					<small id=\"vpColumnHelp\" class=\"form-text text-muted\">What column in the accounts table holds the Vote Points value?</small>
 				</div>
 				<hr/>
 				<div class=\"form-group\">
 					<label for=\"gmAccess\">GM Access</label>
 					<input name=\"gmlevel\" type=\"text\" maxlength=\"10\" class='form-control' id=\"gmAccess\" placeholder=\"3\" value=\"3\" required/>
-					<span class=\"help-block\">What level GM should be allowed to access the GM panel?</span>
-				</div>
-				<div class=\"form-group\">
-					<label for=\"siteInput\">Site Path <span class=\"label label-success\"><span class=\"glyphicon glyphicon-ok\"></span> AUTODETECTED</span></label>
-					<input type=\"text\" class='form-control' id=\"siteInput\" placeholder=\"/\" value=\"".$url."\" disabled/>
-					<input name=\"sitepath\" type=\"text\" maxlength=\"10\" class='form-control hidden' id=\"siteInput\" placeholder=\"/\" value=\"".$url."\"/>
-					<span class=\"help-block\">This is used to access the MapleBit files correctly.</span>
-				</div>
+					<small id=\"vpColumnHelp\" class=\"form-text text-muted\">What level GM should be allowed to access the GM panel?</small>
 				</div>
 				<hr/>
-					<input name='submit' type='submit' value='Submit &raquo;' class=\"btn btn-primary btn-lg\" style=\"float:right\"/>
-					<br/><br/>
+					<input name='submit' type='submit' value='Submit &raquo;' class=\"btn btn-outline-primary float-right\"/>
 				</form>
 				";
 			}
 		break;
 		case 5:
-			echo "<h4>Extra Steps</h4><hr/>";
+			echo '<h5 class="card-title">Extra Steps</h5><hr/>';
 			if(isset($_POST['myself'])) {
 				echo "<meta http-equiv=\"refresh\" content=\"0; url=?install=6\" />";
 			} else {
-				echo "<b>Registration</b><br/>For Registration to function, you must head to the <a href='https://www.google.com/recaptcha/admin#list'>Google reCAPTCHA</a> page, register your domain, and then submit your private and public keys in the Admin Panel -> Site Settings -> Site Configuration page.<hr/><b>Rankings</b><hr/>For the rankings to work, you need the GD archive to be extracted. This can take some time. Go to assets/img/GD and extract the .zip archive.
+				echo "
+					<h6>Registration</h6>
+					<p>
+						For Registration to work, go to the <a href='https://www.google.com/recaptcha/admin#list'>Google reCAPTCHA</a> page, register your domain, and then submit your private and public keys in the Admin Panel -> Site Settings -> Site Configuration page.
+					</p>
+					<h6>Rankings</h6>
+					<p>
+						For the rankings to work, you need the GD archive to be extracted. This can take some time. Go to assets/img/GD and extract the .zip archive.
+					</p>
 				<hr/>
 				<form method=\"post\">
-					<input type=\"submit\" name=\"myself\" class=\"btn btn-warning btn-lg\" value=\"OK, I&#39;ll do it! &raquo;\" style=\"float:right;\"/><br/><br/>
+					<input type=\"submit\" name=\"myself\" class=\"btn btn-outline-primary float-right\" value=\"OK, I&#39;ll do it! &raquo;\"/>
 				</form>";
 			}
 		break;
 		case 6:
 			include('../database.php');
-			echo "<h4>Create Administrator Account</h4><hr/>";
+			echo '<h5 class="card-title">Create Administrator Account</h5><hr/>';
 			if(!isset($_POST['submit'])) {
 				$_SESSION['flash'] = "";
 				echo "
@@ -524,11 +523,11 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 					<div class=\"form-group\">
 						<label for=\"accName\">Your Account Name</label>
 						<input name=\"accname\" type=\"text\" class=\"form-control\" id=\"accName\" placeholder=\"Username\" required/>
+						<small id=\"accnameHelp\" class=\"form-text text-muted\">If you don't yet have an account, skip this step for now. Or, create a new account directly in your database and proceed.</small>
 					</div>
 					<hr/>
-					<a href=\"?install=done\" class=\"btn btn-lg btn-info\" style=\"float:left\">Skip &raquo;</a>
-					<input name=\"submit\" type=\"submit\" value=\"Submit &raquo;\" class=\"btn btn-primary btn-lg\" style=\"float:right\"/>
-					<br/><br/>
+					<a href=\"?install=done\" class=\"btn btn-outline-secondary float-left\">Skip &raquo;</a>
+					<input name=\"submit\" type=\"submit\" value=\"Submit &raquo;\" class=\"btn btn-outline-primary float-right\"/>
 				</form>
 				";
 			} else {
@@ -545,11 +544,11 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 			}
 		break;
 		case "done":
-			echo "<h4>Woohoo! You're done installing MapleBit!</h4>
+			echo "<h5 class=\"card-title\">Woohoo! You're done installing MapleBit!</h5>
 			".$_SESSION['flash']."
 			<hr/>
 				<form action=\"../../../?base=main\" method=\"post\">
-					<input type=\"submit\" class=\"btn btn-success btn-lg\" value=\"Ok, let's go! &raquo;\" style=\"float:right;\"/><br/><br/>
+					<input type=\"submit\" class=\"btn btn-success float-right\" value=\"Ok, let's go! &raquo;\"/>
 				</form>";
 			$content = "Congratulations on completing your MapleBit Installation! Leave this file here, or delete it if you would like to reconfigure your website.";
 			$fp = fopen("installdone.txt","wb");
@@ -559,6 +558,6 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 			break;
 	}
 }
-echo '</div></div>
-</body>';
+echo '</div></div></div></div></div>
+</body></html>';
 ?>

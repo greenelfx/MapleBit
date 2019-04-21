@@ -15,11 +15,10 @@ if(!isset($_POST['buyNX'])) {
 	else {
 		while($getChar = $fetchChar->fetch_assoc())	{
 			echo '
-				<div class="radio">
-					<label class="radio">
-						<input type="radio" name="selChar" value="'.$getChar['id'].'">'.$getChar['name'].'
-					</label>
-				</div>
+			<div class="form-check">
+				<input class="form-check-input" type="radio" name="selChar" value="'.$getChar['id'].'" id="'.$getChar['name'].'">
+				<label class="form-check-label" for="'.$getChar['name'].'">'.$getChar['name'].'</label>
+			</div>
 			';
 		}
 		echo "<hr/><h4>Select a Package</h4>";
@@ -29,11 +28,11 @@ if(!isset($_POST['buyNX'])) {
 		}
 		else {
 			while($getPack = $fetchPack->fetch_assoc()) {
+				$id = uniqid();
 				echo '
-					<div class="radio">
-						<label class="radio">
-							<input type="radio" name="selPack" value="'.$getPack['meso'].'">'.number_format($getPack['nx']).' NX for '.number_format($getPack['meso']).' Mesos
-						</label>
+					<div class="form-check">
+						<input class="form-check-input" type="radio" name="selPack" value="'.$getPack['meso'].'" id="'.$id.'">
+						<label class="form-check-label" for="'.$id.'">'.number_format($getPack['nx']).' NX for '.number_format($getPack['meso']).' Mesos</label>
 					</div>
 				';
 			}

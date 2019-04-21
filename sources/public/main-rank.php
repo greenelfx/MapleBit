@@ -13,7 +13,7 @@ else {
 
 echo "
 	<div class=\"col-md-6\">
-	<a href='?base=main&amp;page=rankings'><h4>Rankings &raquo;</h4></a><hr/>
+	<a href='?base=main&amp;page=rankings'><h5>Rankings &raquo;</h5></a><hr/>
 ";
 $gc = $mysqli->query("SELECT c.$first , c.$second, c.name, c.accountid, a.banned AS banned FROM characters c LEFT JOIN accounts a ON c.accountid = a.id WHERE c.gm < '$gmlevel' AND banned = 0 GROUP BY c.id DESC ORDER BY $first DESC, $second DESC LIMIT 5");
 if($gc->num_rows) {
