@@ -71,13 +71,13 @@ if(isset($_SESSION['id']) && isset($_SESSION['admin'])) {
 <div class="row">
 	<div class="col-md-12">
 		<div class="row">
-			<div class="col-md-9">
+			<div class="col-md-8">
 				<div class="jumbotron">
 					<h1>Welcome Back!</h1>
 					<p>Hey there, <?php echo $_SESSION['name']; ?>! You can use the links below to manage your website configuration, users, reports, and more!</p>
 				</div>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-4">
 				<div class="alert alert-<?php echo $alert_class; ?>">
 					<h2 class="text-center" style="margin: 0px;">Status</h2><hr/>
 					<?php echo $version_message; ?>

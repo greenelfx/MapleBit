@@ -14,20 +14,23 @@ if(isset($_SESSION['id'])) {
 				echo "<div class=\"row\">";
 			}
 			echo "
-				<div class=\"col-md-4\">
-					<div class=\"well\">
-						<h3 class=\"text-center\"> " . $c['name'] . "</h3>
-						<hr/>
-						<img src=\"assets/img/GD/create.php?name=".$c['name']."\" alt='".$c['name']."' class=\"avatar img-responsive\" style=\"margin: 0 auto;\">
-						<hr/>
-						<b>Job:</b> " . $c['job'] . "<br/>
+				<div class=\"col-md-4 mb-4\">
+					<div class=\"card\">
+						<div class=\"card-header\">".$c['name']."</div>
+							<div class=\"card-body\">
+								<div class=\"text-center\">
+									<img src=\"".$siteurl."assets/img/GD/create.php?name=".$c['name']."\" alt=\"".$c['name']."\" img-fluid\">
+								</div>
+								<hr/>
+								<b>Job:</b> " . $c['job'] . "<br/>
 			";
 			if($servertype == 1) {
 				echo "<b>Rebirths:</b> " . $c['reborns'] . "<br/>";
 			}
 			echo "
-						<b>Level:</b> " . $c['level'] . "<br/>
-						<b>EXP:</b> " . $c['exp'] . "<br/>
+							<b>Level:</b> " . $c['level'] . "<br/>
+							<b>EXP:</b> " . $c['exp'] . "<br/>
+						</div>
 					</div>
 				</div>
 			";

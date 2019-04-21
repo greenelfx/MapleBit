@@ -20,7 +20,7 @@ if(!isset($_POST['submit'])) {
 		echo "<div class=\"row\" style=\"margin-bottom:15px;\"><div class=\"col-md-10\"><input autocomplete=\"off\" class=\"form-control\" type=\"text\" placeholder=\"Jail Map ID\" type=\"text\" name=\"input_map[]\"  value=\"".$mapid[$i]."\"></div><div class=\"col-md-2\"><a href=\"#\" class=\"remove_field btn btn-danger\">Remove</a><br/></div></div>";
 	}
 	echo "	
-		</div></div></div>
+		</div></div>
 		<span class=\"input-group-btn\">
 			<button id=\"b1\" class=\"btn btn-info add_field_button\" type=\"button\">Add another Map</button>
 		</span>
