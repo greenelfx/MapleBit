@@ -6,11 +6,9 @@ if(basename($_SERVER["PHP_SELF"]) == "rankings.php") {
 <h2 class="text-left">Rankings</h2>
 <hr/>
 <?php
-error_reporting(-1);
-if(isset($_GET['job'])) {
-	$egetjob = $mysqli->real_escape_string(@$_GET['job']);
-	$getjob = preg_replace("/[^A-Za-z0-9 ]/", '', $egetjob); # Escape and Strip
-}
+$job_param = isset($_GET['job']) ? $_GET['job'] : '';
+$getjob = preg_replace("/[^A-Za-z0-9 ]/", '', $job_param); # Escape and Strip
+
 $dir = "/";
 if(isset($getjob) && $getjob != NULL) {
 	if($getjob == "beginner") {
@@ -44,17 +42,15 @@ if(isset($getjob) && $getjob != NULL) {
 	$show = "";
 	$getjob = "all";
 }
-$estart = $mysqli->real_escape_string(@$_GET['start']);
-$start = intval(+preg_replace("/[^A-Za-z0-9 ]/", '', $estart)); # Escape and Strip and ensure it's a number
-$esearch = $mysqli->real_escape_string(@$_GET['search']);
-$search = preg_replace("/[^A-Za-z0-9 ]/", '', $esearch); # Escape and Strip
-if(isset($search)) {
-	$esearch = $mysqli->real_escape_string(@$_POST['search']);
-	$search = preg_replace("/[^A-Za-z0-9 ]/", '', $esearch); # Escape and Strip
-	$csearch = " AND c.name LIKE '".$search."%'";
-} else {
-	$csearch = "";
-}
+
+$start_param = isset($_GET['start']) ? $_GET['start'] : 0;
+$start = intval(+preg_replace("/[^A-Za-z0-9 ]/", '', $start_param)); # Escape and Strip and ensure it's a number
+
+$search_param = isset($_POST['search']) ? $_POST['search'] : '';
+$search = preg_replace("/[^A-Za-z0-9 ]/", '', $search_param); # Escape and Strip
+
+$csearch = isset($search) ? " AND c.name LIKE '".$search."%'" : '';
+
 if(isset($search)) {
 	if($servertype == 1) {
 		$result2 = $mysqli->query("SELECT c.name , c.gm, c.job , c.level, c.reborns, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE c.gm < $gmlevel ".$show."".$csearch." GROUP BY c.id DESC ORDER BY reborns DESC, level DESC LIMIT $start, 15") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
@@ -77,6 +73,14 @@ if($servertype == 1) {
 	$result = $mysqli->query("SELECT c.name , c.gm, c.job, c.level, c.reborns, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE (c.gm < '$gmlevel') ".$show."".$csearch." GROUP BY c.id DESC ORDER BY reborns DESC, level DESC LIMIT 15 OFFSET $start") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
 } else {
 	$result = $mysqli->query("SELECT c.name , c.gm, c.job, c.level, c.exp, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE (c.gm < '$gmlevel') ".$show."".$csearch." GROUP BY c.id DESC ORDER BY level DESC, exp DESC LIMIT 15 OFFSET $start") or die("IT IS LINE ". __LINE__ . "<br />" . $mysqli->error);
+}
+if ($result->num_rows == 0) {
+	echo '
+		<div class="alert alert-danger">No results found</div>
+		<hr/>
+		<a href="?base=main&page=rankings" class="btn btn-outline-primary">&laquo; Go back</a>
+	';
+	return;
 }
 echo "
 <div class=\"row\">
@@ -290,7 +294,7 @@ echo "
 	<ul class=\"pagination justify-content-center\">
 		";
 
-		if($start == 0 || $start<15) {
+		if($start == 0 || $start < 15) {
 			echo "  <li class=\"page-item disabled\"><a class=\"page-link\" href=\"?base=main&page=rankings&job=".$getjob."/\"><i class=\"icon-arrow-left\"></i> Previous</a></li>";
 		}
 		else{
