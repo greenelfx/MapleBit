@@ -6,7 +6,7 @@ require "assets/libs/recaptcha/autoload.php";
 require "assets/libs/gump.class.php";
 
 if($recaptcha_public == null || $recaptcha_private == null) {
-	echo '<div class="alert alert-danger">Your administrator has not setup ReCATPCHA yet!</div>';
+	echo '<div class="alert alert-danger">Your administrator has not setup reCATPCHA yet!</div>';
 	return;
 }
 GUMP::add_validator("recaptcha", function($field, $input, $param = NULL) use ($recaptcha_private) {
