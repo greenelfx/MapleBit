@@ -12,7 +12,6 @@ if(basename($_SERVER["PHP_SELF"]) == "header.php") {
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link href="<?php echo $siteurl;?>assets/css/<?php echo $theme; ?>.min.css" rel="stylesheet" type="text/css" />
 		<link href="<?php echo $siteurl;?>assets/css/addon.css" rel="stylesheet" type="text/css" />
-		<link href="<?php echo $siteurl;?>assets/css/<?php echo $themetype; ?>.css" rel="stylesheet" type="text/css" />
 		<style type="text/css">
 			body {
 				<?php
@@ -25,7 +24,7 @@ if(basename($_SERVER["PHP_SELF"]) == "header.php") {
 				?>
 			}
 		</style>
-	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src='https://www.google.com/recaptcha/api.js'></script>
 	</head>
 	<body>
@@ -37,10 +36,10 @@ if($banner != "") {
 ?>
 <nav class="<?php echo $nav;?>">
 	<a class="navbar-brand" href="#"><?php echo $servername;?></a>
-	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
 	  <span class="navbar-toggler-icon"></span>
 	</button>	
-	<div class="collapse navbar-collapse">
+	<div class="collapse navbar-collapse" id="navbarContent">
 		<ul class="navbar-nav mr-auto">
 			<li class="nav-item"><a class="nav-link" href="?base=main">Home</a></li>
 			<?php
