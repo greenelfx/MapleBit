@@ -31,8 +31,8 @@ $users = array("manageaccounts", "banned");
 			color: #787878;
 		}
 		</style>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-		<script type="text/javascript" src="<?php echo $siteurl;?>assets/js/bootstrap.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 		<script type="text/javascript">
 			$(document).ready(function() {
 				$('[data-toggle=collapse]').click(function() {
@@ -46,11 +46,11 @@ $users = array("manageaccounts", "banned");
 	</head>
 	<body>
 		<nav class="<?php echo $nav; ?> navbar-fixed-top mb-4" id="navbar">
-		<a class="navbar-brand" href="#"><?php echo $servername; ?></a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>			
-			<div class="navbar-collapse collapse">
+		<a class="navbar-brand" href="#"><?php echo $servername;?></a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+		  <span class="navbar-toggler-icon"></span>
+		</button>	
+		<div class="collapse navbar-collapse" id="navbarContent">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item"><a class="nav-link" href="?base=main">Home</a></li>
 					<li class="nav-item"><a class="nav-link" href="?base=main&amp;page=download">Download</a></li>
