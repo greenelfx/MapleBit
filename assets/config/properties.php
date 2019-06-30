@@ -54,6 +54,8 @@ try {
 	/* reCAPTCHA Keys */
 	$recaptcha_public = ($prop['recaptcha_public'] ?: null);
 	$recaptcha_private = ($prop['recaptcha_private'] ?: null);
+
+	$hash_algorithm = ($prop['hash_algorithm']);
 	
 	if ($prop['nav']) {
 		$nav = "navbar navbar-expand-lg navbar-dark bg-dark";
