@@ -98,4 +98,31 @@ function getJobNames($unique) {
 	}
 	return $jobNames;
 }
+
+function hashPassword($password, $algorithm, $salt) {
+	switch (strtolower($algorithm)) {
+		case "bcrypt":
+			// Using salt has been deprecated
+			return password_hash($password, PASSWORD_BCRYPT);
+		case "sha1":
+			return sha1($password);
+		case "sha512":
+			return hash('sha512',$password.$salt);
+		
+		return sha1($password);
+	}
+}
+
+function verifyPassword($password, $hash, $algorithm, $salt) {
+	switch (strtolower($algorithm)) {
+		case "bcrypt":
+			return password_verify($password, $hash);
+		case "sha1":
+			return sha1($password) === $hash;
+		case "sha512":
+			return hash('sha512',$password.$salt) === $hash;
+		
+		return false;
+	}
+}
 ?>

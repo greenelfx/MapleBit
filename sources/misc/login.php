@@ -31,7 +31,8 @@ if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 		$p = $_REQUEST['password'];
 		$s = $mysqli->query("SELECT * FROM `accounts` WHERE `name`='".$u."'") or die();
 		$i = $s->fetch_assoc();
-		if($i['password'] == hash('sha512',$p.$i['salt']) || sha1($p) == $i['password']) {
+		$salt = in_array('salt', $i) ? $i['salt'] : null;
+		if (verifyPassword($p, $i['password'], $hash_algorithm, $salt)) {
 			#echo "SELECT * FROM `accounts` WHERE `name`='".$i['name']."' AND `password`='".$i['password']."'";
 			$userz = $mysqli->query("SELECT * FROM `accounts` WHERE `name`='".$i['name']."' AND `password`='".$i['password']."'") or die();
 			$auser = $userz->fetch_assoc();

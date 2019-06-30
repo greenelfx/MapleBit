@@ -208,6 +208,7 @@ CREATE TABLE `".$prefix."properties` (
   `status` tinyint(1) DEFAULT NULL,
   `recaptcha_public` text DEFAULT NULL,
   `recaptcha_private` text DEFAULT NULL,
+  `hash_algorithm` varchar(45),
   PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 INSERT INTO ".$prefix."properties (version, theme, nav, colnx, colvp, homecontent) VALUES (83, 'bootstrap', 1, 'paypalNX', 'votepoints', 'Admins: Click here to edit');
@@ -381,6 +382,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				$sservertype = $mysqli->real_escape_string($_POST['servertype']);
 				$scolnx = $mysqli->real_escape_string(stripslashes($_POST['colnx']));
 				$scolvp = $mysqli->real_escape_string(stripslashes($_POST['colvp']));
+				$shashalgorithm = $mysqli->real_escape_string(stripslashes($_POST['hash-algorithm']));
 				$continue = true;
 
 				if(empty($sservername)) {
@@ -420,7 +422,7 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				if(!$continue) {
 					echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 				} else {
-					$mysqli->query("UPDATE ".$prefix."properties SET name='".$sservername."', type = '".$sservertype."', client='".$sclient."', server = '".$sserver."', version='".$sversion."', forumurl='".$sforumurl."', siteurl='".$ssiteurl."', exprate='".$sexp."', mesorate='".$smeso."', droprate='".$sdrop."', gmlevel = '".$sgmlevel."', flood='1', floodint='5', theme='bootstrap', nav='1', colnx = '".$scolnx."', colvp = '".$scolvp."'");
+					$mysqli->query("UPDATE ".$prefix."properties SET name='".$sservername."', type = '".$sservertype."', client='".$sclient."', server = '".$sserver."', version='".$sversion."', forumurl='".$sforumurl."', siteurl='".$ssiteurl."', exprate='".$sexp."', mesorate='".$smeso."', droprate='".$sdrop."', gmlevel = '".$sgmlevel."', flood='1', floodint='5', theme='bootstrap', nav='1', colnx = '".$scolnx."', colvp = '".$scolvp."', hash_algorithm = '".$shashalgorithm."'");
 					echo "Working...";
 					echo "<meta http-equiv=\"refresh\" content=\"1; url=?install=5\" />";
 				}
@@ -486,6 +488,16 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 					<label for=\"gmAccess\">GM Access</label>
 					<input name=\"gmlevel\" type=\"text\" maxlength=\"10\" class='form-control' id=\"gmAccess\" placeholder=\"3\" value=\"3\" required/>
 					<small id=\"vpColumnHelp\" class=\"form-text text-muted\">What level GM should be allowed to access the GM panel?</small>
+				</div>
+				<hr/>
+				<div class=\"form-group\">
+					<label for=\"hashAlgorithm\">Password Hashing Algorithm</label>
+					<select name=\"hash-algorithm\" class='form-control'>
+						<option value=\"bcrypt\">bcrypt</option>
+						<option value=\"sha1\" selected>SHA1</option>
+						<option value=\"sha512\">SHA512</option>
+					</select>
+					<small id=\"hashAlgorithmHelp\" class=\"form-text text-muted\">What algorithm should be used to hash passwords? If you're not sure, choose SHA1.</small>
 				</div>
 				<hr/>
 					<input name='submit' type='submit' value='Submit &raquo;' class=\"btn btn-outline-primary float-right\"/>

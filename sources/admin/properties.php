@@ -19,6 +19,7 @@ if(isset($_POST['submit'])) {
 	$sservertype = $mysqli->real_escape_string(stripslashes($_POST['servertype']));
 	$srecaptchapublic = $mysqli->real_escape_string(stripslashes($_POST['recaptcha-public']));//can be null
 	$srecaptchaprivate = $mysqli->real_escape_string(stripslashes($_POST['recaptcha-private']));//can be null
+	$shashalgorithm = $mysqli->real_escape_string(stripslashes($_POST['hash-algorithm']));
 	$continue = true;
 
 	if(empty($sservername)) {
@@ -73,7 +74,7 @@ if(isset($_POST['submit'])) {
 		echo "<hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
 	}
 	else {
-		$mquery = "UPDATE ".$prefix."properties SET name='$sservername', type = '$sservertype', client='$sclient', server = '$sserver', forumurl='$sforumurl', siteurl = '$ssiteurl', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', version='$sversion', flood='$floodp', floodint='$floodi', gmlevel='$sgmlevel', recaptcha_public='$srecaptchapublic', recaptcha_private='$srecaptchaprivate'";
+		$mquery = "UPDATE ".$prefix."properties SET name='$sservername', type = '$sservertype', client='$sclient', server = '$sserver', forumurl='$sforumurl', siteurl = '$ssiteurl', exprate='$sexp', mesorate='$smeso', droprate='$sdrop', version='$sversion', flood='$floodp', floodint='$floodi', gmlevel='$sgmlevel', recaptcha_public='$srecaptchapublic', recaptcha_private='$srecaptchaprivate', hash_algorithm='$shashalgorithm'";
 		$exec = $mysqli->query($mquery);
 		echo "<h2 class=\"text-left\">Success</h2><hr/><div class=\"alert alert-success\">Configuration Updated</div>";
 		redirect_wait5("?base=admin&page=properties");
@@ -123,6 +124,15 @@ else {
 				<label for=\"siteURL\">Site Path <span class=\"badge badge-danger\">IMPORTANT. NEEDS TRAILING SLASH</span></label>
 				<input name=\"siteurl\" type=\"text\" maxlength=\"100\" class='form-control' id=\"siteURL\" value=\"".$siteurl."\" required/>
 				<small id=\"siteUrlHelpBlock\" class=\"form-text text-muted\">/ indicates the root directory. /base/ indicates that base has been installed in a folder called base. You <b>must</b> use a trailing slash</small>			
+			</div>
+			<div class=\"form-group\">
+				<label for=\"hash-algorithm\">Password Hashing Algorithm</label>
+				<select name=\"hash-algorithm\" class='form-control'>
+					<option value=\"bcrypt\" ".($hash_algorithm === "bcrypt" ? "selected" : "").">bcrypt</option>
+					<option value=\"sha1\" ".($hash_algorithm === "sha1" ? "selected" : "").">SHA1</option>
+					<option value=\"sha512\" ".($hash_algorithm === "sha512" ? "selected" : "").">SHA512</option>
+				</select>
+				<small id=\"hashingAlgorithmHelpBlock\" class=\"form-text text-muted\">The algorithm to be used to hash passwords for login and registration</small>			
 			</div>	
 		</div>
 		
