@@ -208,7 +208,7 @@ CREATE TABLE `".$prefix."properties` (
   `status` tinyint(1) DEFAULT NULL,
   `recaptcha_public` text DEFAULT NULL,
   `recaptcha_private` text DEFAULT NULL,
-  `hash_algorithm` varchar(45)
+  `hash_algorithm` varchar(45),
   PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 INSERT INTO ".$prefix."properties (version, theme, nav, colnx, colvp, homecontent) VALUES (83, 'bootstrap', 1, 'paypalNX', 'votepoints', 'Admins: Click here to edit');
