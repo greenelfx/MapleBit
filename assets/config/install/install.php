@@ -493,11 +493,11 @@ echo "<META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
 				<div class=\"form-group\">
 					<label for=\"hashAlgorithm\">Password Hashing Algorithm</label>
 					<select name=\"hash-algorithm\" class='form-control'>
-						<option value=\"bcrypt\">BCrypt</option>
-						<option value=\"sha1\">SHA1</option>
+						<option value=\"bcrypt\">bcrypt</option>
+						<option value=\"sha1\" selected>SHA1</option>
 						<option value=\"sha512\">SHA512</option>
 					</select>
-					<small id=\"hashAlgorithmHelp\" class=\"form-text text-muted\">What algorithm should be used to hash passwords?</small>
+					<small id=\"hashAlgorithmHelp\" class=\"form-text text-muted\">What algorithm should be used to hash passwords? If you're not sure, choose SHA1.</small>
 				</div>
 				<hr/>
 					<input name='submit' type='submit' value='Submit &raquo;' class=\"btn btn-outline-primary float-right\"/>

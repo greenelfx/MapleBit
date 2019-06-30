@@ -128,7 +128,7 @@ else {
 			<div class=\"form-group\">
 				<label for=\"hash-algorithm\">Password Hashing Algorithm</label>
 				<select name=\"hash-algorithm\" class='form-control'>
-					<option value=\"bcrypt\" ".($hash_algorithm === "bcrypt" ? "selected" : "").">BCrypt</option>
+					<option value=\"bcrypt\" ".($hash_algorithm === "bcrypt" ? "selected" : "").">bcrypt</option>
 					<option value=\"sha1\" ".($hash_algorithm === "sha1" ? "selected" : "").">SHA1</option>
 					<option value=\"sha512\" ".($hash_algorithm === "sha512" ? "selected" : "").">SHA512</option>
 				</select>
