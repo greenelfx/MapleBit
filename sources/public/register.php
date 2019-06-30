@@ -48,9 +48,14 @@ if (isset($_POST['submit'])) {
 		}
 		echo '</div>';
 	} else {
-		$insert_user_query = "INSERT INTO accounts (`name`, `password`, `ip`, `email`, `birthday`) VALUES ('".$validated_data['username']."', '".sha1($validated_data['password'])."', '".getRealIpAddr()."', '".$validated_data['email']."', '1990-01-01')";
+		$hashed_password = hashPassword($validated_data['password'], $hash_algorithm, null);
+		$insert_user_query = "INSERT INTO accounts (`name`, `password`, `ip`, `email`, `birthday`) VALUES ('".$validated_data['username']."', '".$hashed_password."', '".getRealIpAddr()."', '".$validated_data['email']."', '1990-01-01')";
 		$mysqli->query($insert_user_query);
-		echo '<div class="alert alert-success"><b>Success!</b> Please login, and head to the downloads page to get started!</div><script>$(function() {$("#register").fadeOut();});</script>';
+		if (!empty($mysqli->error)) {
+			echo '<div class="alert alert-danger"><b>Error!</b> There was a problem registering your account.</div>';
+		} else {
+			echo '<div class="alert alert-success"><b>Success!</b> Please login, and head to the downloads page to get started!</div><script>$(function() {$("#register").fadeOut();});</script>';
+		}
 	}
 }
 ?>
