@@ -49,7 +49,7 @@ else {
 	// If the current password field is filled in, the user is changing their password
 	if($current) {
 		// Ensure that current password matches with the record in the database
-		if($userz['password'] == hash('sha512',$current.$userz['salt']) || sha1($current) == $userz['password']) {
+		if(verifyPassword($current, $userz['password'], $hash_algorithm, $current.$userz['salt'])) {
 			// If the new password or confirm password fields are empty
 			if(empty($pass) || empty($confirm_pass)) {
 				echo "<div class=\"alert alert-danger\">Please fill in the password and confirm password fields.</div>";
@@ -93,7 +93,8 @@ else {
 		}
 		else {
 			if($current) {
-				$u = $mysqli->query("UPDATE `accounts` SET `password`='".sha1($pass)."' WHERE `name`='".$userz['name']."'") or die();
+				$hashed_password = hashPassword($pass, $hash_algorithm, null);
+				$u = $mysqli->query("UPDATE `accounts` SET `password`='".$hashed_password."' WHERE `name`='".$userz['name']."'") or die();
 			}
 			$u = $mysqli->query("UPDATE `accounts` SET `email`='".$email."',`birthday`='".$birth."' WHERE `name`='".$userz['name']."'") or die();
 			$_SESSION['email'] = $email;
