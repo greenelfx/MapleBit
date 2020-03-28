@@ -1,9 +1,9 @@
 <?php
-if(basename($_SERVER["PHP_SELF"]) == "database.php") {
+if (basename($_SERVER["PHP_SELF"]) == "database.php") {
     die("403 - Access Forbidden");
 }
 //SQL Information
-$host['hostname'] = 'localhost'; // Hostname [Usually locahost]
+$host['hostname'] = '127.0.0.1'; // Hostname [Usually locahost]
 $host['user'] = 'root'; // Database Username [Usually root]
 $host['password'] = ''; // Database Password [Leave blank if unsure]
 $host['database'] = 'mapleblade'; // Database Name
@@ -16,6 +16,4 @@ $loginport = "7575";
 $worldport = "8484";
 
 /* Don`t touch. */
-$mysqli = new MySQLi($host['hostname'],$host['user'],$host['password'],$host['database']);
-
-?>
+$mysqli = new MySQLi($host['hostname'], $host['user'], $host['password'], $host['database']);
