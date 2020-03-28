@@ -1,65 +1,49 @@
 <?php
-if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-	$is_ajax = $_REQUEST['is_ajax'];
-	if(isset($is_ajax) && $is_ajax) {
-		if(isset($_COOKIE["block"])) {
-			$cookie = json_decode($_COOKIE['block']);
-			$time = $cookie->expiry - time();
-			echo "wait%" . $time;
-			return;
-		}
-		else {
-			if(!isset($_SESSION['attempts'])) {
-				$_SESSION['attempts'] = 1;
-			}
-			else {
-				if($_SESSION['attempts'] >= 3) {
-					$expiry = time() + 60;
-					$cookieData = array("data" => 1, "expiry" => $expiry);
-					setcookie("block", json_encode($cookieData), $expiry);
-					$_SESSION['attempts'] = 1;
-					$time = $expiry - time();
-					echo "wait%" . $time;
-					return;
-				}
-				else {
-					$_SESSION['attempts']++;
-				}
-			}
-		}
-		$u = $mysqli->real_escape_string($_REQUEST['username']);
-		$p = $_REQUEST['password'];
-		$s = $mysqli->query("SELECT * FROM `accounts` WHERE `name`='".$u."'") or die();
-		$i = $s->fetch_assoc();
-		$salt = in_array('salt', $i) ? $i['salt'] : null;
-		if (verifyPassword($p, $i['password'], $hash_algorithm, $salt)) {
-			#echo "SELECT * FROM `accounts` WHERE `name`='".$i['name']."' AND `password`='".$i['password']."'";
-			$userz = $mysqli->query("SELECT * FROM `accounts` WHERE `name`='".$i['name']."' AND `password`='".$i['password']."'") or die();
-			$auser = $userz->fetch_assoc();
-			$checkpname = $mysqli->query("SELECT * FROM ".$prefix."profile WHERE accountid=".$auser['id']."");
-			$countcheckpname = $checkpname->num_rows;
-			$checkprofile = $checkpname->fetch_assoc();
-			$_SESSION['id'] = $auser['id'];
-			$_SESSION['name'] = $auser['name'];
-			$_SESSION['mute'] = $auser['mute'];
-			$_SESSION['email'] = $auser['email'];
-			if($countcheckpname == 1) {
-				$_SESSION['pname'] =  $checkprofile['name'];
-			}
-			else {$_SESSION['pname'] = "checkpname";}
-			if($auser['webadmin'] == "1") {
-				$_SESSION['admin'] = $auser['webadmin'];
-			}
-			if(isset($auser['gm']) && $auser['gm'] >= $gmlevel) { // Make sure that the gm column exists. If it does, check if gmLevel is above
-				$_SESSION['gm'] = $auser['gm'];
-			}
-			echo "success";
-		}
-		else {
-			// echo "bad password";
-		}
-	}
-	else {
-		// echo "not ajax";
-	}
+header('Content-Type: application/json');
+
+// generic failure response
+$FAILED_RESP = json_encode(array("response" => "failed"));
+
+$username = $mysqli->real_escape_string($_REQUEST['username']);
+$password = $_REQUEST['password'];
+
+if ($username == '' || $password == '') {
+    echo $FAILED_RESP;
+    exit();
+}
+
+$statement = $mysqli->prepare("SELECT * FROM accounts WHERE name = ?");
+$statement->bind_param("s", $username);
+$statement->execute();
+$account = $statement->get_result()->fetch_assoc();
+
+if (!isset($account)) {
+    echo $FAILED_RESP;
+    exit();
+}
+
+$salt = in_array('salt', $account) ? $account['salt'] : null;
+if (verifyPassword($password, $account['password'], $hash_algorithm, $salt)) {
+    $statement = $mysqli->prepare("SELECT * FROM ".$prefix."profile WHERE accountid = ?");
+    $statement->bind_param("i", $account['id']);
+    $statement->execute();
+    $pname = $statement->get_result()->fetch_assoc();
+
+    $_SESSION['pname'] = $pname ? $pname['name'] : 'checkpname';
+    $_SESSION['id'] = $account['id'];
+    $_SESSION['name'] = $account['name'];
+    $_SESSION['mute'] = $account['mute'];
+    $_SESSION['email'] = $account['email'];
+
+    if ($account['webadmin'] == "1") {
+        $_SESSION['admin'] = $account['webadmin'];
+    }
+    if ($account['gm'] >= $gmlevel) {
+        // Used to abstract gm levels to a boolean
+        // For some reason, this is set to the value instead of a bool
+        $_SESSION['gm'] = $account['gm'];
+    }
+    echo json_encode(array("response" => "success"));
+} else {
+    echo $FAILED_RESP;
 }
