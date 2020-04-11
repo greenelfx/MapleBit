@@ -16,7 +16,6 @@ try {
     /* Name of server */
     $servername = $prop['name'];
     $siteurl = $prop['siteurl'];
-    $domain = $prop['domain'];
     $banner = $prop['banner'];
     $background = $prop['background'];
     $bgcolor = $prop['bgcolor'];
