@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
+use Tests\TestCase;
 use Vinkla\Hashids\Facades\Hashids;
 
 class AuthenticationTest extends TestCase
@@ -42,8 +42,8 @@ class AuthenticationTest extends TestCase
             'status' => 'validation',
             'errors' => [
                 'email' => ['The email must be a valid email address.'],
-                'username' => ['The username field is required.']
-            ]
+                'username' => ['The username field is required.'],
+            ],
         ]);
     }
 
@@ -72,14 +72,14 @@ class AuthenticationTest extends TestCase
         $resp = $this->post('/api/auth/login', ['email' => $user->email, 'password' => 'password']);
         $token = $resp['token'];
         $this->get('/api/auth/devices', [
-            'Authorization' => "Bearer $token"
+            'Authorization' => "Bearer $token",
         ])->assertJsonStructure([
             'status',
             'tokens' => [
-                "*" => [
-                    'name', 'last_used_at'
-                ]
-            ]
+                '*' => [
+                    'name', 'last_used_at',
+                ],
+            ],
         ]);
     }
 
@@ -99,14 +99,14 @@ class AuthenticationTest extends TestCase
         }
 
         $this->post('/api/auth/revokeAll', [], [
-            'Authorization' => "Bearer $token"
+            'Authorization' => "Bearer $token",
         ])->assertJsonStructure([
             'status',
             'tokens' => [
-                "*" => [
-                    'name', 'last_used_at'
-                ]
-            ]
+                '*' => [
+                    'name', 'last_used_at',
+                ],
+            ],
         ]);
 
         $this->assertDeleted('personal_access_tokens', ['id' => $existing_tokens[0]]);
@@ -126,7 +126,7 @@ class AuthenticationTest extends TestCase
         $this->assertDatabaseHas('personal_access_tokens', ['id' => $existing_tokens[0]]);
 
         $this->post('/api/auth/logout', [], [
-            'Authorization' => "Bearer $token"
+            'Authorization' => "Bearer $token",
         ])->assertJson(['status' => 'success']);
 
         $this->assertDeleted('personal_access_tokens', ['id' => $existing_tokens[0]]);
