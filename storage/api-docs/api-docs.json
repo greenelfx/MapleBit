@@ -1,0 +1,173 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "MapleBit",
+        "description": "MapleBit API Documentation",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "email": "team@"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost/maplebit/public/api"
+        }
+    ],
+    "paths": {
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Login as a user",
+                "operationId": "login",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "description": "user@email.com",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "password",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success with token"
+                    }
+                }
+            }
+        },
+        "/auth/create": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Create a user",
+                "operationId": "create",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "username",
+                                    "password",
+                                    "password_confirm"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "description": "user@email.com",
+                                        "type": "string"
+                                    },
+                                    "username": {
+                                        "description": "username",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "password",
+                                        "type": "string"
+                                    },
+                                    "password_confirm": {
+                                        "description": "Password Confirmation",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success with token"
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Destroys current session",
+                "operationId": "logout",
+                "responses": {
+                    "200": {
+                        "description": "Indicates current session is destroyed"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/auth/revokeAll": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Destroys all sessions other than the one used to make this request",
+                "operationId": "revokeAll",
+                "responses": {
+                    "200": {
+                        "description": "Indicates sessions were destroyed"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/auth/devices": {
+            "get": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Gets all authenticated devices (sessions) for user",
+                "operationId": "getUserDevices",
+                "responses": {
+                    "200": {
+                        "description": "Device identifiers, names, last used"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearer": {
+                "type": "http",
+                "description": "Authorization token obtained from logging in.",
+                "name": "Authorization",
+                "in": "header",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
