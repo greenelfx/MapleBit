@@ -3,7 +3,9 @@
  * This is a PHP library that handles calling reCAPTCHA.
  *
  * BSD 3-Clause License
+ *
  * @copyright (c) 2019, Google Inc.
+ *
  * @link https://www.google.com/recaptcha
  * All rights reserved.
  *
@@ -39,10 +41,11 @@ namespace ReCaptcha\RequestMethod;
  */
 class Curl
 {
-
     /**
      * @see http://php.net/curl_init
+     *
      * @param string $url
+     *
      * @return resource cURL handle
      */
     public function init($url = null)
@@ -52,8 +55,10 @@ class Curl
 
     /**
      * @see http://php.net/curl_setopt_array
+     *
      * @param resource $ch
-     * @param array $options
+     * @param array    $options
+     *
      * @return bool
      */
     public function setoptArray($ch, array $options)
@@ -63,7 +68,9 @@ class Curl
 
     /**
      * @see http://php.net/curl_exec
+     *
      * @param resource $ch
+     *
      * @return mixed
      */
     public function exec($ch)
@@ -73,6 +80,7 @@ class Curl
 
     /**
      * @see http://php.net/curl_close
+     *
      * @param resource $ch
      */
     public function close($ch)

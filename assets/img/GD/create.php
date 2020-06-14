@@ -1,4 +1,5 @@
 <?php
+
 error_reporting(0);
 /*
     +--------------------------------------------------------+
@@ -12,34 +13,34 @@ error_reporting(0);
 
     Added Ian edits
 */
-require_once('../../config/database.php');
-require_once('coordinates.php');
+require_once '../../config/database.php';
+require_once 'coordinates.php';
 if (!empty($_GET['name'])) {
     $name = $mysqli->real_escape_string($_GET['name']);
     if ($mysqli->query("SELECT name FROM characters WHERE name = '$name'")->num_rows == 1) {
-        $Image  = new Character;
-        $cache = "Characters/".$name.".png";
+        $Image = new Character();
+        $cache = 'Characters/'.$name.'.png';
 
         if (file_exists($cache) && (time() - (43200) < filemtime($cache))) {
             $Image->charType('use', $name);
         } else {
             if ($gotChar = mysqli_fetch_row($mysqli->query("SELECT `id`, `skincolor`, `gender`, `hair`, `face` FROM `characters` WHERE `name` = '$name' LIMIT 1"))) {
                 $getAcc = $mysqli->query("SELECT `itemid`, `position` FROM `inventoryitems` WHERE `characterid` = '{$gotChar[0]}' AND `inventorytype` = '-1' ORDER BY `position` DESC");
-                $oHash  = mysqli_fetch_row($mysqli->query("SELECT `hash` FROM `bit_gdcache` WHERE `id` = '{$gotChar[0]}' LIMIT 1"));
-                $cap    = $mask = $eyes = $ears = $coat = $pants = $shoes = $glove = $cape = $shield = $weapon = null; // ANTI rapage
+                $oHash = mysqli_fetch_row($mysqli->query("SELECT `hash` FROM `bit_gdcache` WHERE `id` = '{$gotChar[0]}' LIMIT 1"));
+                $cap = $mask = $eyes = $ears = $coat = $pants = $shoes = $glove = $cape = $shield = $weapon = null; // ANTI rapage
 
                 while ($gotAcc = mysqli_fetch_row($getAcc)) {
                     switch ($gotAcc[1]) {
-                    case -1: case -101:$cap    = $gotAcc[0];break;
-                    case -2: case -102:$mask   = $gotAcc[0];break;
-                    case -3: case -103:$eyes   = $gotAcc[0];break;
-                    case -4: case -104:$ears   = $gotAcc[0];break;
-                    case -5: case -105:$coat   = $gotAcc[0];break;
-                    case -6: case -106:$pants  = $gotAcc[0];break;
-                    case -7: case -107:$shoes  = $gotAcc[0];break;
-                    case -8: case -108:$glove  = $gotAcc[0];break;
-                    case -9: case -109:$cape   = $gotAcc[0];break;
-                    case -10:case -110:$shield = $gotAcc[0];break;
+                    case -1: case -101:$cap = $gotAcc[0]; break;
+                    case -2: case -102:$mask = $gotAcc[0]; break;
+                    case -3: case -103:$eyes = $gotAcc[0]; break;
+                    case -4: case -104:$ears = $gotAcc[0]; break;
+                    case -5: case -105:$coat = $gotAcc[0]; break;
+                    case -6: case -106:$pants = $gotAcc[0]; break;
+                    case -7: case -107:$shoes = $gotAcc[0]; break;
+                    case -8: case -108:$glove = $gotAcc[0]; break;
+                    case -9: case -109:$cape = $gotAcc[0]; break;
+                    case -10:case -110:$shield = $gotAcc[0]; break;
                     case -11:case -111:
                         $weapon = $gotAcc[0];
                         $Image->setWepInfo($weapon);
@@ -50,29 +51,29 @@ if (!empty($_GET['name'])) {
                     $weapon = 1;
                     $Image->setWepInfo($weapon);
                 }
-                $nHash = hash("sha1", $cap.$mask.$eyes.$ears.$coat.$pants.$shoes.$glove.$cape.$shield.$weapon);
-            
+                $nHash = hash('sha1', $cap.$mask.$eyes.$ears.$coat.$pants.$shoes.$glove.$cape.$shield.$weapon);
+
                 if ($nHash === $oHash[0]) {
                     $Image->charType('use', $name);
                     touch($cache);
                 } else {
-                    $Image->setVaribles(array(
-                    "Skin"   => $gotChar[1],
-                    "Gender" => $gotChar[2],
-                    "Hair"   => $gotChar[3],
-                    "Face"   => $gotChar[4],
-                    "Cap"    => $cap,
-                    "Mask"   => $mask,
-                    "Eyes"   => $eyes,
-                    "Ears"   => $ears,
-                    "Coat"   => $coat,
-                    "Pants"  => $pants,
-                    "Shoes"  => $shoes,
-                    "Glove"  => $glove,
-                    "Cape"   => $cape,
-                    "Shield" => $shield,
-                    "Weapon" => $weapon
-                ));
+                    $Image->setVaribles([
+                        'Skin'   => $gotChar[1],
+                        'Gender' => $gotChar[2],
+                        'Hair'   => $gotChar[3],
+                        'Face'   => $gotChar[4],
+                        'Cap'    => $cap,
+                        'Mask'   => $mask,
+                        'Eyes'   => $eyes,
+                        'Ears'   => $ears,
+                        'Coat'   => $coat,
+                        'Pants'  => $pants,
+                        'Shoes'  => $shoes,
+                        'Glove'  => $glove,
+                        'Cape'   => $cape,
+                        'Shield' => $shield,
+                        'Weapon' => $weapon,
+                    ]);
                     $Image->setWeapon('weaponBelowBody');
                     $Image->setCap('capeBelowBody');
                     $Image->setCap('capBelowHead');
@@ -143,8 +144,7 @@ if (!empty($_GET['name'])) {
                     $Image->setWeapon('weaponWristOverGlove');
                     $Image->setWeapon('emotionOverBody');
                     $Image->setWeapon('characterEnd');
-                
-                
+
                     $Image->charType('create', $name);
                 }
             } else {

@@ -6,14 +6,13 @@
  */
 class HTMLPurifier_ConfigSchema_Builder_Xml extends XMLWriter
 {
-
     /**
-     * @type HTMLPurifier_ConfigSchema_Interchange
+     * @var HTMLPurifier_ConfigSchema_Interchange
      */
     protected $interchange;
 
     /**
-     * @type string
+     * @var string
      */
     private $namespace;
 
@@ -34,13 +33,15 @@ class HTMLPurifier_ConfigSchema_Builder_Xml extends XMLWriter
 
     /**
      * @param mixed $var
+     *
      * @return string
      */
     protected function export($var)
     {
-        if ($var === array()) {
+        if ($var === []) {
             return 'array()';
         }
+
         return var_export($var, true);
     }
 

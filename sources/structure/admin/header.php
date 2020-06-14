@@ -1,16 +1,16 @@
 <?php
-if (basename($_SERVER["PHP_SELF"]) == "header.php") {
-    die("403 - Access Forbidden");
+if (basename($_SERVER['PHP_SELF']) == 'header.php') {
+    die('403 - Access Forbidden');
 }
 
-$admin = "";
+$admin = '';
 if (isset($_GET['page'])) {
     $admin = $_GET['page'];
 }
 
-$settings = array("properties", "voteconfig", "nxpacks", "bannedmaps", "theme", "banner", "background");
-$content = array("homeconfig", "mannews", "manevent", "pages");
-$users = array("manageaccounts", "banned");
+$settings = ['properties', 'voteconfig', 'nxpacks', 'bannedmaps', 'theme', 'banner', 'background'];
+$content = ['homeconfig', 'mannews', 'manevent', 'pages'];
+$users = ['manageaccounts', 'banned'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,9 +62,9 @@ $users = array("manageaccounts", "banned");
 				<li class="nav-item"><a class="nav-link" href="?base=main&amp;page=vote">Vote</a></li>
 				<li class="nav-item"><a class="nav-link" href="<?php echo $forumurl; ?>">Forums</a></li>
 				<?php
-                $getpages = $mysqli->query("SELECT * from " . $prefix . "pages WHERE visible = 1");
+                $getpages = $mysqli->query('SELECT * from '.$prefix.'pages WHERE visible = 1');
                 while ($fetchpages = $getpages->fetch_assoc()) {
-                    echo "<li class=\"nav-item\"><a class=\"nav-link\" href=\"?base=main&amp;page=" . $fetchpages['slug'] . "\">" . $fetchpages['title'] . "</a>";
+                    echo '<li class="nav-item"><a class="nav-link" href="?base=main&amp;page='.$fetchpages['slug'].'">'.$fetchpages['title'].'</a>';
                 }
                 ?>
 			</ul>
@@ -76,10 +76,10 @@ $users = array("manageaccounts", "banned");
 					</a>
 					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 						<?php
-                        if ($_SESSION['pname'] == "checkpname") {
-                            echo "<a class=\"dropdown-item\" href=\"?base=ucp&amp;page=profname\">Set Profile Name</a>";
+                        if ($_SESSION['pname'] == 'checkpname') {
+                            echo '<a class="dropdown-item" href="?base=ucp&amp;page=profname">Set Profile Name</a>';
                         } else {
-                            echo "<a class=\"dropdown-item\" href=\"?base=main&amp;page=members&amp;name=" . $_SESSION['pname'] . "\">Profile</a>";
+                            echo '<a class="dropdown-item" href="?base=main&amp;page=members&amp;name='.$_SESSION['pname'].'">Profile</a>';
                         }
                         ?>
 						<a class="dropdown-item" href="?base=ucp&amp;page=charfix">Character Fix</a>

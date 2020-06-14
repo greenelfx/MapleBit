@@ -1,6 +1,7 @@
 <?php
-if (basename($_SERVER["PHP_SELF"]) == "main.php") {
-    die("403 - Access Forbidden");
+
+if (basename($_SERVER['PHP_SELF']) == 'main.php') {
+    die('403 - Access Forbidden');
 }
 
 if (isset($_GET['page'])) {
@@ -27,11 +28,11 @@ if (isset($_SESSION['id']) && (isset($_SESSION['gm']) || isset($_SESSION['admin'
 				</div>
 			</div>
 		";
-    } elseif ($gmcp === "manblog") {
-        include('sources/gmcp/manage-blog.php');
-    } elseif ($gmcp === "banned") {
-        include('sources/gmcp/banned.php');
+    } elseif ($gmcp === 'manblog') {
+        include 'sources/gmcp/manage-blog.php';
+    } elseif ($gmcp === 'banned') {
+        include 'sources/gmcp/banned.php';
     }
 } else {
-    redirect("?base=main");
+    redirect('?base=main');
 }

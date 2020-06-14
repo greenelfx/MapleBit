@@ -7,22 +7,25 @@
  */
 class HTMLPurifier_ConfigSchema_Interchange
 {
-
     /**
      * Name of the application this schema is describing.
-     * @type string
+     *
+     * @var string
      */
     public $name;
 
     /**
-     * Array of Directive ID => array(directive info)
-     * @type HTMLPurifier_ConfigSchema_Interchange_Directive[]
+     * Array of Directive ID => array(directive info).
+     *
+     * @var HTMLPurifier_ConfigSchema_Interchange_Directive[]
      */
-    public $directives = array();
+    public $directives = [];
 
     /**
-     * Adds a directive array to $directives
+     * Adds a directive array to $directives.
+     *
      * @param HTMLPurifier_ConfigSchema_Interchange_Directive $directive
+     *
      * @throws HTMLPurifier_ConfigSchema_Exception
      */
     public function addDirective($directive)
@@ -40,6 +43,7 @@ class HTMLPurifier_ConfigSchema_Interchange
     public function validate()
     {
         $validator = new HTMLPurifier_ConfigSchema_Validator();
+
         return $validator->validate($this);
     }
 }

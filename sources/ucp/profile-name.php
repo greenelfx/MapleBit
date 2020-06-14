@@ -1,45 +1,47 @@
 <?php
-if (basename($_SERVER["PHP_SELF"]) == "profile-name.php") {
-    die("403 - Access Forbidden");
+if (basename($_SERVER['PHP_SELF']) == 'profile-name.php') {
+    die('403 - Access Forbidden');
 }
-require "assets/libs/gump.class.php";
+require 'assets/libs/gump.class.php';
 
 //eventually move validators to their own file
-GUMP::add_validator("exists", function ($field, $input, $param = null) use ($mysqli, $prefix) {
-    return $mysqli->query("SELECT COUNT(*) FROM " . $prefix . "profile WHERE $param ='" . $mysqli->real_escape_string($input[$field]) . "'")->fetch_row()[0] == 0;
+GUMP::add_validator('exists', function ($field, $input, $param = null) use ($mysqli, $prefix) {
+    return $mysqli->query('SELECT COUNT(*) FROM '.$prefix."profile WHERE $param ='".$mysqli->real_escape_string($input[$field])."'")->fetch_row()[0] == 0;
 });
-GUMP::add_validator("unallowed", function ($field, $input, $param = null) {
-    if ($input[$field] === "checkpname") {
+GUMP::add_validator('unallowed', function ($field, $input, $param = null) {
+    if ($input[$field] === 'checkpname') {
         return false;
     }
+
     return true;
 });
 
-if ($_SESSION['pname'] !== "checkpname") {
-    echo "<div class=\"alert alert-danger\">Oops! Looks like you already have a profile name!</div>";
+if ($_SESSION['pname'] !== 'checkpname') {
+    echo '<div class="alert alert-danger">Oops! Looks like you already have a profile name!</div>';
+
     return;
 }
 
 if (isset($_POST['create'])) {
     $gump = new GUMP();
     $_POST = $gump->sanitize($_POST);
-    $gump->validation_rules(array(
-        'name' => 'required|alpha_numeric|exists,name|max_len,16|min_len,4|unallowed,checkpname'
-    ));
-    $gump->filter_rules(array(
-        'name' => 'trim|sanitize_string'
-    ));
+    $gump->validation_rules([
+        'name' => 'required|alpha_numeric|exists,name|max_len,16|min_len,4|unallowed,checkpname',
+    ]);
+    $gump->filter_rules([
+        'name' => 'trim|sanitize_string',
+    ]);
     $validated_data = $gump->run($_POST);
 
     if ($validated_data === false) {
         echo '<div class="alert alert-danger">';
         foreach ($gump->get_errors_array() as $error) {
-            echo $error . '<br/>';
+            echo $error.'<br/>';
         }
         echo '</div>';
     } else {
-        $i = $mysqli->query("INSERT INTO " . $prefix . "profile (accountid, name) VALUES (" . $_SESSION['id'] . ",'" . $validated_data['name'] . "')");
-        echo "<div class=\"alert alert-success\">The profile name has been created! You can now go to the community page and edit your public profile.</div>";
+        $i = $mysqli->query('INSERT INTO '.$prefix.'profile (accountid, name) VALUES ('.$_SESSION['id'].",'".$validated_data['name']."')");
+        echo '<div class="alert alert-success">The profile name has been created! You can now go to the community page and edit your public profile.</div>';
         $_SESSION['pname'] = $validated_data['name'];
     }
 }

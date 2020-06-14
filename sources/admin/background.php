@@ -1,6 +1,6 @@
 <?php
-if (basename($_SERVER["PHP_SELF"]) == "background.php") {
-    die("403 - Access Forbidden");
+if (basename($_SERVER['PHP_SELF']) == 'background.php') {
+    die('403 - Access Forbidden');
 }
 
 $bgfixedcheck = $bgcentercheck = $bgcovercheck = null;
@@ -34,15 +34,15 @@ if (!isset($_POST['submit'])) {
 				<span class="help-block">Background images can repeat horizontally, vertically, both, or none.</span>
 			</div>
 			<div class="checkbox">
-				<label><input type="checkbox" name="bgcenter" <?php echo($bgcenter ? "checked" : " ") ?>>Center Background (Yes)</label>
+				<label><input type="checkbox" name="bgcenter" <?php echo $bgcenter ? 'checked' : ' ' ?>>Center Background (Yes)</label>
 			</div>
 			<span class="help-block">Background images can be centered.</span>
 			<div class="checkbox">
-				<label><input type="checkbox" name="bgfixed" <?php echo($bgfixed ? "checked" : " ") ?>>Fixed Background (Yes)</label>
+				<label><input type="checkbox" name="bgfixed" <?php echo $bgfixed ? 'checked' : ' ' ?>>Fixed Background (Yes)</label>
 			</div>
 			<span class="help-block">Background images can be fixed (won&#39;t scroll).</span>
 			<div class="checkbox">
-				<label><input type="checkbox" name="bgcover" <?php echo($bgcover ? "checked" : " ") ?>>Fit Background to Screen (Yes)</label>
+				<label><input type="checkbox" name="bgcover" <?php echo $bgcover ? 'checked' : ' ' ?>>Fit Background to Screen (Yes)</label>
 			</div>
 			<span class="help-block">Background images can be resized to fit the browser window.</span>
 			<hr />
@@ -50,7 +50,7 @@ if (!isset($_POST['submit'])) {
 		</form>
 	<?php
 } else {
-        $bgcenter = $bgfixed = $bgcover = "";
+        $bgcenter = $bgfixed = $bgcover = '';
         $url = $mysqli->real_escape_string($_POST['url']);
         $bgcolor = $mysqli->real_escape_string($_POST['bgcolor']);
         $bgrepeat = $mysqli->real_escape_string($_POST['bgrepeat']);
@@ -63,7 +63,7 @@ if (!isset($_POST['submit'])) {
         if (isset($_POST['bgcover'])) {
             $bgcover = 1;
         }
-        $mysqli->query("UPDATE " . $prefix . "properties SET background = '" . $url . "', bgcolor = '" . $bgcolor . "', bgrepeat = '" . $bgrepeat . "', bgcenter = '" . $bgcenter . "', bgfixed = '" . $bgfixed . "', bgcover = '" . $bgcover . "'");
-        echo "<div class=\"alert alert-success\">Successfully updated background.</div>";
-        redirect_wait5("?base=admin&page=background");
+        $mysqli->query('UPDATE '.$prefix."properties SET background = '".$url."', bgcolor = '".$bgcolor."', bgrepeat = '".$bgrepeat."', bgcenter = '".$bgcenter."', bgfixed = '".$bgfixed."', bgcover = '".$bgcover."'");
+        echo '<div class="alert alert-success">Successfully updated background.</div>';
+        redirect_wait5('?base=admin&page=background');
     }

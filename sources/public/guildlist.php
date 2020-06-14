@@ -1,6 +1,6 @@
 <?php
-if (basename($_SERVER["PHP_SELF"]) == "guildlist.php") {
-    die("403 - Access Forbidden");
+if (basename($_SERVER['PHP_SELF']) == 'guildlist.php') {
+    die('403 - Access Forbidden');
 }
 ?>
 <h2 class="text-left">Guild List</h2>
@@ -17,7 +17,7 @@ if (basename($_SERVER["PHP_SELF"]) == "guildlist.php") {
 	<tbody>
 		<?php
         $n = 0;
-        $query = $mysqli->query("SELECT guilds.leader, guilds.GP, guilds.name, characters.id, characters.name AS cname FROM guilds, characters WHERE characters.id = guilds.leader ORDER BY guilds.GP DESC LIMIT 20");
+        $query = $mysqli->query('SELECT guilds.leader, guilds.GP, guilds.name, characters.id, characters.name AS cname FROM guilds, characters WHERE characters.id = guilds.leader ORDER BY guilds.GP DESC LIMIT 20');
         while ($row = $query->fetch_assoc()) {
             ?>
 			<tr>
@@ -25,17 +25,17 @@ if (basename($_SERVER["PHP_SELF"]) == "guildlist.php") {
 				<td><?php if (array_key_exists('name', $row)) {
                 echo $row['name'];
             } else {
-                echo "Unknown";
+                echo 'Unknown';
             } ?></td>
 				<td><?php if (array_key_exists('cname', $row)) {
                 echo $row['cname'];
             } else {
-                echo "Unknown";
+                echo 'Unknown';
             } ?></td>
 				<td><?php if (array_key_exists('GP', $row)) {
                 echo $row['GP'];
             } else {
-                echo "Unknown";
+                echo 'Unknown';
             } ?></td>
 			</tr>
 		<?php
