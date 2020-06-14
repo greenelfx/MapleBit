@@ -1,8 +1,8 @@
 <?php
-if (basename($_SERVER["PHP_SELF"]) == "home.php") {
-    die("403 - Access Forbidden");
+if (basename($_SERVER['PHP_SELF']) == 'home.php') {
+    die('403 - Access Forbidden');
 }
-$editable = ">";
+$editable = '>';
 if (isset($_SESSION['id']) && isset($_SESSION['admin'])) {
     ?>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -29,6 +29,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['admin'])) {
 		});
 	</script>
 <?php
-    $editable = " id=\"home\" contenteditable=\"true\">";
+    $editable = ' id="home" contenteditable="true">';
 }
-echo "<hr/><div" . $editable . $gethome['homecontent'] . "</div>";
+echo '<hr/><div'.$editable.$gethome['homecontent'].'</div>';

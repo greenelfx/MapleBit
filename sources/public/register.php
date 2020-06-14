@@ -1,57 +1,60 @@
 <?php
-if (basename($_SERVER["PHP_SELF"]) == "register.php") {
-    die("403 - Access Forbidden");
+if (basename($_SERVER['PHP_SELF']) == 'register.php') {
+    die('403 - Access Forbidden');
 }
-require "assets/libs/recaptcha/autoload.php";
-require "assets/libs/gump.class.php";
+require 'assets/libs/recaptcha/autoload.php';
+require 'assets/libs/gump.class.php';
 
 if ($recaptcha_public == null || $recaptcha_private == null) {
     echo '<div class="alert alert-danger">Your administrator has not setup reCATPCHA yet!</div>';
+
     return;
 }
-GUMP::add_validator("recaptcha", function ($field, $input, $param = null) use ($recaptcha_private) {
+GUMP::add_validator('recaptcha', function ($field, $input, $param = null) use ($recaptcha_private) {
     $recaptcha = new \ReCaptcha\ReCaptcha($recaptcha_private);
     $resp = $recaptcha->setExpectedAction('register')
         ->setScoreThreshold(0.5)
-        ->verify($input['g-recaptcha-response'], $_SERVER["REMOTE_ADDR"]);
+        ->verify($input['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
+
     return $resp->isSuccess();
 });
 
-GUMP::add_validator("exists", function ($field, $input, $param = null) use ($mysqli) {
-    return $mysqli->query("SELECT COUNT(*) FROM accounts WHERE $param ='" . $mysqli->real_escape_string($input[$field]) . "'")->fetch_row()[0] == 0;
+GUMP::add_validator('exists', function ($field, $input, $param = null) use ($mysqli) {
+    return $mysqli->query("SELECT COUNT(*) FROM accounts WHERE $param ='".$mysqli->real_escape_string($input[$field])."'")->fetch_row()[0] == 0;
 });
 
 if (isset($_SESSION['id'])) {
-    echo "<meta http-equiv=refresh content=\"0; url=?base=ucp\">";
+    echo '<meta http-equiv=refresh content="0; url=?base=ucp">';
+
     return;
 }
 
 if (isset($_POST['submit'])) {
     $gump = new GUMP();
     $_POST = $gump->sanitize($_POST);
-    $gump->validation_rules(array(
-        'username' => 'required|alpha_numeric|exists,name|max_len,12|min_len,4',
-        'password' => 'required|min_len,6',
-        'email' => 'required|valid_email|exists,email',
+    $gump->validation_rules([
+        'username'             => 'required|alpha_numeric|exists,name|max_len,12|min_len,4',
+        'password'             => 'required|min_len,6',
+        'email'                => 'required|valid_email|exists,email',
         'g-recaptcha-response' => 'required|recaptcha',
-    ));
-    $gump->filter_rules(array(
+    ]);
+    $gump->filter_rules([
         'username' => 'trim|sanitize_string',
         'password' => 'trim',
         'email'    => 'trim|sanitize_email',
-    ));
-    GUMP::set_field_name("g-recaptcha-response", "reCAPTCHA");
+    ]);
+    GUMP::set_field_name('g-recaptcha-response', 'reCAPTCHA');
     $validated_data = $gump->run($_POST);
 
     if ($validated_data === false) {
         echo '<div class="alert alert-danger">';
         foreach ($gump->get_errors_array() as $error) {
-            echo $error . '<br/>';
+            echo $error.'<br/>';
         }
         echo '</div>';
     } else {
         $hashed_password = hashPassword($validated_data['password'], $hash_algorithm, null);
-        $insert_user_query = "INSERT INTO accounts (`name`, `password`, `ip`, `email`, `birthday`) VALUES ('" . $validated_data['username'] . "', '" . $hashed_password . "', '" . getRealIpAddr() . "', '" . $validated_data['email'] . "', '1990-01-01')";
+        $insert_user_query = "INSERT INTO accounts (`name`, `password`, `ip`, `email`, `birthday`) VALUES ('".$validated_data['username']."', '".$hashed_password."', '".getRealIpAddr()."', '".$validated_data['email']."', '1990-01-01')";
         $mysqli->query($insert_user_query);
         if (!empty($mysqli->error)) {
             echo '<div class="alert alert-danger"><b>Error!</b> There was a problem registering your account.</div>';
@@ -61,7 +64,7 @@ if (isset($_POST['submit'])) {
     }
 }
 ?>
-<script src="<?php echo "https://www.google.com/recaptcha/api.js?render=" . $recaptcha_public; ?>"></script>
+<script src="<?php echo 'https://www.google.com/recaptcha/api.js?render='.$recaptcha_public; ?>"></script>
 <script>
     grecaptcha.ready(function() {
         grecaptcha.execute("<?php echo $recaptcha_public; ?>", {action: 'register'}).then(function(token) {

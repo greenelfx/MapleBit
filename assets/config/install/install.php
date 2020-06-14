@@ -29,7 +29,7 @@ session_start()
                         if (isset($_GET['install'])) {
                             $install = $_GET['install'];
                         } else {
-                            $install = "";
+                            $install = '';
                         }
                         if (file_exists('installdone.txt')) {
                             echo "<div class=\"alert alert-info\">Oops! Looks like MapleBit has already been installed! If you'd like, you can delete everything in the install folder, except for installdone.txt</div>";
@@ -97,20 +97,20 @@ session_start()
                                 case 2:
                                     echo '<h5 class="card-title">SQL Connection Check</h5><hr/>';
                                     error_reporting(0);
-                                    $host = $_POST["host"];
-                                    $db = $_POST["DB"];
-                                    $dbuser = $_POST["DBuser"];
-                                    $dbpass = $_POST["DBpass"];
-                                    $dbprefix = $_POST["DBprefix"];
+                                    $host = $_POST['host'];
+                                    $db = $_POST['DB'];
+                                    $dbuser = $_POST['DBuser'];
+                                    $dbpass = $_POST['DBpass'];
+                                    $dbprefix = $_POST['DBprefix'];
                                     $mysqli = new mysqli($host, $dbuser, $dbpass, $db);
                                     if ($mysqli->connect_errno) {
                                         printf("<div class=\"alert alert-danger\">Connect failed: %s\n", $mysqli->connect_error);
-                                        echo "</div><hr/><a href=\"?install=1\" class=\"btn btn-danger float-right\" value=\"Continue &raquo;\">&laquo; Go Back</a><br/><br/>";
+                                        echo '</div><hr/><a href="?install=1" class="btn btn-danger float-right" value="Continue &raquo;">&laquo; Go Back</a><br/><br/>';
                                         exit();
                                     }
-                                    if ($host == "" || $db == "") {
-                                        echo "<div class=\"alert alert-danger\">Please enter the correct information</div>";
-                                        echo "<hr/><a href=\"?install=1\" class=\"btn btn-danger float-right\" value=\"Continue &raquo;\">&laquo; Go Back</a><br/><br/>";
+                                    if ($host == '' || $db == '') {
+                                        echo '<div class="alert alert-danger">Please enter the correct information</div>';
+                                        echo '<hr/><a href="?install=1" class="btn btn-danger float-right" value="Continue &raquo;">&laquo; Go Back</a><br/><br/>';
                                         exit();
                                     }
                                     file_put_contents('../database.php', '<?php
@@ -118,13 +118,13 @@ if(basename($_SERVER["PHP_SELF"]) == "database.php") {
     die("403 - Access Forbidden");
 }
 //SQL Information
-$host[\'hostname\'] = \'' . $host . '\'; // Hostname [Usually locahost]
-$host[\'user\'] = \'' . $dbuser . '\'; // Database Username [Usually root]
-$host[\'password\'] = \'' . $dbpass . '\'; // Database Password [Leave blank if unsure]
-$host[\'database\'] = \'' . $db . '\'; // Database Name
+$host[\'hostname\'] = \''.$host.'\'; // Hostname [Usually locahost]
+$host[\'user\'] = \''.$dbuser.'\'; // Database Username [Usually root]
+$host[\'password\'] = \''.$dbpass.'\'; // Database Password [Leave blank if unsure]
+$host[\'database\'] = \''.$db.'\'; // Database Name
 
 //Database Prefix
-$prefix = "' . $dbprefix . '";
+$prefix = "'.$dbprefix.'";
 // What is your server`s log in port - Don`t change if you aren`t sure.
 $loginport = "7575";
 // What is your server`s world port - Don`t change if you aren`t sure.
@@ -147,54 +147,54 @@ $mysqli = new MySQLi($host[\'hostname\'],$host[\'user\'],$host[\'password\'],$ho
                                 case 3:
                                     include '../database.php';
                                     if ($mysqli->query("SHOW TABLES LIKE 'accounts'")->num_rows != 1) {
-                                        echo "
+                                        echo '
                         <hr />
-                        <div class=\"alert alert-danger\">(1) You need to have a valid game database installed before
+                        <div class="alert alert-danger">(1) You need to have a valid game database installed before
                             installing MapleBit!</div>
-                        <hr /><a href=\"?install=1\" class=\"btn btn-danger btn-lg\" value=\"Continue &raquo;\"
-                            style=\"float:right\">&laquo; Go Back</a><br /><br />";
+                        <hr /><a href="?install=1" class="btn btn-danger btn-lg" value="Continue &raquo;"
+                            style="float:right">&laquo; Go Back</a><br /><br />';
                                         exit();
                                     }
                                     if ($mysqli->query("SHOW TABLES LIKE 'characters'")->num_rows != 1) {
-                                        echo "
+                                        echo '
                         <hr />
-                        <div class=\"alert alert-danger\">(2) You need to have a valid game database installed before
+                        <div class="alert alert-danger">(2) You need to have a valid game database installed before
                             installing MapleBit!</div>
-                        <hr /><a href=\"?install=1\" class=\"btn btn-danger btn-lg\" value=\"Continue &raquo;\"
-                            style=\"float:right\">&laquo; Go Back</a><br /><br />";
+                        <hr /><a href="?install=1" class="btn btn-danger btn-lg" value="Continue &raquo;"
+                            style="float:right">&laquo; Go Back</a><br /><br />';
                                         exit();
                                     }
-                                    $queryaccounts = $mysqli->query("SELECT * FROM `accounts`");
+                                    $queryaccounts = $mysqli->query('SELECT * FROM `accounts`');
                                     $getcolumns = $queryaccounts->fetch_assoc();
 
                                     if (!isset($getcolumns['webadmin'])) {
-                                        $mysqli->query("ALTER TABLE accounts ADD `webadmin` int(1) DEFAULT 0;");
-                                        echo "Added webadmin<br />";
+                                        $mysqli->query('ALTER TABLE accounts ADD `webadmin` int(1) DEFAULT 0;');
+                                        echo 'Added webadmin<br />';
                                     }
                                     if (!isset($getcolumns['nick'])) {
-                                        $mysqli->query("ALTER TABLE accounts ADD `nick` varchar(20);");
-                                        echo "Added nick<br />";
+                                        $mysqli->query('ALTER TABLE accounts ADD `nick` varchar(20);');
+                                        echo 'Added nick<br />';
                                     }
                                     if (!isset($getcolumns['mute'])) {
-                                        $mysqli->query("ALTER TABLE accounts ADD `mute` int(1) DEFAULT 0;");
-                                        echo "Added mute<br />";
+                                        $mysqli->query('ALTER TABLE accounts ADD `mute` int(1) DEFAULT 0;');
+                                        echo 'Added mute<br />';
                                     }
                                     if (!isset($getcolumns['email'])) {
-                                        $mysqli->query("ALTER TABLE accounts ADD `email` VARCHAR(45) DEFAULT NULL;");
-                                        echo "Added email<br />";
+                                        $mysqli->query('ALTER TABLE accounts ADD `email` VARCHAR(45) DEFAULT NULL;');
+                                        echo 'Added email<br />';
                                     }
                                     if (!isset($getcolumns['ip'])) {
-                                        $mysqli->query("ALTER TABLE accounts ADD `ip` text;");
-                                        echo "Added ip<br />";
+                                        $mysqli->query('ALTER TABLE accounts ADD `ip` text;');
+                                        echo 'Added ip<br />';
                                     }
                                     if (!isset($getcolumns['birthday'])) {
-                                        $mysqli->query("ALTER TABLE accounts ADD `birthday` DATE;");
-                                        echo "Added birthday<br />";
+                                        $mysqli->query('ALTER TABLE accounts ADD `birthday` DATE;');
+                                        echo 'Added birthday<br />';
                                     }
                                     mysqli_multi_query(
                                         $mysqli,
-                                        "DROP TABLE IF EXISTS `" . $prefix . "properties`;
-                        CREATE TABLE `" . $prefix . "properties` (
+                                        'DROP TABLE IF EXISTS `'.$prefix.'properties`;
+                        CREATE TABLE `'.$prefix."properties` (
                         `name` text,
                         `type` TINYINT(1) NOT NULL DEFAULT '1',
                         `client` text,
@@ -228,11 +228,11 @@ $mysqli = new MySQLi($host[\'hostname\'],$host[\'user\'],$host[\'password\'],$ho
                         `hash_algorithm` varchar(45),
                         PRIMARY KEY (`version`)
                         ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-                        INSERT INTO " . $prefix . "properties (version, theme, nav, colnx, colvp, homecontent) VALUES
+                        INSERT INTO ".$prefix."properties (version, theme, nav, colnx, colvp, homecontent) VALUES
                         (83, 'bootstrap', 1, 'paypalNX', 'votepoints', 'Admins: Click here to edit');
 
-                        DROP TABLE IF EXISTS `" . $prefix . "pages`;
-                        CREATE TABLE `" . $prefix . "pages` (
+                        DROP TABLE IF EXISTS `".$prefix.'pages`;
+                        CREATE TABLE `'.$prefix."pages` (
                         `id` int(11) NOT NULL AUTO_INCREMENT,
                         `title` text NOT NULL,
                         `slug` text NOT NULL,
@@ -242,8 +242,8 @@ $mysqli = new MySQLi($host[\'hostname\'],$host[\'user\'],$host[\'password\'],$ho
                         PRIMARY KEY (`id`)
                         ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
 
-                        DROP TABLE IF EXISTS `" . $prefix . "mail`;
-                        CREATE TABLE `" . $prefix . "mail` (
+                        DROP TABLE IF EXISTS `".$prefix.'mail`;
+                        CREATE TABLE `'.$prefix."mail` (
                         `mailid` int(10) unsigned NOT NULL auto_increment,
                         `to` varchar(50) NOT NULL,
                         `from` varchar(50) NOT NULL,
@@ -256,16 +256,16 @@ $mysqli = new MySQLi($host[\'hostname\'],$host[\'user\'],$host[\'password\'],$ho
                         PRIMARY KEY (`mailid`)
                         ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 
-                        DROP TABLE IF EXISTS `" . $prefix . "buynx`;
-                        CREATE TABLE `" . $prefix . "buynx` (
+                        DROP TABLE IF EXISTS `".$prefix.'buynx`;
+                        CREATE TABLE `'.$prefix.'buynx` (
                         `id` int(11) NOT NULL AUTO_INCREMENT,
                         `meso` int(11) NOT NULL,
                         `nx` int(11) NOT NULL,
                         PRIMARY KEY (`id`)
                         ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
-                        DROP TABLE IF EXISTS `" . $prefix . "vote`;
-                        CREATE TABLE `" . $prefix . "vote` (
+                        DROP TABLE IF EXISTS `'.$prefix.'vote`;
+                        CREATE TABLE `'.$prefix.'vote` (
                         `id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
                         `name` VARCHAR(45) NOT NULL,
                         `link` TEXT NOT NULL ,
@@ -275,8 +275,8 @@ $mysqli = new MySQLi($host[\'hostname\'],$host[\'user\'],$host[\'password\'],$ho
                         PRIMARY KEY ( `id` )
                         ) ENGINE = MYISAM ;
 
-                        DROP TABLE IF EXISTS `" . $prefix . "ncomments`;
-                        CREATE TABLE `" . $prefix . "ncomments` (
+                        DROP TABLE IF EXISTS `'.$prefix.'ncomments`;
+                        CREATE TABLE `'.$prefix.'ncomments` (
                         `id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
                         `nid` INT ( 10 ) NOT NULL ,
                         `author` VARCHAR( 16 ) NOT NULL ,
@@ -286,8 +286,8 @@ $mysqli = new MySQLi($host[\'hostname\'],$host[\'user\'],$host[\'password\'],$ho
                         PRIMARY KEY ( `id` )
                         ) ENGINE = MYISAM ;
 
-                        DROP TABLE IF EXISTS `" . $prefix . "ecomments`;
-                        CREATE TABLE `" . $prefix . "ecomments` (
+                        DROP TABLE IF EXISTS `'.$prefix.'ecomments`;
+                        CREATE TABLE `'.$prefix.'ecomments` (
                         `id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
                         `eid` INT ( 10 ) NOT NULL ,
                         `author` VARCHAR( 16 ) NOT NULL ,
@@ -297,8 +297,8 @@ $mysqli = new MySQLi($host[\'hostname\'],$host[\'user\'],$host[\'password\'],$ho
                         PRIMARY KEY ( `id` )
                         ) ENGINE = MYISAM ;
 
-                        DROP TABLE IF EXISTS `" . $prefix . "bcomments`;
-                        CREATE TABLE `" . $prefix . "bcomments` (
+                        DROP TABLE IF EXISTS `'.$prefix.'bcomments`;
+                        CREATE TABLE `'.$prefix.'bcomments` (
                         `id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
                         `bid` INT ( 10 ) NOT NULL ,
                         `author` VARCHAR( 16 ) NOT NULL ,
@@ -308,8 +308,8 @@ $mysqli = new MySQLi($host[\'hostname\'],$host[\'user\'],$host[\'password\'],$ho
                         PRIMARY KEY ( `id` )
                         ) ENGINE = MYISAM ;
 
-                        DROP TABLE IF EXISTS `" . $prefix . "news`;
-                        CREATE TABLE `" . $prefix . "news` (
+                        DROP TABLE IF EXISTS `'.$prefix.'news`;
+                        CREATE TABLE `'.$prefix."news` (
                         `id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
                         `title` VARCHAR( 50 ) NOT NULL ,
                         `author` VARCHAR( 16 ) NOT NULL ,
@@ -321,8 +321,8 @@ $mysqli = new MySQLi($host[\'hostname\'],$host[\'user\'],$host[\'password\'],$ho
                         PRIMARY KEY ( `id` )
                         ) ENGINE = MYISAM ;
 
-                        DROP TABLE IF EXISTS `" . $prefix . "events`;
-                        CREATE TABLE `" . $prefix . "events` (
+                        DROP TABLE IF EXISTS `".$prefix.'events`;
+                        CREATE TABLE `'.$prefix."events` (
                         `id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
                         `title` VARCHAR( 50 ) NOT NULL ,
                         `author` VARCHAR( 16 ) NOT NULL ,
@@ -335,8 +335,8 @@ $mysqli = new MySQLi($host[\'hostname\'],$host[\'user\'],$host[\'password\'],$ho
                         PRIMARY KEY ( `id` )
                         ) ENGINE = MYISAM ;
 
-                        DROP TABLE IF EXISTS `" . $prefix . "gmblog`;
-                        CREATE TABLE `" . $prefix . "gmblog` (
+                        DROP TABLE IF EXISTS `".$prefix.'gmblog`;
+                        CREATE TABLE `'.$prefix."gmblog` (
                         `id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
                         `title` VARCHAR( 50 ) NOT NULL ,
                         `author` VARCHAR( 16 ) NOT NULL ,
@@ -347,8 +347,8 @@ $mysqli = new MySQLi($host[\'hostname\'],$host[\'user\'],$host[\'password\'],$ho
                         PRIMARY KEY ( `id` )
                         ) ENGINE = MYISAM ;
 
-                        DROP TABLE IF EXISTS `" . $prefix . "profile`;
-                        CREATE TABLE `" . $prefix . "profile` (
+                        DROP TABLE IF EXISTS `".$prefix.'profile`;
+                        CREATE TABLE `'.$prefix."profile` (
                         `id` int(10) NOT NULL AUTO_INCREMENT,
                         `accountid` int(10) DEFAULT NULL,
                         `name` varchar(255) NOT NULL DEFAULT '',
@@ -363,16 +363,16 @@ $mysqli = new MySQLi($host[\'hostname\'],$host[\'user\'],$host[\'password\'],$ho
                         UNIQUE KEY `accountid_UNIQUE` (`accountid`)
                         ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
-                        DROP TABLE IF EXISTS `" . $prefix . "gdcache`;
-                        CREATE TABLE " . $prefix . "gdcache (
+                        DROP TABLE IF EXISTS `".$prefix.'gdcache`;
+                        CREATE TABLE '.$prefix.'gdcache (
                         `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
                         `hash` varchar(32) NOT NULL,
                         `name` varchar(20) NOT NULL,
                         PRIMARY KEY (`id`)
                         ) ENGINE = MYISAM ;
 
-                        DROP TABLE IF EXISTS `" . $prefix . "votingrecords`;
-                        CREATE TABLE `" . $prefix . "votingrecords` (
+                        DROP TABLE IF EXISTS `'.$prefix.'votingrecords`;
+                        CREATE TABLE `'.$prefix."votingrecords` (
                         `id` int(11) NOT NULL AUTO_INCREMENT,
                         `ip` varchar(30) NOT NULL DEFAULT '0',
                         `siteid` int(11) DEFAULT NULL,
@@ -382,11 +382,11 @@ $mysqli = new MySQLi($host[\'hostname\'],$host[\'user\'],$host[\'password\'],$ho
                         PRIMARY KEY (`id`)
                         ) ENGINE=MYISAM;"
                                     );
-                                    echo "
-                        <META http-equiv=\"refresh\" content=\"0;URL=?install=4\">";
+                                    echo '
+                        <META http-equiv="refresh" content="0;URL=?install=4">';
                                     break;
                                 case 4:
-                                    include('../database.php');
+                                    include '../database.php';
                                     if (isset($_POST['submit'])) {
                                         $sservername = $mysqli->real_escape_string(stripslashes($_POST['servername']));
                                         $sclient = $mysqli->real_escape_string(stripslashes($_POST['client']));
@@ -399,8 +399,8 @@ $mysqli = new MySQLi($host[\'hostname\'],$host[\'user\'],$host[\'password\'],$ho
                                         $ssiteurl = str_replace(
                                             '/assets/config/install/install.php?install=4',
                                             '',
-                                            $_SERVER["REQUEST_URI"]
-                                        ) . "/";
+                                            $_SERVER['REQUEST_URI']
+                                        ).'/';
                                         $sversion = $mysqli->real_escape_string(stripslashes($_POST['version']));
                                         $sservertype = $mysqli->real_escape_string($_POST['servertype']);
                                         $scolnx = $mysqli->real_escape_string(stripslashes($_POST['colnx']));
@@ -448,23 +448,23 @@ $mysqli = new MySQLi($host[\'hostname\'],$host[\'user\'],$host[\'password\'],$ho
                                             $continue = false;
                                         }
                                         if (!$continue) {
-                                            echo "
-                        <hr /><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+                                            echo '
+                        <hr /><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                                         } else {
-                                            $mysqli->query("UPDATE " . $prefix . "properties SET name='" . $sservername . "', type = '" .
-                                                $sservertype . "', client='" . $sclient . "', server = '" . $sserver . "', version='" .
-                                                $sversion . "', forumurl='" . $sforumurl . "', siteurl='" . $ssiteurl . "', exprate='" . $sexp .
-                                                "', mesorate='" . $smeso . "', droprate='" . $sdrop . "', gmlevel = '" . $sgmlevel . "',
-                        flood='1', floodint='5', theme='bootstrap', nav='1', colnx = '" . $scolnx . "', colvp = '" .
-                                                $scolvp . "', hash_algorithm = '" . $shashalgorithm . "'");
-                                            echo "Working...";
-                                            echo "
-                        <meta http-equiv=\"refresh\" content=\"1; url=?install=5\" />";
+                                            $mysqli->query('UPDATE '.$prefix."properties SET name='".$sservername."', type = '".
+                                                $sservertype."', client='".$sclient."', server = '".$sserver."', version='".
+                                                $sversion."', forumurl='".$sforumurl."', siteurl='".$ssiteurl."', exprate='".$sexp.
+                                                "', mesorate='".$smeso."', droprate='".$sdrop."', gmlevel = '".$sgmlevel."',
+                        flood='1', floodint='5', theme='bootstrap', nav='1', colnx = '".$scolnx."', colvp = '".
+                                                $scolvp."', hash_algorithm = '".$shashalgorithm."'");
+                                            echo 'Working...';
+                                            echo '
+                        <meta http-equiv="refresh" content="1; url=?install=5" />';
                                         }
                                     } else {
-                                        include('../properties.php');
-                                        $url = $_SERVER["REQUEST_URI"];
-                                        $url = str_replace('/assets/config/install/install.php?install=4', '', $url) . "/";
+                                        include '../properties.php';
+                                        $url = $_SERVER['REQUEST_URI'];
+                                        $url = str_replace('/assets/config/install/install.php?install=4', '', $url).'/';
                                         echo "
                         <h5 class=\"card-title\">Site Configuration</h5>
                         <hr />
@@ -561,8 +561,8 @@ $mysqli = new MySQLi($host[\'hostname\'],$host[\'user\'],$host[\'password\'],$ho
                                     echo '<h5 class="card-title">Extra Steps</h5>
                         <hr />';
                                     if (isset($_POST['myself'])) {
-                                        echo "
-                        <meta http-equiv=\"refresh\" content=\"0; url=?install=6\" />";
+                                        echo '
+                        <meta http-equiv="refresh" content="0; url=?install=6" />';
                                     } else {
                                         echo "
                         <h6>Registration</h6>
@@ -585,11 +585,11 @@ $mysqli = new MySQLi($host[\'hostname\'],$host[\'user\'],$host[\'password\'],$ho
                                     }
                                     break;
                                 case 6:
-                                    include('../database.php');
+                                    include '../database.php';
                                     echo '<h5 class="card-title">Create Administrator Account</h5>
                         <hr />';
                                     if (!isset($_POST['submit'])) {
-                                        $_SESSION['flash'] = "";
+                                        $_SESSION['flash'] = '';
                                         echo "
                         <form method=\"post\" action=\"\" role=\"form\">
                             <div class=\"form-group\">
@@ -608,31 +608,31 @@ $mysqli = new MySQLi($host[\'hostname\'],$host[\'user\'],$host[\'password\'],$ho
                         ";
                                     } else {
                                         $name = $mysqli->real_escape_string($_POST['accname']);
-                                        $getaccount = $mysqli->query("SELECT * from accounts WHERE name = '" . $name . "'");
+                                        $getaccount = $mysqli->query("SELECT * from accounts WHERE name = '".$name."'");
                                         $count = $getaccount->num_rows;
                                         if ($count == 1) {
-                                            $mysqli->query("UPDATE accounts SET webadmin = 1 WHERE name = '" . $name . "'");
-                                            echo "
-                        <meta http-equiv=\"refresh\" content=\"0; url=?install=done\" />";
-                                            $_SESSION['flash'] = "<div class=\"alert alert-success\">" . $name . " is now a web
-                            administrator</div>";
+                                            $mysqli->query("UPDATE accounts SET webadmin = 1 WHERE name = '".$name."'");
+                                            echo '
+                        <meta http-equiv="refresh" content="0; url=?install=done" />';
+                                            $_SESSION['flash'] = '<div class="alert alert-success">'.$name.' is now a web
+                            administrator</div>';
                                         } else {
-                                            echo "<div class=\"alert alert-danger\">Invalid account.</div>
-                        <hr /><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>";
+                                            echo '<div class="alert alert-danger">Invalid account.</div>
+                        <hr /><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                                         }
                                     }
                                     break;
-                                case "done":
+                                case 'done':
                                     echo "<h5 class=\"card-title\">Woohoo! You're done installing MapleBit!</h5>
-                        " . $_SESSION['flash'] . "
+                        ".$_SESSION['flash']."
                         <hr />
                         <form action=\"../../../?base=main\" method=\"post\">
                             <input type=\"submit\" class=\"btn btn-success float-right\" value=\"Ok, let's go!
                                 &raquo;\" />
                         </form>";
-                                    $content = "Congratulations on completing your MapleBit Installation! Leave this file here, or
-                        delete it if you would like to reconfigure your website.";
-                                    $fp = fopen("installdone.txt", "wb");
+                                    $content = 'Congratulations on completing your MapleBit Installation! Leave this file here, or
+                        delete it if you would like to reconfigure your website.';
+                                    $fp = fopen('installdone.txt', 'wb');
                                     fwrite($fp, $content);
                                     fclose($fp);
                                     session_destroy();

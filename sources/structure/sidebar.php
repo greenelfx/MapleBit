@@ -1,26 +1,26 @@
 <?php
-if (basename($_SERVER["PHP_SELF"]) == "sidebar.php") {
-    die("403 - Access Forbidden");
+if (basename($_SERVER['PHP_SELF']) == 'sidebar.php') {
+    die('403 - Access Forbidden');
 }
-$online = mysqli_fetch_assoc($mysqli->query("SELECT COUNT(*) AS o FROM accounts where loggedin = 2"));
-$accounts = mysqli_fetch_assoc($mysqli->query("SELECT COUNT(*) AS a FROM accounts"));
-$characters = mysqli_fetch_assoc($mysqli->query("SELECT COUNT(*) AS c FROM characters"));
-$links = "";
+$online = mysqli_fetch_assoc($mysqli->query('SELECT COUNT(*) AS o FROM accounts where loggedin = 2'));
+$accounts = mysqli_fetch_assoc($mysqli->query('SELECT COUNT(*) AS a FROM accounts'));
+$characters = mysqli_fetch_assoc($mysqli->query('SELECT COUNT(*) AS c FROM characters'));
+$links = '';
 ?>
 <div class="card">
 	<div class="card-header">Account</div>
 	<?php
     if (isset($_SESSION['id'])) {
         if (isset($_SESSION['admin'])) {
-            $links .= "<li class=\"list-group-item\"><a href=\"?base=admin\">Admin Panel</a></li>";
+            $links .= '<li class="list-group-item"><a href="?base=admin">Admin Panel</a></li>';
         }
         if (isset($_SESSION['gm']) || isset($_SESSION['admin'])) {
-            $links .= "<li class=\"list-group-item\"><a href=\"?base=gmcp\">GM Panel</a></li>";
+            $links .= '<li class="list-group-item"><a href="?base=gmcp">GM Panel</a></li>';
         }
-        if (isset($_SESSION['pname']) && $_SESSION['pname'] == "checkpname") {
-            $links .= "<li class=\"list-group-item\"><a href=\"?base=ucp&amp;page=profname\">Set Profile Name</a></li>";
+        if (isset($_SESSION['pname']) && $_SESSION['pname'] == 'checkpname') {
+            $links .= '<li class="list-group-item"><a href="?base=ucp&amp;page=profname">Set Profile Name</a></li>';
         } else {
-            $links .= "<li class=\"list-group-item\"><a href=\"?base=main&amp;page=members&amp;name=" . $_SESSION['pname'] . "\">My Profile</a></li>";
+            $links .= '<li class="list-group-item"><a href="?base=main&amp;page=members&amp;name='.$_SESSION['pname'].'">My Profile</a></li>';
         } ?>
 		<ul class="list-group list-group-flush">
 			<li class="list-group-item"><a href="?base=ucp">Control Panel</a></li>

@@ -16,39 +16,38 @@ class GUMP
     protected static $instance = null;
 
     // Validation rules for execution
-    protected $validation_rules = array();
+    protected $validation_rules = [];
 
     // Filter rules for execution
-    protected $filter_rules = array();
+    protected $filter_rules = [];
 
     // Instance attribute containing errors from last run
-    protected $errors = array();
+    protected $errors = [];
 
     // Contain readable field names that have been set manually
-    protected static $fields = array();
+    protected static $fields = [];
 
     // Custom validation methods
-    protected static $validation_methods = array();
+    protected static $validation_methods = [];
 
     // Customer filter methods
-    protected static $filter_methods = array();
+    protected static $filter_methods = [];
 
     // ** ------------------------- Instance Helper ---------------------------- ** //
+
     /**
-     * Function to create and return previously created instance
+     * Function to create and return previously created instance.
      *
      * @return GUMP
      */
-
     public static function get_instance()
     {
         if (self::$instance === null) {
             self::$instance = new self();
         }
+
         return self::$instance;
     }
-
-
 
     // ** ------------------------- Validation Data ------------------------------- ** //
 
@@ -64,7 +63,7 @@ class GUMP
 				  				  	 b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,$,1,2,3,4,5,6,7,8,9,0,_";
 
     // field characters below will be replaced with a space.
-    protected $fieldCharsToRemove = array('_', '-');
+    protected $fieldCharsToRemove = ['_', '-'];
 
     // ** ------------------------- Validation Helpers ---------------------------- ** //
 
@@ -138,9 +137,9 @@ class GUMP
      * @param string   $rule
      * @param callable $callback
      *
-     * @return bool
-     *
      * @throws Exception
+     *
+     * @return bool
      */
     public static function add_validator($rule, $callback)
     {
@@ -161,9 +160,9 @@ class GUMP
      * @param string   $rule
      * @param callable $callback
      *
-     * @return bool
-     *
      * @throws Exception
+     *
+     * @return bool
      */
     public static function add_filter($rule, $callback)
     {
@@ -179,11 +178,12 @@ class GUMP
     }
 
     /**
-     * Helper method to extract an element from an array safely
+     * Helper method to extract an element from an array safely.
      *
      * @param mixed $key
      * @param array $array
      * @param mixed $default
+     *
      * @return mixed
      */
     public static function field($key, array $array, $default = null)
@@ -206,7 +206,7 @@ class GUMP
      *
      * @return array
      */
-    public function validation_rules(array $rules = array())
+    public function validation_rules(array $rules = [])
     {
         if (empty($rules)) {
             return $this->validation_rules;
@@ -222,7 +222,7 @@ class GUMP
      *
      * @return array
      */
-    public function filter_rules(array $rules = array())
+    public function filter_rules(array $rules = [])
     {
         if (empty($rules)) {
             return $this->filter_rules;
@@ -237,9 +237,9 @@ class GUMP
      * @param array $data
      * @param bool  $check_fields
      *
-     * @return array
-     *
      * @throws Exception
+     *
+     * @return array
      */
     public function run(array $data, $check_fields = false)
     {
@@ -273,12 +273,12 @@ class GUMP
         $fields = array_keys($mismatch);
 
         foreach ($fields as $field) {
-            $this->errors[] = array(
+            $this->errors[] = [
                 'field' => $field,
                 'value' => $data[$field],
-                'rule' => 'mismatch',
+                'rule'  => 'mismatch',
                 'param' => null,
-            );
+            ];
         }
     }
 
@@ -291,7 +291,7 @@ class GUMP
      *
      * @return array
      */
-    public function sanitize(array $input, array $fields = array(), $utf8_encode = true)
+    public function sanitize(array $input, array $fields = [], $utf8_encode = true)
     {
         $magic_quotes = (bool) get_magic_quotes_gpc();
 
@@ -299,7 +299,7 @@ class GUMP
             $fields = array_keys($input);
         }
 
-        $return = array();
+        $return = [];
 
         foreach ($fields as $field) {
             if (!isset($input[$field])) {
@@ -352,13 +352,13 @@ class GUMP
      * @param mixed $input
      * @param array $ruleset
      *
-     * @return mixed
-     *
      * @throws Exception
+     *
+     * @return mixed
      */
     public function validate(array $input, array $ruleset)
     {
-        $this->errors = array();
+        $this->errors = [];
 
         foreach ($ruleset as $field => $rules) {
             $rules = explode('|', $rules);
@@ -370,17 +370,17 @@ class GUMP
 
                     // Check if we have rule parameters
                     if (strstr($rule, ',') !== false) {
-                        $rule   = explode(',', $rule);
+                        $rule = explode(',', $rule);
                         $method = 'validate_'.$rule[0];
-                        $param  = $rule[1];
-                        $rule   = $rule[0];
+                        $param = $rule[1];
+                        $rule = $rule[0];
                     } else {
                         $method = 'validate_'.$rule;
                     }
 
                     //self::$validation_methods[$rule] = $callback;
 
-                    if (is_callable(array($this, $method))) {
+                    if (is_callable([$this, $method])) {
                         $result = $this->$method(
                             $field,
                             $input,
@@ -394,12 +394,12 @@ class GUMP
                         $result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
 
                         if ($result === false) {
-                            $this->errors[] = array(
-                            'field' => $field,
-                            'value' => $input,
-                            'rule' => self::$validation_methods[$rule],
-                            'param' => $param,
-                          );
+                            $this->errors[] = [
+                                'field' => $field,
+                                'value' => $input,
+                                'rule'  => self::$validation_methods[$rule],
+                                'param' => $param,
+                            ];
                         }
                     } else {
                         throw new Exception("Validator method '$method' does not exist.");
@@ -468,10 +468,10 @@ class GUMP
     public function get_readable_errors($convert_to_string = false, $field_class = 'gump-field', $error_class = 'gump-error-message')
     {
         if (empty($this->errors)) {
-            return ($convert_to_string) ? null : array();
+            return ($convert_to_string) ? null : [];
         }
 
-        $resp = array();
+        $resp = [];
 
         foreach ($this->errors as $e) {
             $field = ucwords(str_replace($this->fieldCharsToRemove, chr(32), $e['field']));
@@ -600,13 +600,13 @@ class GUMP
     public function get_errors_array($convert_to_string = null)
     {
         if (empty($this->errors)) {
-            return ($convert_to_string) ? null : array();
+            return ($convert_to_string) ? null : [];
         }
 
-        $resp = array();
+        $resp = [];
 
         foreach ($this->errors as $e) {
-            $field = ucwords(str_replace(array('_', '-'), chr(32), $e['field']));
+            $field = ucwords(str_replace(['_', '-'], chr(32), $e['field']));
             $param = $e['param'];
 
             // Let's fetch explicit field names if they exist
@@ -708,10 +708,9 @@ class GUMP
      * @param array $filterset
      *
      * @throws Exception
+     * @throws Exception
      *
      * @return mixed
-     *
-     * @throws Exception
      */
     public function filter(array $input, array $filterset)
     {
@@ -733,7 +732,7 @@ class GUMP
                     $filter = $filter[0];
                 }
 
-                if (is_callable(array($this, 'filter_'.$filter))) {
+                if (is_callable([$this, 'filter_'.$filter])) {
                     $method = 'filter_'.$filter;
                     $input[$field] = $this->$method($input[$field], $params);
                 } elseif (function_exists($filter)) {
@@ -964,7 +963,6 @@ class GUMP
 
     // ** ------------------------- Validators ------------------------------------ ** //
 
-
     /**
      * Verify that a value is contained within the pre-defined value set.
      *
@@ -996,12 +994,12 @@ class GUMP
             return;
         }
 
-        return array(
+        return [
             'field' => $field,
             'value' => $value,
-            'rule' => __FUNCTION__,
+            'rule'  => __FUNCTION__,
             'param' => $param,
-        );
+        ];
     }
 
     /**
@@ -1028,12 +1026,12 @@ class GUMP
         if (in_array($value, $param)) { // valid, return nothing
             return;
         } else {
-            return array(
-                    'field' => $field,
-                    'value' => $value,
-                    'rule' => __FUNCTION__,
-                    'param' => $param,
-            );
+            return [
+                'field' => $field,
+                'value' => $value,
+                'rule'  => __FUNCTION__,
+                'param' => $param,
+            ];
         }
     }
 
@@ -1059,12 +1057,12 @@ class GUMP
         if (!in_array($value, $param)) { // valid, return nothing
             return;
         } else {
-            return array(
-                    'field' => $field,
-                    'value' => $value,
-                    'rule' => __FUNCTION__,
-                    'param' => $param,
-            );
+            return [
+                'field' => $field,
+                'value' => $value,
+                'rule'  => __FUNCTION__,
+                'param' => $param,
+            ];
         }
     }
 
@@ -1085,12 +1083,12 @@ class GUMP
             return;
         }
 
-        return array(
-        'field' => $field,
-        'value' => null,
-        'rule' => __FUNCTION__,
-        'param' => $param,
-        );
+        return [
+            'field' => $field,
+            'value' => null,
+            'rule'  => __FUNCTION__,
+            'param' => $param,
+        ];
     }
 
     /**
@@ -1111,12 +1109,12 @@ class GUMP
         }
 
         if (!filter_var($input[$field], FILTER_VALIDATE_EMAIL)) {
-            return array(
+            return [
                 'field' => $field,
                 'value' => $input[$field],
-                'rule' => __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param,
-            );
+            ];
         }
     }
 
@@ -1147,12 +1145,12 @@ class GUMP
             }
         }
 
-        return array(
+        return [
             'field' => $field,
             'value' => $input[$field],
-            'rule' => __FUNCTION__,
+            'rule'  => __FUNCTION__,
             'param' => $param,
-        );
+        ];
     }
 
     /**
@@ -1182,12 +1180,12 @@ class GUMP
             }
         }
 
-        return array(
+        return [
             'field' => $field,
             'value' => $input[$field],
-            'rule' => __FUNCTION__,
+            'rule'  => __FUNCTION__,
             'param' => $param,
-        );
+        ];
     }
 
     /**
@@ -1217,12 +1215,12 @@ class GUMP
             }
         }
 
-        return array(
+        return [
             'field' => $field,
             'value' => $input[$field],
-            'rule' => __FUNCTION__,
+            'rule'  => __FUNCTION__,
             'param' => $param,
-        );
+        ];
     }
 
     /**
@@ -1243,12 +1241,12 @@ class GUMP
         }
 
         if (!preg_match('/^([a-zÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ])+$/i', $input[$field]) !== false) {
-            return array(
+            return [
                 'field' => $field,
                 'value' => $input[$field],
-                'rule' => __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param,
-            );
+            ];
         }
     }
 
@@ -1270,12 +1268,12 @@ class GUMP
         }
 
         if (!preg_match('/^([a-z0-9ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ])+$/i', $input[$field]) !== false) {
-            return array(
+            return [
                 'field' => $field,
                 'value' => $input[$field],
-                'rule' => __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param,
-            );
+            ];
         }
     }
 
@@ -1297,12 +1295,12 @@ class GUMP
         }
 
         if (!preg_match('/^([a-z0-9ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ_-])+$/i', $input[$field]) !== false) {
-            return array(
+            return [
                 'field' => $field,
                 'value' => $input[$field],
-                'rule' => __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param,
-            );
+            ];
         }
     }
 
@@ -1324,12 +1322,12 @@ class GUMP
         }
 
         if (!preg_match("/^([a-z0-9ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ\s])+$/i", $input[$field]) !== false) {
-            return array(
+            return [
                 'field' => $field,
                 'value' => $input[$field],
-                'rule' => __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param,
-            );
+            ];
         }
     }
 
@@ -1351,12 +1349,12 @@ class GUMP
         }
 
         if (!is_numeric($input[$field])) {
-            return array(
+            return [
                 'field' => $field,
                 'value' => $input[$field],
-                'rule' => __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param,
-            );
+            ];
         }
     }
 
@@ -1378,12 +1376,12 @@ class GUMP
         }
 
         if (filter_var($input[$field], FILTER_VALIDATE_INT) === false) {
-            return array(
+            return [
                 'field' => $field,
                 'value' => $input[$field],
-                'rule' => __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param,
-            );
+            ];
         }
     }
 
@@ -1408,12 +1406,12 @@ class GUMP
             return;
         }
 
-        return array(
+        return [
             'field' => $field,
             'value' => $input[$field],
-            'rule' => __FUNCTION__,
+            'rule'  => __FUNCTION__,
             'param' => $param,
-        );
+        ];
     }
 
     /**
@@ -1434,12 +1432,12 @@ class GUMP
         }
 
         if (filter_var($input[$field], FILTER_VALIDATE_FLOAT) === false) {
-            return array(
+            return [
                 'field' => $field,
                 'value' => $input[$field],
-                'rule' => __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param,
-            );
+            ];
         }
     }
 
@@ -1461,12 +1459,12 @@ class GUMP
         }
 
         if (!filter_var($input[$field], FILTER_VALIDATE_URL)) {
-            return array(
+            return [
                 'field' => $field,
                 'value' => $input[$field],
-                'rule' => __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param,
-            );
+            ];
         }
     }
 
@@ -1495,21 +1493,21 @@ class GUMP
 
         if (function_exists('checkdnsrr')) {
             if (checkdnsrr($url) === false) {
-                return array(
+                return [
                     'field' => $field,
                     'value' => $input[$field],
-                    'rule' => __FUNCTION__,
+                    'rule'  => __FUNCTION__,
                     'param' => $param,
-                );
+                ];
             }
         } else {
             if (gethostbyname($url) == $url) {
-                return array(
+                return [
                     'field' => $field,
                     'value' => $input[$field],
-                    'rule' => __FUNCTION__,
+                    'rule'  => __FUNCTION__,
                     'param' => $param,
-                );
+                ];
             }
         }
     }
@@ -1531,12 +1529,12 @@ class GUMP
         }
 
         if (!filter_var($input[$field], FILTER_VALIDATE_IP) !== false) {
-            return array(
+            return [
                 'field' => $field,
                 'value' => $input[$field],
-                'rule' => __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param,
-            );
+            ];
         }
     }
 
@@ -1566,12 +1564,12 @@ class GUMP
         if (!filter_var($input[$field], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
             // removed !== FALSE
 
-            return array(
+            return [
                 'field' => $field,
                 'value' => $input[$field],
-                'rule' => __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param,
-            );
+            ];
         }
     }
 
@@ -1592,12 +1590,12 @@ class GUMP
         }
 
         if (!filter_var($input[$field], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-            return array(
+            return [
                 'field' => $field,
                 'value' => $input[$field],
-                'rule' => __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param,
-            );
+            ];
         }
     }
 
@@ -1630,7 +1628,7 @@ class GUMP
 
         $total = 0;
 
-        for ($i = 0; $i < $number_length; ++$i) {
+        for ($i = 0; $i < $number_length; $i++) {
             $digit = $number[$i];
 
             if ($i % 2 == $parity) {
@@ -1648,12 +1646,12 @@ class GUMP
             return; // Valid
         }
 
-        return array(
+        return [
             'field' => $field,
             'value' => $input[$field],
-            'rule' => __FUNCTION__,
+            'rule'  => __FUNCTION__,
             'param' => $param,
-        );
+        ];
     }
 
     /**
@@ -1674,12 +1672,12 @@ class GUMP
         }
 
         if (!preg_match("/^([a-zÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïñðòóôõöùúûüýÿ '-])+$/i", $input[$field]) !== false) {
-            return array(
+            return [
                 'field' => $field,
                 'value' => $input[$field],
-                'rule' => __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param,
-            );
+            ];
         }
     }
 
@@ -1707,12 +1705,12 @@ class GUMP
         $passes = $hasLetter && $hasDigit && $hasSpace;
 
         if (!$passes) {
-            return array(
+            return [
                 'field' => $field,
                 'value' => $input[$field],
-                'rule' => __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param,
-            );
+            ];
         }
     }
 
@@ -1732,21 +1730,21 @@ class GUMP
             return;
         }
 
-        static $character = array(
+        static $character = [
             'A' => 10, 'C' => 12, 'D' => 13, 'E' => 14, 'F' => 15, 'G' => 16,
             'H' => 17, 'I' => 18, 'J' => 19, 'K' => 20, 'L' => 21, 'M' => 22,
             'N' => 23, 'O' => 24, 'P' => 25, 'Q' => 26, 'R' => 27, 'S' => 28,
             'T' => 29, 'U' => 30, 'V' => 31, 'W' => 32, 'X' => 33, 'Y' => 34,
-            'Z' => 35, 'B' => 11
-        );
+            'Z' => 35, 'B' => 11,
+        ];
 
         if (!preg_match("/\A[A-Z]{2}\d{2} ?[A-Z\d]{4}( ?\d{4}){1,} ?\d{1,4}\z/", $input[$field])) {
-            return array(
+            return [
                 'field' => $field,
                 'value' => $input[$field],
-                'rule' => __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param,
-            );
+            ];
         }
 
         $iban = str_replace(' ', '', $input[$field]);
@@ -1754,12 +1752,12 @@ class GUMP
         $iban = strtr($iban, $character);
 
         if (bcmod($iban, 97) != 1) {
-            return array(
+            return [
                 'field' => $field,
                 'value' => $input[$field],
-                'rule' => __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param,
-            );
+            ];
         }
     }
 
@@ -1784,12 +1782,12 @@ class GUMP
         $cdate2 = date('Y-m-d H:i:s', strtotime($input[$field]));
 
         if ($cdate1 != $input[$field] && $cdate2 != $input[$field]) {
-            return array(
+            return [
                 'field' => $field,
                 'value' => $input[$field],
-                'rule' => __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param,
-            );
+            ];
         }
     }
 
@@ -1817,12 +1815,12 @@ class GUMP
         $age = $interval->y;
 
         if ($age <= $param) {
-            return array(
+            return [
                 'field' => $field,
                 'value' => $input[$field],
-                'rule' => __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param,
-            );
+            ];
         }
     }
 
@@ -1847,12 +1845,12 @@ class GUMP
             return;
         }
 
-        return array(
+        return [
             'field' => $field,
             'value' => $input[$field],
-            'rule' => __FUNCTION__,
+            'rule'  => __FUNCTION__,
             'param' => $param,
-        );
+        ];
     }
 
     /**
@@ -1863,6 +1861,7 @@ class GUMP
      * @param string $field
      * @param array  $input
      * @param null   $param
+     *
      * @return mixed
      */
     protected function validate_min_numeric($field, $input, $param = null)
@@ -1875,12 +1874,12 @@ class GUMP
             return;
         }
 
-        return array(
+        return [
             'field' => $field,
             'value' => $input[$field],
-            'rule' => __FUNCTION__,
+            'rule'  => __FUNCTION__,
             'param' => $param,
-        );
+        ];
     }
 
     /**
@@ -1900,12 +1899,12 @@ class GUMP
         }
 
         if (strpos($input[$field], $param) !== 0) {
-            return array(
+            return [
                 'field' => $field,
                 'value' => $input[$field],
-                'rule' => __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param,
-            );
+            ];
         }
     }
 
@@ -1914,8 +1913,8 @@ class GUMP
      *
      * Usage: '<index>' => 'required_file'
      *
-     * @param  string $field
-     * @param  array $input
+     * @param string $field
+     * @param array  $input
      *
      * @return mixed
      */
@@ -1925,12 +1924,12 @@ class GUMP
             return;
         }
 
-        return array(
-              'field' => $field,
-              'value' => $input[$field],
-              'rule' => __FUNCTION__,
-              'param' => $param,
-          );
+        return [
+            'field' => $field,
+            'value' => $input[$field],
+            'rule'  => __FUNCTION__,
+            'param' => $param,
+        ];
     }
 
     /**
@@ -1957,12 +1956,12 @@ class GUMP
                 return;
             }
 
-            return array(
+            return [
                 'field' => $field,
                 'value' => $input[$field],
-                'rule' => __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param,
-            );
+            ];
         }
     }
 
@@ -1987,22 +1986,23 @@ class GUMP
             return;
         }
 
-        return array(
+        return [
             'field' => $field,
             'value' => $input[$field],
-            'rule' => __FUNCTION__,
+            'rule'  => __FUNCTION__,
             'param' => $param,
-        );
+        ];
     }
 
     /**
-     * Determine if the provided field value is a valid GUID (v4)
+     * Determine if the provided field value is a valid GUID (v4).
      *
      * Usage: '<index>' => 'guidv4'
      *
      * @param string $field
      * @param string $input
      * @param string $param field to compare with
+     *
      * @return mixed
      */
     protected function validate_guidv4($field, $input, $param = null)
@@ -2015,12 +2015,12 @@ class GUMP
             return;
         }
 
-        return array(
+        return [
             'field' => $field,
             'value' => $input[$field],
-            'rule' => __FUNCTION__,
+            'rule'  => __FUNCTION__,
             'param' => $param,
-        );
+        ];
     }
 
     /**
@@ -2067,12 +2067,12 @@ class GUMP
 
         $regex = '/^(\d[\s-]?)?[\(\[\s-]{0,2}?\d{3}[\)\]\s-]{0,2}?\d{3}[\s-]?\d{4}$/i';
         if (!preg_match($regex, $input[$field])) {
-            return array(
-          'field' => $field,
-          'value' => $input[$field],
-          'rule' => __FUNCTION__,
-          'param' => $param,
-        );
+            return [
+                'field' => $field,
+                'value' => $input[$field],
+                'rule'  => __FUNCTION__,
+                'param' => $param,
+            ];
         }
     }
 
@@ -2094,12 +2094,12 @@ class GUMP
 
         $regex = $param;
         if (!preg_match($regex, $input[$field])) {
-            return array(
-          'field' => $field,
-          'value' => $input[$field],
-          'rule' => __FUNCTION__,
-          'param' => $param,
-        );
+            return [
+                'field' => $field,
+                'value' => $input[$field],
+                'rule'  => __FUNCTION__,
+                'param' => $param,
+            ];
         }
     }
 
@@ -2120,12 +2120,12 @@ class GUMP
         }
 
         if (!is_string($input[$field]) || !is_object(json_decode($input[$field]))) {
-            return array(
-          'field' => $field,
-          'value' => $input[$field],
-          'rule' => __FUNCTION__,
-          'param' => $param,
-        );
+            return [
+                'field' => $field,
+                'value' => $input[$field],
+                'rule'  => __FUNCTION__,
+                'param' => $param,
+            ];
         }
     }
 } // EOC

@@ -9,22 +9,22 @@
 class HTMLPurifier_ConfigSchema_ValidatorAtom
 {
     /**
-     * @type string
+     * @var string
      */
     protected $context;
 
     /**
-     * @type object
+     * @var object
      */
     protected $obj;
 
     /**
-     * @type string
+     * @var string
      */
     protected $member;
 
     /**
-     * @type mixed
+     * @var mixed
      */
     protected $contents;
 
@@ -33,7 +33,7 @@ class HTMLPurifier_ConfigSchema_ValidatorAtom
         $this->context = $context;
         $this->obj = $obj;
         $this->member = $member;
-        $this->contents =& $obj->$member;
+        $this->contents = &$obj->$member;
     }
 
     /**
@@ -44,6 +44,7 @@ class HTMLPurifier_ConfigSchema_ValidatorAtom
         if (!is_string($this->contents)) {
             $this->error('must be a string');
         }
+
         return $this;
     }
 
@@ -55,6 +56,7 @@ class HTMLPurifier_ConfigSchema_ValidatorAtom
         if (!is_bool($this->contents)) {
             $this->error('must be a boolean');
         }
+
         return $this;
     }
 
@@ -66,6 +68,7 @@ class HTMLPurifier_ConfigSchema_ValidatorAtom
         if (!is_array($this->contents)) {
             $this->error('must be an array');
         }
+
         return $this;
     }
 
@@ -77,6 +80,7 @@ class HTMLPurifier_ConfigSchema_ValidatorAtom
         if ($this->contents === null) {
             $this->error('must not be null');
         }
+
         return $this;
     }
 
@@ -89,6 +93,7 @@ class HTMLPurifier_ConfigSchema_ValidatorAtom
         if (!ctype_alnum($this->contents)) {
             $this->error('must be alphanumeric');
         }
+
         return $this;
     }
 
@@ -100,6 +105,7 @@ class HTMLPurifier_ConfigSchema_ValidatorAtom
         if (empty($this->contents)) {
             $this->error('must not be empty');
         }
+
         return $this;
     }
 
@@ -114,16 +120,18 @@ class HTMLPurifier_ConfigSchema_ValidatorAtom
                 $this->error('must be a lookup array');
             }
         }
+
         return $this;
     }
 
     /**
      * @param string $msg
+     *
      * @throws HTMLPurifier_ConfigSchema_Exception
      */
     protected function error($msg)
     {
-        throw new HTMLPurifier_ConfigSchema_Exception(ucfirst($this->member) . ' in ' . $this->context . ' ' . $msg);
+        throw new HTMLPurifier_ConfigSchema_Exception(ucfirst($this->member).' in '.$this->context.' '.$msg);
     }
 }
 

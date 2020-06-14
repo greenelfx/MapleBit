@@ -3,7 +3,9 @@
  * This is a PHP library that handles calling reCAPTCHA.
  *
  * BSD 3-Clause License
+ *
  * @copyright (c) 2019, Google Inc.
+ *
  * @link https://www.google.com/recaptcha
  * All rights reserved.
  *
@@ -40,27 +42,30 @@ use ReCaptcha\RequestParameters;
 
 /**
  * Sends cURL request to the reCAPTCHA service.
- * Note: this requires the cURL extension to be enabled in PHP
+ * Note: this requires the cURL extension to be enabled in PHP.
+ *
  * @see http://php.net/manual/en/book.curl.php
  */
 class CurlPost implements RequestMethod
 {
     /**
-     * Curl connection to the reCAPTCHA service
+     * Curl connection to the reCAPTCHA service.
+     *
      * @var Curl
      */
     private $curl;
 
     /**
-     * URL for reCAPTCHA siteverify API
+     * URL for reCAPTCHA siteverify API.
+     *
      * @var string
      */
     private $siteVerifyUrl;
 
     /**
-     * Only needed if you want to override the defaults
+     * Only needed if you want to override the defaults.
      *
-     * @param Curl $curl Curl resource
+     * @param Curl   $curl          Curl resource
      * @param string $siteVerifyUrl URL for reCAPTCHA siteverify API
      */
     public function __construct(Curl $curl = null, $siteVerifyUrl = null)
@@ -73,23 +78,24 @@ class CurlPost implements RequestMethod
      * Submit the cURL request with the specified parameters.
      *
      * @param RequestParameters $params Request parameters
+     *
      * @return string Body of the reCAPTCHA response
      */
     public function submit(RequestParameters $params)
     {
         $handle = $this->curl->init($this->siteVerifyUrl);
 
-        $options = array(
-            CURLOPT_POST => true,
+        $options = [
+            CURLOPT_POST       => true,
             CURLOPT_POSTFIELDS => $params->toQueryString(),
-            CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/x-www-form-urlencoded'
-            ),
-            CURLINFO_HEADER_OUT => false,
-            CURLOPT_HEADER => false,
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/x-www-form-urlencoded',
+            ],
+            CURLINFO_HEADER_OUT    => false,
+            CURLOPT_HEADER         => false,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_SSL_VERIFYPEER => true
-        );
+            CURLOPT_SSL_VERIFYPEER => true,
+        ];
         $this->curl->setoptArray($handle, $options);
 
         $response = $this->curl->exec($handle);
