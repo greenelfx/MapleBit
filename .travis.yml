@@ -1,0 +1,29 @@
+language: php
+
+branches:
+  only:
+    - v2
+
+php:
+  - 7.4
+
+before_script:
+  - cp .env.travis .env
+  - composer self-update
+  - composer install --prefer-source --no-interaction --dev
+  - php artisan key:generate
+  - php artisan migrate --env=testing --no-interaction -vvv
+
+before_install:
+  - mysql -e 'CREATE DATABASE testdb;'
+
+script:
+  - vendor/bin/phpunit --verbose --coverage-text --coverage-clover=coverage.xml
+
+services:
+  - mysql
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+notifications:
+  email: false
