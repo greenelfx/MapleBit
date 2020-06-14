@@ -2,8 +2,8 @@
 
 namespace App\Http;
 
-use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 class Kernel extends HttpKernel
 {
