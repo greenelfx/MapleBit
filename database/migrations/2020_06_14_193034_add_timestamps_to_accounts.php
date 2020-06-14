@@ -13,35 +13,35 @@ class AddTimestampsToAccounts extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('accounts')) {
-            Schema::create('accounts', function($table){
+        if (! Schema::hasTable('accounts')) {
+            Schema::create('accounts', function ($table) {
                 $table->engine = 'InnoDB';
                 $table->increments('id');
             });
         }
 
         Schema::table('accounts', function (Blueprint $table) {
-            if (!Schema::hasColumn('accounts', 'id')) {
+            if (! Schema::hasColumn('accounts', 'id')) {
                 $table->id();
             }
-            if (!Schema::hasColumn('accounts', 'name')) {
+            if (! Schema::hasColumn('accounts', 'name')) {
                 $table->string('name')->nullable();
             }
-            if (!Schema::hasColumn('accounts', 'email')) {
+            if (! Schema::hasColumn('accounts', 'email')) {
                 $table->string('email')->unique()->nullable();
             }
-            if (!Schema::hasColumn('accounts', 'email_verified_at')) {
+            if (! Schema::hasColumn('accounts', 'email_verified_at')) {
                 $table->timestamp('email_verified_at')->nullable();
             }
-            if (!Schema::hasColumn('accounts', 'password')) {
+            if (! Schema::hasColumn('accounts', 'password')) {
                 $table->string('password')->nullable();
             }
-            if (!Schema::hasColumn('accounts', 'remember_token')) {
+            if (! Schema::hasColumn('accounts', 'remember_token')) {
                 $table->rememberToken();
             }
-            if (!Schema::hasColumn('accounts', 'created_at') && !Schema::hasColumn('accounts', 'updated_at')) {
+            if (! Schema::hasColumn('accounts', 'created_at') && ! Schema::hasColumn('accounts', 'updated_at')) {
                 $table->timestamps();
-            }            
+            }
         });
     }
 

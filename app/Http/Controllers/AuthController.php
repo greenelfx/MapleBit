@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Vinkla\Hashids\Facades\Hashids;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -67,7 +67,7 @@ class AuthController extends Controller
         }
 
         $user = User::where('email', Str::lower($request->email))->first();
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (! $user || ! Hash::check($request->password, $user->password)) {
             return ['status' => 'authentication', 'errors' => ['credentials' => 'invalid credentials']];
         }
 
@@ -157,6 +157,7 @@ class AuthController extends Controller
     {
         $current_token_id = $request->user()->currentAccessToken()->id;
         $request->user()->tokens()->where('id', $current_token_id)->delete();
+
         return ['status' => 'success'];
     }
 
@@ -179,6 +180,7 @@ class AuthController extends Controller
     {
         $current_token_id = $request->user()->currentAccessToken()->id;
         $request->user()->tokens()->where('id', '!=', $current_token_id)->delete();
+
         return ['status' => 'success', 'tokens' => _get_user_tokens($request->user())];
     }
 
@@ -203,7 +205,6 @@ class AuthController extends Controller
     }
 }
 
-
 function _get_user_tokens($user)
 {
     $tokens = $user->tokens()->get(['id', 'name', 'last_used_at'])->toArray();
@@ -214,5 +215,6 @@ function _get_user_tokens($user)
         // format timestamp to something readable for easier frontend display
         $tokens[$key]['last_used_at'] = Carbon::parse($tokens[$key]['last_used_at'])->diffForHumans();
     }
+
     return $tokens;
 }
