@@ -15,6 +15,166 @@
         }
     ],
     "paths": {
+        "/articles/store": {
+            "post": {
+                "tags": [
+                    "articles"
+                ],
+                "summary": "Store an article in the database. Requires admin or moderator role.",
+                "operationId": "store",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "content",
+                                    "category"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "article title",
+                                        "type": "string"
+                                    },
+                                    "content": {
+                                        "description": "article content",
+                                        "type": "string"
+                                    },
+                                    "category": {
+                                        "description": "article category",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Article creation was successful with article data"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/articles/{article}": {
+            "get": {
+                "tags": [
+                    "articles"
+                ],
+                "summary": "Gets specified article slug or 404",
+                "operationId": "show",
+                "parameters": [
+                    {
+                        "name": "article",
+                        "in": "path",
+                        "description": "article slug",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "article title, content, category, slug, timestamps"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "articles"
+                ],
+                "summary": "Deletes the specified article. Requires admin or moderator role.",
+                "operationId": "delete",
+                "parameters": [
+                    {
+                        "name": "article",
+                        "in": "path",
+                        "description": "article slug",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Article delete was successful."
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/articles/update/{article}": {
+            "put": {
+                "tags": [
+                    "articles"
+                ],
+                "summary": "Updates the specified article. Requires admin or moderator role.",
+                "operationId": "update",
+                "parameters": [
+                    {
+                        "name": "article",
+                        "in": "path",
+                        "description": "article slug",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "content",
+                                    "category"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "article title",
+                                        "type": "string"
+                                    },
+                                    "content": {
+                                        "description": "article content",
+                                        "type": "string"
+                                    },
+                                    "category": {
+                                        "description": "article category",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Article update was successful with updated article data"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
         "/auth/login": {
             "post": {
                 "tags": [
