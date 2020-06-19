@@ -11,6 +11,7 @@ use Vinkla\Hashids\Facades\Hashids;
 class ArticleTest extends TestCase
 {
     use RefreshDatabase;
+
     public function setUp(): void
     {
         // TODO: extract this logic into an extensible authenticated TestCase class
@@ -49,8 +50,8 @@ class ArticleTest extends TestCase
             'errors' => [
                 'category' => ['The category field is required.'],
                 'title' => ['The title field is required.'],
-                'content' => ['The content field is required.']
-            ]
+                'content' => ['The content field is required.'],
+            ],
         ]);
     }
 
@@ -63,7 +64,7 @@ class ArticleTest extends TestCase
             []
         )->assertStatus(403);
     }
-    
+
     public function testViewArticle()
     {
         $user = factory(User::class)->create();
@@ -78,7 +79,7 @@ class ArticleTest extends TestCase
             '/api/articles/store',
             $data
         )->decodeResponseJson()['article']['slug'];
-        $this->get('/api/articles/' . $slug)->assertJsonStructure([
+        $this->get('/api/articles/'.$slug)->assertJsonStructure([
             'title',
             'content',
             'category',
@@ -112,7 +113,7 @@ class ArticleTest extends TestCase
             ]
         )->decodeResponseJson()['article']['slug'];
         $this->put(
-            '/api/articles/update/' . $slug,
+            '/api/articles/update/'.$slug,
             $updateData
         );
 
@@ -136,11 +137,11 @@ class ArticleTest extends TestCase
 
         Sanctum::actingAs($user, ['*']);
         $this->put(
-            '/api/articles/update/' . $slug,
+            '/api/articles/update/'.$slug,
             []
         )->assertStatus(403);
     }
-    
+
     public function testUpdateValidation()
     {
         $user = factory(User::class)->create();
@@ -155,15 +156,15 @@ class ArticleTest extends TestCase
             ]
         )->decodeResponseJson()['article']['slug'];
         $this->put(
-            '/api/articles/update/' . $slug,
+            '/api/articles/update/'.$slug,
             []
         )->assertJson([
             'status' => 'validation',
             'errors' => [
                 'category' => ['The category field is required.'],
                 'title' => ['The title field is required.'],
-                'content' => ['The content field is required.']
-            ]
+                'content' => ['The content field is required.'],
+            ],
         ]);
     }
 
@@ -181,7 +182,7 @@ class ArticleTest extends TestCase
             ]
         )->decodeResponseJson()['article']['slug'];
         $this->delete(
-            '/api/articles/' . $slug,
+            '/api/articles/'.$slug,
             []
         )->assertJson(['status' => 'success']);
     }
@@ -203,8 +204,8 @@ class ArticleTest extends TestCase
 
         Sanctum::actingAs($user, ['*']);
         $this->delete(
-            '/api/articles/' . $slug,
+            '/api/articles/'.$slug,
             []
         )->assertStatus(403);
-    }    
+    }
 }
