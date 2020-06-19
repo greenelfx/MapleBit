@@ -24,11 +24,11 @@ class AuthController extends Controller
     }
 
     /**
-     * Login as a user
-     * 
+     * Login as a user.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     * 
+     *
      * @OA\Post(
      *     path="/auth/login",
      *     tags={"auth"},
@@ -80,11 +80,11 @@ class AuthController extends Controller
     }
 
     /**
-     * Create a user
-     * 
+     * Create a user.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     * 
+     *
      * @OA\Post(
      *     path="/auth/create",
      *     tags={"auth"},
@@ -149,11 +149,11 @@ class AuthController extends Controller
     }
 
     /**
-     * Destroys current session
-     * 
+     * Destroys current session.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     * 
+     *
      * @OA\Post(
      *     path="/auth/logout",
      *     tags={"auth"},
@@ -177,11 +177,11 @@ class AuthController extends Controller
     }
 
     /**
-     * Destroys all sessions other than the one used to make this request
-     * 
+     * Destroys all sessions other than the one used to make this request.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     * 
+     *
      * @OA\Post(
      *     path="/auth/revokeAll",
      *     tags={"auth"},
@@ -205,11 +205,11 @@ class AuthController extends Controller
     }
 
     /**
-     * Gets all authenticated devices (sessions) for use
-     * 
+     * Gets all authenticated devices (sessions) for use.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     * 
+     *
      * @OA\Get(
      *     path="/auth/devices",
      *     tags={"auth"},

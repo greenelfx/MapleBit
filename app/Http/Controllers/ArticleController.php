@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Validator;
-use Vinkla\Hashids\Facades\Hashids;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Vinkla\Hashids\Facades\Hashids;
 
 class ArticleController extends Controller
 {
@@ -26,7 +26,7 @@ class ArticleController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     * 
+     *
      * @OA\Post(
      *     path="/articles/store",
      *     tags={"articles"},
@@ -69,7 +69,7 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         // a hack to always generate a unique slug
-        $request->merge(['slug' => Str::slug($request['title']) . '-' . Hashids::encode(Carbon::now()->timestamp)]);
+        $request->merge(['slug' => Str::slug($request['title']).'-'.Hashids::encode(Carbon::now()->timestamp)]);
         $validator = Validator::make($request->all(), [
             'title' => 'required|string',
             'content' => 'required',
@@ -80,7 +80,8 @@ class ArticleController extends Controller
             return ['status' => 'validation', 'errors' => $validator->errors()];
         }
 
-        $article = Article::create($validator->valid());    
+        $article = Article::create($validator->valid());
+
         return ['status' => 'success', 'article' => $article];
     }
 
@@ -89,7 +90,7 @@ class ArticleController extends Controller
      *
      * @param  \App\Article  $article
      * @return \Illuminate\Http\Response
-     * 
+     *
      * @OA\Get(
      *     path="/articles/{article}",
      *     tags={"articles"},
@@ -121,7 +122,7 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Article  $article
      * @return \Illuminate\Http\Response
-     * 
+     *
      * @OA\Put(
      *     path="/articles/update/{article}",
      *     tags={"articles"},
@@ -182,7 +183,8 @@ class ArticleController extends Controller
             return ['status' => 'validation', 'errors' => $validator->errors()];
         }
 
-        $article->update($validator->valid());    
+        $article->update($validator->valid());
+
         return ['status' => 'success', 'article' => $article];
     }
 
@@ -191,7 +193,7 @@ class ArticleController extends Controller
      *
      * @param  \App\Article  $article
      * @return \Illuminate\Http\Response
-     * 
+     *
      * @OA\Delete(
      *     path="/articles/{article}",
      *     tags={"articles"},
@@ -218,6 +220,7 @@ class ArticleController extends Controller
     public function destroy(Article $article)
     {
         $article->delete();
+
         return ['status' => 'success'];
     }
 }
