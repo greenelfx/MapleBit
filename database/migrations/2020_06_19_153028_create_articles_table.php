@@ -18,7 +18,7 @@ class CreateArticlesTable extends Migration
             $table->text('title');
             $table->text('content');
             $table->text('category');
-            $table->text('slug')->unique();
+            $table->string('slug', 200)->unique();
             $table->timestamps();
             $table->softDeletes();
         });
