@@ -12,11 +12,12 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 Route::group(['prefix' => 'articles'], function () {
-    Route::get('{article}', 'ArticleController@show');
+    Route::get('list/{category?}', 'ArticleController@list');
+    Route::get('view/{article}', 'ArticleController@show');
 
     Route::group(['middleware' => ['auth:sanctum', 'role:admin|moderator']], function () {
         Route::post('store', 'ArticleController@store');
         Route::put('update/{article}', 'ArticleController@update');
-        Route::delete('{article}', 'ArticleController@destroy');
+        Route::delete('delete/{article}', 'ArticleController@destroy');
     });
 });
