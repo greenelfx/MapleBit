@@ -3,10 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Models\Article;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
-use Vinkla\Hashids\Facades\Hashids;
 
 class ArticleTest extends TestCase
 {
@@ -28,7 +28,7 @@ class ArticleTest extends TestCase
         $data = [
             'title' => 'test article',
             'content' => 'some test content',
-            'category' => 'some category',
+            'category' => 'some-category',
         ];
         $this->post(
             '/api/articles/store',
@@ -44,11 +44,13 @@ class ArticleTest extends TestCase
         Sanctum::actingAs($user, ['*']);
         $this->post(
             '/api/articles/store',
-            []
+            [
+                'category' => 'some category'
+            ]
         )->assertJson([
             'status' => 'validation',
             'errors' => [
-                'category' => ['The category field is required.'],
+                'category' => ['The category may only contain letters, numbers, dashes and underscores.'],
                 'title' => ['The title field is required.'],
                 'content' => ['The content field is required.'],
             ],
@@ -67,19 +69,8 @@ class ArticleTest extends TestCase
 
     public function testViewArticle()
     {
-        $user = factory(User::class)->create();
-        $user->assignRole('admin');
-        Sanctum::actingAs($user, ['*']);
-        $data = [
-            'title' => 'test article',
-            'content' => 'some test content',
-            'category' => 'some category',
-        ];
-        $slug = $this->post(
-            '/api/articles/store',
-            $data
-        )->decodeResponseJson()['article']['slug'];
-        $this->get('/api/articles/'.$slug)->assertJsonStructure([
+        $slug = factory(Article::class)->create()['slug'];
+        $this->get('/api/articles/view/' . $slug)->assertJsonStructure([
             'title',
             'content',
             'category',
@@ -91,7 +82,7 @@ class ArticleTest extends TestCase
 
     public function testViewNotFoundArticle()
     {
-        $this->get('/api/articles/something')->assertStatus(404);
+        $this->get('/api/articles/view/something')->assertStatus(404);
     }
 
     public function testUpdate()
@@ -102,18 +93,11 @@ class ArticleTest extends TestCase
         $updateData = [
             'title' => 'updated article',
             'content' => 'some updated content',
-            'category' => 'some updated category',
+            'category' => 'some-updated-category',
         ];
-        $slug = $this->post(
-            '/api/articles/store',
-            [
-                'title' => 'test article',
-                'content' => 'some test content',
-                'category' => 'some category',
-            ]
-        )->decodeResponseJson()['article']['slug'];
+        $slug = factory(Article::class)->create()['slug'];
         $this->put(
-            '/api/articles/update/'.$slug,
+            '/api/articles/update/' . $slug,
             $updateData
         );
 
@@ -122,24 +106,11 @@ class ArticleTest extends TestCase
 
     public function testUpdateArticleWithoutPermissions()
     {
-        $admin = factory(User::class)->create();
         $user = factory(User::class)->create();
-        $admin->assignRole('admin');
-        Sanctum::actingAs($admin, ['*']);
-        $slug = $this->post(
-            '/api/articles/store',
-            [
-                'title' => 'test article',
-                'content' => 'some test content',
-                'category' => 'some category',
-            ]
-        )->decodeResponseJson()['article']['slug'];
-
         Sanctum::actingAs($user, ['*']);
-        $this->put(
-            '/api/articles/update/'.$slug,
-            []
-        )->assertStatus(403);
+
+        $slug = factory(Article::class)->create()['slug'];
+        $this->put('/api/articles/update/' . $slug, [])->assertStatus(403);
     }
 
     public function testUpdateValidation()
@@ -147,21 +118,16 @@ class ArticleTest extends TestCase
         $user = factory(User::class)->create();
         $user->assignRole('admin');
         Sanctum::actingAs($user, ['*']);
-        $slug = $this->post(
-            '/api/articles/store',
-            [
-                'title' => 'test article',
-                'content' => 'some test content',
-                'category' => 'some category',
-            ]
-        )->decodeResponseJson()['article']['slug'];
+        $slug = factory(Article::class)->create()['slug'];
         $this->put(
-            '/api/articles/update/'.$slug,
-            []
+            '/api/articles/update/' . $slug,
+            [
+                'category' => 'some category'
+            ]
         )->assertJson([
             'status' => 'validation',
             'errors' => [
-                'category' => ['The category field is required.'],
+                'category' => ['The category may only contain letters, numbers, dashes and underscores.'],
                 'title' => ['The title field is required.'],
                 'content' => ['The content field is required.'],
             ],
@@ -173,39 +139,43 @@ class ArticleTest extends TestCase
         $user = factory(User::class)->create();
         $user->assignRole('admin');
         Sanctum::actingAs($user, ['*']);
-        $slug = $this->post(
-            '/api/articles/store',
-            [
-                'title' => 'test article',
-                'content' => 'some test content',
-                'category' => 'some category',
-            ]
-        )->decodeResponseJson()['article']['slug'];
+        $slug = factory(Article::class)->create()['slug'];
         $this->delete(
-            '/api/articles/'.$slug,
+            '/api/articles/delete/' . $slug,
             []
         )->assertJson(['status' => 'success']);
     }
 
     public function testDestroyArticleWithoutPermissions()
     {
-        $admin = factory(User::class)->create();
         $user = factory(User::class)->create();
-        $admin->assignRole('admin');
-        Sanctum::actingAs($admin, ['*']);
-        $slug = $this->post(
-            '/api/articles/store',
-            [
-                'title' => 'test article',
-                'content' => 'some test content',
-                'category' => 'some category',
-            ]
-        )->decodeResponseJson()['article']['slug'];
-
         Sanctum::actingAs($user, ['*']);
+        $slug = factory(Article::class)->create()['slug'];
         $this->delete(
-            '/api/articles/'.$slug,
+            '/api/articles/delete/' . $slug,
             []
         )->assertStatus(403);
+    }
+
+    public function testList()
+    {
+        factory(Article::class)->create();
+        $this->get(
+            '/api/articles/list',
+            []
+        )->assertJsonStructure([
+            "data",
+        ]);
+    }
+
+    public function testListWithCategory()
+    {
+        $article = factory(Article::class)->create();
+        $this->get(
+            '/api/articles/list/' . $article['category'],
+            []
+        )->assertJsonStructure([
+            "data",
+        ]);
     }
 }

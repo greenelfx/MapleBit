@@ -14,11 +14,35 @@ class ArticleController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  string $category
      * @return \Illuminate\Http\Response
+     * 
+     * @OA\Get(
+     *     path="/articles/list/{category?}",
+     *     tags={"articles"},
+     *     summary="Gets a paginated view of articles of optional category (omitting results in all articles)",
+     *     operationId="list",
+     *     @OA\Parameter(
+     *         name="category",
+     *         description="optionally specify category to return",
+     *         in="path",
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="paginated list of articles"
+     *     ),
+     * )
      */
-    public function index()
+    public function list($category = null)
     {
-        //
+        $query = Article::orderBy('created_at');
+        if(!empty($category)) {
+            $query->where('category', $category);
+        }
+        return $query->paginate(15);
     }
 
     /**
@@ -73,7 +97,7 @@ class ArticleController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|string',
             'content' => 'required',
-            'category' => 'required|string',
+            'category' => 'required|string|alpha_dash',
         ]);
 
         if ($validator->fails()) {
@@ -92,7 +116,7 @@ class ArticleController extends Controller
      * @return \Illuminate\Http\Response
      *
      * @OA\Get(
-     *     path="/articles/{article}",
+     *     path="/articles/view/{article}",
      *     tags={"articles"},
      *     summary="Gets specified article slug or 404",
      *     operationId="show",
@@ -176,7 +200,7 @@ class ArticleController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required|string',
             'content' => 'required',
-            'category' => 'required|string',
+            'category' => 'required|string|alpha_dash',
         ]);
 
         if ($validator->fails()) {
@@ -195,7 +219,7 @@ class ArticleController extends Controller
      * @return \Illuminate\Http\Response
      *
      * @OA\Delete(
-     *     path="/articles/{article}",
+     *     path="/articles/delete/{article}",
      *     tags={"articles"},
      *     summary="Deletes the specified article. Requires admin or moderator role.",
      *     operationId="delete",
