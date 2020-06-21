@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use App\Models\Article;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -45,7 +45,7 @@ class ArticleTest extends TestCase
         $this->post(
             '/api/articles/store',
             [
-                'category' => 'some category'
+                'category' => 'some category',
             ]
         )->assertJson([
             'status' => 'validation',
@@ -70,7 +70,7 @@ class ArticleTest extends TestCase
     public function testViewArticle()
     {
         $slug = factory(Article::class)->create()['slug'];
-        $this->get('/api/articles/view/' . $slug)->assertJsonStructure([
+        $this->get('/api/articles/view/'.$slug)->assertJsonStructure([
             'title',
             'content',
             'category',
@@ -97,7 +97,7 @@ class ArticleTest extends TestCase
         ];
         $slug = factory(Article::class)->create()['slug'];
         $this->put(
-            '/api/articles/update/' . $slug,
+            '/api/articles/update/'.$slug,
             $updateData
         );
 
@@ -110,7 +110,7 @@ class ArticleTest extends TestCase
         Sanctum::actingAs($user, ['*']);
 
         $slug = factory(Article::class)->create()['slug'];
-        $this->put('/api/articles/update/' . $slug, [])->assertStatus(403);
+        $this->put('/api/articles/update/'.$slug, [])->assertStatus(403);
     }
 
     public function testUpdateValidation()
@@ -120,9 +120,9 @@ class ArticleTest extends TestCase
         Sanctum::actingAs($user, ['*']);
         $slug = factory(Article::class)->create()['slug'];
         $this->put(
-            '/api/articles/update/' . $slug,
+            '/api/articles/update/'.$slug,
             [
-                'category' => 'some category'
+                'category' => 'some category',
             ]
         )->assertJson([
             'status' => 'validation',
@@ -141,7 +141,7 @@ class ArticleTest extends TestCase
         Sanctum::actingAs($user, ['*']);
         $slug = factory(Article::class)->create()['slug'];
         $this->delete(
-            '/api/articles/delete/' . $slug,
+            '/api/articles/delete/'.$slug,
             []
         )->assertJson(['status' => 'success']);
     }
@@ -152,7 +152,7 @@ class ArticleTest extends TestCase
         Sanctum::actingAs($user, ['*']);
         $slug = factory(Article::class)->create()['slug'];
         $this->delete(
-            '/api/articles/delete/' . $slug,
+            '/api/articles/delete/'.$slug,
             []
         )->assertStatus(403);
     }
@@ -164,7 +164,7 @@ class ArticleTest extends TestCase
             '/api/articles/list',
             []
         )->assertJsonStructure([
-            "data",
+            'data',
         ]);
     }
 
@@ -172,10 +172,10 @@ class ArticleTest extends TestCase
     {
         $article = factory(Article::class)->create();
         $this->get(
-            '/api/articles/list/' . $article['category'],
+            '/api/articles/list/'.$article['category'],
             []
         )->assertJsonStructure([
-            "data",
+            'data',
         ]);
     }
 }

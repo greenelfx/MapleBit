@@ -16,7 +16,7 @@ class ArticleController extends Controller
      *
      * @param  string $category
      * @return \Illuminate\Http\Response
-     * 
+     *
      * @OA\Get(
      *     path="/articles/list/{category?}",
      *     tags={"articles"},
@@ -39,9 +39,10 @@ class ArticleController extends Controller
     public function list($category = null)
     {
         $query = Article::orderBy('created_at');
-        if(!empty($category)) {
+        if (! empty($category)) {
             $query->where('category', $category);
         }
+
         return $query->paginate(15);
     }
 
