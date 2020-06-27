@@ -79,6 +79,16 @@ class ArticleController extends Controller
      *                  description="article category",
      *                  type="string"
      *              ),
+     *              @OA\Property(
+     *                  property="slug",
+     *                  description="article slug",
+     *                  type="string"
+     *              ),
+     *              @OA\Property(
+     *                  property="locked",
+     *                  description="if article can be commented on",
+     *                  type="boolean"
+     *              ),
      *          )
      *       )
      *     ),
@@ -190,6 +200,16 @@ class ArticleController extends Controller
      *                  property="category",
      *                  description="article category",
      *                  type="string"
+     *              ),
+     *              @OA\Property(
+     *                  property="slug",
+     *                  description="article slug",
+     *                  type="string"
+     *              ),
+     *              @OA\Property(
+     *                  property="locked",
+     *                  description="if article can be commented on",
+     *                  type="boolean"
      *              ),
      *          )
      *       )

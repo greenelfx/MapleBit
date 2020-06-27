@@ -15,6 +15,49 @@
         }
     ],
     "paths": {
+        "/user/disconnect": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Disconnect the authenticated user account",
+                "operationId": "disconnectAccount",
+                "responses": {
+                    "200": {
+                        "description": "Indicates the account has been updated with loggedin=0"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/articles/list/{category?}": {
+            "get": {
+                "tags": [
+                    "articles"
+                ],
+                "summary": "Gets a paginated view of articles of optional category (omitting results in all articles)",
+                "operationId": "list",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "path",
+                        "description": "optionally specify category to return",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "paginated list of articles"
+                    }
+                }
+            }
+        },
         "/articles/store": {
             "post": {
                 "tags": [
@@ -44,6 +87,14 @@
                                     "category": {
                                         "description": "article category",
                                         "type": "string"
+                                    },
+                                    "slug": {
+                                        "description": "article slug",
+                                        "type": "string"
+                                    },
+                                    "locked": {
+                                        "description": "if article can be commented on",
+                                        "type": "boolean"
                                     }
                                 },
                                 "type": "object"
@@ -63,7 +114,7 @@
                 ]
             }
         },
-        "/articles/{article}": {
+        "/articles/view/{article}": {
             "get": {
                 "tags": [
                     "articles"
@@ -86,34 +137,6 @@
                         "description": "article title, content, category, slug, timestamps"
                     }
                 }
-            },
-            "delete": {
-                "tags": [
-                    "articles"
-                ],
-                "summary": "Deletes the specified article. Requires admin or moderator role.",
-                "operationId": "delete",
-                "parameters": [
-                    {
-                        "name": "article",
-                        "in": "path",
-                        "description": "article slug",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Article delete was successful."
-                    }
-                },
-                "security": [
-                    {
-                        "bearer": []
-                    }
-                ]
             }
         },
         "/articles/update/{article}": {
@@ -156,6 +179,14 @@
                                     "category": {
                                         "description": "article category",
                                         "type": "string"
+                                    },
+                                    "slug": {
+                                        "description": "article slug",
+                                        "type": "string"
+                                    },
+                                    "locked": {
+                                        "description": "if article can be commented on",
+                                        "type": "boolean"
                                     }
                                 },
                                 "type": "object"
@@ -166,6 +197,36 @@
                 "responses": {
                     "200": {
                         "description": "Article update was successful with updated article data"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/articles/delete/{article}": {
+            "delete": {
+                "tags": [
+                    "articles"
+                ],
+                "summary": "Deletes the specified article. Requires admin or moderator role.",
+                "operationId": "delete",
+                "parameters": [
+                    {
+                        "name": "article",
+                        "in": "path",
+                        "description": "article slug",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Article delete was successful."
                     }
                 },
                 "security": [
