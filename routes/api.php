@@ -21,3 +21,7 @@ Route::group(['prefix' => 'articles'], function () {
         Route::delete('delete/{article}', 'ArticleController@destroy');
     });
 });
+
+Route::group(['prefix' => 'user', 'middleware' => ['auth:sanctum']], function() {
+	Route::post('disconnect', 'AccountController@disconnectAccount');
+});
