@@ -22,6 +22,6 @@ Route::group(['prefix' => 'articles'], function () {
     });
 });
 
-Route::group(['prefix' => 'user', 'middleware' => ['auth:sanctum']], function() {
-	Route::post('disconnect', 'AccountController@disconnectAccount');
+Route::group(['prefix' => 'user', 'middleware' => ['auth:sanctum']], function () {
+    Route::post('disconnect', 'AccountController@disconnectAccount');
 });

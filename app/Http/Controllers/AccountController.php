@@ -7,11 +7,11 @@ use Illuminate\Http\Request;
 class AccountController extends Controller
 {
     /**
-     * Disconnect a game account
+     * Disconnect a game account.
      *
      * @param  Request  $request
      * @return Response
-     * 
+     *
      * @OA\Post(
      *     path="/user/disconnect",
      *     tags={"user"},
@@ -30,7 +30,7 @@ class AccountController extends Controller
     {
         $request->user()->loggedin = 0;
         $request->user()->save();
+
         return ['status' => 'success', 'message' => 'Successfully disconnected account'];
     }
-
 }

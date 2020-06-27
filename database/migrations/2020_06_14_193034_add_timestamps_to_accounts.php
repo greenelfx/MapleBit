@@ -36,9 +36,12 @@ class AddTimestampsToAccounts extends Migration
             if (! Schema::hasColumn('accounts', 'password')) {
                 $table->string('password')->nullable();
             }
+            if (! Schema::hasColumn('accounts', 'site_password')) {
+                $table->string('site_password')->nullable();
+            }
             if (! Schema::hasColumn('accounts', 'loggedin')) {
                 $table->tinyInteger('loggedin')->default(0);
-            }            
+            }
             if (! Schema::hasColumn('accounts', 'remember_token')) {
                 $table->rememberToken();
             }

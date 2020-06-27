@@ -34,7 +34,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'site_password',
     ];
 
     /**
@@ -49,5 +49,15 @@ class User extends Authenticatable
     public function setEmailAttribute($value)
     {
         $this->attributes['email'] = strtolower($value);
+    }
+
+    /**
+     * Override default password field to use site_password.
+     *
+     * @return site_password
+     */
+    public function getAuthPassword()
+    {
+        return $this->site_password;
     }
 }
