@@ -72,7 +72,7 @@ class AuthController extends Controller
         }
 
         $user = User::where('email', Str::lower($request->email))->first();
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+        if (! $user || ! Hash::check($request->password, $user->site_password)) {
             return ['status' => 'authentication', 'errors' => ['credentials' => 'invalid credentials']];
         }
 
@@ -142,7 +142,10 @@ class AuthController extends Controller
         $user = new User();
         $user->email = $request->email;
         $user->name = $request->username;
-        $user->password = Hash::make($request->password);
+
+        $user->password = sha1($request->password);
+        $user->site_password = Hash::make($request->password);
+
         $user->save();
 
         return ['status' => 'success', 'token' => $user->createToken($request->server('HTTP_USER_AGENT'))->plainTextToken];
