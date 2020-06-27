@@ -107,7 +107,7 @@ class ArticleController extends Controller
 
         $article_data = $validator->valid();
 
-        if(!$request->filled('slug')) {
+        if (! $request->filled('slug')) {
             // a hack to generate a unique slug if none provided
             $article_data['slug'] = Str::slug($request['title']).'-'.Hashids::encode(Carbon::now()->timestamp);
         }
@@ -209,7 +209,7 @@ class ArticleController extends Controller
             'title' => 'string',
             'content' => 'string',
             'category' => 'string|alpha_dash',
-            'slug' => 'string|alpha_dash|unique:App\Models\Article,slug,' . $article->slug,
+            'slug' => 'string|alpha_dash|unique:App\Models\Article,slug,'.$article->slug,
             'locked' => 'boolean',
         ]);
 
@@ -223,7 +223,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Deletes the specified article
+     * Deletes the specified article.
      *
      * @param  \App\Article  $article
      * @return \Illuminate\Http\Response

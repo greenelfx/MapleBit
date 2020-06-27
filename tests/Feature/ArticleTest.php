@@ -46,7 +46,7 @@ class ArticleTest extends TestCase
             'title' => 'test article',
             'content' => 'some test content',
             'category' => 'some-category',
-            'slug' => 'explicitly-defined-slug'
+            'slug' => 'explicitly-defined-slug',
         ];
         $this->post(
             '/api/articles/store',
@@ -54,7 +54,7 @@ class ArticleTest extends TestCase
         )->assertJsonStructure(['status', 'article']);
         $this->assertDatabaseHas('articles', $data);
     }
-    
+
     public function testStoreValidation()
     {
         $user = factory(User::class)->create();
