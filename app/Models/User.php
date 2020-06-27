@@ -52,11 +52,12 @@ class User extends Authenticatable
     }
 
     /**
-     * Override default password field to use site_password
+     * Override default password field to use site_password.
      *
      * @return site_password
      */
-    public function getAuthPassword() {
+    public function getAuthPassword()
+    {
         return $this->site_password;
-    }    
+    }
 }
