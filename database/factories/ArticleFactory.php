@@ -15,6 +15,7 @@ $factory->define(Article::class, function (Faker $faker) {
         'title' => $title,
         'content' => $faker->paragraph(),
         'category' => 'some-category',
+        'locked' => false,
         'slug' => Str::slug($title).'-'.Hashids::encode(Carbon::now()->timestamp), // generate slugs like prod
     ];
 });
