@@ -19,6 +19,7 @@ class CreateArticlesTable extends Migration
             $table->text('content');
             $table->text('category');
             $table->string('slug', 200)->unique();
+            $table->boolean('locked')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

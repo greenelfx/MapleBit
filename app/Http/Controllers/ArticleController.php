@@ -93,19 +93,26 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        // a hack to always generate a unique slug
-        $request->merge(['slug' => Str::slug($request['title']).'-'.Hashids::encode(Carbon::now()->timestamp)]);
         $validator = Validator::make($request->all(), [
             'title' => 'required|string',
             'content' => 'required',
             'category' => 'required|string|alpha_dash',
+            'slug' => 'string|alpha_dash|unique:App\Models\Article,slug',
+            'locked' => 'boolean',
         ]);
 
         if ($validator->fails()) {
             return ['status' => 'validation', 'errors' => $validator->errors()];
         }
 
-        $article = Article::create($validator->valid());
+        $article_data = $validator->valid();
+
+        if(!$request->filled('slug')) {
+            // a hack to generate a unique slug if none provided
+            $article_data['slug'] = Str::slug($request['title']).'-'.Hashids::encode(Carbon::now()->timestamp);
+        }
+
+        $article = Article::create($article_data);
 
         return ['status' => 'success', 'article' => $article];
     }
@@ -199,22 +206,24 @@ class ArticleController extends Controller
     public function update(Request $request, Article $article)
     {
         $validator = Validator::make($request->all(), [
-            'title' => 'required|string',
-            'content' => 'required',
-            'category' => 'required|string|alpha_dash',
+            'title' => 'string',
+            'content' => 'string',
+            'category' => 'string|alpha_dash',
+            'slug' => 'string|alpha_dash|unique:App\Models\Article,slug,' . $article->slug,
+            'locked' => 'boolean',
         ]);
 
         if ($validator->fails()) {
             return ['status' => 'validation', 'errors' => $validator->errors()];
         }
 
-        $article->update($validator->valid());
+        $article->fill($validator->valid())->save();
 
         return ['status' => 'success', 'article' => $article];
     }
 
     /**
-     * Update the specified resource in storage.
+     * Deletes the specified article
      *
      * @param  \App\Article  $article
      * @return \Illuminate\Http\Response

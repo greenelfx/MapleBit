@@ -37,6 +37,24 @@ class ArticleTest extends TestCase
         $this->assertDatabaseHas('articles', $data);
     }
 
+    public function testStoreWithExplicitSlug()
+    {
+        $user = factory(User::class)->create();
+        $user->assignRole('admin');
+        Sanctum::actingAs($user, ['*']);
+        $data = [
+            'title' => 'test article',
+            'content' => 'some test content',
+            'category' => 'some-category',
+            'slug' => 'explicitly-defined-slug'
+        ];
+        $this->post(
+            '/api/articles/store',
+            $data
+        )->assertJsonStructure(['status', 'article']);
+        $this->assertDatabaseHas('articles', $data);
+    }
+    
     public function testStoreValidation()
     {
         $user = factory(User::class)->create();
@@ -94,6 +112,8 @@ class ArticleTest extends TestCase
             'title' => 'updated article',
             'content' => 'some updated content',
             'category' => 'some-updated-category',
+            'slug' => 'some-updated-slug',
+            'locked' => 1,
         ];
         $slug = factory(Article::class)->create()['slug'];
         $this->put(
@@ -128,8 +148,6 @@ class ArticleTest extends TestCase
             'status' => 'validation',
             'errors' => [
                 'category' => ['The category may only contain letters, numbers, dashes and underscores.'],
-                'title' => ['The title field is required.'],
-                'content' => ['The content field is required.'],
             ],
         ]);
     }
