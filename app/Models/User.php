@@ -60,4 +60,13 @@ class User extends Authenticatable
     {
         return $this->site_password;
     }
+
+    public function getBasicInfo()
+    {
+        return [
+            'name' => $this->name,
+            'email' => $this->email,
+            'gravatar_url' => 'https://www.gravatar.com/avatar/'.md5(strtolower(trim($this->email))).'?s=40&amp;d=identicon&amp;r=g',
+        ];
+    }
 }

@@ -1,0 +1,20 @@
+# what password hashing algorithm does your game server require?
+# typically SHA1 for older sources
+# one of: sha1, bcrypt
+password_hashing_algo: sha1
+
+article_categories:
+  - news
+  - events
+
+server_data:
+  version: 83
+  experience_rate: 300
+  meso_rate: 200
+  drop_rate: 100
+  forum_url: /forums
+  client_link: 'http://www.some-client-link.com'
+  setup_link: 'http://some-setup-link.com'
+
+  # one of: rebirth, level
+  server_type: 'rebirth'

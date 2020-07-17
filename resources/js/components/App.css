@@ -1,0 +1,16 @@
+#app {
+    margin-top: 20px;
+}
+
+.vertical-center {
+    min-height: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.nav-avatar {
+    float: left;
+    margin-top: -10px;
+    padding-right: 5px;
+}

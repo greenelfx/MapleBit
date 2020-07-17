@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "77397d564b6b0ba8b5f1a0ac28582f0a",
+    "content-hash": "cbd92a8c2cc36c2ccff4be6ba850410a",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1295,6 +1295,61 @@
             "time": "2020-04-07T15:01:31+00:00"
         },
         {
+            "name": "laravel/ui",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/ui.git",
+                "reference": "da9350533d0da60d5dc42fb7de9c561c72129bba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/ui/zipball/da9350533d0da60d5dc42fb7de9c561c72129bba",
+                "reference": "da9350533d0da60d5dc42fb7de9c561c72129bba",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "^7.0",
+                "illuminate/filesystem": "^7.0",
+                "illuminate/support": "^7.0",
+                "php": "^7.2.5"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Ui\\UiServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Ui\\": "src/",
+                    "Illuminate\\Foundation\\Auth\\": "auth-backend/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Laravel UI utilities and presets.",
+            "keywords": [
+                "laravel",
+                "ui"
+            ],
+            "time": "2020-06-30T20:56:33+00:00"
+        },
+        {
             "name": "league/commonmark",
             "version": "1.4.3",
             "source": {
@@ -1835,6 +1890,69 @@
                 }
             ],
             "time": "2020-06-07T10:40:07+00:00"
+        },
+        {
+            "name": "pragmarx/yaml",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/antonioribeiro/yaml.git",
+                "reference": "9f2b44c4a31f8a71bab77169205aee7184ae3ef4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/antonioribeiro/yaml/zipball/9f2b44c4a31f8a71bab77169205aee7184ae3ef4",
+                "reference": "9f2b44c4a31f8a71bab77169205aee7184ae3ef4",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": ">=5.5.33",
+                "php": ">=7.0",
+                "symfony/yaml": "^3.4|^4.0|^5.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "3.5|^3.6|^4.0|^5.0",
+                "phpunit/phpunit": "^4.0|^6.4|^7.0|^8.0|^9.0"
+            },
+            "suggest": {
+                "ext-yaml": "Required to use the PECL YAML."
+            },
+            "type": "library",
+            "extra": {
+                "component": "package",
+                "laravel": {
+                    "providers": [
+                        "PragmaRX\\Yaml\\Package\\ServiceProvider"
+                    ],
+                    "aliases": {
+                        "Yaml": "PragmaRX\\Yaml\\Package\\Facade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PragmaRX\\Yaml\\Package\\": "src/package",
+                    "PragmaRX\\Yaml\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Antonio Carlos Ribeiro",
+                    "email": "acr@antoniocarlosribeiro.com",
+                    "role": "Creator & Designer"
+                }
+            ],
+            "description": "Load your Laravel config files using yaml",
+            "keywords": [
+                "config",
+                "laravel",
+                "yaml"
+            ],
+            "time": "2020-05-21T19:46:28+00:00"
         },
         {
             "name": "psr/container",

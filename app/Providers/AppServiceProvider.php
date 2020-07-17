@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Yaml;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // load config/maplebit.yml into Laravel config
+        Yaml::loadToConfig(config_path('maplebit.yml'), 'maplebit');
     }
 }

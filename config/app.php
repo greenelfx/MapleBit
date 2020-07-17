@@ -165,6 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
+        \PragmaRX\Yaml\Package\ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -226,6 +227,10 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Yaml' => 'PragmaRX\Yaml\Package\Facade',
+
+        // Helpers
+        'PasswordHelper' => App\Helpers\PasswordHelper::class,
 
     ],
 

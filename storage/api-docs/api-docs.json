@@ -34,6 +34,73 @@
                 ]
             }
         },
+        "/user/update": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Modify the password of the authenticated user account",
+                "operationId": "updateAccount",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "password",
+                                    "new_password",
+                                    "new_verify_password"
+                                ],
+                                "properties": {
+                                    "password": {
+                                        "description": "current password",
+                                        "type": "string"
+                                    },
+                                    "new_password": {
+                                        "description": "new password",
+                                        "type": "string"
+                                    },
+                                    "new_verify_password": {
+                                        "description": "confirm new password",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Indicates the account has been updated."
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/user/me": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Get basic information of the authenticated user.",
+                "operationId": "getMe",
+                "responses": {
+                    "200": {
+                        "description": "Successfully returned basic information"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
         "/articles/list/{category?}": {
             "get": {
                 "tags": [

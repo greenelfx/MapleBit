@@ -23,7 +23,7 @@ class AuthenticationTest extends TestCase
                 'password' => 'password123',
                 'password_confirm' => 'password123',
             ]
-        )->assertJsonStructure(['status', 'token']);
+        )->assertJsonStructure(['status', 'token', 'user']);
 
         $this->assertDatabaseHas('accounts', ['email' => 'test@example.com']);
     }
@@ -53,7 +53,7 @@ class AuthenticationTest extends TestCase
 
         // Try Valid login
         $this->post('/api/auth/login', ['email' => $user->email, 'password' => 'password'])
-            ->assertJsonStructure(['status', 'token']);
+            ->assertJsonStructure(['status', 'token', 'user']);
 
         // Try Invalid Login
         $this->post('/api/auth/login', ['email' => 'test@example.com', 'password' => 'wrongPassword'])
