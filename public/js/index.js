@@ -6562,269 +6562,6 @@ module.exports = ReactPropTypesSecret;
 
 /***/ }),
 
-/***/ "./node_modules/react-async-script/lib/esm/async-script-loader.js":
-/*!************************************************************************!*\
-  !*** ./node_modules/react-async-script/lib/esm/async-script-loader.js ***!
-  \************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return makeAsyncScript; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! hoist-non-react-statics */ "./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js");
-/* harmony import */ var hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_2__);
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
-
-
-
-
-var SCRIPT_MAP = {}; // A counter used to generate a unique id for each component that uses the function
-
-var idCount = 0;
-function makeAsyncScript(getScriptURL, options) {
-  options = options || {};
-  return function wrapWithAsyncScript(WrappedComponent) {
-    var wrappedComponentName = WrappedComponent.displayName || WrappedComponent.name || "Component";
-
-    var AsyncScriptLoader =
-    /*#__PURE__*/
-    function (_Component) {
-      _inheritsLoose(AsyncScriptLoader, _Component);
-
-      function AsyncScriptLoader(props, context) {
-        var _this;
-
-        _this = _Component.call(this, props, context) || this;
-        _this.state = {};
-        _this.__scriptURL = "";
-        return _this;
-      }
-
-      var _proto = AsyncScriptLoader.prototype;
-
-      _proto.asyncScriptLoaderGetScriptLoaderID = function asyncScriptLoaderGetScriptLoaderID() {
-        if (!this.__scriptLoaderID) {
-          this.__scriptLoaderID = "async-script-loader-" + idCount++;
-        }
-
-        return this.__scriptLoaderID;
-      };
-
-      _proto.setupScriptURL = function setupScriptURL() {
-        this.__scriptURL = typeof getScriptURL === "function" ? getScriptURL() : getScriptURL;
-        return this.__scriptURL;
-      };
-
-      _proto.asyncScriptLoaderHandleLoad = function asyncScriptLoaderHandleLoad(state) {
-        var _this2 = this;
-
-        // use reacts setState callback to fire props.asyncScriptOnLoad with new state/entry
-        this.setState(state, function () {
-          return _this2.props.asyncScriptOnLoad && _this2.props.asyncScriptOnLoad(_this2.state);
-        });
-      };
-
-      _proto.asyncScriptLoaderTriggerOnScriptLoaded = function asyncScriptLoaderTriggerOnScriptLoaded() {
-        var mapEntry = SCRIPT_MAP[this.__scriptURL];
-
-        if (!mapEntry || !mapEntry.loaded) {
-          throw new Error("Script is not loaded.");
-        }
-
-        for (var obsKey in mapEntry.observers) {
-          mapEntry.observers[obsKey](mapEntry);
-        }
-
-        delete window[options.callbackName];
-      };
-
-      _proto.componentDidMount = function componentDidMount() {
-        var _this3 = this;
-
-        var scriptURL = this.setupScriptURL();
-        var key = this.asyncScriptLoaderGetScriptLoaderID();
-        var _options = options,
-            globalName = _options.globalName,
-            callbackName = _options.callbackName,
-            scriptId = _options.scriptId; // check if global object already attached to window
-
-        if (globalName && typeof window[globalName] !== "undefined") {
-          SCRIPT_MAP[scriptURL] = {
-            loaded: true,
-            observers: {}
-          };
-        } // check if script loading already
-
-
-        if (SCRIPT_MAP[scriptURL]) {
-          var entry = SCRIPT_MAP[scriptURL]; // if loaded or errored then "finish"
-
-          if (entry && (entry.loaded || entry.errored)) {
-            this.asyncScriptLoaderHandleLoad(entry);
-            return;
-          } // if still loading then callback to observer queue
-
-
-          entry.observers[key] = function (entry) {
-            return _this3.asyncScriptLoaderHandleLoad(entry);
-          };
-
-          return;
-        }
-        /*
-         * hasn't started loading
-         * start the "magic"
-         * setup script to load and observers
-         */
-
-
-        var observers = {};
-
-        observers[key] = function (entry) {
-          return _this3.asyncScriptLoaderHandleLoad(entry);
-        };
-
-        SCRIPT_MAP[scriptURL] = {
-          loaded: false,
-          observers: observers
-        };
-        var script = document.createElement("script");
-        script.src = scriptURL;
-        script.async = true;
-
-        for (var attribute in options.attributes) {
-          script.setAttribute(attribute, options.attributes[attribute]);
-        }
-
-        if (scriptId) {
-          script.id = scriptId;
-        }
-
-        var callObserverFuncAndRemoveObserver = function callObserverFuncAndRemoveObserver(func) {
-          if (SCRIPT_MAP[scriptURL]) {
-            var mapEntry = SCRIPT_MAP[scriptURL];
-            var observersMap = mapEntry.observers;
-
-            for (var obsKey in observersMap) {
-              if (func(observersMap[obsKey])) {
-                delete observersMap[obsKey];
-              }
-            }
-          }
-        };
-
-        if (callbackName && typeof window !== "undefined") {
-          window[callbackName] = function () {
-            return _this3.asyncScriptLoaderTriggerOnScriptLoaded();
-          };
-        }
-
-        script.onload = function () {
-          var mapEntry = SCRIPT_MAP[scriptURL];
-
-          if (mapEntry) {
-            mapEntry.loaded = true;
-            callObserverFuncAndRemoveObserver(function (observer) {
-              if (callbackName) {
-                return false;
-              }
-
-              observer(mapEntry);
-              return true;
-            });
-          }
-        };
-
-        script.onerror = function () {
-          var mapEntry = SCRIPT_MAP[scriptURL];
-
-          if (mapEntry) {
-            mapEntry.errored = true;
-            callObserverFuncAndRemoveObserver(function (observer) {
-              observer(mapEntry);
-              return true;
-            });
-          }
-        };
-
-        document.body.appendChild(script);
-      };
-
-      _proto.componentWillUnmount = function componentWillUnmount() {
-        // Remove tag script
-        var scriptURL = this.__scriptURL;
-
-        if (options.removeOnUnmount === true) {
-          var allScripts = document.getElementsByTagName("script");
-
-          for (var i = 0; i < allScripts.length; i += 1) {
-            if (allScripts[i].src.indexOf(scriptURL) > -1) {
-              if (allScripts[i].parentNode) {
-                allScripts[i].parentNode.removeChild(allScripts[i]);
-              }
-            }
-          }
-        } // Clean the observer entry
-
-
-        var mapEntry = SCRIPT_MAP[scriptURL];
-
-        if (mapEntry) {
-          delete mapEntry.observers[this.asyncScriptLoaderGetScriptLoaderID()];
-
-          if (options.removeOnUnmount === true) {
-            delete SCRIPT_MAP[scriptURL];
-          }
-        }
-      };
-
-      _proto.render = function render() {
-        var globalName = options.globalName; // remove asyncScriptOnLoad from childProps
-
-        var _this$props = this.props,
-            asyncScriptOnLoad = _this$props.asyncScriptOnLoad,
-            forwardedRef = _this$props.forwardedRef,
-            childProps = _objectWithoutPropertiesLoose(_this$props, ["asyncScriptOnLoad", "forwardedRef"]); // eslint-disable-line no-unused-vars
-
-
-        if (globalName && typeof window !== "undefined") {
-          childProps[globalName] = typeof window[globalName] !== "undefined" ? window[globalName] : undefined;
-        }
-
-        childProps.ref = forwardedRef;
-        return Object(react__WEBPACK_IMPORTED_MODULE_0__["createElement"])(WrappedComponent, childProps);
-      };
-
-      return AsyncScriptLoader;
-    }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]); // Note the second param "ref" provided by React.forwardRef.
-    // We can pass it along to AsyncScriptLoader as a regular prop, e.g. "forwardedRef"
-    // And it can then be attached to the Component.
-
-
-    var ForwardedComponent = Object(react__WEBPACK_IMPORTED_MODULE_0__["forwardRef"])(function (props, ref) {
-      return Object(react__WEBPACK_IMPORTED_MODULE_0__["createElement"])(AsyncScriptLoader, _extends({}, props, {
-        forwardedRef: ref
-      }));
-    });
-    ForwardedComponent.displayName = "AsyncScriptLoader(" + wrappedComponentName + ")";
-    ForwardedComponent.propTypes = {
-      asyncScriptOnLoad: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func
-    };
-    return hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_2___default()(ForwardedComponent, WrappedComponent);
-  };
-}
-
-/***/ }),
-
 /***/ "./node_modules/react-bootstrap/esm/AbstractNav.js":
 /*!*********************************************************!*\
   !*** ./node_modules/react-bootstrap/esm/AbstractNav.js ***!
@@ -39568,289 +39305,675 @@ if (false) {} else {
 
 /***/ }),
 
-/***/ "./node_modules/react-google-recaptcha/lib/esm/index.js":
-/*!**************************************************************!*\
-  !*** ./node_modules/react-google-recaptcha/lib/esm/index.js ***!
-  \**************************************************************/
-/*! exports provided: default, ReCAPTCHA */
+/***/ "./node_modules/react-google-recaptcha-v3/dist/react-google-recaptcha-v3.esm.js":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/react-google-recaptcha-v3/dist/react-google-recaptcha-v3.esm.js ***!
+  \**************************************************************************************/
+/*! exports provided: GoogleReCaptcha, GoogleReCaptchaConsumer, GoogleReCaptchaContext, GoogleReCaptchaProvider, useGoogleReCaptcha, withGoogleReCaptcha */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _recaptcha_wrapper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./recaptcha-wrapper */ "./node_modules/react-google-recaptcha/lib/esm/recaptcha-wrapper.js");
-/* harmony import */ var _recaptcha__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./recaptcha */ "./node_modules/react-google-recaptcha/lib/esm/recaptcha.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ReCAPTCHA", function() { return _recaptcha__WEBPACK_IMPORTED_MODULE_1__["default"]; });
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = (_recaptcha_wrapper__WEBPACK_IMPORTED_MODULE_0__["default"]);
-
-
-/***/ }),
-
-/***/ "./node_modules/react-google-recaptcha/lib/esm/recaptcha-wrapper.js":
-/*!**************************************************************************!*\
-  !*** ./node_modules/react-google-recaptcha/lib/esm/recaptcha-wrapper.js ***!
-  \**************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _recaptcha__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./recaptcha */ "./node_modules/react-google-recaptcha/lib/esm/recaptcha.js");
-/* harmony import */ var react_async_script__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-async-script */ "./node_modules/react-async-script/lib/esm/async-script-loader.js");
-
-
-var callbackName = "onloadcallback";
-var globalName = "grecaptcha";
-
-function getOptions() {
-  return typeof window !== "undefined" && window.recaptchaOptions || {};
-}
-
-function getURL() {
-  var dynamicOptions = getOptions();
-  var hostname = dynamicOptions.useRecaptchaNet ? "recaptcha.net" : "www.google.com";
-  return "https://" + hostname + "/recaptcha/api.js?onload=" + callbackName + "&render=explicit";
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_async_script__WEBPACK_IMPORTED_MODULE_1__["default"])(getURL, {
-  callbackName: callbackName,
-  globalName: globalName
-})(_recaptcha__WEBPACK_IMPORTED_MODULE_0__["default"]));
-
-/***/ }),
-
-/***/ "./node_modules/react-google-recaptcha/lib/esm/recaptcha.js":
-/*!******************************************************************!*\
-  !*** ./node_modules/react-google-recaptcha/lib/esm/recaptcha.js ***!
-  \******************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ReCAPTCHA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GoogleReCaptcha", function() { return WrappedGoogleRecaptcha; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GoogleReCaptchaConsumer", function() { return GoogleReCaptchaConsumer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GoogleReCaptchaContext", function() { return GoogleReCaptchaContext; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GoogleReCaptchaProvider", function() { return GoogleReCaptchaProvider; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useGoogleReCaptcha", function() { return useGoogleReCaptcha; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "withGoogleReCaptcha", function() { return withGoogleReCaptcha; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 
 
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
+
+function __extends(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+
+function __awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
+function __generator(thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+}
+
+var GoogleRecaptchaError;
+(function (GoogleRecaptchaError) {
+    GoogleRecaptchaError["SCRIPT_NOT_AVAILABLE"] = "Recaptcha script is not available";
+})(GoogleRecaptchaError || (GoogleRecaptchaError = {}));
+var GoogleReCaptchaContext = Object(react__WEBPACK_IMPORTED_MODULE_0__["createContext"])({
+// dummy default context;
+});
+var GoogleReCaptchaConsumer = GoogleReCaptchaContext.Consumer;
+var GoogleReCaptchaProvider = /** @class */ (function (_super) {
+    __extends(GoogleReCaptchaProvider, _super);
+    function GoogleReCaptchaProvider() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.scriptId = 'google-recaptcha-v3';
+        _this.resolver = undefined;
+        _this.rejecter = undefined;
+        _this.grecaptcha = new Promise(function (resolve, reject) {
+            _this.resolver = resolve;
+            _this.rejecter = reject;
+        });
+        _this.executeRecaptcha = function (action) { return __awaiter(_this, void 0, void 0, function () {
+            var reCaptchaKey;
+            return __generator(this, function (_a) {
+                reCaptchaKey = this.props.reCaptchaKey;
+                return [2 /*return*/, this.grecaptcha.then(function (_grecaptcha) {
+                        return _grecaptcha.execute(reCaptchaKey, { action: action });
+                    })];
+            });
+        }); };
+        _this.handleOnLoad = function () {
+            if (!window || !window.grecaptcha) {
+                console.warn(GoogleRecaptchaError.SCRIPT_NOT_AVAILABLE);
+                return;
+            }
+            window.grecaptcha.ready(function () {
+                _this.resolver(window.grecaptcha);
+            });
+        };
+        _this.injectGoogleReCaptchaScript = function () {
+            /**
+             * Scripts has already been injected script,
+             * return to avoid duplicated scripts
+             */
+            if (document.getElementById(_this.scriptId)) {
+                _this.handleOnLoad();
+                return;
+            }
+            var head = document.getElementsByTagName('head')[0];
+            var js = _this.generateGoogleReCaptchaScript();
+            head.appendChild(js);
+        };
+        _this.generateGoogleReCaptchaScript = function () {
+            var _a = _this.props, reCaptchaKey = _a.reCaptchaKey, language = _a.language, nonce = _a.nonce;
+            var js = document.createElement('script');
+            js.id = _this.scriptId;
+            js.src = _this.googleRecaptchaSrc + "?render=" + reCaptchaKey + (language ? "&hl=" + language : '');
+            if (!!nonce) {
+                js.nonce = nonce;
+            }
+            js.onload = _this.handleOnLoad;
+            return js;
+        };
+        return _this;
+    }
+    Object.defineProperty(GoogleReCaptchaProvider.prototype, "googleRecaptchaSrc", {
+        get: function () {
+            var useRecaptchaNet = this.props.useRecaptchaNet;
+            var hostName = useRecaptchaNet ? 'recaptcha.net' : 'google.com';
+            return "https://www." + hostName + "/recaptcha/api.js";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GoogleReCaptchaProvider.prototype, "googleReCaptchaContextValue", {
+        get: function () {
+            return { executeRecaptcha: this.executeRecaptcha };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    GoogleReCaptchaProvider.prototype.componentDidMount = function () {
+        if (!this.props.reCaptchaKey) {
+            return;
+        }
+        this.injectGoogleReCaptchaScript();
+    };
+    GoogleReCaptchaProvider.prototype.componentDidUpdate = function (prevProps) {
+        if (prevProps.reCaptchaKey || !this.props.reCaptchaKey) {
+            return;
+        }
+        this.injectGoogleReCaptchaScript();
+    };
+    GoogleReCaptchaProvider.prototype.componentWillUnmount = function () {
+        // remove badge
+        var nodeBadge = document.querySelector('.grecaptcha-badge');
+        if (nodeBadge && nodeBadge.parentNode) {
+            document.body.removeChild(nodeBadge.parentNode);
+        }
+        // remove script
+        var script = document.querySelector("#" + this.scriptId);
+        if (script) {
+            script.remove();
+        }
+    };
+    GoogleReCaptchaProvider.prototype.render = function () {
+        var children = this.props.children;
+        return (Object(react__WEBPACK_IMPORTED_MODULE_0__["createElement"])(GoogleReCaptchaContext.Provider, { value: this.googleReCaptchaContextValue }, children));
+    };
+    return GoogleReCaptchaProvider;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]));
+
+function unwrapExports (x) {
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+}
+
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+var reactIs_production_min = createCommonjsModule(function (module, exports) {
+Object.defineProperty(exports,"__esModule",{value:!0});
+var b="function"===typeof Symbol&&Symbol.for,c=b?Symbol.for("react.element"):60103,d=b?Symbol.for("react.portal"):60106,e=b?Symbol.for("react.fragment"):60107,f=b?Symbol.for("react.strict_mode"):60108,g=b?Symbol.for("react.profiler"):60114,h=b?Symbol.for("react.provider"):60109,k=b?Symbol.for("react.context"):60110,l=b?Symbol.for("react.async_mode"):60111,m=b?Symbol.for("react.concurrent_mode"):60111,n=b?Symbol.for("react.forward_ref"):60112,p=b?Symbol.for("react.suspense"):60113,q=b?Symbol.for("react.memo"):
+60115,r=b?Symbol.for("react.lazy"):60116;function t(a){if("object"===typeof a&&null!==a){var u=a.$$typeof;switch(u){case c:switch(a=a.type,a){case l:case m:case e:case g:case f:case p:return a;default:switch(a=a&&a.$$typeof,a){case k:case n:case h:return a;default:return u}}case r:case q:case d:return u}}}function v(a){return t(a)===m}exports.typeOf=t;exports.AsyncMode=l;exports.ConcurrentMode=m;exports.ContextConsumer=k;exports.ContextProvider=h;exports.Element=c;exports.ForwardRef=n;
+exports.Fragment=e;exports.Lazy=r;exports.Memo=q;exports.Portal=d;exports.Profiler=g;exports.StrictMode=f;exports.Suspense=p;exports.isValidElementType=function(a){return "string"===typeof a||"function"===typeof a||a===e||a===m||a===g||a===f||a===p||"object"===typeof a&&null!==a&&(a.$$typeof===r||a.$$typeof===q||a.$$typeof===h||a.$$typeof===k||a.$$typeof===n)};exports.isAsyncMode=function(a){return v(a)||t(a)===l};exports.isConcurrentMode=v;exports.isContextConsumer=function(a){return t(a)===k};
+exports.isContextProvider=function(a){return t(a)===h};exports.isElement=function(a){return "object"===typeof a&&null!==a&&a.$$typeof===c};exports.isForwardRef=function(a){return t(a)===n};exports.isFragment=function(a){return t(a)===e};exports.isLazy=function(a){return t(a)===r};exports.isMemo=function(a){return t(a)===q};exports.isPortal=function(a){return t(a)===d};exports.isProfiler=function(a){return t(a)===g};exports.isStrictMode=function(a){return t(a)===f};
+exports.isSuspense=function(a){return t(a)===p};
+});
+
+unwrapExports(reactIs_production_min);
+var reactIs_production_min_1 = reactIs_production_min.typeOf;
+var reactIs_production_min_2 = reactIs_production_min.AsyncMode;
+var reactIs_production_min_3 = reactIs_production_min.ConcurrentMode;
+var reactIs_production_min_4 = reactIs_production_min.ContextConsumer;
+var reactIs_production_min_5 = reactIs_production_min.ContextProvider;
+var reactIs_production_min_6 = reactIs_production_min.Element;
+var reactIs_production_min_7 = reactIs_production_min.ForwardRef;
+var reactIs_production_min_8 = reactIs_production_min.Fragment;
+var reactIs_production_min_9 = reactIs_production_min.Lazy;
+var reactIs_production_min_10 = reactIs_production_min.Memo;
+var reactIs_production_min_11 = reactIs_production_min.Portal;
+var reactIs_production_min_12 = reactIs_production_min.Profiler;
+var reactIs_production_min_13 = reactIs_production_min.StrictMode;
+var reactIs_production_min_14 = reactIs_production_min.Suspense;
+var reactIs_production_min_15 = reactIs_production_min.isValidElementType;
+var reactIs_production_min_16 = reactIs_production_min.isAsyncMode;
+var reactIs_production_min_17 = reactIs_production_min.isConcurrentMode;
+var reactIs_production_min_18 = reactIs_production_min.isContextConsumer;
+var reactIs_production_min_19 = reactIs_production_min.isContextProvider;
+var reactIs_production_min_20 = reactIs_production_min.isElement;
+var reactIs_production_min_21 = reactIs_production_min.isForwardRef;
+var reactIs_production_min_22 = reactIs_production_min.isFragment;
+var reactIs_production_min_23 = reactIs_production_min.isLazy;
+var reactIs_production_min_24 = reactIs_production_min.isMemo;
+var reactIs_production_min_25 = reactIs_production_min.isPortal;
+var reactIs_production_min_26 = reactIs_production_min.isProfiler;
+var reactIs_production_min_27 = reactIs_production_min.isStrictMode;
+var reactIs_production_min_28 = reactIs_production_min.isSuspense;
+
+var reactIs_development = createCommonjsModule(function (module, exports) {
 
 
-var ReCAPTCHA =
-/*#__PURE__*/
-function (_React$Component) {
-  _inheritsLoose(ReCAPTCHA, _React$Component);
 
-  function ReCAPTCHA() {
-    var _this;
+if (true) {
+  (function() {
 
-    _this = _React$Component.call(this) || this;
-    _this.handleExpired = _this.handleExpired.bind(_assertThisInitialized(_this));
-    _this.handleErrored = _this.handleErrored.bind(_assertThisInitialized(_this));
-    _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
-    _this.handleRecaptchaRef = _this.handleRecaptchaRef.bind(_assertThisInitialized(_this));
-    return _this;
+Object.defineProperty(exports, '__esModule', { value: true });
+
+// The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+// nor polyfill, then a plain number is used for performance.
+var hasSymbol = typeof Symbol === 'function' && Symbol.for;
+
+var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
+var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
+var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
+var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
+var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
+var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
+var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace;
+var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol.for('react.async_mode') : 0xeacf;
+var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
+var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
+var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
+var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
+var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
+
+function isValidElementType(type) {
+  return typeof type === 'string' || typeof type === 'function' ||
+  // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
+  type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE);
+}
+
+/**
+ * Forked from fbjs/warning:
+ * https://github.com/facebook/fbjs/blob/e66ba20ad5be433eb54423f2b097d829324d9de6/packages/fbjs/src/__forks__/warning.js
+ *
+ * Only change is we use console.warn instead of console.error,
+ * and do nothing when 'console' is not supported.
+ * This really simplifies the code.
+ * ---
+ * Similar to invariant but only logs a warning if the condition is not met.
+ * This can be used to log issues in development environments in critical
+ * paths. Removing the logging code for production environments will keep the
+ * same logic and follow the same code paths.
+ */
+
+var lowPriorityWarning = function () {};
+
+{
+  var printWarning = function (format) {
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    var argIndex = 0;
+    var message = 'Warning: ' + format.replace(/%s/g, function () {
+      return args[argIndex++];
+    });
+    if (typeof console !== 'undefined') {
+      console.warn(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+
+  lowPriorityWarning = function (condition, format) {
+    if (format === undefined) {
+      throw new Error('`lowPriorityWarning(condition, format, ...args)` requires a warning ' + 'message argument');
+    }
+    if (!condition) {
+      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+        args[_key2 - 2] = arguments[_key2];
+      }
+
+      printWarning.apply(undefined, [format].concat(args));
+    }
+  };
+}
+
+var lowPriorityWarning$1 = lowPriorityWarning;
+
+function typeOf(object) {
+  if (typeof object === 'object' && object !== null) {
+    var $$typeof = object.$$typeof;
+    switch ($$typeof) {
+      case REACT_ELEMENT_TYPE:
+        var type = object.type;
+
+        switch (type) {
+          case REACT_ASYNC_MODE_TYPE:
+          case REACT_CONCURRENT_MODE_TYPE:
+          case REACT_FRAGMENT_TYPE:
+          case REACT_PROFILER_TYPE:
+          case REACT_STRICT_MODE_TYPE:
+          case REACT_SUSPENSE_TYPE:
+            return type;
+          default:
+            var $$typeofType = type && type.$$typeof;
+
+            switch ($$typeofType) {
+              case REACT_CONTEXT_TYPE:
+              case REACT_FORWARD_REF_TYPE:
+              case REACT_PROVIDER_TYPE:
+                return $$typeofType;
+              default:
+                return $$typeof;
+            }
+        }
+      case REACT_LAZY_TYPE:
+      case REACT_MEMO_TYPE:
+      case REACT_PORTAL_TYPE:
+        return $$typeof;
+    }
   }
 
-  var _proto = ReCAPTCHA.prototype;
+  return undefined;
+}
 
-  _proto.getValue = function getValue() {
-    if (this.props.grecaptcha && this._widgetId !== undefined) {
-      return this.props.grecaptcha.getResponse(this._widgetId);
+// AsyncMode is deprecated along with isAsyncMode
+var AsyncMode = REACT_ASYNC_MODE_TYPE;
+var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
+var ContextConsumer = REACT_CONTEXT_TYPE;
+var ContextProvider = REACT_PROVIDER_TYPE;
+var Element = REACT_ELEMENT_TYPE;
+var ForwardRef = REACT_FORWARD_REF_TYPE;
+var Fragment = REACT_FRAGMENT_TYPE;
+var Lazy = REACT_LAZY_TYPE;
+var Memo = REACT_MEMO_TYPE;
+var Portal = REACT_PORTAL_TYPE;
+var Profiler = REACT_PROFILER_TYPE;
+var StrictMode = REACT_STRICT_MODE_TYPE;
+var Suspense = REACT_SUSPENSE_TYPE;
+
+var hasWarnedAboutDeprecatedIsAsyncMode = false;
+
+// AsyncMode should be deprecated
+function isAsyncMode(object) {
+  {
+    if (!hasWarnedAboutDeprecatedIsAsyncMode) {
+      hasWarnedAboutDeprecatedIsAsyncMode = true;
+      lowPriorityWarning$1(false, 'The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
+    }
+  }
+  return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
+}
+function isConcurrentMode(object) {
+  return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
+}
+function isContextConsumer(object) {
+  return typeOf(object) === REACT_CONTEXT_TYPE;
+}
+function isContextProvider(object) {
+  return typeOf(object) === REACT_PROVIDER_TYPE;
+}
+function isElement(object) {
+  return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+}
+function isForwardRef(object) {
+  return typeOf(object) === REACT_FORWARD_REF_TYPE;
+}
+function isFragment(object) {
+  return typeOf(object) === REACT_FRAGMENT_TYPE;
+}
+function isLazy(object) {
+  return typeOf(object) === REACT_LAZY_TYPE;
+}
+function isMemo(object) {
+  return typeOf(object) === REACT_MEMO_TYPE;
+}
+function isPortal(object) {
+  return typeOf(object) === REACT_PORTAL_TYPE;
+}
+function isProfiler(object) {
+  return typeOf(object) === REACT_PROFILER_TYPE;
+}
+function isStrictMode(object) {
+  return typeOf(object) === REACT_STRICT_MODE_TYPE;
+}
+function isSuspense(object) {
+  return typeOf(object) === REACT_SUSPENSE_TYPE;
+}
+
+exports.typeOf = typeOf;
+exports.AsyncMode = AsyncMode;
+exports.ConcurrentMode = ConcurrentMode;
+exports.ContextConsumer = ContextConsumer;
+exports.ContextProvider = ContextProvider;
+exports.Element = Element;
+exports.ForwardRef = ForwardRef;
+exports.Fragment = Fragment;
+exports.Lazy = Lazy;
+exports.Memo = Memo;
+exports.Portal = Portal;
+exports.Profiler = Profiler;
+exports.StrictMode = StrictMode;
+exports.Suspense = Suspense;
+exports.isValidElementType = isValidElementType;
+exports.isAsyncMode = isAsyncMode;
+exports.isConcurrentMode = isConcurrentMode;
+exports.isContextConsumer = isContextConsumer;
+exports.isContextProvider = isContextProvider;
+exports.isElement = isElement;
+exports.isForwardRef = isForwardRef;
+exports.isFragment = isFragment;
+exports.isLazy = isLazy;
+exports.isMemo = isMemo;
+exports.isPortal = isPortal;
+exports.isProfiler = isProfiler;
+exports.isStrictMode = isStrictMode;
+exports.isSuspense = isSuspense;
+  })();
+}
+});
+
+unwrapExports(reactIs_development);
+var reactIs_development_1 = reactIs_development.typeOf;
+var reactIs_development_2 = reactIs_development.AsyncMode;
+var reactIs_development_3 = reactIs_development.ConcurrentMode;
+var reactIs_development_4 = reactIs_development.ContextConsumer;
+var reactIs_development_5 = reactIs_development.ContextProvider;
+var reactIs_development_6 = reactIs_development.Element;
+var reactIs_development_7 = reactIs_development.ForwardRef;
+var reactIs_development_8 = reactIs_development.Fragment;
+var reactIs_development_9 = reactIs_development.Lazy;
+var reactIs_development_10 = reactIs_development.Memo;
+var reactIs_development_11 = reactIs_development.Portal;
+var reactIs_development_12 = reactIs_development.Profiler;
+var reactIs_development_13 = reactIs_development.StrictMode;
+var reactIs_development_14 = reactIs_development.Suspense;
+var reactIs_development_15 = reactIs_development.isValidElementType;
+var reactIs_development_16 = reactIs_development.isAsyncMode;
+var reactIs_development_17 = reactIs_development.isConcurrentMode;
+var reactIs_development_18 = reactIs_development.isContextConsumer;
+var reactIs_development_19 = reactIs_development.isContextProvider;
+var reactIs_development_20 = reactIs_development.isElement;
+var reactIs_development_21 = reactIs_development.isForwardRef;
+var reactIs_development_22 = reactIs_development.isFragment;
+var reactIs_development_23 = reactIs_development.isLazy;
+var reactIs_development_24 = reactIs_development.isMemo;
+var reactIs_development_25 = reactIs_development.isPortal;
+var reactIs_development_26 = reactIs_development.isProfiler;
+var reactIs_development_27 = reactIs_development.isStrictMode;
+var reactIs_development_28 = reactIs_development.isSuspense;
+
+var reactIs = createCommonjsModule(function (module) {
+
+if (false) {} else {
+  module.exports = reactIs_development;
+}
+});
+
+/**
+ * Copyright 2015, Yahoo! Inc.
+ * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+ */
+var REACT_STATICS = {
+  childContextTypes: true,
+  contextType: true,
+  contextTypes: true,
+  defaultProps: true,
+  displayName: true,
+  getDefaultProps: true,
+  getDerivedStateFromError: true,
+  getDerivedStateFromProps: true,
+  mixins: true,
+  propTypes: true,
+  type: true
+};
+var KNOWN_STATICS = {
+  name: true,
+  length: true,
+  prototype: true,
+  caller: true,
+  callee: true,
+  arguments: true,
+  arity: true
+};
+var FORWARD_REF_STATICS = {
+  '$$typeof': true,
+  render: true,
+  defaultProps: true,
+  displayName: true,
+  propTypes: true
+};
+var MEMO_STATICS = {
+  '$$typeof': true,
+  compare: true,
+  defaultProps: true,
+  displayName: true,
+  propTypes: true,
+  type: true
+};
+var TYPE_STATICS = {};
+TYPE_STATICS[reactIs.ForwardRef] = FORWARD_REF_STATICS;
+TYPE_STATICS[reactIs.Memo] = MEMO_STATICS;
+
+function getStatics(component) {
+  // React v16.11 and below
+  if (reactIs.isMemo(component)) {
+    return MEMO_STATICS;
+  } // React v16.12 and above
+
+
+  return TYPE_STATICS[component['$$typeof']] || REACT_STATICS;
+}
+
+var defineProperty = Object.defineProperty;
+var getOwnPropertyNames = Object.getOwnPropertyNames;
+var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+var getPrototypeOf = Object.getPrototypeOf;
+var objectPrototype = Object.prototype;
+function hoistNonReactStatics(targetComponent, sourceComponent, blacklist) {
+  if (typeof sourceComponent !== 'string') {
+    // don't hoist over string (html) components
+    if (objectPrototype) {
+      var inheritedComponent = getPrototypeOf(sourceComponent);
+
+      if (inheritedComponent && inheritedComponent !== objectPrototype) {
+        hoistNonReactStatics(targetComponent, inheritedComponent, blacklist);
+      }
     }
 
-    return null;
-  };
+    var keys = getOwnPropertyNames(sourceComponent);
 
-  _proto.getWidgetId = function getWidgetId() {
-    if (this.props.grecaptcha && this._widgetId !== undefined) {
-      return this._widgetId;
+    if (getOwnPropertySymbols) {
+      keys = keys.concat(getOwnPropertySymbols(sourceComponent));
     }
 
-    return null;
-  };
+    var targetStatics = getStatics(targetComponent);
+    var sourceStatics = getStatics(sourceComponent);
 
-  _proto.execute = function execute() {
-    var grecaptcha = this.props.grecaptcha;
+    for (var i = 0; i < keys.length; ++i) {
+      var key = keys[i];
 
-    if (grecaptcha && this._widgetId !== undefined) {
-      return grecaptcha.execute(this._widgetId);
-    } else {
-      this._executeRequested = true;
+      if (!KNOWN_STATICS[key] && !(blacklist && blacklist[key]) && !(sourceStatics && sourceStatics[key]) && !(targetStatics && targetStatics[key])) {
+        var descriptor = getOwnPropertyDescriptor(sourceComponent, key);
+
+        try {
+          // Avoid failures from read-only properties
+          defineProperty(targetComponent, key, descriptor);
+        } catch (e) {}
+      }
     }
-  };
+  }
 
-  _proto.executeAsync = function executeAsync() {
-    var _this2 = this;
+  return targetComponent;
+}
 
-    return new Promise(function (resolve, reject) {
-      _this2.executionResolve = resolve;
-      _this2.executionReject = reject;
+var hoistNonReactStatics_cjs = hoistNonReactStatics;
 
-      _this2.execute();
+// tslint:disable-next-line:only-arrow-functions
+var withGoogleReCaptcha = function (Component) {
+    var WithGoogleReCaptchaComponent = function (props) { return (Object(react__WEBPACK_IMPORTED_MODULE_0__["createElement"])(GoogleReCaptchaConsumer, null, function (googleReCaptchaValues) { return (Object(react__WEBPACK_IMPORTED_MODULE_0__["createElement"])(Component, __assign({}, props, { googleReCaptchaProps: googleReCaptchaValues }))); })); };
+    WithGoogleReCaptchaComponent.displayName = "withGoogleReCaptcha(" + (Component.displayName ||
+        Component.name ||
+        'Component') + ")";
+    hoistNonReactStatics_cjs(WithGoogleReCaptchaComponent, Component);
+    return WithGoogleReCaptchaComponent;
+};
+
+var GoogleReCaptcha = /** @class */ (function (_super) {
+    __extends(GoogleReCaptcha, _super);
+    function GoogleReCaptcha() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    GoogleReCaptcha.prototype.componentDidMount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, googleReCaptchaProps, action, onVerify, executeRecaptcha, token;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = this.injectedProps, googleReCaptchaProps = _a.googleReCaptchaProps, action = _a.action, onVerify = _a.onVerify;
+                        executeRecaptcha = googleReCaptchaProps.executeRecaptcha;
+                        if (!executeRecaptcha) {
+                            return [2 /*return*/];
+                        }
+                        return [4 /*yield*/, executeRecaptcha(action)];
+                    case 1:
+                        token = _b.sent();
+                        if (!onVerify) {
+                            return [2 /*return*/];
+                        }
+                        onVerify(token);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Object.defineProperty(GoogleReCaptcha.prototype, "injectedProps", {
+        get: function () {
+            return this.props;
+        },
+        enumerable: true,
+        configurable: true
     });
-  };
+    GoogleReCaptcha.prototype.render = function () {
+        return null;
+    };
+    return GoogleReCaptcha;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]));
+var WrappedGoogleRecaptcha = withGoogleReCaptcha(GoogleReCaptcha);
 
-  _proto.reset = function reset() {
-    if (this.props.grecaptcha && this._widgetId !== undefined) {
-      this.props.grecaptcha.reset(this._widgetId);
-    }
-  };
-
-  _proto.handleExpired = function handleExpired() {
-    if (this.props.onExpired) {
-      this.props.onExpired();
-    } else {
-      this.handleChange(null);
-    }
-  };
-
-  _proto.handleErrored = function handleErrored() {
-    if (this.props.onErrored) {
-      this.props.onErrored();
-    }
-
-    if (this.executionReject) {
-      this.executionReject();
-      delete this.executionResolve;
-      delete this.executionReject;
-    }
-  };
-
-  _proto.handleChange = function handleChange(token) {
-    if (this.props.onChange) {
-      this.props.onChange(token);
-    }
-
-    if (this.executionResolve) {
-      this.executionResolve(token);
-      delete this.executionReject;
-      delete this.executionResolve;
-    }
-  };
-
-  _proto.explicitRender = function explicitRender() {
-    if (this.props.grecaptcha && this.props.grecaptcha.render && this._widgetId === undefined) {
-      var wrapper = document.createElement("div");
-      this._widgetId = this.props.grecaptcha.render(wrapper, {
-        sitekey: this.props.sitekey,
-        callback: this.handleChange,
-        theme: this.props.theme,
-        type: this.props.type,
-        tabindex: this.props.tabindex,
-        "expired-callback": this.handleExpired,
-        "error-callback": this.handleErrored,
-        size: this.props.size,
-        stoken: this.props.stoken,
-        hl: this.props.hl,
-        badge: this.props.badge
-      });
-      this.captcha.appendChild(wrapper);
-    }
-
-    if (this._executeRequested && this.props.grecaptcha && this._widgetId !== undefined) {
-      this._executeRequested = false;
-      this.execute();
-    }
-  };
-
-  _proto.componentDidMount = function componentDidMount() {
-    this.explicitRender();
-  };
-
-  _proto.componentDidUpdate = function componentDidUpdate() {
-    this.explicitRender();
-  };
-
-  _proto.componentWillUnmount = function componentWillUnmount() {
-    if (this._widgetId !== undefined) {
-      this.delayOfCaptchaIframeRemoving();
-      this.reset();
-    }
-  };
-
-  _proto.delayOfCaptchaIframeRemoving = function delayOfCaptchaIframeRemoving() {
-    var temporaryNode = document.createElement("div");
-    document.body.appendChild(temporaryNode);
-    temporaryNode.style.display = "none"; // move of the recaptcha to a temporary node
-
-    while (this.captcha.firstChild) {
-      temporaryNode.appendChild(this.captcha.firstChild);
-    } // delete the temporary node after reset will be done
-
-
-    setTimeout(function () {
-      document.body.removeChild(temporaryNode);
-    }, 5000);
-  };
-
-  _proto.handleRecaptchaRef = function handleRecaptchaRef(elem) {
-    this.captcha = elem;
-  };
-
-  _proto.render = function render() {
-    // consume properties owned by the reCATPCHA, pass the rest to the div so the user can style it.
-
-    /* eslint-disable no-unused-vars */
-    var _this$props = this.props,
-        sitekey = _this$props.sitekey,
-        onChange = _this$props.onChange,
-        theme = _this$props.theme,
-        type = _this$props.type,
-        tabindex = _this$props.tabindex,
-        onExpired = _this$props.onExpired,
-        onErrored = _this$props.onErrored,
-        size = _this$props.size,
-        stoken = _this$props.stoken,
-        grecaptcha = _this$props.grecaptcha,
-        badge = _this$props.badge,
-        hl = _this$props.hl,
-        childProps = _objectWithoutPropertiesLoose(_this$props, ["sitekey", "onChange", "theme", "type", "tabindex", "onExpired", "onErrored", "size", "stoken", "grecaptcha", "badge", "hl"]);
-    /* eslint-enable no-unused-vars */
-
-
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", _extends({}, childProps, {
-      ref: this.handleRecaptchaRef
-    }));
-  };
-
-  return ReCAPTCHA;
-}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
-
-
-ReCAPTCHA.displayName = "ReCAPTCHA";
-ReCAPTCHA.propTypes = {
-  sitekey: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired,
-  onChange: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
-  grecaptcha: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object,
-  theme: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOf(["dark", "light"]),
-  type: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOf(["image", "audio"]),
-  tabindex: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number,
-  onExpired: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
-  onErrored: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
-  size: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOf(["compact", "normal", "invisible"]),
-  stoken: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-  hl: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-  badge: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOf(["bottomright", "bottomleft", "inline"])
+var useGoogleReCaptcha = function () {
+    return Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(GoogleReCaptchaContext);
 };
-ReCAPTCHA.defaultProps = {
-  onChange: function onChange() {},
-  theme: "light",
-  type: "image",
-  tabindex: 0,
-  size: "normal",
-  badge: "bottomright"
-};
+
+
+//# sourceMappingURL=react-google-recaptcha-v3.esm.js.map
+
 
 /***/ }),
 
@@ -52166,10 +52289,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _context_auth_context__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../context/auth-context */ "./resources/js/context/auth-context.js");
 /* harmony import */ var _utils_hooks__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../utils/hooks */ "./resources/js/utils/hooks.js");
 /* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../utils/utils */ "./resources/js/utils/utils.js");
-/* harmony import */ var react_google_recaptcha__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-google-recaptcha */ "./node_modules/react-google-recaptcha/lib/esm/index.js");
+/* harmony import */ var react_google_recaptcha_v3__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-google-recaptcha-v3 */ "./node_modules/react-google-recaptcha-v3/dist/react-google-recaptcha-v3.esm.js");
 
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -52186,9 +52307,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
-function Register() {
-  var recaptchaRef = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createRef();
-
+function UnwrappedRegister(props) {
   var _useAsync = Object(_utils_hooks__WEBPACK_IMPORTED_MODULE_8__["useAsync"])(),
       isLoading = _useAsync.isLoading,
       isError = _useAsync.isError,
@@ -52209,7 +52328,7 @@ function Register() {
               event.preventDefault();
               event.persist();
               _context.next = 4;
-              return recaptchaRef.current.executeAsync();
+              return props.googleReCaptchaProps.executeRecaptcha('register');
 
             case 4:
               token = _context.sent;
@@ -52218,7 +52337,8 @@ function Register() {
                 username: username.value,
                 password: password.value,
                 password_confirm: password_confirm.value,
-                email: email.value
+                email: email.value,
+                'recaptcha': token
               }));
 
             case 7:
@@ -52238,12 +52358,7 @@ function Register() {
     className: "text-left"
   }, "Registration"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"], {
     onSubmit: handleSubmit
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_google_recaptcha__WEBPACK_IMPORTED_MODULE_10__["default"], _defineProperty({
-    ref: recaptchaRef,
-    size: "invisible" // todo use props in config?
-    ,
-    sitekey: "6Le4zOQUAAAAAMOf84CAgJuwfvnnG6cOsIgzbXKd"
-  }, "size", "invisible")), isError && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Alert__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  }, isError && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Alert__WEBPACK_IMPORTED_MODULE_6__["default"], {
     variant: "danger"
   }, Object(_utils_utils__WEBPACK_IMPORTED_MODULE_9__["errorsToString"])(error.errors)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Group, {
     controlId: "registerFormUsername"
@@ -52285,6 +52400,14 @@ function Register() {
     role: "status",
     "aria-hidden": "true"
   }) : "Register")));
+}
+
+var WrappedRegister = Object(react_google_recaptcha_v3__WEBPACK_IMPORTED_MODULE_10__["withGoogleReCaptcha"])(UnwrappedRegister);
+
+function Register() {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_google_recaptcha_v3__WEBPACK_IMPORTED_MODULE_10__["GoogleReCaptchaProvider"], {
+    reCaptchaKey: "6Le4zOQUAAAAAMOf84CAgJuwfvnnG6cOsIgzbXKd"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(WrappedRegister, null));
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["withRouter"])(Register));

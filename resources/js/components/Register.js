@@ -7,17 +7,20 @@ import Alert from 'react-bootstrap/Alert';
 import { useAuth } from '../context/auth-context'
 import { useAsync } from '../utils/hooks';
 import { errorsToString } from '../utils/utils';
-import ReCAPTCHA from "react-google-recaptcha";
+import {
+  GoogleReCaptchaProvider,
+  withGoogleReCaptcha
+} from 'react-google-recaptcha-v3';
 
-function Register() {
-  const recaptchaRef = React.createRef();
+function UnwrappedRegister(props) {
   const { isLoading, isError, error, run } = useAsync()
   const { register } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    event.persist()
-    const token = await recaptchaRef.current.executeAsync();
+    event.persist();
+
+    const token = await props.googleReCaptchaProps.executeRecaptcha('register');
     const { username, password, email, password_confirm } = event.target.elements
     run(
       register({
@@ -25,6 +28,7 @@ function Register() {
         password: password.value,
         password_confirm: password_confirm.value,
         email: email.value,
+        'recaptcha': token,
       }),
     )
   }
@@ -34,13 +38,6 @@ function Register() {
       <h2 className="text-left">Registration</h2>
       <hr />
       <Form onSubmit={handleSubmit}>
-        <ReCAPTCHA
-          ref={recaptchaRef}
-          size="invisible"
-          // todo use props in config?
-          sitekey={process.env.MIX_RECAPTCHA_SITE_KEY}
-          size="invisible"
-        />
         {isError && <Alert variant="danger">{errorsToString(error.errors)}</Alert>}
         <Form.Group controlId="registerFormUsername">
           <Form.Label>Username</Form.Label>
@@ -75,4 +72,13 @@ function Register() {
   );
 }
 
+const WrappedRegister = withGoogleReCaptcha(UnwrappedRegister);
+
+function Register() {
+  return (
+    <GoogleReCaptchaProvider reCaptchaKey={process.env.MIX_RECAPTCHA_SITE_KEY}>
+      <WrappedRegister/>
+    </GoogleReCaptchaProvider>
+  )
+}
 export default withRouter(Register);

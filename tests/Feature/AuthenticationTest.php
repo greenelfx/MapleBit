@@ -4,13 +4,19 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
-use Vinkla\Hashids\Facades\Hashids;
+use Mockery;
+use App\Rules\Recaptcha;
 
 class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        Mockery::close();
+    }
 
     public function testRegister()
     {
@@ -22,6 +28,7 @@ class AuthenticationTest extends TestCase
                 'email' => 'Test@EXAMPLE.com',
                 'password' => 'password123',
                 'password_confirm' => 'password123',
+                'recaptcha' => 'some-token',
             ]
         )->assertJsonStructure(['status', 'token', 'user']);
 

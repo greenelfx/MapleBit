@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Vinkla\Hashids\Facades\Hashids;
+use App\Rules\Recaptcha;
 
 class AuthController extends Controller
 {
@@ -137,6 +138,7 @@ class AuthController extends Controller
             'username' => 'required|string|unique:accounts,name',
             'password' => 'required|max:255',
             'password_confirm' => 'required|same:password',
+            'recaptcha' => ['required', new Recaptcha('register', $request->ip())],
         ]);
 
         if ($validator->fails()) {
