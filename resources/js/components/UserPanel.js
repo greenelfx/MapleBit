@@ -8,6 +8,7 @@ import Card from 'react-bootstrap/Card';
 import { useAuth } from '../context/auth-context'
 import { useAsync } from '../utils/hooks';
 import { errorsToString } from '../utils/utils';
+import { NavLink } from 'react-router-dom';
 
 function UserPanel() {
   const { isLoading, isError, error, run } = useAsync()
@@ -29,6 +30,7 @@ function UserPanel() {
     <>
       {user ? (
         <ListGroup variant="flush">
+          <ListGroup.Item><NavLink to="/user/home">Control Panel</NavLink></ListGroup.Item>
           <ListGroup.Item><a href="#" onClick={logout}>Logout</a></ListGroup.Item>
         </ListGroup>
       ) :

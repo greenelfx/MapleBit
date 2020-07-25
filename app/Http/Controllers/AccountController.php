@@ -92,7 +92,7 @@ class AccountController extends Controller
             return ['status' => 'validation', 'errors' => $validator->errors()];
         }
         if (! Hash::check($request->password, $request->user()->site_password)) {
-            return ['status' => 'invalid_info'];
+            return ['status' => 'invalid_info', 'errors' => ['information' => 'Your current password is incorrect.']];
         }
         $user = $request->user();
         $user->password = PasswordHelper::hash($request->password);

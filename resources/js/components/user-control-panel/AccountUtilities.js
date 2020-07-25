@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import { useClient } from '../context/auth-context'
-import { useAsync } from '../utils/hooks';
+import { useClient } from '../../context/auth-context'
+import { useAsync } from '../../utils/hooks';
 import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';

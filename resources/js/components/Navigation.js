@@ -26,8 +26,7 @@ function Navigation() {
                 (
                     <Nav>
                         <NavDropdown title={<span><img src={user.gravatar_url} alt="gravatar" className="img-fluid rounded-circle nav-avatar"/>{user.name}</span>} id="basic-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Manage Account</NavDropdown.Item>
-                            <NavDropdown.Item as={NavLink} to="/user/account-utilities" exact>Utilities</NavDropdown.Item>
+                            <NavDropdown.Item as={NavLink} to="/user/home" exact>Control Panel</NavDropdown.Item>
                             <NavDropdown.Divider />
                             <NavDropdown.Item href="#" onClick={logout}>Logout</NavDropdown.Item>
                         </NavDropdown>
