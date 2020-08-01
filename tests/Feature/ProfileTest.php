@@ -52,11 +52,11 @@ class ProfileTest extends TestCase
             ]
         ]);
     }
-    
+
     public function testViewNotFoundProfile()
     {
         $user = factory(User::class)->create();
-        Sanctum::actingAs($user, ['*']);        
+        Sanctum::actingAs($user, ['*']);
         $this->get('/api/user/profile/view/someprofile')->assertStatus(404);
     }
 
@@ -64,7 +64,7 @@ class ProfileTest extends TestCase
     {
         $user = factory(User::class)->create();
         $profile = factory(Profile::class)->create();
-        Sanctum::actingAs($user, ['*']);        
+        Sanctum::actingAs($user, ['*']);
         $this->get('/api/user/profile/view/' . $profile->name)->assertJson([
             'status' => 'success',
             'profile' => [
@@ -73,6 +73,17 @@ class ProfileTest extends TestCase
                 'motto' => $profile->motto,
                 'about' => $profile->about,
             ]
+        ]);
+    }
+
+    public function testListProfiles()
+    {
+        $user = factory(User::class)->create();
+        $profile = factory(Profile::class)->create();
+        Sanctum::actingAs($user, ['*']);
+        $this->get('/api/user/profile/list')->assertJsonStructure([
+            'current_page',
+            'data',
         ]);
     }    
 }

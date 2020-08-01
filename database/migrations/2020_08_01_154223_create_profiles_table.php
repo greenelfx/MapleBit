@@ -23,7 +23,6 @@ class CreateProfilesTable extends Migration
             $table->string('motto')->nullable();
             $table->text('about')->nullable();
             $table->timestamps();
-            $table->foreign('account_id')->references('id')->on('accounts');
         });
     }
 
