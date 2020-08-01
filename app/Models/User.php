@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -34,7 +33,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'site_password',
+        'id', 'password', 'remember_token', 'site_password',
     ];
 
     /**
@@ -69,4 +68,14 @@ class User extends Authenticatable
             'gravatar_url' => 'https://www.gravatar.com/avatar/'.md5(strtolower(trim($this->email))).'?s=40&amp;d=identicon&amp;r=g',
         ];
     }
+
+    /**
+     * Get the profile associated with user.
+     */
+    public function profile()
+    {
+        return $this->hasOne('App\Models\Profile', 'account_id', 'id')->withDefault([
+            'name' => \Atrox\Haikunator::haikunate(),
+        ]);
+    }    
 }

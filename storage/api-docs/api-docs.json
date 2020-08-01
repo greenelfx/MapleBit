@@ -445,6 +445,86 @@
                     }
                 ]
             }
+        },
+        "/user/profile/store": {
+            "post": {
+                "tags": [
+                    "profile"
+                ],
+                "summary": "Update the authenticated user's profile.",
+                "operationId": "store",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "unique profile name",
+                                        "type": "string"
+                                    },
+                                    "age": {
+                                        "description": "age",
+                                        "type": "integer"
+                                    },
+                                    "country": {
+                                        "description": "country",
+                                        "type": "string"
+                                    },
+                                    "motto": {
+                                        "description": "motto",
+                                        "type": "string"
+                                    },
+                                    "about": {
+                                        "description": "long form text about the user",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Profile was successfully updated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/user/profile/{profile_name}": {
+            "get": {
+                "tags": [
+                    "profile"
+                ],
+                "summary": "gets profile by name",
+                "operationId": "get",
+                "parameters": [
+                    {
+                        "name": "profile_name",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "specified profile"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
         }
     },
     "components": {

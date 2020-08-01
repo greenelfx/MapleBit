@@ -26,6 +26,12 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth:sanctum']], function ()
     Route::post('disconnect', 'AccountController@disconnectAccount');
     Route::post('update', 'AccountController@updateAccount');
     Route::get('me', 'AccountController@getMe');
+
+    Route::group(['prefix' => 'profile'], function () {
+        Route::post('store', 'ProfileController@store');
+        Route::get('view/{profile_name}', 'ProfileController@get');
+        Route::get('list/{profile_name?}', 'ProfileController@list');
+    });
 });
 
 Route::get('serverInfo', 'PrestartController@serverInfo');

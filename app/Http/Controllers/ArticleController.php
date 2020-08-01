@@ -12,7 +12,7 @@ use Vinkla\Hashids\Facades\Hashids;
 class ArticleController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of articles.
      *
      * @param  string $category
      * @return \Illuminate\Http\Response
