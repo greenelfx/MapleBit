@@ -65,8 +65,13 @@ class User extends Authenticatable
         return [
             'name' => $this->name,
             'email' => $this->email,
-            'gravatar_url' => 'https://www.gravatar.com/avatar/'.md5(strtolower(trim($this->email))).'?s=40&amp;d=identicon&amp;r=g',
+            'gravatar_url' => $this->getGravatar(),
         ];
+    }
+
+    public function getGravatar()
+    {
+        return 'https://www.gravatar.com/avatar/'.md5(strtolower(trim($this->email))).'?s=40&amp;d=identicon&amp;r=g';
     }
 
     /**

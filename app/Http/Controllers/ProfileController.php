@@ -131,19 +131,28 @@ class ProfileController extends Controller
      * @return \Illuminate\Http\Response
      *
      * @OA\Get(
-     *     path="/user/profile/list",
+     *     path="/user/profile/list/{profile_name}",
      *     tags={"profile"},
      *     summary="Gets a paginated view of profile names",
      *     operationId="list",
+     *     @OA\Parameter(
+     *        name="profile_name", in="path",required=false, @OA\Schema(type="string")
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="paginated list of profiles"
      *     ),
+     *     security={
+     *         {"bearer": {}}
+     *     }
      * )
      */
     public function list(Request $request)
     {
-        // TODO: search support
-        return Profile::paginate(15);
+        $PAGINATE_COUNT = 15;
+        if($request->profile_name) {
+            return Profile::where('name', 'like', '%'.$request->profile_name.'%')->paginate($PAGINATE_COUNT);
+        }
+        return Profile::paginate($PAGINATE_COUNT);
     }    
 }

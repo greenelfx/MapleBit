@@ -101,7 +101,7 @@
                 ]
             }
         },
-        "/articles/list/{category?}": {
+        "/articles/list/{category}": {
             "get": {
                 "tags": [
                     "articles"
@@ -497,7 +497,7 @@
                 ]
             }
         },
-        "/user/profile/{profile_name}": {
+        "/user/profile/view/{profile_name}": {
             "get": {
                 "tags": [
                     "profile"
@@ -517,6 +517,35 @@
                 "responses": {
                     "200": {
                         "description": "specified profile"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/user/profile/list/{profile_name}": {
+            "get": {
+                "tags": [
+                    "profile"
+                ],
+                "summary": "Gets a paginated view of profile names",
+                "operationId": "list",
+                "parameters": [
+                    {
+                        "name": "profile_name",
+                        "in": "path",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "paginated list of profiles"
                     }
                 },
                 "security": [

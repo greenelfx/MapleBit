@@ -64,6 +64,11 @@ class ProfileTest extends TestCase
     {
         $user = factory(User::class)->create();
         $profile = factory(Profile::class)->create();
+
+        // hack to associate generated profile with created user
+        $profile->account_id = $user->id;
+        $profile->save();
+
         Sanctum::actingAs($user, ['*']);
         $this->get('/api/user/profile/view/' . $profile->name)->assertJson([
             'status' => 'success',
@@ -80,8 +85,29 @@ class ProfileTest extends TestCase
     {
         $user = factory(User::class)->create();
         $profile = factory(Profile::class)->create();
+
+        // hack to associate generated profile with created user
+        $profile->account_id = $user->id;
+        $profile->save();     
+   
         Sanctum::actingAs($user, ['*']);
         $this->get('/api/user/profile/list')->assertJsonStructure([
+            'current_page',
+            'data',
+        ]);
+    }   
+    
+    public function testListProfilesWithSearch()
+    {
+        $user = factory(User::class)->create();
+        $profile = factory(Profile::class)->create();
+
+        // hack to associate generated profile with created user
+        $profile->account_id = $user->id;
+        $profile->save();     
+   
+        Sanctum::actingAs($user, ['*']);
+        $this->get('/api/user/profile/list/' . substr($profile->name, 0, 3))->assertJsonStructure([
             'current_page',
             'data',
         ]);

@@ -18,7 +18,7 @@ class ArticleController extends Controller
      * @return \Illuminate\Http\Response
      *
      * @OA\Get(
-     *     path="/articles/list/{category?}",
+     *     path="/articles/list/{category}",
      *     tags={"articles"},
      *     summary="Gets a paginated view of articles of optional category (omitting results in all articles)",
      *     operationId="list",
