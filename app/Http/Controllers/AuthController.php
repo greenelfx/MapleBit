@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Helpers\PasswordHelper;
 use App\Models\User;
+use App\Rules\Recaptcha;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Vinkla\Hashids\Facades\Hashids;
-use App\Rules\Recaptcha;
 
 class AuthController extends Controller
 {

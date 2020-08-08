@@ -15,12 +15,12 @@ class Profile extends Model
     }
 
     /**
-     * Hide some sensitive fields like the user model if loaded, account id, and timestamps
+     * Hide some sensitive fields like the user model if loaded, account id, and timestamps.
      *
      * @var array
      */
     protected $hidden = [
-        'id', 'account_id', 'updated_at', 'created_at', 'user'
+        'id', 'account_id', 'updated_at', 'created_at', 'user',
     ];
 
     /**
@@ -33,17 +33,16 @@ class Profile extends Model
         'age',
         'country',
         'motto',
-        'about'
+        'about',
     ];
 
     /**
-     * The attributes that are computed upon the Profile model
+     * The attributes that are computed upon the Profile model.
      *
      * @var array
-     */    
+     */
     protected $appends = ['associated_user_gravatar'];
 
-    
     public function getAssociatedUserGravatarAttribute()
     {
         return $this->user->getGravatar();

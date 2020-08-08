@@ -29,10 +29,9 @@ class ProfileTest extends TestCase
             'profile' => [
                 'age' => 10,
                 'country' => 'United States',
-            ]
+            ],
         ]);
     }
-
 
     public function testStoreCountryValidation()
     {
@@ -49,7 +48,7 @@ class ProfileTest extends TestCase
             'status' => 'validation',
             'errors' => [
                 'country' => ['The country was not valid.'],
-            ]
+            ],
         ]);
     }
 
@@ -70,14 +69,14 @@ class ProfileTest extends TestCase
         $profile->save();
 
         Sanctum::actingAs($user, ['*']);
-        $this->get('/api/user/profile/view/' . $profile->name)->assertJson([
+        $this->get('/api/user/profile/view/'.$profile->name)->assertJson([
             'status' => 'success',
             'profile' => [
                 'name' => $profile->name,
                 'country' => $profile->country,
                 'motto' => $profile->motto,
                 'about' => $profile->about,
-            ]
+            ],
         ]);
     }
 
@@ -88,15 +87,15 @@ class ProfileTest extends TestCase
 
         // hack to associate generated profile with created user
         $profile->account_id = $user->id;
-        $profile->save();     
-   
+        $profile->save();
+
         Sanctum::actingAs($user, ['*']);
         $this->get('/api/user/profile/list')->assertJsonStructure([
             'current_page',
             'data',
         ]);
-    }   
-    
+    }
+
     public function testListProfilesWithSearch()
     {
         $user = factory(User::class)->create();
@@ -104,12 +103,12 @@ class ProfileTest extends TestCase
 
         // hack to associate generated profile with created user
         $profile->account_id = $user->id;
-        $profile->save();     
-   
+        $profile->save();
+
         Sanctum::actingAs($user, ['*']);
-        $this->get('/api/user/profile/list/' . substr($profile->name, 0, 3))->assertJsonStructure([
+        $this->get('/api/user/profile/list/'.substr($profile->name, 0, 3))->assertJsonStructure([
             'current_page',
             'data',
         ]);
-    }    
+    }
 }
