@@ -83,5 +83,5 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\Profile', 'account_id', 'id')->withDefault([
             'name' => \Atrox\Haikunator::haikunate(),
         ]);
-    }    
+    }
 }

@@ -6,7 +6,6 @@ use Illuminate\Contracts\Validation\Rule;
 
 class Country implements Rule
 {
-    
     /**
      * Create a new rule instance.
      *
@@ -14,7 +13,7 @@ class Country implements Rule
      */
     public function __construct()
     {
-        $this->countries = array(
+        $this->countries = [
             'United States',
             'Afghanistan',
             'Aland Islands',
@@ -273,8 +272,8 @@ class Country implements Rule
             'Western Sahara',
             'Yemen',
             'Zambia',
-            'Zimbabwe'
-        );
+            'Zimbabwe',
+        ];
     }
 
     /**

@@ -34,7 +34,7 @@ class Recaptcha implements Rule
         $resp = $recaptcha->setExpectedAction($this->expected_action)
             ->setScoreThreshold(0.5)
             ->verify($value, $this->ip_address);
-    
+
         return $resp->isSuccess();
     }
 

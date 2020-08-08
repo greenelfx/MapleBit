@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Profile;
 use App\Rules\Country;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ProfileController extends Controller
 {
@@ -100,7 +100,7 @@ class ProfileController extends Controller
      *     operationId="get",
      *     @OA\Parameter(
      *        name="profile_name", in="path",required=true, @OA\Schema(type="string")
-     *     ), 
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="specified profile"
@@ -109,13 +109,13 @@ class ProfileController extends Controller
      *         {"bearer": {}}
      *     }
      * )
-     */      
+     */
     public function get(Request $request)
     {
         try {
             $profile = Profile::where('name', $request->profile_name)->firstOrFail();
-        } catch(Exception  $e) {
-            abort(404, "profile does not exist");
+        } catch (Exception  $e) {
+            abort(404, 'profile does not exist');
         }
 
         return [
@@ -123,7 +123,7 @@ class ProfileController extends Controller
             'profile' => $profile,
         ];
     }
-    
+
     /**
      * Get a listing of profiles with an optional search query.
      *
@@ -150,9 +150,10 @@ class ProfileController extends Controller
     public function list(Request $request)
     {
         $PAGINATE_COUNT = 15;
-        if($request->profile_name) {
+        if ($request->profile_name) {
             return Profile::where('name', 'like', '%'.$request->profile_name.'%')->paginate($PAGINATE_COUNT);
         }
+
         return Profile::paginate($PAGINATE_COUNT);
-    }    
+    }
 }
