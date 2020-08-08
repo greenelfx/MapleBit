@@ -52082,6 +52082,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _user_control_panel_AccountUtilities__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./user-control-panel/AccountUtilities */ "./resources/js/components/user-control-panel/AccountUtilities.js");
 /* harmony import */ var _user_control_panel_UserControlPanelHome__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./user-control-panel/UserControlPanelHome */ "./resources/js/components/user-control-panel/UserControlPanelHome.js");
 /* harmony import */ var _user_control_panel_AccountSettings__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./user-control-panel/AccountSettings */ "./resources/js/components/user-control-panel/AccountSettings.js");
+/* harmony import */ var _user_control_panel_ProfileManagement__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./user-control-panel/ProfileManagement */ "./resources/js/components/user-control-panel/ProfileManagement.js");
+
 
 
 
@@ -52107,6 +52109,9 @@ var Main = function Main() {
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
     path: "/user/account-settings",
     component: _user_control_panel_AccountSettings__WEBPACK_IMPORTED_MODULE_6__["default"]
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
+    path: "/user/profile-management",
+    component: _user_control_panel_ProfileManagement__WEBPACK_IMPORTED_MODULE_7__["default"]
   })));
 };
 
@@ -52763,6 +52768,189 @@ function AccountUtilities() {
 
 /***/ }),
 
+/***/ "./resources/js/components/user-control-panel/ProfileManagement.js":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/user-control-panel/ProfileManagement.js ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _context_auth_context__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../context/auth-context */ "./resources/js/context/auth-context.js");
+/* harmony import */ var react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-bootstrap/Form */ "./node_modules/react-bootstrap/esm/Form.js");
+/* harmony import */ var react_bootstrap_Spinner__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-bootstrap/Spinner */ "./node_modules/react-bootstrap/esm/Spinner.js");
+/* harmony import */ var react_bootstrap_Button__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-bootstrap/Button */ "./node_modules/react-bootstrap/esm/Button.js");
+/* harmony import */ var react_bootstrap_Alert__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-bootstrap/Alert */ "./node_modules/react-bootstrap/esm/Alert.js");
+/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../utils/utils */ "./resources/js/utils/utils.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+
+function ProfileManagement() {
+  var _user$profile, _user$profile2, _user$profile3, _user$profile4, _user$profile5;
+
+  var _useAuth = Object(_context_auth_context__WEBPACK_IMPORTED_MODULE_2__["useAuth"])(),
+      user = _useAuth.user;
+
+  var client = Object(_context_auth_context__WEBPACK_IMPORTED_MODULE_2__["useClient"])();
+
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      isLoading = _useState2[0],
+      setIsLoading = _useState2[1];
+
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      _useState4 = _slicedToArray(_useState3, 2),
+      isError = _useState4[0],
+      setIsError = _useState4[1];
+
+  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      _useState6 = _slicedToArray(_useState5, 2),
+      isSuccess = _useState6[0],
+      setIsSuccess = _useState6[1];
+
+  var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(null),
+      _useState8 = _slicedToArray(_useState7, 2),
+      data = _useState8[0],
+      setData = _useState8[1];
+
+  var handleSubmit = /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(event) {
+      var _event$target$element, name, age, country, motto, about;
+
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              event.preventDefault();
+              setIsLoading(true);
+              setIsError(false);
+              setIsSuccess(false);
+              _event$target$element = event.target.elements, name = _event$target$element.name, age = _event$target$element.age, country = _event$target$element.country, motto = _event$target$element.motto, about = _event$target$element.about;
+              client('user/profile/store', {
+                method: 'POST',
+                data: {
+                  name: name.value,
+                  age: age.value,
+                  country: country.value,
+                  motto: motto.value,
+                  about: about.value
+                }
+              }).then(function (data) {
+                setIsSuccess(true);
+              })["catch"](function (err) {
+                setData(err);
+                setIsError(true);
+              })["finally"](function () {
+                setIsLoading(false);
+              });
+
+            case 6:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    return function handleSubmit(_x) {
+      return _ref.apply(this, arguments);
+    };
+  }();
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", {
+    className: "text-left"
+  }, "Profile Management"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    onSubmit: handleSubmit
+  }, isSuccess && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Alert__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    variant: "success"
+  }, "Your profile has been updated."), isError && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Alert__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    variant: "danger"
+  }, Object(_utils_utils__WEBPACK_IMPORTED_MODULE_7__["errorsToString"])(data.errors)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Group, {
+    controlId: "inputProfileName"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Label, null, "Profile Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Control, {
+    name: "name",
+    type: "text",
+    placeholder: "Profile Name",
+    defaultValue: (_user$profile = user.profile) === null || _user$profile === void 0 ? void 0 : _user$profile.name,
+    disabled: isLoading
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Group, {
+    controlId: "inputAge"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Label, null, "Age"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Control, {
+    name: "age",
+    type: "text",
+    placeholder: "Age",
+    defaultValue: (_user$profile2 = user.profile) === null || _user$profile2 === void 0 ? void 0 : _user$profile2.age,
+    disabled: isLoading
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Group, {
+    controlId: "inputCountry"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Label, null, "Country"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Control, {
+    name: "country",
+    type: "text",
+    placeholder: "Country",
+    defaultValue: (_user$profile3 = user.profile) === null || _user$profile3 === void 0 ? void 0 : _user$profile3.country,
+    disabled: isLoading
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Group, {
+    controlId: "inputMotto"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Label, null, "Motto"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Control, {
+    name: "motto",
+    type: "text",
+    placeholder: "Motto",
+    defaultValue: (_user$profile4 = user.profile) === null || _user$profile4 === void 0 ? void 0 : _user$profile4.motto,
+    disabled: isLoading
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Group, {
+    controlId: "inputAbout"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Label, null, "About"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Control, {
+    name: "about",
+    as: "textarea",
+    placeholder: "Some text about yourself",
+    defaultValue: (_user$profile5 = user.profile) === null || _user$profile5 === void 0 ? void 0 : _user$profile5.about,
+    disabled: isLoading
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Button__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    variant: "primary",
+    type: "submit",
+    size: "sm",
+    disabled: isLoading
+  }, isLoading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_Spinner__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    as: "span",
+    animation: "border",
+    size: "sm",
+    role: "status",
+    "aria-hidden": "true"
+  }) : "Submit")));
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (ProfileManagement);
+
+/***/ }),
+
 /***/ "./resources/js/components/user-control-panel/UserControlPanelHome.js":
 /*!****************************************************************************!*\
   !*** ./resources/js/components/user-control-panel/UserControlPanelHome.js ***!
@@ -52826,7 +53014,7 @@ function UserControlPanelHome() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(OptionPanel, {
     title: "Public Profile",
     text: "Your public profile is what other users see about you. You can enter in details about yourself here.",
-    link: "#",
+    link: "/user/profile-management",
     linkText: "Manage"
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Row__WEBPACK_IMPORTED_MODULE_2__["default"], {
     className: "mt-4"

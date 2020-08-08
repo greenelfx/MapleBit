@@ -66,6 +66,7 @@ class User extends Authenticatable
             'name' => $this->name,
             'email' => $this->email,
             'gravatar_url' => $this->getGravatar(),
+            'profile' => $this->profile,
         ];
     }
 

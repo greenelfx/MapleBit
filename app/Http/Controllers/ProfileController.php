@@ -72,7 +72,7 @@ class ProfileController extends Controller
             'age' => 'nullable|integer|min:0|max:100',
             'country' => ['nullable', 'string', new Country],
             'motto' => 'nullable|string|max:140',
-            'about' => 'nullable|string|40000',
+            'about' => 'nullable|string|max:40000',
         ]);
 
         if ($validator->fails()) {

@@ -33,7 +33,7 @@ function UserControlPanelHome() {
           <OptionPanel title="Account Utilities" text="Apply utilities to your game account, such as force logout and character moving." link="/user/account-utilities" linkText="Manage" />
         </Col>
         <Col md="4">
-          <OptionPanel title="Public Profile" text="Your public profile is what other users see about you. You can enter in details about yourself here." link="#" linkText="Manage" />
+          <OptionPanel title="Public Profile" text="Your public profile is what other users see about you. You can enter in details about yourself here." link="/user/profile-management" linkText="Manage" />
         </Col>
       </Row>
       <Row className="mt-4">

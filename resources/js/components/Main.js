@@ -5,6 +5,7 @@ import Register from "./Register";
 import AccountUtilities from "./user-control-panel/AccountUtilities";
 import UserControlPanelHome from "./user-control-panel/UserControlPanelHome";
 import AccountSettings from "./user-control-panel/AccountSettings";
+import ProfileManagement from "./user-control-panel/ProfileManagement";
 
 const Main = () => (
     <main>
@@ -14,6 +15,7 @@ const Main = () => (
         <Route path="/user/account-utilities" component={AccountUtilities} />
         <Route path="/user/home" component={UserControlPanelHome} />
         <Route path="/user/account-settings" component={AccountSettings} />
+        <Route path="/user/profile-management" component={ProfileManagement} />
       </Switch>
     </main>
   );
