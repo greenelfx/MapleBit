@@ -15,8 +15,8 @@ MapleBit is a CMS built with [Laravel](http://laravel.com/) and [React](https://
 MapleBit v2 exposes an underlying API server with [Swagger Specs](https://swagger.io/resources/open-api/), making it easy for anyone to build frontend UIs on top of MapleBit v2. By default, MapleBit v2 ships with a feature-complete React frontend, though you are free to replace or rewrite this in your own deployment.
 
 ## Server Requirements
-Since MapleBit is built with Laravel, our requirements are the same as the framework itself:
-- PHP >= 7.2.5
+Since MapleBit is built with Laravel 8.x, our requirements are the same as the framework itself:
+- PHP >= 7.3.0
 - BCMath PHP Extension
 - Ctype PHP Extension
 - Fileinfo PHP extension
