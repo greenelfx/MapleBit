@@ -1,6 +1,6 @@
 <?php
 if (basename($_SERVER['PHP_SELF']) == 'profile-name.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 require 'assets/libs/gump.class.php';
 

@@ -1,7 +1,7 @@
 <?php
 
 if (basename($_SERVER['PHP_SELF']) == 'database.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 //SQL Information
 $host['hostname'] = '127.0.0.1'; // Hostname [Usually locahost]

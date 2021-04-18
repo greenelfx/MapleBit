@@ -1,7 +1,7 @@
 <?php
 
 if (basename($_SERVER['PHP_SELF']) == 'pages.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 $query = $mysqli->query('SELECT * FROM '.$prefix."pages WHERE slug = '".$main."'");
 if ($query->num_rows == 0) {

@@ -1,7 +1,7 @@
 <?php
 
 if (basename($_SERVER['PHP_SELF']) == 'nxpacks.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 
 $action = isset($_GET['action']) ? $_GET['action'] : '';
@@ -12,7 +12,7 @@ echo '<h2 class="text-left">Configure NX Packages</h2><hr/>';
 if ($action === 'edit') {
     if (!empty($id) || is_numeric($id)) {
         if (!isset($_POST['edit'])) {
-            $queryPack = $mysqli->query('SELECT * FROM '.$prefix."buynx WHERE id = '".$id."'") or die();
+            $queryPack = $mysqli->query('SELECT * FROM '.$prefix."buynx WHERE id = '".$id."'") or exit();
             if ($queryPack->num_rows) {
                 $pack = $queryPack->fetch_assoc();
                 echo '
@@ -85,7 +85,7 @@ if ($action === 'edit') {
         } elseif (!is_numeric($nx) || (is_numeric($nx) && $nx < 0)) {
             echo '<div class="alert alert-danger">You can only use positive numbers.</div><hr/><button onclick=\"goBack()\" class=\"btn btn-primary\">&laquo; Go Back</button>';
         } else {
-            $mysqli->query('INSERT INTO '.$prefix."buynx (meso, nx) VALUES ('".$meso."', '".$nx."')") or die();
+            $mysqli->query('INSERT INTO '.$prefix."buynx (meso, nx) VALUES ('".$meso."', '".$nx."')") or exit();
             echo '<div class="alert alert-success">Package added.<hr/><a href="?base=admin&page=nxpacks">Add More NX Packages</a></div>';
         }
     }

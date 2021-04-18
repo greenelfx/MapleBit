@@ -1,7 +1,7 @@
 <?php
 
 if (basename($_SERVER['PHP_SELF']) == 'banner.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 
 if (!isset($_POST['submit'])) {

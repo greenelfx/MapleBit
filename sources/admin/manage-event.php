@@ -1,6 +1,6 @@
 <?php
 if (basename($_SERVER['PHP_SELF']) == 'manage-event.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 ?>
 <script src="assets/libs/ckeditor/ckeditor.js"></script>
@@ -59,7 +59,7 @@ if (isset($_SESSION['id'])) {
                     } elseif ($content == '') {
                         echo '<div class="alert alert-danger">You must enter some content.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                     } else {
-                        $i = $mysqli->query('INSERT INTO '.$prefix."events (title, author, date, type, status, content) VALUES ('".$title."','".$_SESSION['pname']."','".$date."','".$cat."','".$status."','".$content."')") or die(mysql_error());
+                        $i = $mysqli->query('INSERT INTO '.$prefix."events (title, author, date, type, status, content) VALUES ('".$title."','".$_SESSION['pname']."','".$date."','".$cat."','".$status."','".$content."')") or exit(mysql_error());
                         echo '<div class="alert alert-success">Your event has been posted.</div><hr/><a href="?base=admin" class="btn btn-primary">&laquo; Go Back</a>';
                     }
                 }
@@ -71,7 +71,7 @@ if (isset($_SESSION['id'])) {
 			<h2 class="text-left">Edit an Event</h2><hr/>';
             if (isset($_GET['id'])) {
                 $id = $mysqli->real_escape_string($_GET['id']);
-                $ge = $mysqli->query('SELECT * FROM '.$prefix."events WHERE id='".$id."'") or die();
+                $ge = $mysqli->query('SELECT * FROM '.$prefix."events WHERE id='".$id."'") or exit();
                 $e = $ge->fetch_assoc();
                 if (!isset($_POST['edit'])) {
                     echo "
@@ -111,12 +111,12 @@ if (isset($_SESSION['id'])) {
                     } elseif ($content == '') {
                         echo '<div class="alert alert-danger">You must enter some content.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                     } else {
-                        $u = $mysqli->query('UPDATE '.$prefix."events SET title='".$title."', type='".$cat."', status='".$status."', content='".$content."' WHERE id='".$id."'") or die();
+                        $u = $mysqli->query('UPDATE '.$prefix."events SET title='".$title."', type='".$cat."', status='".$status."', content='".$content."' WHERE id='".$id."'") or exit();
                         echo '<div class="alert alert-success">Event was successfully updated.</div><hr/><a href="?base=admin" class="btn btn-primary">&laquo; Go Back</a>';
                     }
                 }
             } else {
-                $ge = $mysqli->query('SELECT * FROM '.$prefix.'events ORDER BY id DESC') or die();
+                $ge = $mysqli->query('SELECT * FROM '.$prefix.'events ORDER BY id DESC') or exit();
                 $cge = $ge->num_rows;
                 if ($cge > 0) {
                     echo 'Select an event to modify:<hr/>';
@@ -136,7 +136,7 @@ if (isset($_SESSION['id'])) {
                 echo 'Invalid Comment ID.';
             } else {
                 $eventid = $mysqli->real_escape_string($_GET['id']);
-                $query = $mysqli->query('SELECT * FROM '.$prefix.'ecomments WHERE id = '.$eventid.'') or die();
+                $query = $mysqli->query('SELECT * FROM '.$prefix.'ecomments WHERE id = '.$eventid.'') or exit();
                 $rows = $query->num_rows;
                 $fetch = $query->fetch_assoc();
 
@@ -160,7 +160,7 @@ if (isset($_SESSION['id'])) {
 				<label for=\"deleteEvent\">Select an event to delete:</label>
 				<select name=\"event\" class=\"form-control\" id=\"deleteEvent\">
 					<option value=\"\">Please select...</option>";
-                $ge = $mysqli->query('SELECT * FROM '.$prefix.'events ORDER BY id DESC') or die();
+                $ge = $mysqli->query('SELECT * FROM '.$prefix.'events ORDER BY id DESC') or exit();
                 while ($e = $ge->fetch_assoc()) {
                     echo '
 					<option value="'.$e['id'].'">#'.$e['id'].' - '.htmlspecialchars($e['title'], ENT_QUOTES, 'UTF-8').'</option>';
@@ -175,7 +175,7 @@ if (isset($_SESSION['id'])) {
                 if ($event == '') {
                     echo '<div class="alert alert-danger">Please select an event to delete.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                 } else {
-                    $d = $mysqli->query('DELETE FROM '.$prefix."events WHERE id='".$event."'") or die();
+                    $d = $mysqli->query('DELETE FROM '.$prefix."events WHERE id='".$event."'") or exit();
                     echo '<div class="alert alert-success">The event has been deleted.</div>';
                 }
             }
@@ -188,7 +188,7 @@ if (isset($_SESSION['id'])) {
 			<label for="lockEvent">Select an event to lock:</label>
 				<select name="art" class="form-control" id="lockEvent">
 					<option value="">Please select...</option>';
-                $ge = $mysqli->query('SELECT * FROM '.$prefix.'events WHERE locked = 0 ORDER BY id DESC') or die();
+                $ge = $mysqli->query('SELECT * FROM '.$prefix.'events WHERE locked = 0 ORDER BY id DESC') or exit();
                 while ($e = $ge->fetch_assoc()) {
                     echo '
 						<option value="'.$e['id'].'">#'.$e['id'].' - '.htmlspecialchars($e['title'], ENT_QUOTES, 'UTF-8').'</option>';
@@ -204,7 +204,7 @@ if (isset($_SESSION['id'])) {
                 if ($art == '') {
                     echo '<div class="alert alert-danger">Please select an event to lock.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                 } else {
-                    $d = $mysqli->query('UPDATE '.$prefix."events SET locked = 1 WHERE id='".$art."'") or die();
+                    $d = $mysqli->query('UPDATE '.$prefix."events SET locked = 1 WHERE id='".$art."'") or exit();
                     echo '<div class="alert alert-success">The event has been locked.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                 }
             }
@@ -218,7 +218,7 @@ if (isset($_SESSION['id'])) {
 			<label for="unlockEvent">Select an event to unlock:</label>
 				<select name="art" class="form-control" id="unlockEvent">
 					<option value="">Please select...</option>';
-                $ge = $mysqli->query('SELECT * FROM '.$prefix.'events WHERE locked = 1 ORDER BY id DESC') or die();
+                $ge = $mysqli->query('SELECT * FROM '.$prefix.'events WHERE locked = 1 ORDER BY id DESC') or exit();
                 while ($e = $ge->fetch_assoc()) {
                     echo '
 						<option value="'.$e['id'].'">#'.$e['id'].' - '.htmlspecialchars($e['title'], ENT_QUOTES, 'UTF-8').'</option>';
@@ -234,7 +234,7 @@ if (isset($_SESSION['id'])) {
                 if ($art == '') {
                     echo '<div class="alert alert-danger">Please select an event to unlock.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                 } else {
-                    $d = $mysqli->query('UPDATE '.$prefix."events SET locked = 0 WHERE id='".$art."'") or die();
+                    $d = $mysqli->query('UPDATE '.$prefix."events SET locked = 0 WHERE id='".$art."'") or exit();
                     echo '<div class="alert alert-success">The event has been unlocked.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                 }
             }

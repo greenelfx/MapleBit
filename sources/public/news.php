@@ -1,6 +1,6 @@
 <?php
 if (basename($_SERVER['PHP_SELF']) == 'news.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 ?>
 <script src="assets/libs/cksimple/ckeditor.js"></script>
@@ -29,7 +29,7 @@ if (isset($_GET['id'])) {
         $positive = 0;
         $negative = 0;
         $neutral = 0;
-        $gc = $mysqli->query('SELECT '.$prefix.'ncomments.*, accounts.email, accounts.id As id1, '.$prefix.'profile.accountid, '.$prefix.'profile.name FROM '.$prefix.'ncomments INNER JOIN '.$prefix.'profile ON '.$prefix.'ncomments.author = '.$prefix.'profile.name INNER JOIN accounts ON '.$prefix.'profile.accountid = accounts.id WHERE '.$prefix."ncomments.nid= '".$id."' ORDER BY date DESC") or die();
+        $gc = $mysqli->query('SELECT '.$prefix.'ncomments.*, accounts.email, accounts.id As id1, '.$prefix.'profile.accountid, '.$prefix.'profile.name FROM '.$prefix.'ncomments INNER JOIN '.$prefix.'profile ON '.$prefix.'ncomments.author = '.$prefix.'profile.name INNER JOIN accounts ON '.$prefix.'profile.accountid = accounts.id WHERE '.$prefix."ncomments.nid= '".$id."' ORDER BY date DESC") or exit();
         $cc = $gc->num_rows;
         $getfeedback = $mysqli->query('SELECT feedback FROM '.$prefix.'ncomments');
         if ($cc > 0) {
@@ -79,7 +79,7 @@ if (isset($_GET['id'])) {
 				<hr />';
         }
         if (isset($_SESSION['id'])) {
-            $flood = $mysqli->query('SELECT * FROM `'.$prefix."ncomments` WHERE `nid`='".$id."' && `author`='".$_SESSION['pname']."' ORDER BY `date` DESC LIMIT 1") or die();
+            $flood = $mysqli->query('SELECT * FROM `'.$prefix."ncomments` WHERE `nid`='".$id."' && `author`='".$_SESSION['pname']."' ORDER BY `date` DESC LIMIT 1") or exit();
             $fetchg = $flood->fetch_assoc();
             $seconds = 60 * $basefloodint;
             $editor = false;
@@ -122,7 +122,7 @@ if (isset($_GET['id'])) {
                 echo '<br/><div class="alert alert-danger">You cannot leave the comment field blank!</div>';
             } else {
                 $date = time();
-                $i = $mysqli->query('INSERT INTO '.$prefix."ncomments (nid, author, feedback, date, comment) VALUES ('".$id."','".$_SESSION['pname']."','".$feedback."','".$date."','".$comment."')	") or die();
+                $i = $mysqli->query('INSERT INTO '.$prefix."ncomments (nid, author, feedback, date, comment) VALUES ('".$id."','".$_SESSION['pname']."','".$feedback."','".$date."','".$comment."')	") or exit();
                 echo '<meta http-equiv=refresh content="0; url=?base=main&amp;page=news&amp;id='.$id.'" />';
             }
         }
@@ -165,14 +165,14 @@ if (isset($_GET['id'])) {
         echo 'invalid id';
     }
 } else {
-    $gn = $mysqli->query('SELECT * FROM '.$prefix.'news ORDER BY id DESC') or die();
+    $gn = $mysqli->query('SELECT * FROM '.$prefix.'news ORDER BY id DESC') or exit();
     $rows = $gn->num_rows;
     if ($rows < 1) {
         echo "<div class=\"alert alert-danger\">Oops! There isn't any news to display right now!</div>";
     } else {
         echo '<h2 class="text-left">'.$servername.' News</h2><hr/>';
         while ($n = $gn->fetch_assoc()) {
-            $gc = $mysqli->query('SELECT * FROM '.$prefix."ncomments WHERE nid='".$n['id']."' ORDER BY id ASC") or die();
+            $gc = $mysqli->query('SELECT * FROM '.$prefix."ncomments WHERE nid='".$n['id']."' ORDER BY id ASC") or exit();
             $cc = $gc->num_rows;
             echo '
 				<img src="assets/img/news/'.$n['type'].".gif\" alt='".$n['type']."' />

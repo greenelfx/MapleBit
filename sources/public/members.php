@@ -1,7 +1,7 @@
 <?php
 
 if (basename($_SERVER['PHP_SELF']) == 'members.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 
 require_once 'assets/libs/HTMLPurifier.standalone.php';
@@ -23,10 +23,10 @@ if (isset($_GET['name'])) {
         $status = '<span class="label label-success">Online</span>';
     }
 
-    $gp = $mysqli->query('SELECT * FROM `'.$prefix."profile` WHERE `name`='".$name."'") or die();
+    $gp = $mysqli->query('SELECT * FROM `'.$prefix."profile` WHERE `name`='".$name."'") or exit();
     $p = $gp->fetch_assoc();
     $mc = $p['mainchar'];
-    $gmc = $mysqli->query("SELECT * FROM `characters` WHERE `id`='".$mc."'") or die();
+    $gmc = $mysqli->query("SELECT * FROM `characters` WHERE `id`='".$mc."'") or exit();
     $m = $gmc->fetch_assoc();
 
     $clean_html = $purifier->purify($p['text']);
@@ -64,7 +64,7 @@ if (isset($_GET['name'])) {
     }
 } elseif (isset($_GET['action']) && $_GET['action'] == 'search' && isset($_POST['search'])) {
     $name = $mysqli->real_escape_string($_POST['name']);
-    $gs = $mysqli->query('SELECT * FROM `'.$prefix."profile` WHERE `name` LIKE '%".$name."%' ORDER BY `name` ASC") or die();
+    $gs = $mysqli->query('SELECT * FROM `'.$prefix."profile` WHERE `name` LIKE '%".$name."%' ORDER BY `name` ASC") or exit();
     echo '
 		<h3 class="text-left">Search Results:</h3><hr/>
 		<div class="list-group">
@@ -91,7 +91,7 @@ if (isset($_GET['name'])) {
 		</div>
 		</div><hr/>
 	';
-    $gp = $mysqli->query('SELECT * FROM `'.$prefix."profile` WHERE `name` != 'NULL' ORDER BY `name` ASC") or die();
+    $gp = $mysqli->query('SELECT * FROM `'.$prefix."profile` WHERE `name` != 'NULL' ORDER BY `name` ASC") or exit();
     echo '<div class="list-group">';
     while ($p = $gp->fetch_assoc()) {
         echo '<a href="?base=main&amp;page=members&amp;name='.$p['name'].'" class="list-group-item">'.$p['name'].'</a>';

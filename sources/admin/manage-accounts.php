@@ -1,7 +1,7 @@
 <?php
 
 if (basename($_SERVER['PHP_SELF']) == 'manage-accounts.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 
 if (isset($_GET['action']) && $_GET['action'] === 'view') {
