@@ -1,6 +1,6 @@
 <?php
 if (basename($_SERVER['PHP_SELF']) == 'register.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 require 'assets/libs/recaptcha/autoload.php';
 require 'assets/libs/gump.class.php';

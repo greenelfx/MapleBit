@@ -1,7 +1,7 @@
 <?php
 
 if (basename($_SERVER['PHP_SELF']) == 'funcs.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 
 function ellipsize($str, $max_length, $position = 1, $ellipsis = '&hellip;')

@@ -1,7 +1,7 @@
 <?php
 
 if (basename($_SERVER['PHP_SELF']) == 'main-gm.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 echo "
 	<div class=\"col-md-6\">

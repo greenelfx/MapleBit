@@ -1,7 +1,7 @@
 <?php
 
 if (basename($_SERVER['PHP_SELF']) == 'vote.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 echo '<h2 class="text-left">Vote</h2><hr/>';
 $earnedpoints = false;
@@ -28,7 +28,7 @@ if ($row['loggedin'] > 0 && isset($_POST['submit'])) {
     if ($countchecksite == 0 && isset($_POST['submit'])) {
         $funct_error = 'Invalid voting site.';
     } else {
-        $result = $mysqli->query('SELECT *, SUM(times) as amount FROM '.$prefix."votingrecords WHERE NOT account='' AND NOT account='0' AND account='".$account."' AND siteid = '".$siteid."'") or die('Error - Could not look up vote record!');
+        $result = $mysqli->query('SELECT *, SUM(times) as amount FROM '.$prefix."votingrecords WHERE NOT account='' AND NOT account='0' AND account='".$account."' AND siteid = '".$siteid."'") or exit('Error - Could not look up vote record!');
         $row = $result->fetch_assoc();
         $sitequery = $mysqli->query('SELECT * FROM '.$prefix."vote WHERE id = '".$siteid."'");
         $vsite = $sitequery->fetch_assoc();
@@ -37,14 +37,14 @@ if ($row['loggedin'] > 0 && isset($_POST['submit'])) {
         $timecalc = $time - $row['date'];
         if ($row['amount'] == '' || $timecalc > $vsite['waittime']) {
             if ($row['amount'] == '') {
-                $result = $mysqli->query('INSERT INTO '.$prefix."votingrecords (siteid, ip, account, date, times) VALUES ('".$siteid."', '".$ipaddress."', '".$account."', '".$time."', '1')") or die('Error - Could not insert vote records!');
+                $result = $mysqli->query('INSERT INTO '.$prefix."votingrecords (siteid, ip, account, date, times) VALUES ('".$siteid."', '".$ipaddress."', '".$account."', '".$time."', '1')") or exit('Error - Could not insert vote records!');
             } else {
-                $result = $mysqli->query('UPDATE '.$prefix."votingrecords SET siteid = '".$siteid."', ip='".$ipaddress."', account='".$account."', date='".$time."', times='1' WHERE account='".$account."' AND siteid = '".$siteid."'") or die('Error - Could not update vote records!');
+                $result = $mysqli->query('UPDATE '.$prefix."votingrecords SET siteid = '".$siteid."', ip='".$ipaddress."', account='".$account."', date='".$time."', times='1' WHERE account='".$account."' AND siteid = '".$siteid."'") or exit('Error - Could not update vote records!');
             }
             $earnedpoints = true;
             if ($earnedpoints == true) {
                 if ($account != '') {
-                    $result = $mysqli->query("UPDATE accounts SET $colvp = $colvp + $gvp, $colnx = $colnx + $gnx WHERE name='".$account."'") or die('Error - Could not give rewards. Your site administrator needs to configure the NX and VP settings.');
+                    $result = $mysqli->query("UPDATE accounts SET $colvp = $colvp + $gvp, $colnx = $colnx + $gnx WHERE name='".$account."'") or exit('Error - Could not give rewards. Your site administrator needs to configure the NX and VP settings.');
                 }
                 $funct_msg = '<meta http-equiv="refresh" content="0; url='.$vsite['link'].'">';
                 $redirect = true;

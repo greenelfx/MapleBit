@@ -1,6 +1,6 @@
 <?php
 if (basename($_SERVER['PHP_SELF']) == 'pages.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 ?>
 <script src="assets/libs/ckeditor/ckeditor.js"></script>
@@ -63,7 +63,7 @@ if (isset($_SESSION['id'])) {
                     } elseif ($slug == '') {
                         echo '<div class="alert alert-danger">You must enter a slug.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                     } else {
-                        $i = $mysqli->query('INSERT INTO '.$prefix."pages (title, slug, author, content, visible) VALUES ('".$title."','".$slug."','".$_SESSION['pname']."','".$content."', '".$visible."')") or die();
+                        $i = $mysqli->query('INSERT INTO '.$prefix."pages (title, slug, author, content, visible) VALUES ('".$title."','".$slug."','".$_SESSION['pname']."','".$content."', '".$visible."')") or exit();
                         echo '<div class="alert alert-success">Your pages has been created. You may access it at <a href="'.$siteurl."\?base=main&page=".$slug.'">here</a></div><hr/><a href="?base=admin" class="btn btn-primary">&laquo; Go Back</a>';
                     }
                 }
@@ -75,7 +75,7 @@ if (isset($_SESSION['id'])) {
 			<h2 class="text-left">Edit Page</h2><hr/>';
             if (isset($_GET['id'])) {
                 $id = $mysqli->real_escape_string($_GET['id']);
-                $gp = $mysqli->query('SELECT * FROM '.$prefix."pages WHERE id='".$id."'") or die();
+                $gp = $mysqli->query('SELECT * FROM '.$prefix."pages WHERE id='".$id."'") or exit();
                 $p = $gp->fetch_assoc();
                 if ($p['visible'] == 1) {
                     $checked = 'checked';
@@ -120,12 +120,12 @@ if (isset($_SESSION['id'])) {
                     } elseif ($slug == '') {
                         echo '<div class="alert alert-danger">You must enter a slug.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                     } else {
-                        $u = $mysqli->query('UPDATE '.$prefix."pages SET title='".$title."', slug = '".$slug."', content='".$content."', visible = '".$visible."' WHERE id='".$id."'") or die();
+                        $u = $mysqli->query('UPDATE '.$prefix."pages SET title='".$title."', slug = '".$slug."', content='".$content."', visible = '".$visible."' WHERE id='".$id."'") or exit();
                         echo '<div class="alert alert-success">Page Updated. You may access it <a href="'.$siteurl."\?base=main&page=".$slug.'">here</a></div><hr/><a href="?base=admin&page=pages" class="btn btn-primary">&laquo; Go Back</a>';
                     }
                 }
             } else {
-                $gp = $mysqli->query('SELECT * FROM '.$prefix.'pages ORDER BY id DESC') or die();
+                $gp = $mysqli->query('SELECT * FROM '.$prefix.'pages ORDER BY id DESC') or exit();
                 $cgp = $gp->num_rows;
                 if ($cgp > 0) {
                     echo 'Select a page to modify:<hr/>';
@@ -147,7 +147,7 @@ if (isset($_SESSION['id'])) {
 				<label for=\"deletePage\">Select a page to delete:</label>
 				<select name=\"page\" class=\"form-control\" id=\"deletePage\">
 					<option value=\"\">Please select...</option>";
-                $gp = $mysqli->query('SELECT * FROM '.$prefix.'pages ORDER BY id DESC') or die();
+                $gp = $mysqli->query('SELECT * FROM '.$prefix.'pages ORDER BY id DESC') or exit();
                 while ($p = $gp->fetch_assoc()) {
                     echo '
 					<option value="'.$p['id'].'">'.$p['title'].'</option>';
@@ -162,7 +162,7 @@ if (isset($_SESSION['id'])) {
                 if ($page == '') {
                     echo '<div class="alert alert-danger">Please select a page to delete.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                 } else {
-                    $d = $mysqli->query('DELETE FROM '.$prefix."pages WHERE id='".$page."'") or die();
+                    $d = $mysqli->query('DELETE FROM '.$prefix."pages WHERE id='".$page."'") or exit();
                     echo '<div class="alert alert-success">The page has been deleted.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                 }
             }

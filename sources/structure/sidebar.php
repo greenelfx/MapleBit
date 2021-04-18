@@ -1,6 +1,6 @@
 <?php
 if (basename($_SERVER['PHP_SELF']) == 'sidebar.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 $online = mysqli_fetch_assoc($mysqli->query('SELECT COUNT(*) AS o FROM accounts where loggedin = 2'));
 $accounts = mysqli_fetch_assoc($mysqli->query('SELECT COUNT(*) AS a FROM accounts'));

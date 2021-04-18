@@ -1,6 +1,6 @@
 <?php
 if (basename($_SERVER['PHP_SELF']) == 'profile-edit.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 ?>
 <script src="assets/libs/cksimple/ckeditor.js"></script>
@@ -12,7 +12,7 @@ if ($_SESSION['pname'] === 'checkpname') {
 }
 
 require 'assets/libs/gump.class.php';
-GUMP::add_validator('exists', function ($field, $input, $param = null) use ($mysqli, $prefix) {
+GUMP::add_validator('exists', function ($field, $input, $param = null) use ($mysqli) {
     return $mysqli->query("SELECT COUNT(*) FROM characters WHERE $param ='".$mysqli->real_escape_string($input[$field])."'")->fetch_row()[0] == 0;
 });
 if (isset($_POST['edit'])) {

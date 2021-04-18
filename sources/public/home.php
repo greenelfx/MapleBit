@@ -1,6 +1,6 @@
 <?php
 if (basename($_SERVER['PHP_SELF']) == 'home.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 $editable = '>';
 if (isset($_SESSION['id']) && isset($_SESSION['admin'])) {

@@ -1,6 +1,6 @@
 <?php
 if (basename($_SERVER['PHP_SELF']) == 'manage-news.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 ?>
 <script src="assets/libs/ckeditor/ckeditor.js"></script>
@@ -50,7 +50,7 @@ if (isset($_SESSION['id'])) {
                     } elseif ($content == '') {
                         echo '<div class="alert alert-danger">You must enter some content.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                     } else {
-                        $i = $mysqli->query('INSERT INTO '.$prefix."news (title, author, type, date, content) VALUES ('".$title."','".$author."','".$cat."','".$date."','".$content."')") or die();
+                        $i = $mysqli->query('INSERT INTO '.$prefix."news (title, author, type, date, content) VALUES ('".$title."','".$author."','".$cat."','".$date."','".$content."')") or exit();
                         echo '<div class="alert alert-success">Your news article has been posted.</div><hr/><a href="?base=admin" class="btn btn-primary">&laquo; Go Back</a>';
                     }
                 }
@@ -62,7 +62,7 @@ if (isset($_SESSION['id'])) {
 			<h2 class="text-left">Edit a News Article</h2><hr/>';
             if (isset($_GET['id'])) {
                 $id = $mysqli->real_escape_string($_GET['id']);
-                $gn = $mysqli->query('SELECT * FROM '.$prefix."news WHERE id='".$id."'") or die();
+                $gn = $mysqli->query('SELECT * FROM '.$prefix."news WHERE id='".$id."'") or exit();
                 $n = $gn->fetch_assoc();
                 if (!isset($_POST['edit'])) {
                     echo '
@@ -93,12 +93,12 @@ if (isset($_SESSION['id'])) {
                     } elseif (strlen($content) < 10) {
                         echo '<div class="alert alert-danger">You must enter some content.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                     } else {
-                        $u = $mysqli->query('UPDATE '.$prefix."news SET title='".$title."', type='".$cat."', content='".$content."' WHERE id='".$id."'") or die();
+                        $u = $mysqli->query('UPDATE '.$prefix."news SET title='".$title."', type='".$cat."', content='".$content."' WHERE id='".$id."'") or exit();
                         echo '<div class="alert alert-success">News Article successfully updated.</div>';
                     }
                 }
             } else {
-                $gn = $mysqli->query('SELECT * FROM '.$prefix.'news ORDER BY id DESC') or die();
+                $gn = $mysqli->query('SELECT * FROM '.$prefix.'news ORDER BY id DESC') or exit();
                 $cgn = $gn->num_rows;
                 if ($cgn > 0) {
                     echo 'Select a news article to modify:<hr/>';
@@ -118,7 +118,7 @@ if (isset($_SESSION['id'])) {
                 echo 'Invalid Comment ID.';
             } else {
                 $newsid = $mysqli->real_escape_string($_GET['id']);
-                $query = $mysqli->query('SELECT * FROM '.$prefix.'ncomments WHERE id = '.$newsid.'') or die();
+                $query = $mysqli->query('SELECT * FROM '.$prefix.'ncomments WHERE id = '.$newsid.'') or exit();
                 $rows = $query->num_rows;
                 $fetch = $query->fetch_assoc();
 
@@ -143,7 +143,7 @@ if (isset($_SESSION['id'])) {
 				<label for="deleteArticle">Select a news article to delete:</label>
 				<select name="art" class="form-control" id="deleteArticle">
 					<option value="">Please select...</option>';
-                $gn = $mysqli->query('SELECT * FROM '.$prefix.'news ORDER BY id DESC') or die();
+                $gn = $mysqli->query('SELECT * FROM '.$prefix.'news ORDER BY id DESC') or exit();
                 while ($n = $gn->fetch_assoc()) {
                     echo '
 						<option value="'.$n['id'].'">#'.$n['id'].' - '.htmlspecialchars($n['title'], ENT_QUOTES, 'UTF-8').'</option>';
@@ -159,7 +159,7 @@ if (isset($_SESSION['id'])) {
                 if ($art == '') {
                     echo '<div class="alert alert-danger">Please select a news article to delete.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                 } else {
-                    $d = $mysqli->query('DELETE FROM '.$prefix."news WHERE id='".$art."'") or die();
+                    $d = $mysqli->query('DELETE FROM '.$prefix."news WHERE id='".$art."'") or exit();
                     echo '<div class="alert alert-success">The news article has been deleted.</div>';
                 }
             }
@@ -172,7 +172,7 @@ if (isset($_SESSION['id'])) {
 			<label for="lockArticle">Select a news article to lock:</label>
 				<select name="art" class="form-control" id="lockArticle">
 					<option value="">Please select...</option>';
-                $gn = $mysqli->query('SELECT * FROM '.$prefix.'news WHERE locked = 0 ORDER BY id DESC') or die();
+                $gn = $mysqli->query('SELECT * FROM '.$prefix.'news WHERE locked = 0 ORDER BY id DESC') or exit();
                 while ($n = $gn->fetch_assoc()) {
                     echo '
 						<option value="'.$n['id'].'">#'.$n['id'].' - '.htmlspecialchars($n['title'], ENT_QUOTES, 'UTF-8').'</option>';
@@ -188,7 +188,7 @@ if (isset($_SESSION['id'])) {
                 if ($art == '') {
                     echo '<div class="alert alert-danger">Please select a news article to lock.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                 } else {
-                    $d = $mysqli->query('UPDATE '.$prefix."news SET locked = 1 WHERE id='".$art."'") or die();
+                    $d = $mysqli->query('UPDATE '.$prefix."news SET locked = 1 WHERE id='".$art."'") or exit();
                     echo '<div class="alert alert-success">The news article has been locked.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                 }
             }
@@ -202,7 +202,7 @@ if (isset($_SESSION['id'])) {
 			<label for="unlockArticle">Select a news article to unlock:</label>
 				<select name="art" class="form-control" id="unlockArticle">
 					<option value="">Please select...</option>';
-                $gn = $mysqli->query('SELECT * FROM '.$prefix.'news WHERE locked = 1 ORDER BY id DESC') or die();
+                $gn = $mysqli->query('SELECT * FROM '.$prefix.'news WHERE locked = 1 ORDER BY id DESC') or exit();
                 while ($n = $gn->fetch_assoc()) {
                     echo '
 						<option value="'.$n['id'].'">#'.$n['id'].' - '.htmlspecialchars($n['title'], ENT_QUOTES, 'UTF-8').'</option>';
@@ -218,7 +218,7 @@ if (isset($_SESSION['id'])) {
                 if ($art == '') {
                     echo '<div class="alert alert-danger">Please select a news article to unlock.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                 } else {
-                    $d = $mysqli->query('UPDATE '.$prefix."news SET locked = 0 WHERE id='".$art."'") or die();
+                    $d = $mysqli->query('UPDATE '.$prefix."news SET locked = 0 WHERE id='".$art."'") or exit();
                     echo '<div class="alert alert-success">The news article has been unlocked.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                 }
             }

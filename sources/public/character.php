@@ -1,7 +1,7 @@
 <?php
 
 if (basename($_SERVER['PHP_SELF']) == 'character.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 if (isset($_GET['n'])) {
     $getchar = $mysqli->real_escape_string($_GET['n']);

@@ -1,6 +1,6 @@
 <?php
 if (basename($_SERVER['PHP_SELF']) == 'theme.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 
 echo '<h2 class="text-left">Configure Theme</h2><hr/>';

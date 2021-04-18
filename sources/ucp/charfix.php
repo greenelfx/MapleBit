@@ -1,7 +1,7 @@
 <?php
 
 if (basename($_SERVER['PHP_SELF']) == 'charfix.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 if (isset($_GET['fix']) && $_GET['fix'] === 'unstuck') {
     echo '<h2 class="text-left">Move Character</h2><hr/>';
@@ -9,9 +9,9 @@ if (isset($_GET['fix']) && $_GET['fix'] === 'unstuck') {
         $seekmaps = $mysqli->query('SELECT jailmaps FROM '.$prefix.'properties');
         $getmaps = $seekmaps->fetch_assoc(); // Get array
         if (empty($getmaps['jailmaps'])) {
-            $avail_chars = $mysqli->query("SELECT * FROM characters WHERE accountid='".$_SESSION['id']."' ORDER BY id ASC") or die();
+            $avail_chars = $mysqli->query("SELECT * FROM characters WHERE accountid='".$_SESSION['id']."' ORDER BY id ASC") or exit();
         } else {
-            $avail_chars = $mysqli->query("SELECT * FROM characters WHERE accountid='".$_SESSION['id']."' AND map NOT IN (".$getmaps['jailmaps'].') ORDER BY id ASC') or die();
+            $avail_chars = $mysqli->query("SELECT * FROM characters WHERE accountid='".$_SESSION['id']."' AND map NOT IN (".$getmaps['jailmaps'].') ORDER BY id ASC') or exit();
         }
         $count_avail_chars = $avail_chars->num_rows;
         if ($count_avail_chars >= 1) {
@@ -41,15 +41,15 @@ if (isset($_GET['fix']) && $_GET['fix'] === 'unstuck') {
         }
     } else {
         $name = $_SESSION['name'];
-        $queryAccount = $mysqli->query("SELECT * FROM `accounts` WHERE `name`='".$name."'") or die();
+        $queryAccount = $mysqli->query("SELECT * FROM `accounts` WHERE `name`='".$name."'") or exit();
         $getAccount = $queryAccount->fetch_assoc();
         $inputCharacter = $mysqli->real_escape_string($_POST['char']);
-        $queryCharacter = $mysqli->query("SELECT * FROM `characters` WHERE `id`='".$inputCharacter."'") or die();
+        $queryCharacter = $mysqli->query("SELECT * FROM `characters` WHERE `id`='".$inputCharacter."'") or exit();
         $getCharacter = $queryCharacter->fetch_assoc();
         $moveMap = 100000000;
 
         if ($getAccount['id'] == $getCharacter['accountid']) {
-            $m = $mysqli->query("UPDATE characters SET map='".$moveMap."' WHERE id='".$inputCharacter."'") or die();
+            $m = $mysqli->query("UPDATE characters SET map='".$moveMap."' WHERE id='".$inputCharacter."'") or exit();
             echo '<div class="alert alert-success"><b>Fix succesful.</b> Your character will now spawn at Henesys.</div>';
         } else {
             echo '<div class="alert alert-danger"><b>Error.</b> Insufficient Permissions.</div>';
@@ -61,7 +61,7 @@ if (isset($_GET['fix']) && $_GET['fix'] === 'unstuck') {
     if ($acc['loggedin'] == '0') {
         $text = '<div class="alert alert-info">You are already logged out in-game.</div>';
     } else {
-        $s = $mysqli->query("UPDATE accounts SET loggedin='0' WHERE name='".$_SESSION['name']."'") or die();
+        $s = $mysqli->query("UPDATE accounts SET loggedin='0' WHERE name='".$_SESSION['name']."'") or exit();
         $text = '<div class="alert alert-success">Your account has been fixed! You should be able to log in normally now.</div>';
     }
     echo '<h2 class="text-left">Disconnect your Account</h2><hr/>';

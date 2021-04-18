@@ -1,12 +1,12 @@
 <?php
 
 if (basename($_SERVER['PHP_SELF']) == 'account-settings.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 
 echo '<h2 class="text-left">Account Settings</h2><hr/>';
 if (!isset($_POST['modify'])) {
-    $query = $mysqli->query("SELECT * FROM `accounts` WHERE `id`='".$_SESSION['id']."'") or die();
+    $query = $mysqli->query("SELECT * FROM `accounts` WHERE `id`='".$_SESSION['id']."'") or exit();
     $row = $query->fetch_assoc();
     echo "
 		<div class=\"alert alert-warning\">If you want to keep your current password, leave the password fields blank! <a class=\"close\" data-dismiss=\"alert\" href=\"#\" aria-hidden=\"true\">&times;</a></div>
@@ -37,7 +37,7 @@ if (!isset($_POST['modify'])) {
 		</form><br/>
 	';
 } else {
-    $u = $mysqli->query("SELECT * FROM `accounts` WHERE `id`='".$_SESSION['id']."'") or die();
+    $u = $mysqli->query("SELECT * FROM `accounts` WHERE `id`='".$_SESSION['id']."'") or exit();
     $userz = $u->fetch_assoc();
     $current = $mysqli->real_escape_string($_POST['current']);
     $pass = $mysqli->real_escape_string($_POST['password']);
@@ -91,9 +91,9 @@ if (!isset($_POST['modify'])) {
         } else {
             if ($current) {
                 $hashed_password = hashPassword($pass, $hash_algorithm, null);
-                $u = $mysqli->query("UPDATE `accounts` SET `password`='".$hashed_password."' WHERE `name`='".$userz['name']."'") or die();
+                $u = $mysqli->query("UPDATE `accounts` SET `password`='".$hashed_password."' WHERE `name`='".$userz['name']."'") or exit();
             }
-            $u = $mysqli->query("UPDATE `accounts` SET `email`='".$email."',`birthday`='".$birth."' WHERE `name`='".$userz['name']."'") or die();
+            $u = $mysqli->query("UPDATE `accounts` SET `email`='".$email."',`birthday`='".$birth."' WHERE `name`='".$userz['name']."'") or exit();
             $_SESSION['email'] = $email;
             echo '<div class="alert alert-success">Your changes have successfully been saved.</div>';
         }

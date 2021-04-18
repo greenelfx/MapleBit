@@ -1,6 +1,6 @@
 <?php
 if (basename($_SERVER['PHP_SELF']) == 'events.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 ?>
 <script src="assets/libs/cksimple/ckeditor.js"></script>
@@ -16,7 +16,7 @@ if (basename($_SERVER['PHP_SELF']) == 'events.php') {
 <?php
 if (@$_GET['id']) {
     $id = $mysqli->real_escape_string($_GET['id']);
-    $ge = $mysqli->query('SELECT * FROM '.$prefix."events WHERE id='".$mysqli->real_escape_string($id)."'") or die();
+    $ge = $mysqli->query('SELECT * FROM '.$prefix."events WHERE id='".$mysqli->real_escape_string($id)."'") or exit();
     $e = $ge->fetch_assoc();
     require_once 'assets/libs/HTMLPurifier.standalone.php';
     $config = HTMLPurifier_Config::createDefault();
@@ -31,7 +31,7 @@ if (@$_GET['id']) {
     $positive = 0;
     $negative = 0;
     $neutral = 0;
-    $gc = $mysqli->query('SELECT '.$prefix.'ecomments.*, accounts.email, accounts.id As id1, '.$prefix.'profile.accountid, '.$prefix.'profile.name FROM '.$prefix.'ecomments INNER JOIN '.$prefix.'profile ON '.$prefix.'ecomments.author = '.$prefix.'profile.name INNER JOIN accounts ON '.$prefix.'profile.accountid = accounts.id WHERE '.$prefix."ecomments.eid= '".$id."' ORDER BY date DESC") or die();
+    $gc = $mysqli->query('SELECT '.$prefix.'ecomments.*, accounts.email, accounts.id As id1, '.$prefix.'profile.accountid, '.$prefix.'profile.name FROM '.$prefix.'ecomments INNER JOIN '.$prefix.'profile ON '.$prefix.'ecomments.author = '.$prefix.'profile.name INNER JOIN accounts ON '.$prefix.'profile.accountid = accounts.id WHERE '.$prefix."ecomments.eid= '".$id."' ORDER BY date DESC") or exit();
     $cc = $gc->num_rows;
     $getfeedback = $mysqli->query('SELECT feedback FROM '.$prefix.'ecomments');
     if ($cc > 0) {
@@ -74,7 +74,7 @@ if (@$_GET['id']) {
 			<span class="sr-only">'.$neutral.' (neutral)</span>
 		</div>
 	</div>';
-    $av = $mysqli->query('UPDATE '.$prefix."events SET views = views + 1 WHERE id='".$mysqli->real_escape_string($id)."'") or die();
+    $av = $mysqli->query('UPDATE '.$prefix."events SET views = views + 1 WHERE id='".$mysqli->real_escape_string($id)."'") or exit();
     if (isset($_SESSION['admin'])) {
         if ($e['locked'] == '1') {
             $buttontext = 'Unlock';
@@ -90,7 +90,7 @@ if (@$_GET['id']) {
 			<hr />';
     }
     if (isset($_SESSION['id'])) {
-        $flood = $mysqli->query('SELECT * FROM '.$prefix."ecomments WHERE eid='".$id."' && author='".$_SESSION['pname']."' ORDER BY date DESC LIMIT 1") or die();
+        $flood = $mysqli->query('SELECT * FROM '.$prefix."ecomments WHERE eid='".$id."' && author='".$_SESSION['pname']."' ORDER BY date DESC LIMIT 1") or exit();
         $fetchg = $flood->fetch_assoc();
         $seconds = 60 * $basefloodint;
         $editor = false;
@@ -133,7 +133,7 @@ if (@$_GET['id']) {
             echo '<br/><div class="alert alert-danger">You cannot leave the comment field blank!</div>';
         } else {
             $date = time();
-            $i = $mysqli->query('INSERT INTO '.$prefix."ecomments (eid, author, feedback, date, comment) VALUES ('".$id."','".$author."','".$feedback."','".$date."','".$comment."')") or die();
+            $i = $mysqli->query('INSERT INTO '.$prefix."ecomments (eid, author, feedback, date, comment) VALUES ('".$id."','".$author."','".$feedback."','".$date."','".$comment."')") or exit();
             echo '<meta http-equiv=refresh content="0; url=?base=main&amp;page=events&amp;id='.$id.'" />';
         }
     }
@@ -172,14 +172,14 @@ if (@$_GET['id']) {
         }
     }
 } else {
-    $ge = $mysqli->query('SELECT * FROM '.$prefix.'events ORDER BY id DESC') or die();
+    $ge = $mysqli->query('SELECT * FROM '.$prefix.'events ORDER BY id DESC') or exit();
     $rows = $ge->num_rows;
     if ($rows < 1) {
         echo '<div class="alert alert-danger">Oops! No events to display right now!</div>';
     } else {
         echo '<h2 class="text-left">'.$servername.' Events</h2><hr/>';
         while ($e = $ge->fetch_assoc()) {
-            $gc = $mysqli->query('SELECT * FROM '.$prefix."ecomments WHERE eid='".$mysqli->real_escape_string($e['id'])."' ORDER BY id ASC") or die();
+            $gc = $mysqli->query('SELECT * FROM '.$prefix."ecomments WHERE eid='".$mysqli->real_escape_string($e['id'])."' ORDER BY id ASC") or exit();
             $cc = $gc->num_rows;
             echo '<img src="assets/img/news/'.$e['type'].".gif\" alt='' />";
             echo '['.$e['date'].']

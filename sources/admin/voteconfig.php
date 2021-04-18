@@ -1,7 +1,7 @@
 <?php
 
 if (basename($_SERVER['PHP_SELF']) == 'voteconfig.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 
 if (!isset($_GET['action']) && isset($_GET['action']) != 'add' && isset($_GET['action']) != 'edit') {

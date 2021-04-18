@@ -1,6 +1,6 @@
 <?php
 if (basename($_SERVER['PHP_SELF']) == 'rankings.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 ?>
 <h2 class="text-left">Rankings</h2>
@@ -45,9 +45,9 @@ $csearch = isset($search) ? " AND c.name LIKE '".$search."%'" : '';
 
 if (isset($search)) {
     if ($servertype == 1) {
-        $result2 = $mysqli->query("SELECT c.name , c.gm, c.job , c.level, c.reborns, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE c.gm < $gmlevel ".$show.''.$csearch." GROUP BY c.id DESC ORDER BY reborns DESC, level DESC LIMIT $start, 15") or die('IT IS LINE '.__LINE__.'<br />'.$mysqli->error);
+        $result2 = $mysqli->query("SELECT c.name , c.gm, c.job , c.level, c.reborns, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE c.gm < $gmlevel ".$show.''.$csearch." GROUP BY c.id DESC ORDER BY reborns DESC, level DESC LIMIT $start, 15") or exit('IT IS LINE '.__LINE__.'<br />'.$mysqli->error);
     } else {
-        $result2 = $mysqli->query("SELECT c.name , c.gm, c.job , c.level, c.exp, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE c.gm < $gmlevel ".$show.''.$csearch." GROUP BY c.id DESC ORDER BY level DESC, exp DESC LIMIT $start, 15") or die('IT IS LINE '.__LINE__.'<br />'.$mysqli->error);
+        $result2 = $mysqli->query("SELECT c.name , c.gm, c.job , c.level, c.exp, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE c.gm < $gmlevel ".$show.''.$csearch." GROUP BY c.id DESC ORDER BY level DESC, exp DESC LIMIT $start, 15") or exit('IT IS LINE '.__LINE__.'<br />'.$mysqli->error);
     }
     $row_number = 0;
     $int = 0;
@@ -62,9 +62,9 @@ if (isset($search)) {
     }
 }
 if ($servertype == 1) {
-    $result = $mysqli->query("SELECT c.name , c.gm, c.job, c.level, c.reborns, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE (c.gm < '$gmlevel') ".$show.''.$csearch." GROUP BY c.id DESC ORDER BY reborns DESC, level DESC LIMIT 15 OFFSET $start") or die('IT IS LINE '.__LINE__.'<br />'.$mysqli->error);
+    $result = $mysqli->query("SELECT c.name , c.gm, c.job, c.level, c.reborns, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE (c.gm < '$gmlevel') ".$show.''.$csearch." GROUP BY c.id DESC ORDER BY reborns DESC, level DESC LIMIT 15 OFFSET $start") or exit('IT IS LINE '.__LINE__.'<br />'.$mysqli->error);
 } else {
-    $result = $mysqli->query("SELECT c.name , c.gm, c.job, c.level, c.exp, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE (c.gm < '$gmlevel') ".$show.''.$csearch." GROUP BY c.id DESC ORDER BY level DESC, exp DESC LIMIT 15 OFFSET $start") or die('IT IS LINE '.__LINE__.'<br />'.$mysqli->error);
+    $result = $mysqli->query("SELECT c.name , c.gm, c.job, c.level, c.exp, g.guildid, g.name AS gname, g.logo AS logo, g.logoColor AS logoColor, g.logoBGColor AS logoBGColor, g.logoBG AS logoBG FROM characters c LEFT JOIN guilds g ON c.guildid = g.guildid WHERE (c.gm < '$gmlevel') ".$show.''.$csearch." GROUP BY c.id DESC ORDER BY level DESC, exp DESC LIMIT 15 OFFSET $start") or exit('IT IS LINE '.__LINE__.'<br />'.$mysqli->error);
 }
 if ($result->num_rows == 0) {
     echo '

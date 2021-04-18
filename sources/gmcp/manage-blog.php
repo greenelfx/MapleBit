@@ -1,6 +1,6 @@
 <?php
 if (basename($_SERVER['PHP_SELF']) == 'manage-blog.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 ?>
 <script src="assets/libs/ckeditor/ckeditor.js"></script>
@@ -36,7 +36,7 @@ if (isset($_SESSION['id'])) {
                     } elseif ($content == '') {
                         echo '<div class="alert alert-danger">You must enter some content.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                     } else {
-                        $i = $mysqli->query('INSERT INTO '.$prefix."gmblog (title, author, date, content) VALUES ('".$title."','".$_SESSION['pname']."','".$date."','".$content."')") or die(mysql_error());
+                        $i = $mysqli->query('INSERT INTO '.$prefix."gmblog (title, author, date, content) VALUES ('".$title."','".$_SESSION['pname']."','".$date."','".$content."')") or exit(mysql_error());
                         echo '<div class="alert alert-success">Your blog entry has been posted.</div><hr/><a href="?base=gmcp" class="btn btn-primary">&laquo; Go Back</a>';
                     }
                 }
@@ -44,7 +44,7 @@ if (isset($_SESSION['id'])) {
                 echo '<h2 class="text-left">Edit a Blog</h2><hr/>';
                 if (isset($_GET['id'])) {
                     $id = $mysqli->real_escape_string($_GET['id']);
-                    $gb = $mysqli->query('SELECT * FROM '.$prefix."gmblog WHERE id='".$id."'") or die();
+                    $gb = $mysqli->query('SELECT * FROM '.$prefix."gmblog WHERE id='".$id."'") or exit();
                     $b = $gb->fetch_assoc();
                     if ($_SESSION['pname'] == $b['author'] || isset($_SESSION['admin'])) {
                         if (!isset($_POST['edit'])) {
@@ -68,7 +68,7 @@ if (isset($_SESSION['id'])) {
                             } elseif ($content == '') {
                                 echo '<div class="alert alert-danger">You must enter some content.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                             } else {
-                                $u = $mysqli->query('UPDATE '.$prefix."gmblog SET title='".$title."', content='".$content."' WHERE id='".$id."'") or die();
+                                $u = $mysqli->query('UPDATE '.$prefix."gmblog SET title='".$title."', content='".$content."' WHERE id='".$id."'") or exit();
                                 echo 'The Blog entry has been updated.<hr/><a href="?base=gmcp" class="btn btn-primary">&laquo; Go Back</a>';
                             }
                         }
@@ -77,7 +77,7 @@ if (isset($_SESSION['id'])) {
                     }
                 } else {
                     if (isset($_SESSION['gm']) || isset($_SESSION['admin'])) {
-                        $gb = $mysqli->query('SELECT * FROM '.$prefix."gmblog WHERE author='".$_SESSION['pname']."' ORDER BY id ASC") or die();
+                        $gb = $mysqli->query('SELECT * FROM '.$prefix."gmblog WHERE author='".$_SESSION['pname']."' ORDER BY id ASC") or exit();
                         if ($gb->num_rows > 0) {
                             $i = 1;
                             echo '
@@ -112,7 +112,7 @@ if (isset($_SESSION['id'])) {
                     if (isset($_SESSION['admin'])) {
                         echo '<hr/>
 						<h3>Edit all Blogs <small>(Administrators Only)</small></h3>';
-                        $gab = $mysqli->query('SELECT * FROM '.$prefix.'gmblog ORDER BY id ASC') or die();
+                        $gab = $mysqli->query('SELECT * FROM '.$prefix.'gmblog ORDER BY id ASC') or exit();
                         if ($gab->num_rows > 0) {
                             $i = 1;
                             echo '
@@ -155,7 +155,7 @@ if (isset($_SESSION['id'])) {
                     echo 'Invalid Blog Comment ID.';
                 } else {
                     $gmbid = $mysqli->real_escape_string($_GET['id']);
-                    $query = $mysqli->query('SELECT * FROM '.$prefix.'bcomments WHERE id = '.$gmbid.'') or die();
+                    $query = $mysqli->query('SELECT * FROM '.$prefix.'bcomments WHERE id = '.$gmbid.'') or exit();
                     $rows = $query->num_rows;
                     $fetch = $query->fetch_assoc();
 
@@ -180,7 +180,7 @@ if (isset($_SESSION['id'])) {
 						<select name="blog" id="delBlog" class="form-control">
 							<option value="">Please select...</option>
 								<optgroup label="Your Blog Entries">';
-                    $gb = $mysqli->query('SELECT * FROM '.$prefix."gmblog WHERE author='".$_SESSION['pname']."' ORDER BY id ASC") or die();
+                    $gb = $mysqli->query('SELECT * FROM '.$prefix."gmblog WHERE author='".$_SESSION['pname']."' ORDER BY id ASC") or exit();
                     while ($b = $gb->fetch_assoc()) {
                         echo '
 									<option value="'.$b['id'].'">['.$b['date'].'] '.htmlspecialchars($b['title'], ENT_QUOTES, 'UTF-8').'</option>';
@@ -190,7 +190,7 @@ if (isset($_SESSION['id'])) {
                     if ($_SESSION['admin']) {
                         echo '
 								<optgroup label="Administrator">';
-                        $gb = $mysqli->query('SELECT * FROM '.$prefix.'gmblog ORDER BY author, id ASC') or die();
+                        $gb = $mysqli->query('SELECT * FROM '.$prefix.'gmblog ORDER BY author, id ASC') or exit();
                         while ($b = $gb->fetch_assoc()) {
                             echo '
 									<option value="'.$b['id'].'">['.$b['date'].'] '.htmlspecialchars($b['title'], ENT_QUOTES, 'UTF-8').'</option>';
@@ -208,7 +208,7 @@ if (isset($_SESSION['id'])) {
                     if ($blog == '') {
                         echo '<div class="alert alert-danger">Please select a blog entry to delete.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                     } else {
-                        $d = $mysqli->query('DELETE FROM '.$prefix."gmblog WHERE id='".$blog."'") or die();
+                        $d = $mysqli->query('DELETE FROM '.$prefix."gmblog WHERE id='".$blog."'") or exit();
                         echo '<div class="alert alert-success">The blog entry has been deleted.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                     }
                 }
@@ -222,7 +222,7 @@ if (isset($_SESSION['id'])) {
 					<label for="selectBlog">Please Select a Blog:</label>
 						<select name="art" id="selectBlog" class="form-control">
 							<option value="">Please select...</option>';
-                    $gn = $mysqli->query('SELECT * FROM '.$prefix."gmblog WHERE author='".$_SESSION['pname']."' AND locked = 0 ORDER BY id DESC") or die();
+                    $gn = $mysqli->query('SELECT * FROM '.$prefix."gmblog WHERE author='".$_SESSION['pname']."' AND locked = 0 ORDER BY id DESC") or exit();
                     while ($n = $gn->fetch_assoc()) {
                         echo '
 							<option value="'.$n['id'].'">#'.$n['id'].' - '.htmlspecialchars($n['title'], ENT_QUOTES, 'UTF-8').'</option>';
@@ -238,7 +238,7 @@ if (isset($_SESSION['id'])) {
                     if ($art == '') {
                         echo '<div class="alert alert-danger">Please select a blog to lock.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                     } else {
-                        $d = $mysqli->query('UPDATE '.$prefix."gmblog SET locked = 1 WHERE id='".$art."' AND author='".$_SESSION['pname']."'") or die();
+                        $d = $mysqli->query('UPDATE '.$prefix."gmblog SET locked = 1 WHERE id='".$art."' AND author='".$_SESSION['pname']."'") or exit();
                         echo '<div class="alert alert-success">The blog has been locked.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                     }
                 }
@@ -252,7 +252,7 @@ if (isset($_SESSION['id'])) {
 					<label for=\"selectBlog\">Please Select a Blog:</label>
 						<select name=\"art\" id=\"selectBlog\" class=\"form-control\">
 							<option value=\"\">Please select...</option>";
-                    $gn = $mysqli->query('SELECT * FROM '.$prefix."gmblog WHERE author='".$_SESSION['pname']."' AND locked = 1 ORDER BY id DESC") or die();
+                    $gn = $mysqli->query('SELECT * FROM '.$prefix."gmblog WHERE author='".$_SESSION['pname']."' AND locked = 1 ORDER BY id DESC") or exit();
                     while ($n = $gn->fetch_assoc()) {
                         echo '
 							<option value="'.$n['id'].'">#'.$n['id'].' - '.htmlspecialchars($n['title'], ENT_QUOTES, 'UTF-8').'</option>';
@@ -268,7 +268,7 @@ if (isset($_SESSION['id'])) {
                     if ($art == '') {
                         echo '<div class="alert alert-danger">Please select a blog to unlock.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                     } else {
-                        $d = $mysqli->query('UPDATE '.$prefix."gmblog SET locked = 0 WHERE id='".$art."' AND author='".$_SESSION['pname']."'") or die();
+                        $d = $mysqli->query('UPDATE '.$prefix."gmblog SET locked = 0 WHERE id='".$art."' AND author='".$_SESSION['pname']."'") or exit();
                         echo '<div class="alert alert-success">The blog has been unlocked.</div><hr/><button onclick="goBack()" class="btn btn-primary">&laquo; Go Back</button>';
                     }
                 }

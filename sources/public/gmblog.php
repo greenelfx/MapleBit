@@ -1,6 +1,6 @@
 <?php
 if (basename($_SERVER['PHP_SELF']) == 'gmblog.php') {
-    die('403 - Access Forbidden');
+    exit('403 - Access Forbidden');
 }
 ?>
 <script src="assets/libs/cksimple/ckeditor.js"></script>
@@ -16,7 +16,7 @@ if (basename($_SERVER['PHP_SELF']) == 'gmblog.php') {
 <?php
 if (isset($_GET['id'])) {
     $id = $mysqli->real_escape_string($_GET['id']);
-    $gb = $mysqli->query('SELECT * FROM '.$prefix."gmblog WHERE id='".$id."'") or die();
+    $gb = $mysqli->query('SELECT * FROM '.$prefix."gmblog WHERE id='".$id."'") or exit();
     $b = $gb->fetch_assoc();
     require_once 'assets/libs/HTMLPurifier.standalone.php';
     $config = HTMLPurifier_Config::createDefault();
@@ -31,7 +31,7 @@ if (isset($_GET['id'])) {
     $positive = 0;
     $negative = 0;
     $neutral = 0;
-    $gc = $mysqli->query('SELECT '.$prefix.'bcomments.*, accounts.email, accounts.id As id1, '.$prefix.'profile.accountid, '.$prefix.'profile.name FROM '.$prefix.'bcomments INNER JOIN '.$prefix.'profile ON '.$prefix.'bcomments.author = '.$prefix.'profile.name INNER JOIN accounts ON '.$prefix.'profile.accountid = accounts.id WHERE '.$prefix."bcomments.bid= '".$id."' ORDER BY date DESC") or die();
+    $gc = $mysqli->query('SELECT '.$prefix.'bcomments.*, accounts.email, accounts.id As id1, '.$prefix.'profile.accountid, '.$prefix.'profile.name FROM '.$prefix.'bcomments INNER JOIN '.$prefix.'profile ON '.$prefix.'bcomments.author = '.$prefix.'profile.name INNER JOIN accounts ON '.$prefix.'profile.accountid = accounts.id WHERE '.$prefix."bcomments.bid= '".$id."' ORDER BY date DESC") or exit();
     $cc = $gc->num_rows;
     $getfeedback = $mysqli->query('SELECT feedback FROM '.$prefix.'bcomments');
     if ($cc > 0) {
@@ -65,7 +65,7 @@ if (isset($_GET['id'])) {
 		</div>
 	</div>';
 
-    $av = $mysqli->query('UPDATE '.$prefix."gmblog SET views = views + 1 WHERE id='".$id."'") or die();
+    $av = $mysqli->query('UPDATE '.$prefix."gmblog SET views = views + 1 WHERE id='".$id."'") or exit();
     if (isset($_SESSION['admin']) || isset($_SESSION['gm'])) {
         if ($b['locked'] == '1') {
             $buttontext = 'Unlock';
@@ -81,7 +81,7 @@ if (isset($_GET['id'])) {
 			<hr />';
     }
     if (isset($_SESSION['id'])) {
-        $flood = $mysqli->query('SELECT * FROM '.$prefix."bcomments WHERE bid='".$id."' && author='".$_SESSION['pname']."' ORDER BY date DESC LIMIT 1") or die();
+        $flood = $mysqli->query('SELECT * FROM '.$prefix."bcomments WHERE bid='".$id."' && author='".$_SESSION['pname']."' ORDER BY date DESC LIMIT 1") or exit();
         $fetchg = $flood->fetch_assoc();
         $seconds = 60 * $basefloodint;
         $editor = false;
@@ -125,7 +125,7 @@ if (isset($_GET['id'])) {
 				<br/><div class="alert alert-danger">You cannot leave the comment field blank!</div>';
         } else {
             $date = time();
-            $i = $mysqli->query('INSERT INTO '.$prefix."bcomments (bid, author, feedback, date, comment) VALUES ('".$id."','".$_SESSION['pname']."','".$feedback."','".$date."','".$comment."')") or die(mysql_error());
+            $i = $mysqli->query('INSERT INTO '.$prefix."bcomments (bid, author, feedback, date, comment) VALUES ('".$id."','".$_SESSION['pname']."','".$feedback."','".$date."','".$comment."')") or exit(mysql_error());
             echo "
 				<meta http-equiv='refresh' content=\"0; url=?base=main&amp;page=gmblog&amp;id=".$id.'">';
         }
@@ -165,14 +165,14 @@ if (isset($_GET['id'])) {
         }
     }
 } else {
-    $gb = $mysqli->query('SELECT * FROM '.$prefix.'gmblog ORDER BY id DESC') or die();
+    $gb = $mysqli->query('SELECT * FROM '.$prefix.'gmblog ORDER BY id DESC') or exit();
     $rows = $gb->num_rows;
     if ($rows < 1) {
         echo '<div class="alert alert-danger">Oops! No blogs to display right now!</div>';
     } else {
         echo '<h2 class="text-left">'.$servername.' GM Blogs</h2><hr/>';
         while ($b = $gb->fetch_assoc()) {
-            $gc = $mysqli->query('SELECT * FROM '.$prefix."bcomments WHERE bid='".$b['id']."' ORDER BY id ASC") or die();
+            $gc = $mysqli->query('SELECT * FROM '.$prefix."bcomments WHERE bid='".$b['id']."' ORDER BY id ASC") or exit();
             $cc = $gc->num_rows;
             echo '
 			['.$b['date'].']
